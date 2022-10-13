@@ -6,13 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\" && npx husky add .husky/pre-commit-msg \"exec < /dev/tty && npx cz --hook || true\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-commit-msg": "exec < /dev/tty && npx cz --hook || true"
-    }
+    "execute-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\" && npx husky add .husky/prepare-commit-msg \"exec < /dev/tty && npx cz --hook || true\""
   },
   "private": true,
   "dependencies": {

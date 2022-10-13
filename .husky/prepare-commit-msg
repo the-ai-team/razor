@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+green='\033[0;32m'
+clear='\033[0m'
+
+if [ -t 1 ]
+then
+    echo "${green}✔${clear} Terminal found.."
+    exec < /dev/tty && npx cz --hook || true
+    return 0
+else
+    echo "[MESSAGE] Please, use git commit command on the terminal to activate commitzen"
+    exit 1
+fi
