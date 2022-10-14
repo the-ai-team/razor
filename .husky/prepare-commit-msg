@@ -1,12 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Color codes
 green='\033[0;32m'
 clear='\033[0m'
 
+# Check whether terminal is attached
 if [ -t 1 ]
 then
     echo "${green}✔${clear} Terminal found.."
+    # This will run commitzen when using git commit command 
     exec < /dev/tty && npx cz --hook || true
     return 0
 else
