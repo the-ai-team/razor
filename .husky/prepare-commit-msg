@@ -9,7 +9,7 @@ clear='\033[0m'
 if [ -t 1 ]
 then
     echo "${green}✔${clear} Terminal found.."
-    # This will run commitzen when using git commit command 
+    # This will run commitzen when using git commit command, `|| true` will use commit message defined if command aborts.
     exec < /dev/tty && npx cz --hook || true
     return 0
 else
