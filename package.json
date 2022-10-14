@@ -20,7 +20,6 @@
   "devDependencies": {
     "@nrwl/cli": "14.8.4",
     "@nrwl/cypress": "14.8.4",
-    "@nrwl/eslint-plugin-nx": "14.8.4",
     "@nrwl/jest": "14.8.4",
     "@nrwl/linter": "14.8.4",
     "@nrwl/node": "14.8.4",
@@ -33,18 +32,9 @@
     "@types/node": "16.11.7",
     "@types/react": "18.0.20",
     "@types/react-dom": "18.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
     "babel-jest": "28.1.1",
     "cypress": "^10.7.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "~8.15.0",
-    "eslint-config-prettier": "8.1.0",
-    "eslint-plugin-cypress": "^2.10.3",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsx-a11y": "6.6.1",
-    "eslint-plugin-react": "7.31.8",
-    "eslint-plugin-react-hooks": "4.6.0",
     "husky": "^8.0.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
@@ -57,7 +47,7 @@
     "typescript": "~4.8.2"
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": "prettier --write"
+    "**/*.{ts,tsx,scss,md,html,json}": "prettier --write"
   },
   "config": {
     "commitizen": {

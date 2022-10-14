@@ -1,0 +1,9 @@
+{
+  "prettier.bracketSameLine": true,
+  "editor.formatOnSave": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.prettierPath": ".prettierrc.json",
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.useTabs": false
+}
