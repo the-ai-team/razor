@@ -35,6 +35,7 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/.prettierrc.json"
     ],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"]
@@ -43,12 +44,14 @@
     "@nrwl/react": {
       "application": {
         "style": "scss",
+        "linter": "eslint",
         "babel": true
       },
       "component": {
         "style": "scss"
       },
       "library": {
+        "linter": "eslint",
         "style": "scss"
       }
     }

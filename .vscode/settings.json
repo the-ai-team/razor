@@ -1,9 +1,15 @@
 {
-  "prettier.bracketSameLine": true,
   "editor.formatOnSave": true,
-  "prettier.arrowParens": "avoid",
-  "prettier.prettierPath": ".prettierrc.json",
-  "prettier.singleQuote": true,
-  "prettier.jsxSingleQuote": true,
-  "prettier.useTabs": false
+  "prettier.prettierPath": "../prettierrc.json",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

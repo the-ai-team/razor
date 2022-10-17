@@ -1,0 +1,30 @@
+{
+  "extends": ["plugin:@nrwl/nx/react", "../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        // "max-lines": [2, 200],
+        "no-unused-vars": "error",
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          {
+            "allowTypedFunctionExpressions": true
+          }
+        ],
+        "@typescript-eslint/no-explicit-any": "error",
+        "react/button-has-type": "error",
+        "react/boolean-prop-naming": [
+          "error",
+          {
+            "rule": "^(is|has)[A-Z]([A-Za-z0-9]?)+"
+          }
+        ],
+        "react/prop-types": "error",
+        "react/require-default-props": "error",
+        "react/no-array-index-key": "error"
+      }
+    }
+  ]
+}
