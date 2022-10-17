@@ -2,11 +2,20 @@
 
 # Razor
 
-Razor is a type racing app. Player can create a private lobby and invite others to play online.
+Razor is a type-racing app. The player can create a private lobby and invite others to play online.
 
 This project was generated using [Nx](https://nx.dev).
 
 There are also many [community plugins](https://nx.dev/community) you could add.
+
+## How to commit
+
+After staging files, run `git commit` to add commit message.
+**Don't use `-m` flag as we using [Commitzen](https://github.com/commitizen/cz-cli) to make meaningful commits easily**
+
+> You will recive step by step fields to add your commit message details.
+
+Please follow this [guide](https://www.conventionalcommits.org/en/v1.0.0/) to learn more about conventional commits.
 
 ## Generate an application
 
