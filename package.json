@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build",
+    "build:client": "nx build client",
+    "build:server": "nx build server",
     "test": "nx test",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\""
   },
