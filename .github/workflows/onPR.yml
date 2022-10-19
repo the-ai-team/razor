@@ -2,7 +2,7 @@ name: onPR
 on:
   pull_request:
     branches: '**'
-    
+
 jobs:
   build:
     name: Building and Testing
