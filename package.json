@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build --all",
-    "test": "nx test --all",
+    "build": "nx build client && nx build server",
+    "test": "nx test client && nx test server",
     "build:client": "nx build client",
     "build:server": "nx build server",
     "serve": "node dist/apps/server/main.js",
