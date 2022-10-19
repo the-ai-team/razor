@@ -8,6 +8,7 @@
     "test": "nx test --all",
     "build:client": "nx build client",
     "build:server": "nx build server",
+    "serve": "node dist/apps/server/main.js",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\""
   },
   "private": true,
