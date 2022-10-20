@@ -4,13 +4,20 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
+    "build": "nx build client && nx build server",
+    "test": "nx test client && nx test server",
+    "build:client": "nx build client",
+    "build:server": "nx build server",
+    "serve": "node dist/apps/server/main.js",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\""
   },
   "private": true,
+  "engines": {
+    "node": ">=16.17.0"
+  },
   "dependencies": {
     "core-js": "^3.6.5",
+    "express": "^4.18.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "regenerator-runtime": "0.13.7",
