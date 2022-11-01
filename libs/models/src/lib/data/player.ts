@@ -42,6 +42,7 @@ export interface Player {
 }
 
 export interface PlayerWithLogs extends Omit<Player, 'state' | 'lobbyId'> {
+  //rem lobbyId
   /** Array of time logs of player */
   logs: TimeLog[];
 }
