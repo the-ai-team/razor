@@ -1,8 +1,9 @@
 import { AppPlayerId, AppPlayer } from './player';
+import { AppTournamentId } from './tournament';
 
 export type AppPlayerProfile = Pick<AppPlayer, 'name' | 'avatarLink'>;
 
-export type AppRaceId = string;
+export type AppRaceId = `${AppTournamentId}-${number}`;
 export interface AppRace {
   text: string;
   timeoutDuration: number;

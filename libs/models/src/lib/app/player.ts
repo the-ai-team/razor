@@ -18,7 +18,7 @@ export interface AppPlayer {
 }
 export type AppPlayers = Record<AppPlayerId, AppPlayer>;
 
-export type AppPlayerLogId = `${AppTournamentId}-${AppRaceId}-${AppPlayerId}`;
+export type AppPlayerLogId = `${AppRaceId}-${AppPlayerId}`;
 export interface AppPlayerLog {
   timestamp: AppTimestamp;
   textLength: AppTextLength;

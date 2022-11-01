@@ -1,5 +1,7 @@
+import { store } from '@razor/store';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
 import App from './app/app';
 
@@ -8,7 +10,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  <Provider store={store}>
+    <StrictMode>
+      <App />
+    </StrictMode>
+  </Provider>,
 );
