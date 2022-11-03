@@ -1,6 +1,5 @@
 import { AppPlayerId } from './player';
 import { AppRaceId } from './race';
-import { AppTournamentId } from './tournament';
 
 export enum AppPlayerStatus {
   Complete = 'complete',
@@ -19,7 +18,6 @@ export interface AppTimeoutPlayerValues {
   score: number;
 }
 
-export type AppLeaderboardId = `${AppTournamentId}-${AppRaceId}`;
 export interface AppLeaderboardEntry {
   playerId: AppPlayerId;
   position: number;
@@ -28,4 +26,4 @@ export interface AppLeaderboardEntry {
 }
 export type AppLeaderboard = AppLeaderboardEntry[];
 
-export type AppLeadeboards = Record<AppLeaderboardId, AppLeaderboard>;
+export type AppLeadeboards = Record<AppRaceId, AppLeaderboard>;

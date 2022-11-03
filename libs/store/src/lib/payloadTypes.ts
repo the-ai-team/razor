@@ -48,3 +48,7 @@ export type clearPlayerPayload = {
 export type setReadyTournamentPayload = {
   tournamentId: AppTournamentId;
 };
+export type startRacePayload = {
+  tournamentId: AppTournamentId;
+  playerId: AppPlayerId;
+};

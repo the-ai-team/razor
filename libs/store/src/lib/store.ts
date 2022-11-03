@@ -11,12 +11,14 @@ import {
   joinPlayer,
   sendErrorLog,
   setReadyTournament,
+  startRace,
 } from './effects';
 import { initialState } from './initialState';
 import {
   clearPlayerPayload,
   joinPlayerPayload,
   setReadyTournamentPayload,
+  startRacePayload,
 } from './payloadTypes';
 import {
   addPlayerReducer,
@@ -47,6 +49,8 @@ export const game = createModel<RootModel>()({
       payload: setReadyTournamentPayload,
       state: RootState,
     ) => setReadyTournament(dispatch, payload, state),
+    startRace: (payload: startRacePayload, state: RootState) =>
+      startRace(dispatch, payload, state),
     sendErrorLog: (payload: AppErrorLog) => sendErrorLog(dispatch, payload),
   }),
 });
@@ -69,17 +73,18 @@ const { dispatch } = store;
 dispatch({
   type: 'game/joinPlayer',
   payload: {
-    id: '122',
+    id: '',
     playerName: 'name',
   },
 });
 
-// dispatch({
-//   type: 'game/clearPlayer',
-//   payload: {
-//     playerId: '1',
-//   },
-// });
+dispatch({
+  type: 'game/startRace',
+  payload: {
+    tournamentId: 'T:1',
+    playerId: '1',
+  },
+});
 
 // dispatch({
 //   type: 'game/setReadyTournament',

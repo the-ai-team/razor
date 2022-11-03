@@ -9,7 +9,8 @@ export enum AppPlayerState {
 export type AppTimestamp = number;
 export type AppTextLength = number;
 
-export type AppPlayerId = string;
+/** Sample Id - `P:oNgXdluf` */
+export type AppPlayerId = `P:${string}`;
 export interface AppPlayer {
   name: string;
   avatarLink: string;
@@ -18,6 +19,7 @@ export interface AppPlayer {
 }
 export type AppPlayers = Record<AppPlayerId, AppPlayer>;
 
+/** Sample Id - `T:skt_2JVn-R:050-P:oNgXdluf` */
 export type AppPlayerLogId = `${AppRaceId}-${AppPlayerId}`;
 export interface AppPlayerLog {
   timestamp: AppTimestamp;

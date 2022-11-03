@@ -10,7 +10,10 @@ export enum AppTournamentState {
   Empty = 'empty',
 }
 
-export type AppTournamentId = string;
+/** Sample Id - `T:skt_2JVn` */
+// export type AppTournamentId<T extends string = string> = `T:${T}`;
+export type AppTournamentId = `T:${string}`;
+
 export interface AppTournament {
   state: AppTournamentState;
   raceIds: Array<AppRaceId>;

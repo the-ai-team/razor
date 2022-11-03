@@ -7,43 +7,43 @@ import {
 
 export const initialState: AppStateModel = {
   tournamentsModel: {
-    '1': {
+    'T:1': {
       state: AppTournamentState.Lobby,
-      raceIds: [],
-      playerIds: ['1', '2'],
+      raceIds: ['T:swwe-R:55', 'T:swwe-R:2', 'T:swwe-R:3'],
+      playerIds: ['P:1', 'P:2'],
     },
-    '2': {
+    'T:2': {
       state: AppTournamentState.Empty,
       raceIds: [],
       playerIds: [],
     },
   },
   playersModel: {
-    '1': {
+    'P:1': {
       name: 'Player 1',
       avatarLink: 'https://avatars.dicebear.com/api/open-peeps/5VG9nXvA.svg"',
       state: AppPlayerState.Idle,
-      tournamentId: '1',
+      tournamentId: 'T:1',
     },
-    '2': {
+    'P:2': {
       name: 'Player 2',
       avatarLink: 'https://avatars.dicebear.com/api/open-peeps/i_63M7YJ.svg',
       state: AppPlayerState.Racing,
-      tournamentId: '1',
+      tournamentId: 'T:1',
     },
   },
   racesModel: {
-    'Ta_pB5pc-01': {
+    'T:a_pB5pc-R:001': {
       text: 'Enim aliquip consequat enim sint mollit mollit amet ex anim et labore. Amet ad Lorem sit fugiat cillum aute. Ut eu commodo dolor qui enim nisi incididunt quis. Officia reprehenderit magna magna in ut ad minim aute. Id et duis cillum cillum.',
       timeoutDuration: 10000,
       startedTimestamp: 139838219,
       players: {
-        '1': {
+        'P:1': {
           name: 'Player 1',
           avatarLink:
             'https://avatars.dicebear.com/api/open-peeps/i_62M7YJ.svg',
         },
-        '2': {
+        'P:2': {
           name: 'Player 2',
           avatarLink:
             'https://avatars.dicebear.com/api/open-peeps/i_96M7YJ.svg',
@@ -53,9 +53,9 @@ export const initialState: AppStateModel = {
     },
   },
   leaderboardsModel: {
-    '001-556-555': [
+    'T:s3rr-R:034': [
       {
-        playerId: '2',
+        playerId: 'P:2',
         position: 2,
         status: AppPlayerStatus.Complete,
         values: {
@@ -66,7 +66,7 @@ export const initialState: AppStateModel = {
         },
       },
       {
-        playerId: '3',
+        playerId: 'P:3',
         position: 3,
         status: AppPlayerStatus.Complete,
         values: {
@@ -77,7 +77,7 @@ export const initialState: AppStateModel = {
         },
       },
       {
-        playerId: '1',
+        playerId: 'P:1',
         position: 1,
         status: AppPlayerStatus.Timeout,
         values: {
@@ -89,7 +89,7 @@ export const initialState: AppStateModel = {
     ],
   },
   playerLogsModel: {
-    's556-123-s422': [
+    'T:123-R:1-P:1': [
       {
         timestamp: 139838219,
         textLength: 100,
@@ -99,7 +99,7 @@ export const initialState: AppStateModel = {
         textLength: 100,
       },
     ],
-    's444-123-s422': [
+    'T:123-R:2-P:2': [
       {
         timestamp: 139838219,
         textLength: 100,
