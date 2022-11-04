@@ -3,6 +3,7 @@ import {
   AppErrorTimestamp,
   AppPlayer,
   AppPlayerId,
+  AppPlayerLog,
   AppRace,
   AppRaceId,
   AppTournament,
@@ -48,7 +49,18 @@ export type clearPlayerPayload = {
 export type setReadyTournamentPayload = {
   tournamentId: AppTournamentId;
 };
-export type startRacePayload = {
+export type startCountdownPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
+};
+export type endCountdownPayload = {
+  tournamentId: AppTournamentId;
+};
+export type endRacePayload = {
+  tournamentId: AppTournamentId;
+};
+export type sendTypeLogPlayload = {
+  raceId: AppRaceId;
+  playerId: AppPlayerId;
+  typeLog: AppPlayerLog;
 };

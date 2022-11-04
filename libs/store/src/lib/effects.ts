@@ -3,7 +3,8 @@ import {
   AppErrorLog,
   AppIdNumberType,
   AppPlayerId,
-  AppPlayerProfile,
+  AppPlayerLog,
+  AppPlayerLogId,
   AppPlayerProfiles,
   AppPlayerState,
   AppRace,
@@ -15,9 +16,12 @@ import {
 import { nanoid } from 'nanoid';
 import {
   clearPlayerPayload,
+  endCountdownPayload,
+  endRacePayload,
   joinPlayerPayload,
+  sendTypeLogPlayload,
   setReadyTournamentPayload,
-  startRacePayload,
+  startCountdownPayload,
 } from './payloadTypes';
 import { Dispatch, RootState } from './store';
 
@@ -144,9 +148,9 @@ export const setReadyTournament = async (
 
 //TODO: Util calculating timeout
 //TODO: Util get current timestamp
-export const startRace = async (
+export const startCountdown = async (
   dispatch: Dispatch,
-  payload: startRacePayload,
+  payload: startCountdownPayload,
   state: RootState,
 ): Promise<void> => {
   const {
@@ -178,7 +182,74 @@ export const startRace = async (
     players: players,
     isOnGoing: true,
   };
-  // console.log(race)
+
+  const tournament: AppTournament = {
+    state: AppTournamentState.Countdown,
+    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
+    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
+  };
+
+  dispatch.game.updateTournamentReducer({
+    tournamentId,
+    tournament,
+  });
+
+  // TODO: dispatch racedata to start
+  console.log(race, raceId, playerId);
+};
+
+export const endCoundown = async (
+  dispatch: Dispatch,
+  payload: endCountdownPayload,
+  state: RootState,
+): Promise<void> => {
+  const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+  const tournament: AppTournament = {
+    state: AppTournamentState.Race,
+    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
+    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
+  };
+  dispatch.game.updateTournamentReducer({
+    tournamentId,
+    tournament,
+  });
+};
+
+export const endRace = async (
+  dispatch: Dispatch,
+  payload: endRacePayload,
+  state: RootState,
+): Promise<void> => {
+  const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+  const tournament: AppTournament = {
+    state: AppTournamentState.Leaderboard,
+    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
+    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
+  };
+
+  dispatch.game.updateTournamentReducer({
+    tournamentId,
+    tournament,
+  });
+
+  //TODO: dipatch leaderboard data
+};
+
+export const sendTypeLog = async (
+  dispatch: Dispatch,
+  payload: sendTypeLogPlayload,
+  state: RootState,
+): Promise<void> => {
+  const {
+    raceId,
+    playerId,
+    typeLog,
+  }: { raceId: AppRaceId; playerId: AppPlayerId; typeLog: AppPlayerLog } =
+    payload;
+
+  const PlayerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
+
+  //TODO: dispatch typelogs
 };
 
 export const sendErrorLog = async (
@@ -192,3 +263,5 @@ export const sendErrorLog = async (
     errorTimestamp,
   });
 };
+
+//TODO: order effects

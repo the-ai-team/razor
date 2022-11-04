@@ -11,14 +11,20 @@ import {
   joinPlayer,
   sendErrorLog,
   setReadyTournament,
-  startRace,
+  startCountdown,
+  endCoundown,
+  endRace,
+  sendTypeLog,
 } from './effects';
 import { initialState } from './initialState';
 import {
   clearPlayerPayload,
   joinPlayerPayload,
   setReadyTournamentPayload,
-  startRacePayload,
+  startCountdownPayload,
+  endCountdownPayload,
+  endRacePayload,
+  sendTypeLogPlayload,
 } from './payloadTypes';
 import {
   addPlayerReducer,
@@ -49,8 +55,14 @@ export const game = createModel<RootModel>()({
       payload: setReadyTournamentPayload,
       state: RootState,
     ) => setReadyTournament(dispatch, payload, state),
-    startRace: (payload: startRacePayload, state: RootState) =>
-      startRace(dispatch, payload, state),
+    startCountdown: (payload: startCountdownPayload, state: RootState) =>
+      startCountdown(dispatch, payload, state),
+    endCoundown: (payload: endCountdownPayload, state: RootState) =>
+      endCoundown(dispatch, payload, state),
+    endRace: (payload: endRacePayload, state: RootState) =>
+      endRace(dispatch, payload, state),
+    sendTypeLog: (payload: sendTypeLogPlayload, state: RootState) =>
+      sendTypeLog(dispatch, payload, state),
     sendErrorLog: (payload: AppErrorLog) => sendErrorLog(dispatch, payload),
   }),
 });
