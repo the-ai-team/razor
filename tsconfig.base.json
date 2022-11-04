@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@razor/models": ["libs/models/src/index.ts"],
-      "@razor/store": ["libs/store/src/index.ts"]
+      "@razor/store": ["libs/store/src/index.ts"],
+      "@razor/util": ["libs/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
