@@ -1,0 +1,1 @@
+// const averageWPM = 50;

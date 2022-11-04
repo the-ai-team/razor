@@ -13,7 +13,7 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-import { nanoid } from 'nanoid';
+import { generateUid, generateAvatarLink, giveZeroPadding } from '@razor/util';
 import {
   clearPlayerPayload,
   endCountdownPayload,
@@ -25,28 +25,6 @@ import {
 } from './payloadTypes';
 import { Dispatch, RootState } from './store';
 
-const tournamentIdLength = 8;
-const playerIdLength = 8;
-const generalIdLength = 8;
-const averageWPM = 50;
-
-const createUniqueId = async (type: AppIdNumberType): Promise<string> => {
-  switch (type) {
-    case AppIdNumberType.Tournament:
-      return `T:${nanoid(tournamentIdLength)}`;
-    case AppIdNumberType.Player:
-      return `P:${nanoid(playerIdLength)}`;
-    case AppIdNumberType.General:
-      return nanoid(generalIdLength);
-  }
-};
-
-const loadAvatarLink = async (): Promise<string> => {
-  const randomSeed = await createUniqueId(AppIdNumberType.General);
-  const image = `https://avatars.dicebear.com/api/open-peeps/${randomSeed}.svg`;
-  return image;
-};
-
 const loadRacingText = async (): Promise<string> => {
   const url = 'http://www.metaphorpsum.com/paragraphs/1/10';
 
@@ -55,13 +33,6 @@ const loadRacingText = async (): Promise<string> => {
     .then(data => {
       return data;
     });
-};
-
-//give zero padding to a number
-const zeroPadding = (num: number, size: number): string => {
-  const s = num + '';
-  s.padStart(size, '0');
-  return s;
 };
 
 //TODO: Add logger methods for warns and errors
@@ -84,11 +55,11 @@ export const joinPlayer = async (
     }
     tournamentId = id;
   } else {
-    tournamentId = await createUniqueId(AppIdNumberType.Tournament);
+    tournamentId = await generateUid(AppIdNumberType.Tournament);
   }
 
   const formattedTournamentId: AppTournamentId = `T:${tournamentId}`;
-  const formattedPlayerId: AppPlayerId = `P:${await createUniqueId(
+  const formattedPlayerId: AppPlayerId = `P:${await generateUid(
     AppIdNumberType.Player,
   )}`;
 
@@ -109,7 +80,7 @@ export const joinPlayer = async (
     playerId: formattedPlayerId,
     player: {
       name: playerName,
-      avatarLink: await loadAvatarLink(),
+      avatarLink: await generateAvatarLink(),
       state: AppPlayerState.Idle,
       tournamentId: formattedTournamentId,
     },
@@ -162,7 +133,7 @@ export const startCountdown = async (
     state.game.tournamentsModel[tournamentId] &&
     state.game.tournamentsModel[tournamentId].raceIds.length;
   const raceIndex = numberOfRacesBefore
-    ? zeroPadding(numberOfRacesBefore + 1, 3)
+    ? giveZeroPadding(numberOfRacesBefore + 1, 3)
     : '000';
   const raceId: AppRaceId = `${tournamentId}-R:${raceIndex}`;
   const players: AppPlayerProfiles = {};
