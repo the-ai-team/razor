@@ -1,14 +1,23 @@
-import { AppStateModel } from '@razor/models';
+import {
+  AppPlayerId,
+  AppPlayerLogId,
+  AppRaceId,
+  AppStateModel,
+} from '@razor/models';
 import {
   addPlayerReducerPayload,
   addRaceReducerPayload,
   addTournamentReducerPayload,
   logErrorReducerPayload,
   removePlayerReducerPayload,
+  updateLeaderboardReducerPayload,
+  updatePlayerLogReducerPayload,
+  updateRaceReducerPayload,
   updateTournamentReducerPayload,
 } from './payloadTypes';
 
-//fundamental CRUD operations for all models
+// Fundamental CRUD operations for all models
+// Basic Add Operations
 export const addTournamentReducer = (
   state: AppStateModel,
   payload: addTournamentReducerPayload,
@@ -24,6 +33,7 @@ export const addTournamentReducer = (
   return newState;
 };
 
+//TODO: Add conditions to check values are not undefined
 export const addRaceReducer = (
   state: AppStateModel,
   payload: addRaceReducerPayload,
@@ -78,6 +88,76 @@ export const addPlayerReducer = (
   return newState;
 };
 
+// Basic Update Opeations
+export const updateTournamentReducer = (
+  state: AppStateModel,
+  payload: updateTournamentReducerPayload,
+) => {
+  const { tournamentId, tournament } = payload;
+  const newState: AppStateModel = {
+    ...state,
+    tournamentsModel: {
+      ...state.tournamentsModel,
+      [tournamentId]: {
+        ...tournament,
+      },
+    },
+  };
+  return newState;
+};
+
+export const updateRaceReducer = (
+  state: AppStateModel,
+  payload: updateRaceReducerPayload,
+) => {
+  const { raceId, race } = payload;
+  const newState: AppStateModel = {
+    ...state,
+    racesModel: {
+      ...state.racesModel,
+      [raceId]: {
+        ...race,
+      },
+    },
+  };
+  return newState;
+};
+
+export const updateLeaderboardReducer = (
+  state: AppStateModel,
+  payload: updateLeaderboardReducerPayload,
+) => {
+  const { leaderboardId, leaderboard } = payload;
+  const newState: AppStateModel = {
+    ...state,
+    leaderboardsModel: {
+      ...state.leaderboardsModel,
+      [leaderboardId]: {
+        ...leaderboard,
+      },
+    },
+  };
+  return newState;
+};
+
+export const updatePlayerLogReducer = (
+  state: AppStateModel,
+  payload: updatePlayerLogReducerPayload,
+) => {
+  const { playeLogId, playerLog } = payload;
+  const newState: AppStateModel = {
+    ...state,
+    playerLogsModel: {
+      ...state.playerLogsModel,
+      [playeLogId]: {
+        ...playerLog,
+      },
+    },
+  };
+  return newState;
+};
+
+// Basic Remove Operations
 export const removePlayerReducer = (
   state: AppStateModel,
   payload: removePlayerReducerPayload,
@@ -110,23 +190,6 @@ export const removePlayerReducer = (
   return newState;
 };
 
-export const updateTournamentReducer = (
-  state: AppStateModel,
-  payload: updateTournamentReducerPayload,
-) => {
-  const { tournamentId, tournament } = payload;
-  const newState: AppStateModel = {
-    ...state,
-    tournamentsModel: {
-      ...state.tournamentsModel,
-      [tournamentId]: {
-        ...tournament,
-      },
-    },
-  };
-  return newState;
-};
-
 export const logErrorReducer = (
   state: AppStateModel,
   payload: logErrorReducerPayload,
@@ -139,5 +202,61 @@ export const logErrorReducer = (
       [errorTimestamp]: errorLog,
     },
   };
+  return newState;
+};
+
+export const removeTournamentReducer = (
+  state: AppStateModel,
+  payload: removePlayerReducerPayload,
+) => {
+  const { tournamentId } = payload;
+  const playerIds = state.tournamentsModel[tournamentId].playerIds;
+  const raceIds = state.tournamentsModel[tournamentId].raceIds;
+  let playerLogIds: AppPlayerLogId[] = [];
+
+  raceIds.forEach((raceId: AppRaceId) => {
+    const specificPlayerLogsId = playerIds.map(
+      (playerId: AppPlayerId): AppPlayerLogId => {
+        return `${raceId}-${playerId}`;
+      },
+    );
+    playerLogIds = playerLogIds.concat(specificPlayerLogsId);
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [tournamentId]: removedTournament, ...newTournamentModel } =
+    state.tournamentsModel;
+
+  const newState: AppStateModel = {
+    ...state,
+    tournamentsModel: {
+      ...newTournamentModel,
+    },
+  };
+  playerIds.forEach(playerId => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [playerId]: removedPlayer, ...newPlayersModel } =
+      newState.playersModel;
+    newState.playersModel = {
+      ...newPlayersModel,
+    };
+  });
+
+  raceIds.forEach(raceId => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [raceId]: removedRace, ...newRacesModel } = newState.racesModel;
+    newState.racesModel = {
+      ...newRacesModel,
+    };
+  });
+
+  playerLogIds.forEach(playerLogId => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [playerLogId]: removedPlayerLog, ...newPlayerLogsModel } =
+      newState.playerLogsModel;
+    newState.playerLogsModel = {
+      ...newPlayerLogsModel,
+    };
+  });
   return newState;
 };

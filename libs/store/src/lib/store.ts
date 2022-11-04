@@ -31,7 +31,11 @@ import {
   addRaceReducer,
   addTournamentReducer,
   removePlayerReducer,
+  removeTournamentReducer,
   updateTournamentReducer,
+  updateRaceReducer,
+  updateLeaderboardReducer,
+  updatePlayerLogReducer,
   logErrorReducer,
 } from './reducers';
 
@@ -40,10 +44,14 @@ export const game = createModel<RootModel>()({
   reducers: {
     addTournamentReducer,
     addRaceReducer,
-    removePlayerReducer,
     addPlayerReducer,
     updateTournamentReducer,
+    updateRaceReducer,
+    updateLeaderboardReducer,
+    updatePlayerLogReducer,
+    removePlayerReducer,
     logErrorReducer,
+    removeTournamentReducer,
   },
 
   effects: (dispatch: Dispatch) => ({
@@ -82,21 +90,28 @@ export type RootState = RematchRootState<RootModel>;
 // Test Dispatches
 const { dispatch } = store;
 
+// dispatch({
+//   type: 'game/joinPlayer',
+//   payload: {
+//     id: '',
+//     playerName: 'name',
+//   },
+// });
+
 dispatch({
-  type: 'game/joinPlayer',
+  type: 'game/removeTournamentReducer',
   payload: {
-    id: '',
-    playerName: 'name',
+    tournamentId: 'T:1',
   },
 });
 
-dispatch({
-  type: 'game/startRace',
-  payload: {
-    tournamentId: 'T:1',
-    playerId: '1',
-  },
-});
+// dispatch({
+//   type: 'game/startCountdown',
+//   payload: {
+//     tournamentId: 'T:1',
+//     playerId: 'P:1',
+//   },
+// });
 
 // dispatch({
 //   type: 'game/setReadyTournament',

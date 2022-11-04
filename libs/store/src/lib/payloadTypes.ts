@@ -1,9 +1,11 @@
 import {
   AppErrorLog,
   AppErrorTimestamp,
+  AppLeaderboard,
   AppPlayer,
   AppPlayerId,
   AppPlayerLog,
+  AppPlayerLogId,
   AppRace,
   AppRaceId,
   AppTournament,
@@ -25,13 +27,28 @@ export type addPlayerReducerPayload = {
   playerId: AppPlayerId;
   player: AppPlayer;
 };
+export type updateTournamentReducerPayload = {
+  tournamentId: AppTournamentId;
+  tournament: AppTournament;
+};
+export type updateRaceReducerPayload = {
+  raceId: AppRaceId;
+  race: AppRace;
+};
+export type updateLeaderboardReducerPayload = {
+  leaderboardId: AppRaceId;
+  leaderboard: AppLeaderboard;
+};
+export type updatePlayerLogReducerPayload = {
+  playeLogId: AppPlayerLogId;
+  playerLog: AppPlayerLog;
+};
 export type removePlayerReducerPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
 };
-export type updateTournamentReducerPayload = {
+export type removeTournamentReducer = {
   tournamentId: AppTournamentId;
-  tournament: AppTournament;
 };
 export type logErrorReducerPayload = {
   errorLog: AppErrorLog;

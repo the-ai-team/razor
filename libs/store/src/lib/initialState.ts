@@ -9,7 +9,7 @@ export const initialState: AppStateModel = {
   tournamentsModel: {
     'T:1': {
       state: AppTournamentState.Lobby,
-      raceIds: ['T:swwe-R:55', 'T:swwe-R:2', 'T:swwe-R:3'],
+      raceIds: ['T:a_pB5pc-R:001', 'T:swwe-R:2', 'T:swwe-R:3'],
       playerIds: ['P:1', 'P:2'],
     },
     'T:2': {
@@ -89,7 +89,7 @@ export const initialState: AppStateModel = {
     ],
   },
   playerLogsModel: {
-    'T:123-R:1-P:1': [
+    'T:a_pB5pc-R:001-P:1': [
       {
         timestamp: 139838219,
         textLength: 100,
