@@ -1,8 +1,7 @@
-import { AppIdNumberType } from '@razor/models';
-import { generateUid } from './generateUid';
-
-export const generateAvatarLink = async (): Promise<string> => {
-  const randomSeed = await generateUid(AppIdNumberType.General);
-  const image = `https://avatars.dicebear.com/api/open-peeps/${randomSeed}.svg`;
+export const generateAvatarLink = async (
+  playerName: string,
+): Promise<string> => {
+  const seed = playerName;
+  const image = `https://avatars.dicebear.com/api/open-peeps/${seed}.svg`;
   return image;
 };

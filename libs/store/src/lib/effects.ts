@@ -80,7 +80,7 @@ export const joinPlayer = async (
     playerId: formattedPlayerId,
     player: {
       name: playerName,
-      avatarLink: await generateAvatarLink(),
+      avatarLink: await generateAvatarLink(playerName),
       state: AppPlayerState.Idle,
       tournamentId: formattedTournamentId,
     },
