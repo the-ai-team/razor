@@ -3,7 +3,9 @@ import {
   AppPlayerLogId,
   AppRaceId,
   AppStateModel,
+  AppTournamentId,
 } from '@razor/models';
+import { extractId, extractIdType } from '@razor/util';
 import {
   addPlayerReducerPayload,
   addRaceReducerPayload,
@@ -38,7 +40,13 @@ export const addRaceReducer = (
   state: AppStateModel,
   payload: addRaceReducerPayload,
 ) => {
-  const { tournamentId, raceId, race } = payload;
+  const { raceId, race } = payload;
+  const tournamentId: AppTournamentId = extractId(
+    raceId,
+    extractIdType.race,
+    extractIdType.tournament,
+  ) as AppTournamentId;
+
   if (raceId) {
     const newState: AppStateModel = {
       ...state,
@@ -149,7 +157,12 @@ export const updatePlayerLogReducer = (
     ...state,
     playerLogsModel: {
       ...state.playerLogsModel,
-      [playerLogId]: [...state.playerLogsModel[playerLogId], playerLog],
+      [playerLogId]: [
+        ...(state.playerLogsModel[playerLogId]
+          ? state.playerLogsModel[playerLogId]
+          : []),
+        playerLog,
+      ],
     },
   };
   return newState;

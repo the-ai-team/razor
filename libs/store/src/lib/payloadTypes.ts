@@ -18,7 +18,6 @@ export type addTournamentReducerPayload = {
   tournament: AppTournament;
 };
 export type addRaceReducerPayload = {
-  tournamentId: AppTournamentId;
   raceId: AppRaceId;
   race: AppRace;
 };
@@ -57,7 +56,7 @@ export type logErrorReducerPayload = {
 
 //effectsPayloads
 export type joinPlayerPayload = {
-  id: string;
+  tid: string;
   playerName: string;
 };
 export type clearPlayerPayload = {
@@ -74,10 +73,11 @@ export type endCountdownPayload = {
   tournamentId: AppTournamentId;
 };
 export type endRacePayload = {
-  tournamentId: AppTournamentId;
+  raceId: AppRaceId;
 };
 export type sendTypeLogPlayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
+  /** Timestamp, and text length from player */
   playerLog: AppPlayerLog;
 };

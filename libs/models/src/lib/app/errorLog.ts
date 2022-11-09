@@ -1,5 +1,6 @@
 export enum AppErrorCode {
-  TournamentNotExists = 'not_found',
+  TournamentNotExists = 'TOURNAMNET_NOT_FOUND',
+  PlayerNotExists = 'PLAYER_NOT_FOUND',
 }
 
 export type AppErrorTimestamp = number;

@@ -1,5 +1,4 @@
-export const giveZeroPadding = (num: number, size: number): string => {
+export const giveZeroPadding = (num: string, size: number): string => {
   const s = num + '';
-  s.padStart(size, '0');
-  return s;
+  return s.padStart(size, '0');
 };

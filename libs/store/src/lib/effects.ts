@@ -18,6 +18,9 @@ import {
   generateAvatarLink,
   giveZeroPadding,
   calculateTimeoutTimer,
+  generateLeaderboard,
+  extractId,
+  extractIdType,
 } from '@razor/util';
 import {
   clearPlayerPayload,
@@ -46,29 +49,30 @@ export const joinPlayer = async (
   payload: joinPlayerPayload,
   state: RootState,
 ): Promise<void> => {
-  const { id, playerName }: { id: string; playerName: string } = payload;
+  const { tid, playerName }: { tid: string; playerName: string } = payload;
   let tournamentId: string;
-  if (id) {
+  if (tid) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!state.game.tournamentsModel[id as any]) {
+    if (!state.game.tournamentsModel[tid as any]) {
       dispatch.game.sendErrorLog({
-        message: `Tournament with id ${id} does not exist`,
+        message: `Tournament with id ${tid} does not exist`,
         code: AppErrorCode.TournamentNotExists,
         relatedId: '',
       });
       return;
     }
-    tournamentId = id;
+    tournamentId = tid;
   } else {
     tournamentId = await generateUid(AppIdNumberType.Tournament);
   }
 
-  const formattedTournamentId: AppTournamentId = `T:${tournamentId}`;
-  const formattedPlayerId: AppPlayerId = `P:${await generateUid(
+  const formattedTournamentId: AppTournamentId =
+    tournamentId as AppTournamentId;
+  const formattedPlayerId: AppPlayerId = (await generateUid(
     AppIdNumberType.Player,
-  )}`;
+  )) as AppPlayerId;
 
-  if (!id) {
+  if (!tid) {
     //Creating new tournament
     dispatch.game.addTournamentReducer({
       tournamentId: formattedTournamentId,
@@ -136,7 +140,7 @@ export const startCountdown = async (
     dispatch.game.sendErrorLog({
       message: `Tournament with id ${tournamentId} does not exist`,
       code: AppErrorCode.TournamentNotExists,
-      relatedId: `Started by ${playerId}`,
+      relatedId: `Started by: ${playerId}`,
     });
     return;
   }
@@ -145,17 +149,25 @@ export const startCountdown = async (
     state.game.tournamentsModel[tournamentId] &&
     state.game.tournamentsModel[tournamentId].raceIds.length;
   const raceIndex = numberOfRacesBefore
-    ? giveZeroPadding(numberOfRacesBefore + 1, 3)
+    ? giveZeroPadding(numberOfRacesBefore.toString(), 3)
     : '000';
   const raceId: AppRaceId = `${tournamentId}-R:${raceIndex}`;
   const players: AppPlayerProfiles = {};
 
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
     const player = state.game.playersModel[id];
-    players[id] = {
-      name: player.name,
-      avatarLink: player.avatarLink,
-    };
+    if (!player) {
+      dispatch.game.sendErrorLog({
+        message: `Plyaer with id ${id} does not exist`,
+        code: AppErrorCode.PlayerNotExists,
+        relatedId: `Tournament: ${tournamentId}`,
+      });
+    } else {
+      players[id] = {
+        name: player.name,
+        avatarLink: player.avatarLink,
+      };
+    }
   }
 
   const raceText = await loadRacingText();
@@ -209,7 +221,13 @@ export const endRace = async (
   payload: endRacePayload,
   state: RootState,
 ): Promise<void> => {
-  const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+  const { raceId }: { raceId: AppRaceId } = payload;
+  const tournamentId: AppTournamentId = extractId(
+    raceId,
+    extractIdType.race,
+    extractIdType.tournament,
+  ) as AppTournamentId;
+
   const tournament: AppTournament = {
     ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Leaderboard,
@@ -220,13 +238,15 @@ export const endRace = async (
     tournament,
   });
 
+  const raceTextLength = state.game.racesModel[raceId].text.length;
+
+  generateLeaderboard(state.game.playerLogsModel, raceId, raceTextLength);
   //TODO: dipatch leaderboard data
 };
 
 export const sendTypeLog = async (
   dispatch: Dispatch,
   payload: sendTypeLogPlayload,
-  state: RootState,
 ): Promise<void> => {
   const {
     raceId,

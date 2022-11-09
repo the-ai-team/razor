@@ -13,7 +13,6 @@ export const extractId = (
   let outputId = '';
 
   const splitedId = inputId.split('-');
-  console.log('splitedId', splitedId);
   switch (outputIdType) {
     case extractIdType.tournament:
       outputId =

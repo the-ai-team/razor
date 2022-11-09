@@ -1,5 +1,10 @@
 import { AppIdNumberType } from '@razor/models';
-import { nanoid } from 'nanoid';
+import { customAlphabet } from 'nanoid';
+
+const nanoid = customAlphabet(
+  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+  10,
+);
 
 const tournamentIdLength = 8;
 const playerIdLength = 8;

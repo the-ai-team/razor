@@ -1,4 +1,5 @@
-import { AppErrorLog } from '@razor/models';
+import { AppErrorLog, AppIdNumberType } from '@razor/models';
+import { generateUid } from '@razor/util';
 import {
   createModel,
   init,
@@ -6,6 +7,7 @@ import {
   RematchDispatch,
   RematchRootState,
 } from '@rematch/core';
+import { random } from 'nanoid';
 import {
   clearPlayer,
   joinPlayer,
@@ -69,8 +71,8 @@ export const game = createModel<RootModel>()({
       endCoundown(dispatch, payload, state),
     endRace: (payload: endRacePayload, state: RootState) =>
       endRace(dispatch, payload, state),
-    sendTypeLog: (payload: sendTypeLogPlayload, state: RootState) =>
-      sendTypeLog(dispatch, payload, state),
+    sendTypeLog: (payload: sendTypeLogPlayload) =>
+      sendTypeLog(dispatch, payload),
     sendErrorLog: (payload: AppErrorLog) => sendErrorLog(dispatch, payload),
   }),
 });
@@ -93,30 +95,73 @@ const { dispatch } = store;
 // dispatch({
 //   type: 'game/joinPlayer',
 //   payload: {
-//     id: '',
-//     playerName: 'name',
+//     tid: 'T:rGl0zHJk',
+//     playerName: 'Player 1',
 //   },
 // });
 
-dispatch({
-  type: 'game/startCountdown',
-  payload: {
-    tournamentId: 'T:1',
-    playerId: 'P:1',
-  },
-});
+// dispatch({
+//   type: 'game/startCountdown',
+//   payload: {
+//     tournamentId: 'T:65wY6NnA',
+//     playerId: 'P:XBnckiWq',
+//   },
+// });
+
+// dispatch({
+//   type: 'game/startCountdown',
+//   payload: {
+//     tournamentId: 'T:rGl0zHJk',
+//     playerId: 'P:ktaVbCYO',
+//   },
+// });
+
+// dispatch({
+//   type: 'game/endRace',
+//   payload: {
+//     raceId: 'T:a_pB5pc-R:001',
+//   },
+// });
+
+// let x = 0;
+// let timestamp = 1667983739000;
+// while (x < 455) {
+//   timestamp += Math.floor(Math.random() * 2) + 2;
+
+//   dispatch({
+//     type: 'game/sendTypeLog',
+//     payload: {
+//       raceId: 'T:rGl0zHJk-R:000',
+//       playerId: 'P:C4eggywb',
+//       playerLog: {
+//         timestamp: timestamp,
+//         textLength: x,
+//       },
+//     },
+//   });
+
+//   x += Math.floor(Math.random() * 2) + 1;
+//   console.log(x);
+// }
 
 // dispatch({
 //   type: 'game/sendTypeLog',
 //   payload: {
-//     raceId: 'T:a_pB5pc-R:001',
-//     playerId: 'P:1',
+//     raceId: 'T:rGl0zHJk-R:000',
+//     playerId: 'P:C4eggywb',
 //     playerLog: {
-//       timestamp: 123,
-//       textLength: 20,
+//       timestamp: 1667983738934,
+//       textLength: 25,
 //     },
 //   },
 // });
+
+dispatch({
+  type: 'game/endRace',
+  payload: {
+    raceId: 'T:rGl0zHJk-R:000',
+  },
+});
 
 // dispatch({
 //   type: 'game/startCountdown',
@@ -132,3 +177,5 @@ dispatch({
 //     tournamentId: '1',
 //   },
 // });
+
+//TODO: change vector image seed
