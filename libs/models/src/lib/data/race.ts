@@ -21,4 +21,7 @@ export interface Race {
    * can be empty before players send race starting message to the server.
    */
   players: PlayerWithLogs[];
+
+  /** Player who pressed the start button */
+  raceStartedBy: string;
 }

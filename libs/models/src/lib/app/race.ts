@@ -12,5 +12,6 @@ export interface AppRace {
   startedTimestamp: number;
   players: AppPlayerProfiles;
   isOnGoing: boolean;
+  raceStartedBy: AppPlayerId;
 }
 export type AppRaces = Record<AppRaceId, AppRace>;
