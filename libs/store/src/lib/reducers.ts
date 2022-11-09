@@ -144,14 +144,12 @@ export const updatePlayerLogReducer = (
   state: AppStateModel,
   payload: updatePlayerLogReducerPayload,
 ) => {
-  const { playeLogId, playerLog } = payload;
+  const { playerLogId, playerLog } = payload;
   const newState: AppStateModel = {
     ...state,
     playerLogsModel: {
       ...state.playerLogsModel,
-      [playeLogId]: {
-        ...playerLog,
-      },
+      [playerLogId]: [...state.playerLogsModel[playerLogId], playerLog],
     },
   };
   return newState;
