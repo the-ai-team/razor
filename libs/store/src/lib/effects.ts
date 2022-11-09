@@ -128,7 +128,16 @@ export const startCountdown = async (
     tournamentId,
     playerId,
   }: { tournamentId: AppTournamentId; playerId: AppPlayerId } = payload;
-  //TODO: Check whether tournament available
+
+  if (!state.game.tournamentsModel[tournamentId]) {
+    dispatch.game.sendErrorLog({
+      message: `Tournament with id ${tournamentId} does not exist`,
+      code: AppErrorCode.TournamentNotExists,
+      relatedId: `Started by ${playerId}`,
+    });
+    return;
+  }
+
   const numberOfRacesBefore =
     state.game.tournamentsModel[tournamentId] &&
     state.game.tournamentsModel[tournamentId].raceIds.length;
@@ -152,12 +161,13 @@ export const startCountdown = async (
     startedTimestamp: new Date().getTime(),
     players: players,
     isOnGoing: true,
+    raceStartedBy: playerId,
   };
 
   const tournament: AppTournament = {
+    ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Countdown,
-    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
-    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
+    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds, raceId],
   };
 
   dispatch.game.updateTournamentReducer({
@@ -165,8 +175,10 @@ export const startCountdown = async (
     tournament,
   });
 
-  // TODO: dispatch racedata to start
-  console.log(race, raceId, playerId);
+  dispatch.game.updateRaceReducer({
+    raceId,
+    race,
+  });
 };
 
 export const endCoundown = async (

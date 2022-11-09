@@ -195,6 +195,7 @@ export const logErrorReducer = (
   payload: logErrorReducerPayload,
 ) => {
   const { errorLog, errorTimestamp } = payload;
+  const { message, code, relatedId } = errorLog;
   const newState: AppStateModel = {
     ...state,
     errorLogsModel: {
@@ -202,6 +203,7 @@ export const logErrorReducer = (
       [errorTimestamp]: errorLog,
     },
   };
+  console.error(`[Error ${code}]: ${message} (${relatedId})`);
   return newState;
 };
 

@@ -50,6 +50,7 @@ export const initialState: AppStateModel = {
         },
       },
       isOnGoing: true,
+      raceStartedBy: 'P:1',
     },
   },
   leaderboardsModel: {

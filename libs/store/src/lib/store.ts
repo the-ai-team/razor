@@ -99,9 +99,10 @@ const { dispatch } = store;
 // });
 
 dispatch({
-  type: 'game/removeTournamentReducer',
+  type: 'game/startCountdown',
   payload: {
-    tournamentId: 'T:1',
+    tournamentId: 'T:123',
+    playerId: 'P:1',
   },
 });
 
