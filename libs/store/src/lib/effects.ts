@@ -13,7 +13,12 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-import { generateUid, generateAvatarLink, giveZeroPadding } from '@razor/util';
+import {
+  generateUid,
+  generateAvatarLink,
+  giveZeroPadding,
+  calculateTimeoutTimer,
+} from '@razor/util';
 import {
   clearPlayerPayload,
   endCountdownPayload,
@@ -26,7 +31,7 @@ import {
 import { Dispatch, RootState } from './store';
 
 const loadRacingText = async (): Promise<string> => {
-  const url = 'http://www.metaphorpsum.com/paragraphs/1/10';
+  const url = 'http://www.metaphorpsum.com/paragraphs/1/8';
 
   return fetch(url)
     .then(response => response.text())
@@ -117,8 +122,6 @@ export const setReadyTournament = async (
   });
 };
 
-//TODO: Util calculating timeout
-//TODO: Util get current timestamp
 export const startCountdown = async (
   dispatch: Dispatch,
   payload: startCountdownPayload,
@@ -155,9 +158,12 @@ export const startCountdown = async (
     };
   }
 
+  const raceText = await loadRacingText();
+  const timeoutDuration = await calculateTimeoutTimer(raceText);
+
   const race: AppRace = {
-    text: await loadRacingText(),
-    timeoutDuration: 120,
+    text: raceText,
+    timeoutDuration: timeoutDuration,
     startedTimestamp: new Date().getTime(),
     players: players,
     isOnGoing: true,

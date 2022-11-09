@@ -98,25 +98,25 @@ const { dispatch } = store;
 //   },
 // });
 
-// dispatch({
-//   type: 'game/startCountdown',
-//   payload: {
-//     tournamentId: 'T:123',
-//     playerId: 'P:1',
-//   },
-// });
-
 dispatch({
-  type: 'game/sendTypeLog',
+  type: 'game/startCountdown',
   payload: {
-    raceId: 'T:a_pB5pc-R:001',
+    tournamentId: 'T:1',
     playerId: 'P:1',
-    playerLog: {
-      timestamp: 123,
-      textLength: 20,
-    },
   },
 });
+
+// dispatch({
+//   type: 'game/sendTypeLog',
+//   payload: {
+//     raceId: 'T:a_pB5pc-R:001',
+//     playerId: 'P:1',
+//     playerLog: {
+//       timestamp: 123,
+//       textLength: 20,
+//     },
+//   },
+// });
 
 // dispatch({
 //   type: 'game/startCountdown',
