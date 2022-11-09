@@ -188,9 +188,9 @@ export const endCoundown = async (
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;
   const tournament: AppTournament = {
+    ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Race,
     raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
-    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
   };
   dispatch.game.updateTournamentReducer({
     tournamentId,
@@ -205,9 +205,8 @@ export const endRace = async (
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;
   const tournament: AppTournament = {
+    ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Leaderboard,
-    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
-    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
   };
 
   dispatch.game.updateTournamentReducer({
@@ -226,13 +225,16 @@ export const sendTypeLog = async (
   const {
     raceId,
     playerId,
-    typeLog,
-  }: { raceId: AppRaceId; playerId: AppPlayerId; typeLog: AppPlayerLog } =
+    playerLog,
+  }: { raceId: AppRaceId; playerId: AppPlayerId; playerLog: AppPlayerLog } =
     payload;
 
-  const PlayerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
+  const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
 
-  //TODO: dispatch typelogs
+  dispatch.game.updatePlayerLogReducer({
+    playerLogId,
+    playerLog,
+  });
 };
 
 export const sendErrorLog = async (
@@ -246,5 +248,3 @@ export const sendErrorLog = async (
     errorTimestamp,
   });
 };
-
-//TODO: order effects

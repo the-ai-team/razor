@@ -40,7 +40,7 @@ export type updateLeaderboardReducerPayload = {
   leaderboard: AppLeaderboard;
 };
 export type updatePlayerLogReducerPayload = {
-  playeLogId: AppPlayerLogId;
+  playerLogId: AppPlayerLogId;
   playerLog: AppPlayerLog;
 };
 export type removePlayerReducerPayload = {
@@ -79,5 +79,5 @@ export type endRacePayload = {
 export type sendTypeLogPlayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
-  typeLog: AppPlayerLog;
+  playerLog: AppPlayerLog;
 };
