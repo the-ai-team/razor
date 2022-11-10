@@ -1,48 +1,28 @@
-/** Interface for time-logs when players are typing */
-interface TimeLog {
-  /** Correctly typed length by player */
-  textLength: number;
+import { AppRaceId } from './race';
+import { AppTournamentId } from './tournament';
 
-  /** Time when player typed the last character */
-  timestamp: number;
-}
-
-export enum PlayerState {
-  /** **Player idle**
-   *
-   * When a player not in a race but in the lobby.
-   *
-   * Possible actions:
-   * In lobby, In leaderboard, etc.
-   */
+export enum AppPlayerState {
   Idle = 'idle',
-
-  /** **Player racing**
-   *
-   * When a player in a race.
-   *
-   * Possible actions:
-   * In race only.
-   */
   Racing = 'racing',
 }
 
-export interface Player {
-  /** Unique player id */
-  id: string;
+export type AppTimestamp = number;
+export type AppTextLength = number;
 
-  /** Player name */
+/** Sample Id - `P:oNgXdluf` */
+export type AppPlayerId = `P:${string}`;
+export interface AppPlayer {
   name: string;
-
-  /** Player avatar icon URL */
   avatarLink: string;
-
-  /** Player state */
-  state: PlayerState;
+  state: AppPlayerState;
+  tournamentId: AppTournamentId;
 }
+export type AppPlayers = Record<AppPlayerId, AppPlayer>;
 
-export interface PlayerWithLogs extends Omit<Player, 'state' | 'lobbyId'> {
-  //rem lobbyId
-  /** Array of time logs of player */
-  logs: TimeLog[];
+/** Sample Id - `T:skt_2JVn-R:050-P:oNgXdluf` */
+export type AppPlayerLogId = `${AppRaceId}-${AppPlayerId}`;
+export interface AppPlayerLog {
+  timestamp: AppTimestamp;
+  textLength: AppTextLength;
 }
+export type AppPlayerLogs = Record<AppPlayerLogId, AppPlayerLog[]>;

@@ -1,27 +1,17 @@
-import { PlayerWithLogs } from './player';
+import { AppPlayerId, AppPlayer } from './player';
+import { AppTournamentId } from './tournament';
 
-export interface Race {
-  /** Unique race id */
-  id: string;
+export type AppPlayerProfile = Pick<AppPlayer, 'name' | 'avatarLink'>;
+export type AppPlayerProfiles = Record<AppPlayerId, AppPlayerProfile>;
 
-  /** Race text which players are typing  */
+/** Sample Id - `T:skt_2JVn-R:050` */
+export type AppRaceId = `${AppTournamentId}-R:${string}`;
+export interface AppRace {
   text: string;
-
-  /** Race timeout timer (in seconds) which calculated by the server.  */
   timeoutDuration: number;
-
-  /** Race started timestamp from the server after player pressed Play button
-   *
-   * This will be used to caluculate force timeout of the race.
-   */
   startedTimestamp: number;
-
-  /** Players data for specific race
-   *
-   * can be empty before players send race starting message to the server.
-   */
-  players: PlayerWithLogs[];
-
-  /** Player who pressed the start button */
-  raceStartedBy: string;
+  players: AppPlayerProfiles;
+  isOnGoing: boolean;
+  raceStartedBy: AppPlayerId;
 }
+export type AppRaces = Record<AppRaceId, AppRace>;
