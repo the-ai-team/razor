@@ -27,11 +27,3 @@ export const store = init({
 export type Store = typeof store;
 export type Dispatch = RematchDispatch<RootModel>;
 export type RootState = RematchRootState<RootModel>;
-
-store.dispatch({
-  type: 'game/joinPlayer',
-  payload: {
-    tid: 'T:w',
-    playerName: 'su ss',
-  },
-});

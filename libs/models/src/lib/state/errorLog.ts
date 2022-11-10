@@ -11,7 +11,7 @@ export enum AppMessageLogType {
   Warn = 'warn',
 }
 
-export type AppErrorTimestamp = number;
+export type AppErrorTimestamp = string;
 export interface AppMessageLog {
   message: string;
   code: AppErrorCode;
