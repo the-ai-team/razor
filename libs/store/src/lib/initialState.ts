@@ -124,7 +124,25 @@ export const initialState: AppStateModel = {
       raceStartedBy: 'P:lxnckiWq',
     },
   },
-  leaderboardsModel: {},
+  leaderboardsModel: {
+    'T:rGl0zHJk-R:000': [
+      {
+        playerId: 'P:ktaVbCYO',
+        status: AppPlayerStatus.Timeout,
+        values: {
+          distance: 15,
+        },
+      },
+      {
+        playerId: 'P:C4eggywb',
+        status: AppPlayerStatus.Complete,
+        values: {
+          wpm: 34.21,
+          elpasedTime: 161,
+        },
+      },
+    ],
+  },
   playerLogsModel: {
     'T:rGl0zHJk-R:000-P:ktaVbCYO': [
       {
@@ -154,1223 +172,411 @@ export const initialState: AppStateModel = {
     ],
     'T:rGl0zHJk-R:000-P:C4eggywb': [
       {
-        timestamp: 1667983739002,
+        timestamp: 1667983739000,
         textLength: 0,
       },
       {
+        timestamp: 1667983739002,
+        textLength: 7,
+      },
+      {
         timestamp: 1667983739004,
-        textLength: 1,
-      },
-      {
-        timestamp: 1667983739007,
-        textLength: 3,
-      },
-      {
-        timestamp: 1667983739010,
-        textLength: 4,
-      },
-      {
-        timestamp: 1667983739013,
-        textLength: 5,
-      },
-      {
-        timestamp: 1667983739016,
-        textLength: 6,
-      },
-      {
-        timestamp: 1667983739018,
-        textLength: 8,
-      },
-      {
-        timestamp: 1667983739020,
-        textLength: 10,
-      },
-      {
-        timestamp: 1667983739022,
-        textLength: 11,
-      },
-      {
-        timestamp: 1667983739025,
         textLength: 12,
       },
       {
-        timestamp: 1667983739027,
-        textLength: 14,
+        timestamp: 1667983739005,
+        textLength: 15,
       },
       {
-        timestamp: 1667983739029,
-        textLength: 16,
+        timestamp: 1667983739006,
+        textLength: 17,
       },
       {
-        timestamp: 1667983739031,
-        textLength: 18,
-      },
-      {
-        timestamp: 1667983739033,
+        timestamp: 1667983739007,
         textLength: 20,
       },
       {
-        timestamp: 1667983739036,
-        textLength: 21,
+        timestamp: 1667983739008,
+        textLength: 27,
       },
       {
-        timestamp: 1667983739038,
-        textLength: 22,
-      },
-      {
-        timestamp: 1667983739040,
-        textLength: 23,
-      },
-      {
-        timestamp: 1667983739042,
-        textLength: 24,
-      },
-      {
-        timestamp: 1667983739045,
-        textLength: 26,
-      },
-      {
-        timestamp: 1667983739048,
-        textLength: 28,
-      },
-      {
-        timestamp: 1667983739050,
-        textLength: 29,
-      },
-      {
-        timestamp: 1667983739053,
-        textLength: 31,
-      },
-      {
-        timestamp: 1667983739056,
+        timestamp: 1667983739010,
         textLength: 32,
       },
       {
-        timestamp: 1667983739058,
-        textLength: 33,
-      },
-      {
-        timestamp: 1667983739060,
+        timestamp: 1667983739011,
         textLength: 35,
       },
       {
-        timestamp: 1667983739062,
-        textLength: 36,
-      },
-      {
-        timestamp: 1667983739064,
-        textLength: 38,
-      },
-      {
-        timestamp: 1667983739066,
-        textLength: 40,
-      },
-      {
-        timestamp: 1667983739069,
+        timestamp: 1667983739012,
         textLength: 42,
       },
       {
-        timestamp: 1667983739071,
-        textLength: 43,
-      },
-      {
-        timestamp: 1667983739073,
-        textLength: 44,
-      },
-      {
-        timestamp: 1667983739076,
-        textLength: 46,
-      },
-      {
-        timestamp: 1667983739079,
-        textLength: 48,
-      },
-      {
-        timestamp: 1667983739081,
+        timestamp: 1667983739014,
         textLength: 49,
       },
       {
-        timestamp: 1667983739083,
-        textLength: 50,
-      },
-      {
-        timestamp: 1667983739085,
-        textLength: 52,
-      },
-      {
-        timestamp: 1667983739088,
-        textLength: 53,
-      },
-      {
-        timestamp: 1667983739090,
+        timestamp: 1667983739015,
         textLength: 55,
       },
       {
-        timestamp: 1667983739092,
-        textLength: 57,
-      },
-      {
-        timestamp: 1667983739094,
-        textLength: 58,
-      },
-      {
-        timestamp: 1667983739097,
-        textLength: 60,
-      },
-      {
-        timestamp: 1667983739099,
+        timestamp: 1667983739017,
         textLength: 61,
       },
       {
-        timestamp: 1667983739102,
-        textLength: 62,
+        timestamp: 1667983739018,
+        textLength: 67,
       },
       {
-        timestamp: 1667983739104,
-        textLength: 63,
-      },
-      {
-        timestamp: 1667983739106,
-        textLength: 65,
-      },
-      {
-        timestamp: 1667983739108,
-        textLength: 66,
-      },
-      {
-        timestamp: 1667983739111,
-        textLength: 68,
-      },
-      {
-        timestamp: 1667983739114,
+        timestamp: 1667983739020,
         textLength: 70,
       },
       {
-        timestamp: 1667983739116,
-        textLength: 72,
-      },
-      {
-        timestamp: 1667983739118,
+        timestamp: 1667983739021,
         textLength: 74,
       },
       {
-        timestamp: 1667983739120,
-        textLength: 75,
-      },
-      {
-        timestamp: 1667983739123,
-        textLength: 76,
-      },
-      {
-        timestamp: 1667983739126,
-        textLength: 77,
-      },
-      {
-        timestamp: 1667983739128,
+        timestamp: 1667983739023,
         textLength: 79,
       },
       {
-        timestamp: 1667983739130,
-        textLength: 81,
+        timestamp: 1667983739025,
+        textLength: 83,
       },
       {
-        timestamp: 1667983739132,
-        textLength: 82,
-      },
-      {
-        timestamp: 1667983739135,
-        textLength: 84,
-      },
-      {
-        timestamp: 1667983739138,
-        textLength: 86,
-      },
-      {
-        timestamp: 1667983739141,
-        textLength: 87,
-      },
-      {
-        timestamp: 1667983739143,
+        timestamp: 1667983739027,
         textLength: 88,
       },
       {
-        timestamp: 1667983739146,
-        textLength: 89,
-      },
-      {
-        timestamp: 1667983739149,
-        textLength: 91,
-      },
-      {
-        timestamp: 1667983739152,
-        textLength: 92,
-      },
-      {
-        timestamp: 1667983739154,
-        textLength: 93,
-      },
-      {
-        timestamp: 1667983739156,
+        timestamp: 1667983739028,
         textLength: 95,
       },
       {
-        timestamp: 1667983739159,
-        textLength: 97,
-      },
-      {
-        timestamp: 1667983739162,
-        textLength: 98,
-      },
-      {
-        timestamp: 1667983739165,
-        textLength: 100,
-      },
-      {
-        timestamp: 1667983739167,
+        timestamp: 1667983739030,
         textLength: 101,
       },
       {
-        timestamp: 1667983739169,
+        timestamp: 1667983739032,
         textLength: 103,
       },
       {
-        timestamp: 1667983739171,
-        textLength: 105,
-      },
-      {
-        timestamp: 1667983739173,
-        textLength: 106,
-      },
-      {
-        timestamp: 1667983739175,
-        textLength: 107,
-      },
-      {
-        timestamp: 1667983739178,
-        textLength: 108,
-      },
-      {
-        timestamp: 1667983739180,
+        timestamp: 1667983739033,
         textLength: 109,
       },
       {
-        timestamp: 1667983739182,
-        textLength: 110,
-      },
-      {
-        timestamp: 1667983739184,
+        timestamp: 1667983739035,
         textLength: 111,
       },
       {
-        timestamp: 1667983739186,
-        textLength: 112,
-      },
-      {
-        timestamp: 1667983739189,
-        textLength: 113,
-      },
-      {
-        timestamp: 1667983739192,
-        textLength: 114,
-      },
-      {
-        timestamp: 1667983739194,
-        textLength: 116,
-      },
-      {
-        timestamp: 1667983739197,
+        timestamp: 1667983739037,
         textLength: 117,
       },
       {
-        timestamp: 1667983739199,
-        textLength: 119,
+        timestamp: 1667983739038,
+        textLength: 122,
       },
       {
-        timestamp: 1667983739201,
-        textLength: 121,
+        timestamp: 1667983739039,
+        textLength: 124,
       },
       {
-        timestamp: 1667983739204,
-        textLength: 123,
+        timestamp: 1667983739040,
+        textLength: 129,
       },
       {
-        timestamp: 1667983739207,
-        textLength: 125,
-      },
-      {
-        timestamp: 1667983739210,
-        textLength: 127,
-      },
-      {
-        timestamp: 1667983739213,
-        textLength: 128,
-      },
-      {
-        timestamp: 1667983739215,
-        textLength: 130,
-      },
-      {
-        timestamp: 1667983739218,
-        textLength: 131,
-      },
-      {
-        timestamp: 1667983739221,
-        textLength: 132,
-      },
-      {
-        timestamp: 1667983739223,
+        timestamp: 1667983739041,
         textLength: 133,
       },
       {
-        timestamp: 1667983739225,
-        textLength: 134,
-      },
-      {
-        timestamp: 1667983739227,
-        textLength: 135,
-      },
-      {
-        timestamp: 1667983739230,
-        textLength: 137,
-      },
-      {
-        timestamp: 1667983739232,
-        textLength: 139,
-      },
-      {
-        timestamp: 1667983739234,
+        timestamp: 1667983739042,
         textLength: 140,
       },
       {
-        timestamp: 1667983739237,
-        textLength: 142,
-      },
-      {
-        timestamp: 1667983739240,
+        timestamp: 1667983739044,
         textLength: 144,
       },
       {
-        timestamp: 1667983739243,
-        textLength: 146,
+        timestamp: 1667983739045,
+        textLength: 151,
       },
       {
-        timestamp: 1667983739246,
-        textLength: 147,
-      },
-      {
-        timestamp: 1667983739248,
-        textLength: 149,
-      },
-      {
-        timestamp: 1667983739250,
-        textLength: 150,
-      },
-      {
-        timestamp: 1667983739253,
-        textLength: 152,
-      },
-      {
-        timestamp: 1667983739255,
-        textLength: 154,
-      },
-      {
-        timestamp: 1667983739258,
-        textLength: 155,
-      },
-      {
-        timestamp: 1667983739260,
+        timestamp: 1667983739046,
         textLength: 156,
       },
       {
-        timestamp: 1667983739262,
-        textLength: 157,
-      },
-      {
-        timestamp: 1667983739264,
-        textLength: 158,
-      },
-      {
-        timestamp: 1667983739266,
-        textLength: 160,
-      },
-      {
-        timestamp: 1667983739269,
+        timestamp: 1667983739048,
         textLength: 161,
       },
       {
-        timestamp: 1667983739272,
-        textLength: 162,
+        timestamp: 1667983739050,
+        textLength: 163,
       },
       {
-        timestamp: 1667983739275,
-        textLength: 164,
-      },
-      {
-        timestamp: 1667983739277,
+        timestamp: 1667983739052,
         textLength: 165,
       },
       {
-        timestamp: 1667983739280,
-        textLength: 166,
-      },
-      {
-        timestamp: 1667983739283,
-        textLength: 167,
-      },
-      {
-        timestamp: 1667983739286,
-        textLength: 168,
-      },
-      {
-        timestamp: 1667983739288,
-        textLength: 170,
-      },
-      {
-        timestamp: 1667983739290,
-        textLength: 171,
-      },
-      {
-        timestamp: 1667983739292,
+        timestamp: 1667983739054,
         textLength: 172,
       },
       {
-        timestamp: 1667983739294,
-        textLength: 173,
+        timestamp: 1667983739056,
+        textLength: 177,
       },
       {
-        timestamp: 1667983739297,
-        textLength: 174,
+        timestamp: 1667983739058,
+        textLength: 183,
       },
       {
-        timestamp: 1667983739300,
-        textLength: 176,
-      },
-      {
-        timestamp: 1667983739302,
-        textLength: 178,
-      },
-      {
-        timestamp: 1667983739304,
-        textLength: 179,
-      },
-      {
-        timestamp: 1667983739306,
-        textLength: 180,
-      },
-      {
-        timestamp: 1667983739309,
-        textLength: 181,
-      },
-      {
-        timestamp: 1667983739311,
-        textLength: 182,
-      },
-      {
-        timestamp: 1667983739314,
-        textLength: 184,
-      },
-      {
-        timestamp: 1667983739317,
-        textLength: 186,
-      },
-      {
-        timestamp: 1667983739319,
-        textLength: 187,
-      },
-      {
-        timestamp: 1667983739322,
+        timestamp: 1667983739060,
         textLength: 189,
       },
       {
-        timestamp: 1667983739325,
-        textLength: 190,
-      },
-      {
-        timestamp: 1667983739327,
-        textLength: 191,
-      },
-      {
-        timestamp: 1667983739329,
-        textLength: 193,
-      },
-      {
-        timestamp: 1667983739331,
+        timestamp: 1667983739062,
         textLength: 194,
       },
       {
-        timestamp: 1667983739334,
-        textLength: 195,
-      },
-      {
-        timestamp: 1667983739336,
-        textLength: 196,
-      },
-      {
-        timestamp: 1667983739338,
+        timestamp: 1667983739064,
         textLength: 197,
       },
       {
-        timestamp: 1667983739340,
-        textLength: 199,
-      },
-      {
-        timestamp: 1667983739342,
+        timestamp: 1667983739066,
         textLength: 201,
       },
       {
-        timestamp: 1667983739344,
+        timestamp: 1667983739067,
         textLength: 203,
       },
       {
-        timestamp: 1667983739347,
-        textLength: 205,
+        timestamp: 1667983739069,
+        textLength: 206,
       },
       {
-        timestamp: 1667983739349,
-        textLength: 207,
+        timestamp: 1667983739071,
+        textLength: 210,
       },
       {
-        timestamp: 1667983739351,
-        textLength: 208,
+        timestamp: 1667983739073,
+        textLength: 212,
       },
       {
-        timestamp: 1667983739354,
-        textLength: 209,
-      },
-      {
-        timestamp: 1667983739356,
-        textLength: 211,
-      },
-      {
-        timestamp: 1667983739358,
-        textLength: 213,
-      },
-      {
-        timestamp: 1667983739360,
-        textLength: 215,
-      },
-      {
-        timestamp: 1667983739362,
-        textLength: 217,
-      },
-      {
-        timestamp: 1667983739365,
-        textLength: 218,
-      },
-      {
-        timestamp: 1667983739367,
+        timestamp: 1667983739075,
         textLength: 219,
       },
       {
-        timestamp: 1667983739369,
-        textLength: 221,
+        timestamp: 1667983739077,
+        textLength: 222,
       },
       {
-        timestamp: 1667983739371,
-        textLength: 223,
-      },
-      {
-        timestamp: 1667983739374,
+        timestamp: 1667983739078,
         textLength: 224,
       },
       {
-        timestamp: 1667983739377,
-        textLength: 226,
-      },
-      {
-        timestamp: 1667983739379,
+        timestamp: 1667983739080,
         textLength: 227,
       },
       {
-        timestamp: 1667983739381,
+        timestamp: 1667983739082,
         textLength: 229,
       },
       {
-        timestamp: 1667983739384,
-        textLength: 231,
-      },
-      {
-        timestamp: 1667983739386,
-        textLength: 232,
-      },
-      {
-        timestamp: 1667983739388,
-        textLength: 233,
-      },
-      {
-        timestamp: 1667983739390,
-        textLength: 234,
-      },
-      {
-        timestamp: 1667983739393,
+        timestamp: 1667983739083,
         textLength: 235,
       },
       {
-        timestamp: 1667983739396,
-        textLength: 236,
-      },
-      {
-        timestamp: 1667983739398,
+        timestamp: 1667983739085,
         textLength: 238,
       },
       {
-        timestamp: 1667983739400,
-        textLength: 240,
+        timestamp: 1667983739086,
+        textLength: 243,
       },
       {
-        timestamp: 1667983739403,
-        textLength: 242,
+        timestamp: 1667983739088,
+        textLength: 249,
       },
       {
-        timestamp: 1667983739405,
-        textLength: 244,
+        timestamp: 1667983739089,
+        textLength: 251,
       },
       {
-        timestamp: 1667983739408,
-        textLength: 245,
+        timestamp: 1667983739090,
+        textLength: 255,
       },
       {
-        timestamp: 1667983739411,
-        textLength: 246,
+        timestamp: 1667983739092,
+        textLength: 258,
       },
       {
-        timestamp: 1667983739413,
-        textLength: 247,
-      },
-      {
-        timestamp: 1667983739416,
-        textLength: 248,
-      },
-      {
-        timestamp: 1667983739418,
-        textLength: 250,
-      },
-      {
-        timestamp: 1667983739420,
-        textLength: 252,
-      },
-      {
-        timestamp: 1667983739422,
-        textLength: 254,
-      },
-      {
-        timestamp: 1667983739425,
-        textLength: 256,
-      },
-      {
-        timestamp: 1667983739427,
-        textLength: 257,
-      },
-      {
-        timestamp: 1667983739429,
-        textLength: 259,
-      },
-      {
-        timestamp: 1667983739431,
+        timestamp: 1667983739093,
         textLength: 260,
       },
       {
-        timestamp: 1667983739433,
-        textLength: 262,
+        timestamp: 1667983739094,
+        textLength: 264,
       },
       {
-        timestamp: 1667983739436,
-        textLength: 263,
+        timestamp: 1667983739096,
+        textLength: 270,
       },
       {
-        timestamp: 1667983739438,
-        textLength: 265,
-      },
-      {
-        timestamp: 1667983739440,
-        textLength: 266,
-      },
-      {
-        timestamp: 1667983739443,
-        textLength: 267,
-      },
-      {
-        timestamp: 1667983739446,
-        textLength: 269,
-      },
-      {
-        timestamp: 1667983739449,
-        textLength: 271,
-      },
-      {
-        timestamp: 1667983739451,
+        timestamp: 1667983739097,
         textLength: 272,
       },
       {
-        timestamp: 1667983739453,
-        textLength: 273,
-      },
-      {
-        timestamp: 1667983739456,
-        textLength: 274,
-      },
-      {
-        timestamp: 1667983739459,
+        timestamp: 1667983739098,
         textLength: 276,
       },
       {
-        timestamp: 1667983739461,
-        textLength: 277,
-      },
-      {
-        timestamp: 1667983739463,
-        textLength: 279,
-      },
-      {
-        timestamp: 1667983739465,
+        timestamp: 1667983739099,
         textLength: 281,
       },
       {
-        timestamp: 1667983739468,
-        textLength: 283,
+        timestamp: 1667983739100,
+        textLength: 288,
       },
       {
-        timestamp: 1667983739471,
-        textLength: 285,
-      },
-      {
-        timestamp: 1667983739474,
-        textLength: 286,
-      },
-      {
-        timestamp: 1667983739477,
-        textLength: 287,
-      },
-      {
-        timestamp: 1667983739479,
-        textLength: 289,
-      },
-      {
-        timestamp: 1667983739482,
-        textLength: 290,
-      },
-      {
-        timestamp: 1667983739484,
-        textLength: 291,
-      },
-      {
-        timestamp: 1667983739487,
-        textLength: 292,
-      },
-      {
-        timestamp: 1667983739490,
+        timestamp: 1667983739101,
         textLength: 293,
       },
       {
-        timestamp: 1667983739492,
-        textLength: 295,
+        timestamp: 1667983739103,
+        textLength: 299,
       },
       {
-        timestamp: 1667983739494,
-        textLength: 297,
-      },
-      {
-        timestamp: 1667983739497,
-        textLength: 298,
-      },
-      {
-        timestamp: 1667983739500,
-        textLength: 300,
-      },
-      {
-        timestamp: 1667983739503,
-        textLength: 301,
-      },
-      {
-        timestamp: 1667983739505,
-        textLength: 302,
-      },
-      {
-        timestamp: 1667983739508,
-        textLength: 303,
-      },
-      {
-        timestamp: 1667983739510,
+        timestamp: 1667983739105,
         textLength: 305,
       },
       {
-        timestamp: 1667983739512,
-        textLength: 306,
-      },
-      {
-        timestamp: 1667983739514,
-        textLength: 308,
-      },
-      {
-        timestamp: 1667983739517,
-        textLength: 309,
-      },
-      {
-        timestamp: 1667983739520,
-        textLength: 310,
-      },
-      {
-        timestamp: 1667983739523,
+        timestamp: 1667983739107,
         textLength: 311,
       },
       {
-        timestamp: 1667983739526,
-        textLength: 313,
-      },
-      {
-        timestamp: 1667983739528,
-        textLength: 314,
-      },
-      {
-        timestamp: 1667983739530,
-        textLength: 315,
-      },
-      {
-        timestamp: 1667983739533,
+        timestamp: 1667983739109,
         textLength: 317,
       },
       {
-        timestamp: 1667983739536,
+        timestamp: 1667983739111,
         textLength: 319,
       },
       {
-        timestamp: 1667983739539,
-        textLength: 321,
-      },
-      {
-        timestamp: 1667983739541,
-        textLength: 323,
-      },
-      {
-        timestamp: 1667983739543,
-        textLength: 325,
-      },
-      {
-        timestamp: 1667983739545,
+        timestamp: 1667983739113,
         textLength: 326,
       },
       {
-        timestamp: 1667983739548,
-        textLength: 328,
-      },
-      {
-        timestamp: 1667983739551,
-        textLength: 330,
-      },
-      {
-        timestamp: 1667983739553,
-        textLength: 331,
-      },
-      {
-        timestamp: 1667983739556,
+        timestamp: 1667983739115,
         textLength: 333,
       },
       {
-        timestamp: 1667983739558,
-        textLength: 335,
-      },
-      {
-        timestamp: 1667983739560,
-        textLength: 336,
-      },
-      {
-        timestamp: 1667983739563,
+        timestamp: 1667983739117,
         textLength: 337,
       },
       {
-        timestamp: 1667983739565,
-        textLength: 338,
-      },
-      {
-        timestamp: 1667983739568,
-        textLength: 339,
-      },
-      {
-        timestamp: 1667983739570,
-        textLength: 341,
-      },
-      {
-        timestamp: 1667983739572,
+        timestamp: 1667983739118,
         textLength: 342,
       },
       {
-        timestamp: 1667983739575,
-        textLength: 343,
-      },
-      {
-        timestamp: 1667983739578,
-        textLength: 344,
-      },
-      {
-        timestamp: 1667983739581,
+        timestamp: 1667983739120,
         textLength: 345,
       },
       {
-        timestamp: 1667983739584,
-        textLength: 346,
+        timestamp: 1667983739121,
+        textLength: 349,
       },
       {
-        timestamp: 1667983739587,
-        textLength: 348,
+        timestamp: 1667983739122,
+        textLength: 351,
       },
       {
-        timestamp: 1667983739589,
-        textLength: 350,
-      },
-      {
-        timestamp: 1667983739592,
-        textLength: 352,
-      },
-      {
-        timestamp: 1667983739595,
+        timestamp: 1667983739124,
         textLength: 353,
       },
       {
-        timestamp: 1667983739597,
-        textLength: 355,
+        timestamp: 1667983739125,
+        textLength: 356,
       },
       {
-        timestamp: 1667983739599,
-        textLength: 357,
+        timestamp: 1667983739127,
+        textLength: 363,
       },
       {
-        timestamp: 1667983739602,
-        textLength: 359,
-      },
-      {
-        timestamp: 1667983739605,
-        textLength: 361,
-      },
-      {
-        timestamp: 1667983739608,
-        textLength: 362,
-      },
-      {
-        timestamp: 1667983739610,
-        textLength: 364,
-      },
-      {
-        timestamp: 1667983739612,
-        textLength: 365,
-      },
-      {
-        timestamp: 1667983739614,
+        timestamp: 1667983739129,
         textLength: 367,
       },
       {
-        timestamp: 1667983739617,
+        timestamp: 1667983739131,
         textLength: 369,
       },
       {
-        timestamp: 1667983739619,
-        textLength: 370,
-      },
-      {
-        timestamp: 1667983739622,
-        textLength: 371,
-      },
-      {
-        timestamp: 1667983739625,
+        timestamp: 1667983739132,
         textLength: 372,
       },
       {
-        timestamp: 1667983739628,
-        textLength: 373,
+        timestamp: 1667983739134,
+        textLength: 377,
       },
       {
-        timestamp: 1667983739630,
-        textLength: 375,
-      },
-      {
-        timestamp: 1667983739633,
-        textLength: 376,
-      },
-      {
-        timestamp: 1667983739635,
-        textLength: 378,
-      },
-      {
-        timestamp: 1667983739638,
+        timestamp: 1667983739136,
         textLength: 380,
       },
       {
-        timestamp: 1667983739640,
-        textLength: 382,
-      },
-      {
-        timestamp: 1667983739642,
-        textLength: 384,
-      },
-      {
-        timestamp: 1667983739644,
+        timestamp: 1667983739138,
         textLength: 385,
       },
       {
-        timestamp: 1667983739647,
-        textLength: 387,
-      },
-      {
-        timestamp: 1667983739650,
+        timestamp: 1667983739140,
         textLength: 389,
       },
       {
-        timestamp: 1667983739653,
-        textLength: 391,
-      },
-      {
-        timestamp: 1667983739656,
-        textLength: 393,
-      },
-      {
-        timestamp: 1667983739658,
+        timestamp: 1667983739142,
         textLength: 394,
       },
       {
-        timestamp: 1667983739661,
-        textLength: 395,
-      },
-      {
-        timestamp: 1667983739664,
-        textLength: 396,
-      },
-      {
-        timestamp: 1667983739666,
-        textLength: 398,
-      },
-      {
-        timestamp: 1667983739668,
+        timestamp: 1667983739144,
         textLength: 399,
       },
       {
-        timestamp: 1667983739670,
+        timestamp: 1667983739145,
         textLength: 401,
       },
       {
-        timestamp: 1667983739672,
-        textLength: 402,
-      },
-      {
-        timestamp: 1667983739675,
+        timestamp: 1667983739147,
         textLength: 404,
       },
       {
-        timestamp: 1667983739678,
-        textLength: 405,
+        timestamp: 1667983739149,
+        textLength: 410,
       },
       {
-        timestamp: 1667983739681,
-        textLength: 407,
+        timestamp: 1667983739150,
+        textLength: 416,
       },
       {
-        timestamp: 1667983739683,
-        textLength: 409,
-      },
-      {
-        timestamp: 1667983739685,
-        textLength: 411,
-      },
-      {
-        timestamp: 1667983739687,
-        textLength: 413,
-      },
-      {
-        timestamp: 1667983739690,
-        textLength: 414,
-      },
-      {
-        timestamp: 1667983739693,
-        textLength: 415,
-      },
-      {
-        timestamp: 1667983739696,
-        textLength: 417,
-      },
-      {
-        timestamp: 1667983739698,
+        timestamp: 1667983739151,
         textLength: 419,
       },
       {
-        timestamp: 1667983739700,
-        textLength: 420,
-      },
-      {
-        timestamp: 1667983739703,
+        timestamp: 1667983739153,
         textLength: 422,
       },
       {
-        timestamp: 1667983739706,
+        timestamp: 1667983739154,
         textLength: 424,
       },
       {
-        timestamp: 1667983739709,
-        textLength: 425,
-      },
-      {
-        timestamp: 1667983739711,
-        textLength: 427,
-      },
-      {
-        timestamp: 1667983739737,
-        textLength: 429,
-      },
-      {
-        timestamp: 1667983739739,
+        timestamp: 1667983739156,
         textLength: 431,
       },
       {
-        timestamp: 1667983739741,
-        textLength: 433,
-      },
-      {
-        timestamp: 1667983739743,
-        textLength: 434,
-      },
-      {
-        timestamp: 1667983739745,
-        textLength: 436,
-      },
-      {
-        timestamp: 1667983739748,
+        timestamp: 1667983739158,
         textLength: 437,
       },
       {
-        timestamp: 1667983739750,
-        textLength: 439,
+        timestamp: 1667983739159,
+        textLength: 442,
       },
       {
-        timestamp: 1667983739753,
-        textLength: 441,
-      },
-      {
-        timestamp: 1667983739756,
-        textLength: 443,
-      },
-      {
-        timestamp: 1667983739759,
-        textLength: 444,
-      },
-      {
-        timestamp: 1667983739762,
-        textLength: 446,
-      },
-      {
-        timestamp: 1667983739765,
-        textLength: 447,
-      },
-      {
-        timestamp: 1667983739767,
-        textLength: 449,
-      },
-      {
-        timestamp: 1667983739769,
-        textLength: 451,
-      },
-      {
-        timestamp: 1667983739771,
-        textLength: 453,
-      },
-      {
-        timestamp: 1667983739774,
+        timestamp: 1667983739161,
         textLength: 455,
       },
     ],

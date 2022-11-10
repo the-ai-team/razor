@@ -1,5 +1,4 @@
-import { AppErrorLog, AppIdNumberType } from '@razor/models';
-import { generateUid } from '@razor/util';
+import { AppErrorLog } from '@razor/models';
 import {
   createModel,
   init,
@@ -7,38 +6,37 @@ import {
   RematchDispatch,
   RematchRootState,
 } from '@rematch/core';
-import { random } from 'nanoid';
 import {
   clearPlayer,
-  joinPlayer,
-  sendErrorLog,
-  setReadyTournament,
-  startCountdown,
   endCoundown,
   endRace,
+  joinPlayer,
+  sendErrorLog,
   sendTypeLog,
+  setReadyTournament,
+  startCountdown,
 } from './effects';
 import { initialState } from './initialState';
 import {
   clearPlayerPayload,
-  joinPlayerPayload,
-  setReadyTournamentPayload,
-  startCountdownPayload,
   endCountdownPayload,
   endRacePayload,
+  joinPlayerPayload,
   sendTypeLogPlayload,
+  setReadyTournamentPayload,
+  startCountdownPayload,
 } from './payloadTypes';
 import {
   addPlayerReducer,
   addRaceReducer,
   addTournamentReducer,
+  logErrorReducer,
   removePlayerReducer,
   removeTournamentReducer,
-  updateTournamentReducer,
-  updateRaceReducer,
   updateLeaderboardReducer,
   updatePlayerLogReducer,
-  logErrorReducer,
+  updateRaceReducer,
+  updateTournamentReducer,
 } from './reducers';
 
 export const game = createModel<RootModel>()({
@@ -92,14 +90,15 @@ export type RootState = RematchRootState<RootModel>;
 // Test Dispatches
 const { dispatch } = store;
 
-// dispatch({
-//   type: 'game/joinPlayer',
-//   payload: {
-//     tid: 'T:rGl0zHJk',
-//     playerName: 'Player 1',
-//   },
-// });
+dispatch({
+  type: 'game/joinPlayer',
+  payload: {
+    tid: 'T:rGl0zHJk',
+    playerName: 'su ss',
+  },
+});
 
+//TODO: to samples
 // dispatch({
 //   type: 'game/startCountdown',
 //   payload: {
@@ -116,32 +115,31 @@ const { dispatch } = store;
 //   },
 // });
 
-// dispatch({
-//   type: 'game/endRace',
-//   payload: {
-//     raceId: 'T:a_pB5pc-R:001',
-//   },
-// });
+dispatch({
+  type: 'game/endRace',
+  payload: {
+    raceId: 'T:rGl0zHJk-R:000',
+  },
+});
 
 // let x = 0;
-// let timestamp = 1667983739000;
-// while (x < 455) {
-//   timestamp += Math.floor(Math.random() * 2) + 2;
+// const timestamp = 1667983739000;
+// let textLength = 0;
 
+// while (x < 160) {
+//   x += Math.floor(Math.random() * 2) + 1;
+//   textLength += Math.floor(Math.random() * 6) + 2;
 //   dispatch({
 //     type: 'game/sendTypeLog',
 //     payload: {
 //       raceId: 'T:rGl0zHJk-R:000',
 //       playerId: 'P:C4eggywb',
 //       playerLog: {
-//         timestamp: timestamp,
-//         textLength: x,
+//         timestamp: timestamp+x,
+//         textLength: textLength,
 //       },
 //     },
 //   });
-
-//   x += Math.floor(Math.random() * 2) + 1;
-//   console.log(x);
 // }
 
 // dispatch({
@@ -156,12 +154,12 @@ const { dispatch } = store;
 //   },
 // });
 
-dispatch({
-  type: 'game/endRace',
-  payload: {
-    raceId: 'T:rGl0zHJk-R:000',
-  },
-});
+// dispatch({
+//   type: 'game/endRace',
+//   payload: {
+//     raceId: 'T:rGl0zHJk-R:000',
+//   },
+// });
 
 // dispatch({
 //   type: 'game/startCountdown',
@@ -177,5 +175,3 @@ dispatch({
 //     tournamentId: '1',
 //   },
 // });
-
-//TODO: change vector image seed

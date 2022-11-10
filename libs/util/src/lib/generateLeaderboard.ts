@@ -1,10 +1,15 @@
 import {
-  AppLeadeboards,
+  AppFinishedPlayerValues,
+  AppLeaderboard,
+  AppLeaderboardEntry,
   AppPlayerId,
   AppPlayerLog,
   AppPlayerLogId,
   AppPlayerLogs,
+  AppPlayerState,
+  AppPlayerStatus,
   AppRaceId,
+  AppTimeoutPlayerValues,
 } from '@razor/models';
 import { extractId, extractIdType } from './extractIds';
 
@@ -12,7 +17,9 @@ export const generateLeaderboard = (
   playerLogs: AppPlayerLogs,
   raceId: AppRaceId,
   raceTextLength: number,
-): AppLeadeboards => {
+): AppLeaderboard => {
+  const leaderboardEntries: AppLeaderboard = [];
+
   for (const playerLogId in playerLogs) {
     const raceIdOfPlayerLog: AppRaceId = extractId(
       playerLogId,
@@ -23,7 +30,7 @@ export const generateLeaderboard = (
     const playerIdOfPlayerLog: AppPlayerId = extractId(
       playerLogId,
       extractIdType.playerLog,
-      extractIdType.race,
+      extractIdType.player,
     ) as AppPlayerId;
 
     const playerLogsLength = playerLogs[playerLogId as AppPlayerLogId].length;
@@ -32,6 +39,13 @@ export const generateLeaderboard = (
         .textLength;
 
     let wpm, elpasedTime, distance;
+    let finishedPlayerValues: AppFinishedPlayerValues = {
+      wpm: 0,
+      elpasedTime: 0,
+    };
+    let timeoutPlayerValues: AppTimeoutPlayerValues = {
+      distance: 0,
+    };
     //Check whether race owns the racelog
     if (raceIdOfPlayerLog === raceId) {
       // Check whether player has finished the race
@@ -43,20 +57,35 @@ export const generateLeaderboard = (
         elpasedTime =
           playerLogs[playerLogId as AppPlayerLogId][playerLogsLength - 1]
             .timestamp - playerLogs[playerLogId as AppPlayerLogId][0].timestamp;
+        finishedPlayerValues = {
+          wpm,
+          elpasedTime,
+        };
       } else {
         distance =
           playerLogs[playerLogId as AppPlayerLogId][playerLogsLength - 1]
             .textLength -
           playerLogs[playerLogId as AppPlayerLogId][0].textLength;
+        timeoutPlayerValues = { distance };
       }
     }
-
-    console.log(wpm, elpasedTime, distance);
+    const leaderboardEntry: AppLeaderboardEntry = {
+      playerId: playerIdOfPlayerLog,
+      status:
+        playerLastTextLength === raceTextLength
+          ? AppPlayerStatus.Complete
+          : AppPlayerStatus.Timeout,
+      values:
+        playerLastTextLength === raceTextLength
+          ? finishedPlayerValues
+          : timeoutPlayerValues,
+    };
+    leaderboardEntries.push(leaderboardEntry);
   }
-  return {};
+  return leaderboardEntries;
 };
 
-const calculateWPM = (length: number, logs: AppPlayerLog[]) => {
+const calculateWPM = (length: number, logs: AppPlayerLog[]): number => {
   const mark1 = Math.floor(length * 0.25);
   const mark2 = Math.floor(length * 0.5);
   const mark3 = Math.floor(length * 0.75);
@@ -97,7 +126,7 @@ const calculateWPM = (length: number, logs: AppPlayerLog[]) => {
     averageWPM += quarterWPMs[index] / 4;
   }
 
-  return averageWPM.toFixed(2);
+  return +averageWPM.toFixed(2);
 };
 
 const calculateQuarterWPM = (

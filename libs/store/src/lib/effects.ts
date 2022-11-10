@@ -238,10 +238,19 @@ export const endRace = async (
     tournament,
   });
 
-  const raceTextLength = state.game.racesModel[raceId].text.length;
+  // if (state.game.racesModel[raceId]) {
 
-  generateLeaderboard(state.game.playerLogsModel, raceId, raceTextLength);
-  //TODO: dipatch leaderboard data
+  // }
+  const raceTextLength = state.game.racesModel[raceId].text.length;
+  const leaderboard = generateLeaderboard(
+    state.game.playerLogsModel,
+    raceId,
+    raceTextLength,
+  );
+  dispatch.game.updateLeaderboardReducer({
+    leaderboardId: raceId,
+    leaderboard,
+  });
 };
 
 export const sendTypeLog = async (

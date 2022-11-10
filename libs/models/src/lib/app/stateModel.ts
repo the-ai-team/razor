@@ -1,5 +1,5 @@
 import { AppErrorLogs } from './errorLog';
-import { AppLeadeboards } from './leaderboard';
+import { AppLeaderboards } from './leaderboard';
 import { AppPlayerLogs, AppPlayers } from './player';
 import { AppRaces } from './race';
 import { AppTournaments } from './tournament';
@@ -13,7 +13,7 @@ export interface AppStateModel {
   tournamentsModel: AppTournaments;
   playersModel: AppPlayers;
   racesModel: AppRaces;
-  leaderboardsModel: AppLeadeboards;
+  leaderboardsModel: AppLeaderboards;
   playerLogsModel: AppPlayerLogs;
   errorLogsModel: AppErrorLogs;
 }

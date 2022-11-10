@@ -11,7 +11,6 @@ export enum AppTournamentState {
 }
 
 /** Sample Id - `T:skt_2JVn` */
-// export type AppTournamentId<T extends string = string> = `T:${T}`;
 export type AppTournamentId = `T:${string}`;
 
 export interface AppTournament {

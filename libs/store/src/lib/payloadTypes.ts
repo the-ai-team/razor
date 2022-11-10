@@ -78,6 +78,6 @@ export type endRacePayload = {
 export type sendTypeLogPlayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
-  /** Timestamp, and text length from player */
+  /** Timestamp, and text length from players machine */
   playerLog: AppPlayerLog;
 };

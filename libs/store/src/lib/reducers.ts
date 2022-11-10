@@ -35,7 +35,7 @@ export const addTournamentReducer = (
   return newState;
 };
 
-//TODO: Add conditions to check values are not undefined
+//TODO: error handling
 export const addRaceReducer = (
   state: AppStateModel,
   payload: addRaceReducerPayload,
