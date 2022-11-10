@@ -1,6 +1,4 @@
 import {
-  AppErrorCode,
-  AppMessageLogType,
   AppPlayerId,
   AppPlayerProfiles,
   AppRace,
@@ -16,6 +14,8 @@ import {
   generateLeaderboard,
   giveZeroPadding,
 } from '@razor/util';
+import { playerNotFound, tournamentNotFound } from '../loggers';
+import { raceNotFound } from '../loggers/race';
 import {
   endCountdownPayload,
   endRacePayload,
@@ -44,15 +44,14 @@ export const startCountdown = async (
     playerId,
   }: { tournamentId: AppTournamentId; playerId: AppPlayerId } = payload;
 
-  if (!state.game.tournamentsModel[tournamentId]) {
-    dispatch.game.sendLogMessage({
-      message: `Tournament with id ${tournamentId} does not exist`,
-      code: AppErrorCode.TournamentNotExists,
-      relatedId: `Started by: ${playerId}`,
-      type: AppMessageLogType.Error,
-    });
-    return;
-  }
+  if (!state.game.tournamentsModel[tournamentId])
+    tournamentNotFound(dispatch, tournamentId, `Started by: ${playerId}`);
+  if (!state.game.playersModel[playerId])
+    playerNotFound(
+      dispatch,
+      playerId,
+      `While tournament starting: ${tournamentId}`,
+    );
 
   const numberOfRacesBefore =
     state.game.tournamentsModel[tournamentId] &&
@@ -66,12 +65,12 @@ export const startCountdown = async (
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
     const player = state.game.playersModel[id];
     if (!player) {
-      dispatch.game.sendLogMessage({
-        message: `Plyaer with id ${id} does not exist`,
-        code: AppErrorCode.PlayerNotExists,
-        relatedId: `Tournament: ${tournamentId}`,
-        type: AppMessageLogType.Error,
-      });
+      if (!state.game.playersModel[playerId])
+        playerNotFound(
+          dispatch,
+          playerId,
+          `While players are being added to: ${tournamentId}`,
+        );
     } else {
       players[id] = {
         name: player.name,
@@ -115,6 +114,10 @@ export const endCoundown = async (
   state: RootState,
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+
+  if (!state.game.tournamentsModel[tournamentId])
+    tournamentNotFound(dispatch, tournamentId, `While countdown ending`);
+
   const tournament: AppTournament = {
     ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Race,
@@ -132,6 +135,10 @@ export const endRace = async (
   state: RootState,
 ): Promise<void> => {
   const { raceId }: { raceId: AppRaceId } = payload;
+
+  if (!state.game.racesModel[raceId])
+    raceNotFound(dispatch, raceId, `While race ending`);
+
   const tournamentId: AppTournamentId = extractId(
     raceId,
     extractIdType.race,
@@ -148,9 +155,6 @@ export const endRace = async (
     tournament,
   });
 
-  // if (state.game.racesModel[raceId]) {
-
-  // }
   const raceTextLength = state.game.racesModel[raceId].text.length;
   const leaderboard = generateLeaderboard(
     state.game.playerLogsModel,

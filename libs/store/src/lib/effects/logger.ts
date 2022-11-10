@@ -6,25 +6,25 @@ export const sendLogMessage = async (
   payload: AppMessageLog,
 ): Promise<void> => {
   const timestamp: number = new Date().getTime();
-  const { message, code, relatedId, type } = payload;
+  const { message, code, related, type } = payload;
 
   switch (type) {
     case AppMessageLogType.Error:
-      console.error(`[Error ${code}]: ${message} (${relatedId})`);
+      console.error(`[Error ${code}]: ${message} (${related})`);
       dispatch.game.logErrorReducer({
         errorLog: {
           message,
           code,
-          relatedId,
+          related,
         },
         errorTimestamp: timestamp,
       });
       break;
     case AppMessageLogType.Warn:
-      console.warn(`[Warn ${code}]: ${message} (${relatedId})`);
+      console.warn(`[Warn ${code}]: ${message} (${related})`);
       break;
     case AppMessageLogType.Info:
-      console.info(`[Info ${code}]: ${message} (${relatedId})`);
+      console.info(`[Info ${code}]: ${message} (${related})`);
       break;
   }
 };

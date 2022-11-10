@@ -1,6 +1,8 @@
 export enum AppErrorCode {
   TournamentNotExists = 'TOURNAMNET_NOT_FOUND',
   PlayerNotExists = 'PLAYER_NOT_FOUND',
+  InvalidPlayerName = 'INVALID_PLAYER_NAME',
+  RaceNotExists = 'RACE_NOT_FOUND',
 }
 
 export enum AppMessageLogType {
@@ -13,14 +15,14 @@ export type AppErrorTimestamp = number;
 export interface AppMessageLog {
   message: string;
   code: AppErrorCode;
-  relatedId: string;
+  related: string;
   type: AppMessageLogType;
 }
 
 export interface AppErrorLog {
   message: string;
   code: AppErrorCode;
-  relatedId: string;
+  related: string;
 }
 
 export type AppErrorLogs = Record<AppErrorTimestamp, AppErrorLog>;

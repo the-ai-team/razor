@@ -1,7 +1,5 @@
 import {
-  AppErrorCode,
   AppIdNumberType,
-  AppMessageLogType,
   AppPlayerId,
   AppPlayerLog,
   AppPlayerLogId,
@@ -11,6 +9,13 @@ import {
   AppTournamentState,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
+import {
+  invalidPlayerName,
+  invalidPlayerNameLength,
+  playerNotFound,
+  tournamentNotFound,
+} from '../loggers';
+import { raceNotFound } from '../loggers/race';
 import {
   clearPlayerPayload,
   joinPlayerPayload,
@@ -25,17 +30,14 @@ export const joinPlayer = async (
 ): Promise<void> => {
   const { tid, playerName }: { tid: string; playerName: string } = payload;
   let tournamentId: string;
+
+  if (playerName.length > 2 && playerName.length < 10)
+    invalidPlayerNameLength(dispatch);
+  if (playerName.match(/^[a-zA-Z0-9]+$/)) invalidPlayerName(dispatch);
+
   if (tid) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!state.game.tournamentsModel[tid as any]) {
-      dispatch.game.sendLogMessage({
-        message: `Tournament with id ${tid} does not exist`,
-        code: AppErrorCode.TournamentNotExists,
-        relatedId: '',
-        type: AppMessageLogType.Error,
-      });
-      return;
-    }
+    if (!state.game.tournamentsModel[tid as AppTournamentId])
+      tournamentNotFound(dispatch, tid);
     tournamentId = tid;
   } else {
     tournamentId = await generateUid(AppIdNumberType.Tournament);
@@ -77,6 +79,9 @@ export const clearPlayer = async (
   state: RootState,
 ): Promise<void> => {
   const { playerId }: { playerId: AppPlayerId } = payload;
+
+  if (playerId) playerNotFound(dispatch, playerId);
+
   const tournamentId = state.game.playersModel[playerId].tournamentId;
   dispatch.game.removePlayerReducer({
     tournamentId,
@@ -96,6 +101,9 @@ export const sendTypeLog = async (
     payload;
 
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
+
+  if (playerId) playerNotFound(dispatch, playerId);
+  if (raceId) raceNotFound(dispatch, raceId);
 
   dispatch.game.updatePlayerLogReducer({
     playerLogId,
