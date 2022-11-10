@@ -4,7 +4,7 @@ import { logErrorReducerPayload } from '../payloads';
 export const logErrorReducer = (
   state: AppStateModel,
   payload: logErrorReducerPayload,
-) => {
+): AppStateModel => {
   const { errorLog, errorTimestamp } = payload;
   const { message, code, relatedId } = errorLog;
   const newState: AppStateModel = {

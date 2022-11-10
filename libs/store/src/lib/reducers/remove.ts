@@ -10,7 +10,7 @@ import { removePlayerReducerPayload } from '../payloads';
 export const removePlayerReducer = (
   state: AppStateModel,
   payload: removePlayerReducerPayload,
-) => {
+): AppStateModel => {
   const { tournamentId, playerId } = payload;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [playerId]: removedPlayer, ...newPlayerModel } = state.playersModel;
@@ -42,7 +42,7 @@ export const removePlayerReducer = (
 export const removeTournamentReducer = (
   state: AppStateModel,
   payload: removePlayerReducerPayload,
-) => {
+): AppStateModel => {
   const { tournamentId } = payload;
   const playerIds = state.tournamentsModel[tournamentId].playerIds;
   const raceIds = state.tournamentsModel[tournamentId].raceIds;

@@ -10,7 +10,7 @@ import {
 export const updateTournamentReducer = (
   state: AppStateModel,
   payload: updateTournamentReducerPayload,
-) => {
+): AppStateModel => {
   const { tournamentId, tournament } = payload;
   const newState: AppStateModel = {
     ...state,
@@ -27,7 +27,7 @@ export const updateTournamentReducer = (
 export const updateRaceReducer = (
   state: AppStateModel,
   payload: updateRaceReducerPayload,
-) => {
+): AppStateModel => {
   const { raceId, race } = payload;
   const newState: AppStateModel = {
     ...state,
@@ -44,7 +44,7 @@ export const updateRaceReducer = (
 export const updateLeaderboardReducer = (
   state: AppStateModel,
   payload: updateLeaderboardReducerPayload,
-) => {
+): AppStateModel => {
   const { leaderboardId, leaderboard } = payload;
   const newState: AppStateModel = {
     ...state,
@@ -61,7 +61,7 @@ export const updateLeaderboardReducer = (
 export const updatePlayerLogReducer = (
   state: AppStateModel,
   payload: updatePlayerLogReducerPayload,
-) => {
+): AppStateModel => {
   const { playerLogId, playerLog } = payload;
   const newState: AppStateModel = {
     ...state,

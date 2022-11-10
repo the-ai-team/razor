@@ -57,7 +57,7 @@ export const addRaceReducer = (
 export const addPlayerReducer = (
   state: AppStateModel,
   payload: addPlayerReducerPayload,
-) => {
+): AppStateModel => {
   const { tournamentId, playerId, player } = payload;
   const newState: AppStateModel = {
     ...state,
