@@ -1,5 +1,6 @@
 import {
   AppErrorCode,
+  AppMessageLogType,
   AppPlayerId,
   AppPlayerProfiles,
   AppRace,
@@ -44,10 +45,11 @@ export const startCountdown = async (
   }: { tournamentId: AppTournamentId; playerId: AppPlayerId } = payload;
 
   if (!state.game.tournamentsModel[tournamentId]) {
-    dispatch.game.sendErrorLog({
+    dispatch.game.sendLogMessage({
       message: `Tournament with id ${tournamentId} does not exist`,
       code: AppErrorCode.TournamentNotExists,
       relatedId: `Started by: ${playerId}`,
+      type: AppMessageLogType.Error,
     });
     return;
   }
@@ -64,10 +66,11 @@ export const startCountdown = async (
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
     const player = state.game.playersModel[id];
     if (!player) {
-      dispatch.game.sendErrorLog({
+      dispatch.game.sendLogMessage({
         message: `Plyaer with id ${id} does not exist`,
         code: AppErrorCode.PlayerNotExists,
         relatedId: `Tournament: ${tournamentId}`,
+        type: AppMessageLogType.Error,
       });
     } else {
       players[id] = {

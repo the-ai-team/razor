@@ -1,6 +1,7 @@
 import {
   AppErrorCode,
   AppIdNumberType,
+  AppMessageLogType,
   AppPlayerId,
   AppPlayerLog,
   AppPlayerLogId,
@@ -27,10 +28,11 @@ export const joinPlayer = async (
   if (tid) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!state.game.tournamentsModel[tid as any]) {
-      dispatch.game.sendErrorLog({
+      dispatch.game.sendLogMessage({
         message: `Tournament with id ${tid} does not exist`,
         code: AppErrorCode.TournamentNotExists,
         relatedId: '',
+        type: AppMessageLogType.Error,
       });
       return;
     }

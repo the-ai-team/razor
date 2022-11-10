@@ -1,17 +1,17 @@
-import { AppErrorLog } from '@razor/models';
+import { AppMessageLog } from '@razor/models';
 import {
-  joinPlayerPayload,
   clearPlayerPayload,
-  setReadyTournamentPayload,
-  startCountdownPayload,
   endCountdownPayload,
   endRacePayload,
+  joinPlayerPayload,
   sendTypeLogPlayload,
+  setReadyTournamentPayload,
+  startCountdownPayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
-import { sendErrorLog } from './error';
-import { joinPlayer, clearPlayer, sendTypeLog } from './player';
-import { startCountdown, endCoundown, endRace } from './race';
+import { sendLogMessage } from './logger';
+import { clearPlayer, joinPlayer, sendTypeLog } from './player';
+import { endCoundown, endRace, startCountdown } from './race';
 import { setReadyTournament } from './tournament';
 
 export const effects = (dispatch: Dispatch) => ({
@@ -28,5 +28,5 @@ export const effects = (dispatch: Dispatch) => ({
   endRace: (payload: endRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
   sendTypeLog: (payload: sendTypeLogPlayload) => sendTypeLog(dispatch, payload),
-  sendErrorLog: (payload: AppErrorLog) => sendErrorLog(dispatch, payload),
+  sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
 });
