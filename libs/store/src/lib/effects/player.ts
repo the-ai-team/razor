@@ -31,9 +31,9 @@ export const joinPlayer = async (
   const { tid, playerName }: { tid: string; playerName: string } = payload;
   let tournamentId: string;
 
-  if (playerName.length > 2 && playerName.length < 10)
+  if (playerName.length < 2 || playerName.length > 10)
     invalidPlayerNameLength(dispatch);
-  if (playerName.match(/^[a-zA-Z0-9]+$/)) invalidPlayerName(dispatch);
+  if (!playerName.match(/^[a-zA-Z0-9]+$/)) invalidPlayerName(dispatch);
 
   if (tid) {
     if (!state.game.tournamentsModel[tid as AppTournamentId])
@@ -80,7 +80,7 @@ export const clearPlayer = async (
 ): Promise<void> => {
   const { playerId }: { playerId: AppPlayerId } = payload;
 
-  if (playerId) playerNotFound(dispatch, playerId);
+  if (!playerId) playerNotFound(dispatch, playerId);
 
   const tournamentId = state.game.playersModel[playerId].tournamentId;
   dispatch.game.removePlayerReducer({
@@ -102,8 +102,8 @@ export const sendTypeLog = async (
 
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
 
-  if (playerId) playerNotFound(dispatch, playerId);
-  if (raceId) raceNotFound(dispatch, raceId);
+  if (!playerId) playerNotFound(dispatch, playerId);
+  if (!raceId) raceNotFound(dispatch, raceId);
 
   dispatch.game.updatePlayerLogReducer({
     playerLogId,
