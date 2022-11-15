@@ -12,14 +12,24 @@ export const addTournamentReducer = (
   payload: addTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
-  const newState: AppStateModel = {
-    ...state,
-    tournamentsModel: {
-      ...state.tournamentsModel,
-      [tournamentId]: tournament,
-    },
-  };
-  return newState;
+
+  if (tournamentId) {
+    if (tournamentId in state.tournamentsModel) {
+      //TODO: error raiser
+      console.log('Tournament already exists');
+      return state;
+    }
+    const newState: AppStateModel = {
+      ...state,
+      tournamentsModel: {
+        ...state.tournamentsModel,
+        [tournamentId]: tournament,
+      },
+    };
+    return newState;
+  } else {
+    return state;
+  }
 };
 
 export const addRaceReducer = (
@@ -32,8 +42,15 @@ export const addRaceReducer = (
     extractIdType.race,
     extractIdType.tournament,
   ) as AppTournamentId;
-
   if (raceId) {
+    if (!(tournamentId in state.tournamentsModel)) {
+      console.log('Tournament does not exist');
+      return state;
+    }
+    if (raceId in state.racesModel) {
+      console.log('Race already exists');
+      return state;
+    }
     const newState: AppStateModel = {
       ...state,
       tournamentsModel: {
@@ -59,25 +76,37 @@ export const addPlayerReducer = (
   payload: addPlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId, player } = payload;
-  const newState: AppStateModel = {
-    ...state,
-    tournamentsModel: {
-      ...state.tournamentsModel,
-      [tournamentId]: {
-        ...state.tournamentsModel[tournamentId],
-        playerIds: [
-          ...(state.tournamentsModel[tournamentId] &&
-          state.tournamentsModel[tournamentId].playerIds
-            ? state.tournamentsModel[tournamentId].playerIds
-            : []),
-          playerId,
-        ],
+  if (playerId && tournamentId) {
+    if (!(tournamentId in state.tournamentsModel)) {
+      console.log('Tournament does not exist');
+      return state;
+    }
+    if (playerId in state.playersModel) {
+      console.log('Player already exists');
+      return state;
+    }
+    const newState: AppStateModel = {
+      ...state,
+      tournamentsModel: {
+        ...state.tournamentsModel,
+        [tournamentId]: {
+          ...state.tournamentsModel[tournamentId],
+          playerIds: [
+            ...(state.tournamentsModel[tournamentId] &&
+            state.tournamentsModel[tournamentId].playerIds
+              ? state.tournamentsModel[tournamentId].playerIds
+              : []),
+            playerId,
+          ],
+        },
       },
-    },
-    playersModel: {
-      ...state.playersModel,
-      [playerId]: { ...player },
-    },
-  };
-  return newState;
+      playersModel: {
+        ...state.playersModel,
+        [playerId]: { ...player },
+      },
+    };
+    return newState;
+  } else {
+    return state;
+  }
 };
