@@ -25,8 +25,8 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState().game;
-    expect(gameState).toEqual(expectedResult);
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...gameState, game: expectedResult });
   });
 
   // ====== Add Race ====== //
@@ -103,8 +103,8 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState().game;
-    expect(gameState).toEqual(expectedResult);
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...gameState, game: expectedResult });
   });
 
   // ====== Add Player ====== //
@@ -146,9 +146,17 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState().game;
-    expect(gameState).toEqual(expectedResult);
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...gameState, game: expectedResult });
   });
 });
 
 //TODO: Add tests for check already exisitng data return the same state
+
+// if anyone add new store check it too..
+// const gameState = store.getState();
+// expect(gameState).toEqual({...initialState, game:expectedResult});
+// keep seperate stores to every reducers
+// make a new hleper function
+//
+// jest after all bla bla to clear store for every tests
