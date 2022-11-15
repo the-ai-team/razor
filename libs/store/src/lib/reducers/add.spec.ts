@@ -40,8 +40,8 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...gameState, game: expectedResult });
+    const gameState = store.getState().game;
+    expect(gameState).toEqual(expectedResult);
   });
 
   // ====== Add Race ====== //
@@ -174,8 +174,8 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...gameState, game: expectedResult });
+    const gameState = store.getState().game;
+    expect(gameState).toEqual(expectedResult);
   });
 });
 
