@@ -1,3 +1,5 @@
+import { TextEncoder } from 'util';
+
 export const generateAvatarLink = async (
   playerName: string,
 ): Promise<string> => {
