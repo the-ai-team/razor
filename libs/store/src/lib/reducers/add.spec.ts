@@ -19,6 +19,7 @@ describe('[Reducers] Add operations', () => {
   it('Add new tournament', () => {
     const initialValues = initialState;
     const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
 
     store.dispatch.game.addTournamentReducer({
       tournamentId: 'T:testTOUR',
@@ -40,8 +41,9 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState().game;
-    expect(gameState).toEqual(expectedResult);
+
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
   // ====== Add Race ====== //
@@ -58,6 +60,7 @@ describe('[Reducers] Add operations', () => {
       },
     };
     const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
 
     store.dispatch.game.addRaceReducer({
       raceId: 'T:testTOUR-R:001',
@@ -120,7 +123,7 @@ describe('[Reducers] Add operations', () => {
     };
 
     const gameState = store.getState();
-    expect(gameState).toEqual({ ...gameState, game: expectedResult });
+    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
   // ====== Add Player ====== //
@@ -138,6 +141,7 @@ describe('[Reducers] Add operations', () => {
     };
 
     const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
 
     store.dispatch.game.addPlayerReducer({
       tournamentId: 'T:testTOUR',
@@ -174,8 +178,9 @@ describe('[Reducers] Add operations', () => {
         },
       },
     };
-    const gameState = store.getState().game;
-    expect(gameState).toEqual(expectedResult);
+
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 });
 
