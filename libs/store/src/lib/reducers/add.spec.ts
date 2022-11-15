@@ -1,25 +1,40 @@
-import { AppPlayerState, AppTournamentState } from '@razor/models';
-import { store } from '../store';
+import {
+  AppPlayerState,
+  AppStateModel,
+  AppTournamentState,
+} from '@razor/models';
+import { initializeStore } from '../store';
+
+export const initialState: AppStateModel = {
+  tournamentsModel: {},
+  playersModel: {},
+  racesModel: {},
+  leaderboardsModel: {},
+  playerLogsModel: {},
+  errorLogsModel: {},
+};
 
 describe('[Reducers] Add operations', () => {
   // ====== Add Tournament ====== //
-  const initialState = store.getState().game;
   it('Add new tournament', () => {
+    const initialValues = initialState;
+    const store = initializeStore(initialValues);
+
     store.dispatch.game.addTournamentReducer({
-      tournamentId: 'T:rGl0zHJk',
+      tournamentId: 'T:testTOUR',
       tournament: {
-        playerIds: ['P:WrVeLanq'],
+        playerIds: ['P:testPLAY'],
         raceIds: [],
         state: AppTournamentState.Lobby,
       },
     });
 
     const expectedResult = {
-      ...initialState,
+      ...initialValues,
       tournamentsModel: {
-        ...initialState.tournamentsModel,
-        'T:rGl0zHJk': {
-          playerIds: ['P:WrVeLanq'],
+        ...initialValues.tournamentsModel,
+        'T:testTOUR': {
+          playerIds: ['P:testPLAY'],
           raceIds: [],
           state: AppTournamentState.Lobby,
         },
@@ -31,118 +46,131 @@ describe('[Reducers] Add operations', () => {
 
   // ====== Add Race ====== //
   it('Add new race', () => {
-    const initialState = store.getState().game;
-    // const initialState = {
-    //   ...gameState,
-    //   tournamentsModel: {
-    //     ...gameState.tournamentsModel,
-    //     'T:rGl0zHJk': {
-    //       playerIds: ['P:WrVeLanq'],
-    //       raceIds: [],
-    //       state: AppTournamentState.Lobby,
-    //     },
-    //   },
-    // };
+    const initialValues: AppStateModel = {
+      ...initialState,
+      tournamentsModel: {
+        ...initialState.tournamentsModel,
+        'T:testTOUR': {
+          playerIds: ['P:testPLAY', 'P:testPLY2'],
+          raceIds: ['T:testTOUR-R:000'],
+          state: AppTournamentState.Lobby,
+        },
+      },
+    };
+    const store = initializeStore(initialValues);
 
     store.dispatch.game.addRaceReducer({
-      raceId: 'T:rGl0zHJk-R:000',
+      raceId: 'T:testTOUR-R:001',
       race: {
         text: 'Esse pariatur cillum esse Lorem adipisicing ullamco anim sit tempor duis sunt. Voluptate occaecat laborum nisi nostrud.',
         timeoutDuration: 250,
-        startedTimestamp: 1668422625,
+        startedTimestamp: 1234567890,
         players: {
-          'P:WrVeLanq': {
+          'P:testPLAY': {
             name: 'Player1',
             avatarLink:
               'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
           },
-          'P:WrweLanq': {
+          'P:testPLY2': {
             name: 'Player2',
             avatarLink:
               'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
           },
         },
         isOnGoing: true,
-        raceStartedBy: 'P:12345678',
+        raceStartedBy: 'P:testPLAY',
       },
     });
 
     const expectedResult = {
-      ...initialState,
+      ...initialValues,
       tournamentsModel: {
-        ...initialState.tournamentsModel,
-        'T:rGl0zHJk': {
-          ...initialState.tournamentsModel['T:rGl0zHJk'],
+        ...initialValues.tournamentsModel,
+        'T:testTOUR': {
+          ...initialValues.tournamentsModel['T:testTOUR'],
           raceIds: [
-            ...initialState.tournamentsModel['T:rGl0zHJk'].raceIds,
-            'T:rGl0zHJk-R:000',
+            ...initialValues.tournamentsModel['T:testTOUR'].raceIds,
+            'T:testTOUR-R:001',
           ],
         },
       },
 
       racesModel: {
-        ...initialState.racesModel,
-        'T:rGl0zHJk-R:000': {
+        ...initialValues.racesModel,
+        'T:testTOUR-R:001': {
           text: 'Esse pariatur cillum esse Lorem adipisicing ullamco anim sit tempor duis sunt. Voluptate occaecat laborum nisi nostrud.',
           timeoutDuration: 250,
-          startedTimestamp: 1668422625,
+          startedTimestamp: 1234567890,
           players: {
-            'P:WrVeLanq': {
+            'P:testPLAY': {
               name: 'Player1',
               avatarLink:
                 'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
             },
-            'P:WrweLanq': {
+            'P:testPLY2': {
               name: 'Player2',
               avatarLink:
                 'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
             },
           },
           isOnGoing: true,
-          raceStartedBy: 'P:12345678',
+          raceStartedBy: 'P:testPLAY',
         },
       },
     };
+
     const gameState = store.getState();
     expect(gameState).toEqual({ ...gameState, game: expectedResult });
   });
 
   // ====== Add Player ====== //
   it('Add new player', () => {
-    const initialState = store.getState().game;
+    const initialValues: AppStateModel = {
+      ...initialState,
+      tournamentsModel: {
+        ...initialState.tournamentsModel,
+        'T:testTOUR': {
+          playerIds: [],
+          raceIds: [],
+          state: AppTournamentState.Lobby,
+        },
+      },
+    };
+
+    const store = initializeStore(initialValues);
 
     store.dispatch.game.addPlayerReducer({
-      tournamentId: 'T:rGl0zHJk',
-      playerId: 'P:W4VeL2nq',
+      tournamentId: 'T:testTOUR',
+      playerId: 'P:testPLAY',
       player: {
-        name: 'Player2',
+        name: 'NewPlayer',
         avatarLink:
-          'https://avatars.dicebear.com/api/open-peeps/506c6179657256.svg',
+          'https://avatars.dicebear.com/api/open-peeps/4e6577506c61796572.svg',
         state: AppPlayerState.Idle,
-        tournamentId: 'T:rGl0zHJk',
+        tournamentId: 'T:testTOUR',
       },
     });
 
     const expectedResult = {
-      ...initialState,
+      ...initialValues,
       tournamentsModel: {
-        ...initialState.tournamentsModel,
-        'T:rGl0zHJk': {
-          ...initialState.tournamentsModel['T:rGl0zHJk'],
+        ...initialValues.tournamentsModel,
+        'T:testTOUR': {
+          ...initialValues.tournamentsModel['T:testTOUR'],
           playerIds: [
-            ...initialState.tournamentsModel['T:rGl0zHJk'].playerIds,
-            'P:W4VeL2nq',
+            ...initialValues.tournamentsModel['T:testTOUR'].playerIds,
+            'P:testPLAY',
           ],
         },
       },
       playersModel: {
-        ...initialState.playersModel,
-        'P:W4VeL2nq': {
-          name: 'Player2',
+        ...initialValues.playersModel,
+        'P:testPLAY': {
+          name: 'NewPlayer',
           avatarLink:
-            'https://avatars.dicebear.com/api/open-peeps/506c6179657256.svg',
+            'https://avatars.dicebear.com/api/open-peeps/4e6577506c61796572.svg',
           state: AppPlayerState.Idle,
-          tournamentId: 'T:rGl0zHJk',
+          tournamentId: 'T:testTOUR',
         },
       },
     };
@@ -152,11 +180,3 @@ describe('[Reducers] Add operations', () => {
 });
 
 //TODO: Add tests for check already exisitng data return the same state
-
-// if anyone add new store check it too..
-// const gameState = store.getState();
-// expect(gameState).toEqual({...initialState, game:expectedResult});
-// keep seperate stores to every reducers
-// make a new hleper function
-//
-// jest after all bla bla to clear store for every tests
