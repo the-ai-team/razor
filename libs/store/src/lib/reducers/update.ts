@@ -1,9 +1,8 @@
 import { AppStateModel } from '@razor/models';
 import {
-  updateTournamentReducerPayload,
-  updateRaceReducerPayload,
-  updateLeaderboardReducerPayload,
   updatePlayerLogReducerPayload,
+  updateRaceReducerPayload,
+  updateTournamentReducerPayload,
 } from '../payloads';
 
 // Basic Update Opeations
@@ -35,23 +34,6 @@ export const updateRaceReducer = (
       ...state.racesModel,
       [raceId]: {
         ...race,
-      },
-    },
-  };
-  return newState;
-};
-
-export const updateLeaderboardReducer = (
-  state: AppStateModel,
-  payload: updateLeaderboardReducerPayload,
-): AppStateModel => {
-  const { leaderboardId, leaderboard } = payload;
-  const newState: AppStateModel = {
-    ...state,
-    leaderboardsModel: {
-      ...state.leaderboardsModel,
-      [leaderboardId]: {
-        ...leaderboard,
       },
     },
   };

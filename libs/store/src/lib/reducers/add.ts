@@ -1,6 +1,7 @@
 import { AppStateModel, AppTournamentId } from '@razor/models';
 import { extractId, extractIdType } from '@razor/util';
 import {
+  addLeaderboardReducerPayload,
   addPlayerReducerPayload,
   addRaceReducerPayload,
   addTournamentReducerPayload,
@@ -103,6 +104,32 @@ export const addPlayerReducer = (
       playersModel: {
         ...state.playersModel,
         [playerId]: { ...player },
+      },
+    };
+    return newState;
+  } else {
+    return state;
+  }
+};
+
+export const addLeaderboardReducer = (
+  state: AppStateModel,
+  payload: addLeaderboardReducerPayload,
+): AppStateModel => {
+  const { leaderboardId, leaderboard } = payload;
+  if (leaderboardId) {
+    if (leaderboardId in state.leaderboardsModel) {
+      console.log('Leaderboard already exists');
+      return state;
+    }
+
+    const newState: AppStateModel = {
+      ...state,
+      leaderboardsModel: {
+        ...state.leaderboardsModel,
+        [leaderboardId]: {
+          ...leaderboard,
+        },
       },
     };
     return newState;
