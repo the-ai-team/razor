@@ -161,7 +161,7 @@ export const endRace = async (
     raceId,
     raceTextLength,
   );
-  dispatch.game.updateLeaderboardReducer({
+  dispatch.game.addLeaderboardReducer({
     leaderboardId: raceId,
     leaderboard,
   });
