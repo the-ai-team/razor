@@ -46,7 +46,7 @@ export type removePlayerReducerPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
 };
-export type removeTournamentReducer = {
+export type removeTournamentReducerPayload = {
   tournamentId: AppTournamentId;
 };
 export type logErrorReducerPayload = {

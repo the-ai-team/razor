@@ -4,7 +4,10 @@ import {
   AppRaceId,
   AppPlayerId,
 } from '@razor/models';
-import { removePlayerReducerPayload } from '../payloads';
+import {
+  removePlayerReducerPayload,
+  removeTournamentReducerPayload,
+} from '../payloads';
 
 // Basic Remove Operations
 export const removePlayerReducer = (
@@ -41,7 +44,7 @@ export const removePlayerReducer = (
 
 export const removeTournamentReducer = (
   state: AppStateModel,
-  payload: removePlayerReducerPayload,
+  payload: removeTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId } = payload;
   const playerIds = state.tournamentsModel[tournamentId].playerIds;
