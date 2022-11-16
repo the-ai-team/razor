@@ -83,11 +83,97 @@ describe('[Reducers] Remove operations', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       tournamentsModel: {
-        ...initialState.tournamentsModel,
         'T:testTOUR': {
           state: AppTournamentState.Lobby,
-          playerIds: ['P:testPLAY'],
-          raceIds: [],
+          playerIds: ['P:testPLAY', 'P:testPLY2'],
+          raceIds: ['T:testTOUR-R:000', 'T:testTOUR-R:001'],
+        },
+        'T:testTOR2': {
+          state: AppTournamentState.Lobby,
+          playerIds: ['P:testPLY3'],
+          raceIds: ['T:testTOR2-R:000'],
+        },
+      },
+      racesModel: {
+        'T:testTOUR-R:000': {
+          text: 'Fugiat mollit culpa commodo quis cupidatat mollit. Lorem ea eiusmod laborum veniam deserunt ex nostrud aliquip quis in nulla. Adipisicing consequat voluptate.',
+          timeoutDuration: 250,
+          startedTimestamp: 1234567890,
+          players: {
+            'P:testPLAY': {
+              name: 'Player1',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+            },
+            'P:testPLY2': {
+              name: 'Player2',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
+            },
+          },
+          isOnGoing: false,
+          raceStartedBy: 'P:testPLAY',
+        },
+        'T:testTOUR-R:001': {
+          text: 'Fugiat mollit culpa commodo quis cupidatat mollit. Lorem ea eiusmod laborum veniam deserunt ex nostrud aliquip quis in nulla. Adipisicing consequat voluptate.',
+          timeoutDuration: 260,
+          startedTimestamp: 1234567890,
+          players: {
+            'P:testPLAY': {
+              name: 'Player1',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+            },
+            'P:testPLY2': {
+              name: 'Player2',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
+            },
+          },
+          isOnGoing: false,
+          raceStartedBy: 'P:testPLAY',
+        },
+        'T:testTOR2-R:000': {
+          text: 'Fugiat mollit culpa commodo quis cupidatat mollit. Lorem ea eiusmod laborum veniam deserunt ex nostrud aliquip quis in nulla. Adipisicing consequat voluptate.',
+          timeoutDuration: 200,
+          startedTimestamp: 1234567890,
+          players: {
+            'P:testPLY3': {
+              name: 'Player1',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+            },
+            'P:testPLY': {
+              name: 'Player2',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
+            },
+          },
+          isOnGoing: false,
+          raceStartedBy: 'P:testPLAY',
+        },
+      },
+      playersModel: {
+        'P:testPLAY': {
+          name: 'Player1',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+          state: AppPlayerState.Idle,
+          tournamentId: 'T:testTOUR',
+        },
+        'P:testPLY2': {
+          name: 'Player2',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
+          state: AppPlayerState.Idle,
+          tournamentId: 'T:testTOUR',
+        },
+        'P:testPLY3': {
+          name: 'Player3',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657233.svg',
+          state: AppPlayerState.Idle,
+          tournamentId: 'T:testTOR2',
         },
       },
     };
@@ -99,7 +185,46 @@ describe('[Reducers] Remove operations', () => {
       tournamentId: 'T:testTOUR',
     });
 
-    const expectedResult = initialState;
+    const expectedResult = {
+      ...initialValues,
+      tournamentsModel: {
+        'T:testTOR2': {
+          state: AppTournamentState.Lobby,
+          playerIds: ['P:testPLY3'],
+          raceIds: ['T:testTOR2-R:000'],
+        },
+      },
+      playersModel: {
+        'P:testPLY3': {
+          name: 'Player3',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657233.svg',
+          state: AppPlayerState.Idle,
+          tournamentId: 'T:testTOR2',
+        },
+      },
+      racesModel: {
+        'T:testTOR2-R:000': {
+          text: 'Fugiat mollit culpa commodo quis cupidatat mollit. Lorem ea eiusmod laborum veniam deserunt ex nostrud aliquip quis in nulla. Adipisicing consequat voluptate.',
+          timeoutDuration: 200,
+          startedTimestamp: 1234567890,
+          players: {
+            'P:testPLY3': {
+              name: 'Player1',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+            },
+            'P:testPLY': {
+              name: 'Player2',
+              avatarLink:
+                'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
+            },
+          },
+          isOnGoing: false,
+          raceStartedBy: 'P:testPLAY',
+        },
+      },
+    };
 
     const gameState = store.getState();
     expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
