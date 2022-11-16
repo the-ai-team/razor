@@ -8,6 +8,7 @@ import {
   removePlayerReducerPayload,
   removeTournamentReducerPayload,
 } from '../payloads';
+import * as _ from 'lodash';
 
 // Basic Remove Operations
 export const removePlayerReducer = (
@@ -15,8 +16,7 @@ export const removePlayerReducer = (
   payload: removePlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId } = payload;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { [playerId]: removedPlayer, ...newPlayerModel } = state.playersModel;
+  const newPlayersModel = _.omit(state.playersModel, [playerId]);
   const newState: AppStateModel = {
     ...state,
     tournamentsModel: {
@@ -36,7 +36,7 @@ export const removePlayerReducer = (
       },
     },
     playersModel: {
-      ...newPlayerModel,
+      ...newPlayersModel,
     },
   };
   return newState;
@@ -60,9 +60,7 @@ export const removeTournamentReducer = (
     playerLogIds = playerLogIds.concat(specificPlayerLogsId);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { [tournamentId]: removedTournament, ...newTournamentModel } =
-    state.tournamentsModel;
+  const newTournamentModel = _.omit(state.tournamentsModel, [tournamentId]);
 
   const newState: AppStateModel = {
     ...state,
@@ -70,27 +68,23 @@ export const removeTournamentReducer = (
       ...newTournamentModel,
     },
   };
+
   playerIds.forEach(playerId => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [playerId]: removedPlayer, ...newPlayersModel } =
-      newState.playersModel;
+    const newPlayersModel = _.omit(newState.playersModel, [playerId]);
     newState.playersModel = {
       ...newPlayersModel,
     };
   });
 
   raceIds.forEach(raceId => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [raceId]: removedRace, ...newRacesModel } = newState.racesModel;
+    const newRacesModel = _.omit(newState.racesModel, [raceId]);
     newState.racesModel = {
       ...newRacesModel,
     };
   });
 
   playerLogIds.forEach(playerLogId => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [playerLogId]: removedPlayerLog, ...newPlayerLogsModel } =
-      newState.playerLogsModel;
+    const newPlayerLogsModel = _.omit(state.playerLogsModel, [playerLogId]);
     newState.playerLogsModel = {
       ...newPlayerLogsModel,
     };
