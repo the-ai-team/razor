@@ -127,9 +127,7 @@ export const addLeaderboardReducer = (
       ...state,
       leaderboardsModel: {
         ...state.leaderboardsModel,
-        [leaderboardId]: {
-          ...leaderboard,
-        },
+        [leaderboardId]: [...leaderboard],
       },
     };
     return newState;

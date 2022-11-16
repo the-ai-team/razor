@@ -1,5 +1,6 @@
 import {
   AppPlayerState,
+  AppPlayerStatus,
   AppStateModel,
   AppTournamentState,
 } from '@razor/models';
@@ -176,6 +177,61 @@ describe('[Reducers] Add operations', () => {
           state: AppPlayerState.Idle,
           tournamentId: 'T:testTOUR',
         },
+      },
+    };
+
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+  });
+
+  // ====== Add Leaderboard ====== //
+  it('Add leaderboard', () => {
+    const initialValues = initialState;
+    const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
+
+    store.dispatch.game.addLeaderboardReducer({
+      leaderboardId: 'T:testTOUR-R:001',
+      leaderboard: [
+        {
+          playerId: 'P:testPLAY',
+          status: AppPlayerStatus.Complete,
+          values: {
+            wpm: 60,
+            elpasedTime: 68,
+          },
+        },
+        {
+          playerId: 'P:testPLY2',
+          status: AppPlayerStatus.Timeout,
+          values: {
+            distance: 55,
+          },
+        },
+      ],
+    });
+
+    const expectedResult = {
+      ...initialValues,
+      leaderboardsModel: {
+        ...initialValues.leaderboardsModel,
+        'T:testTOUR-R:001': [
+          {
+            playerId: 'P:testPLAY',
+            status: AppPlayerStatus.Complete,
+            values: {
+              wpm: 60,
+              elpasedTime: 68,
+            },
+          },
+          {
+            playerId: 'P:testPLY2',
+            status: AppPlayerStatus.Timeout,
+            values: {
+              distance: 55,
+            },
+          },
+        ],
       },
     };
 
