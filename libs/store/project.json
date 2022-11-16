@@ -27,7 +27,8 @@
       "options": {
         "jestConfig": "libs/store/jest.config.ts",
         "verbose": true,
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "codeCoverage": true
       }
     }
   },
