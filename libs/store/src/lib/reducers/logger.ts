@@ -19,8 +19,6 @@ export const logErrorReducer = (
     logModel = { ...newLogModel };
   }
 
-  console.log(state.errorLogsModel);
-
   const newState: AppStateModel = {
     ...state,
     errorLogsModel: {
