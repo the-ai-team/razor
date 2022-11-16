@@ -130,6 +130,41 @@ describe('[Reducers] Update operations', () => {
   });
 
   // ====== Update PlayerLog ====== //
+  it('Update first playerLog', () => {
+    const initialValues: AppStateModel = {
+      ...initialState,
+      playerLogsModel: {
+        ...initialState.playerLogsModel,
+      },
+    };
+
+    const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
+
+    store.dispatch.game.updatePlayerLogReducer({
+      playerLogId: 'T:testTOUR-R:001-P:testPLAY',
+      playerLog: {
+        timestamp: 1234567000,
+        textLength: 0,
+      },
+    });
+
+    const expectedResult = {
+      ...initialValues,
+      playerLogsModel: {
+        ...initialValues.playerLogsModel,
+        'T:testTOUR-R:001-P:testPLAY': [
+          {
+            timestamp: 1234567000,
+            textLength: 0,
+          },
+        ],
+      },
+    };
+
+    const gameState = store.getState();
+    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+  });
   it('Update playerLog', () => {
     const initialValues: AppStateModel = {
       ...initialState,
