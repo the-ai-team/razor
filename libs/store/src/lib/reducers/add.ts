@@ -79,11 +79,9 @@ export const addPlayerReducer = (
   const { tournamentId, playerId, player } = payload;
   if (playerId && tournamentId) {
     if (!(tournamentId in state.tournamentsModel)) {
-      console.log('Tournament does not exist');
       return state;
     }
     if (playerId in state.playersModel) {
-      console.log('Player already exists');
       return state;
     }
     const newState: AppStateModel = {
