@@ -6,7 +6,7 @@ import {
 } from '@razor/models';
 import { initializeStore } from '../store';
 
-export const initialState: AppStateModel = {
+const initialState: AppStateModel = {
   tournamentsModel: {},
   playersModel: {},
   racesModel: {},
@@ -241,3 +241,4 @@ describe('[Reducers] Add operations', () => {
 });
 
 //TODO: Add tests for check already exisitng data return the same state
+//TODO: init mock values as constants.

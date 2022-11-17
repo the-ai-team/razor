@@ -8,8 +8,16 @@ import {
 } from '@razor/models';
 import { giveZeroPadding } from '@razor/util';
 import { omit } from 'lodash';
-import { initialState } from '../initialState';
 import { initializeStore } from '../store';
+
+const initialState: AppStateModel = {
+  tournamentsModel: {},
+  playersModel: {},
+  racesModel: {},
+  leaderboardsModel: {},
+  playerLogsModel: {},
+  errorLogsModel: {},
+};
 
 describe('[Reducers] Logger', () => {
   beforeEach(() => {

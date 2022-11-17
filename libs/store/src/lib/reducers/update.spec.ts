@@ -1,7 +1,7 @@
 import { AppStateModel, AppTournamentState } from '@razor/models';
 import { initializeStore } from '../store';
 
-export const initialState: AppStateModel = {
+const initialState: AppStateModel = {
   tournamentsModel: {},
   playersModel: {},
   racesModel: {},
