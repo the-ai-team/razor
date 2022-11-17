@@ -1,3 +1,1 @@
-export function constants(): string {
-  return 'constants';
-}
+export const MAX_ERR_LOGS_COUNT = 1024;
