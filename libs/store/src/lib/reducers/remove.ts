@@ -8,7 +8,7 @@ import {
   removePlayerReducerPayload,
   removeTournamentReducerPayload,
 } from '../payloads';
-import * as _ from 'lodash';
+import { omit } from 'lodash';
 
 // Basic Remove Operations
 export const removePlayerReducer = (
@@ -16,7 +16,7 @@ export const removePlayerReducer = (
   payload: removePlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId } = payload;
-  const newPlayersModel = _.omit(state.playersModel, [playerId]);
+  const newPlayersModel = omit(state.playersModel, [playerId]);
   const newState: AppStateModel = {
     ...state,
     tournamentsModel: {
@@ -60,7 +60,7 @@ export const removeTournamentReducer = (
     playerLogIds = playerLogIds.concat(specificPlayerLogsId);
   });
 
-  const newTournamentModel = _.omit(state.tournamentsModel, [tournamentId]);
+  const newTournamentModel = omit(state.tournamentsModel, [tournamentId]);
 
   const newState: AppStateModel = {
     ...state,
@@ -70,21 +70,21 @@ export const removeTournamentReducer = (
   };
 
   playerIds.forEach(playerId => {
-    const newPlayersModel = _.omit(newState.playersModel, [playerId]);
+    const newPlayersModel = omit(newState.playersModel, [playerId]);
     newState.playersModel = {
       ...newPlayersModel,
     };
   });
 
   raceIds.forEach(raceId => {
-    const newRacesModel = _.omit(newState.racesModel, [raceId]);
+    const newRacesModel = omit(newState.racesModel, [raceId]);
     newState.racesModel = {
       ...newRacesModel,
     };
   });
 
   playerLogIds.forEach(playerLogId => {
-    const newPlayerLogsModel = _.omit(state.playerLogsModel, [playerLogId]);
+    const newPlayerLogsModel = omit(state.playerLogsModel, [playerLogId]);
     newState.playerLogsModel = {
       ...newPlayerLogsModel,
     };

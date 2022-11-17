@@ -1,4 +1,6 @@
+import { MAX_ERR_LOGS_COUNT } from '@razor/constants';
 import { AppErrorTimestamp, AppStateModel } from '@razor/models';
+import { omit } from 'lodash';
 import { logErrorReducerPayload } from '../payloads';
 
 export const logErrorReducer = (
@@ -8,15 +10,15 @@ export const logErrorReducer = (
   const { errorLog, errorTimestamp } = payload;
   let logModel = { ...state.errorLogsModel };
 
-  const maxLogs = 1024;
-  const logsLength = Object.keys(state.errorLogsModel).length;
+  const maxLogs = MAX_ERR_LOGS_COUNT;
+  const logsLength = Object.keys(logModel).length;
 
-  if (logsLength > maxLogs - 1) {
-    const lastKey: AppErrorTimestamp = Object.keys(state.errorLogsModel)[0];
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [lastKey]: removedLog, ...newLogModel } = state.errorLogsModel;
-    logModel = { ...newLogModel };
+  let logDiff = maxLogs - logsLength;
+  while (logDiff <= 0) {
+    const lastKey: AppErrorTimestamp = Object.keys(logModel)[0];
+    const newLogsModel = omit(logModel, [lastKey]);
+    logModel = { ...newLogsModel };
+    logDiff++;
   }
 
   const newState: AppStateModel = {
