@@ -12,7 +12,7 @@ import {
   invalidPlayerName,
   playerNotFound,
   raceNotFound,
-} from '../loggers';
+} from '../raisers';
 import { initializeStore } from '../store';
 
 const mockTournamentId1 = 'T:testTOUR';

@@ -5,7 +5,7 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-import { tournamentNotFound } from '../loggers';
+import { tournamentNotFound } from '../raisers';
 
 export const setReadyTournament = async (
   dispatch: Dispatch,

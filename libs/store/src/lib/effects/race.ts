@@ -14,8 +14,7 @@ import {
   generateLeaderboard,
   giveZeroPadding,
 } from '@razor/util';
-import { playerNotFound, tournamentNotFound } from '../loggers';
-import { raceNotFound } from '../loggers/race';
+import { playerNotFound, tournamentNotFound, raceNotFound } from '../raisers';
 import {
   endCountdownPayload,
   endRacePayload,

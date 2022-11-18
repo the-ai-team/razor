@@ -16,7 +16,7 @@ import {
   playerNotFound,
   raceNotFound,
   tournamentNotFound,
-} from '../loggers';
+} from '../raisers';
 import {
   clearPlayerPayload,
   joinPlayerPayload,
