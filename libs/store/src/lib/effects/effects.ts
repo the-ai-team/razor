@@ -27,6 +27,7 @@ export const effects = (dispatch: Dispatch) => ({
     endCoundown(dispatch, payload, state),
   endRace: (payload: endRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
-  sendTypeLog: (payload: sendTypeLogPlayload) => sendTypeLog(dispatch, payload),
+  sendTypeLog: (payload: sendTypeLogPlayload, state: RootState) =>
+    sendTypeLog(dispatch, payload, state),
   sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
 });

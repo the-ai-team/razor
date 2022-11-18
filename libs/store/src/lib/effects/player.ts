@@ -12,10 +12,11 @@ import { generateAvatarLink, generateUid } from '@razor/util';
 import {
   invalidPlayerName,
   invalidPlayerNameLength,
+  payloadNotProvided,
   playerNotFound,
+  raceNotFound,
   tournamentNotFound,
 } from '../loggers';
-import { raceNotFound } from '../loggers/race';
 import {
   clearPlayerPayload,
   joinPlayerPayload,
@@ -30,14 +31,25 @@ export const joinPlayer = async (
 ): Promise<void> => {
   const { tid, playerName }: { tid: string; playerName: string } = payload;
   let tournamentId: string;
+  if (!playerName) {
+    payloadNotProvided(joinPlayer.name, dispatch, 'playerName');
+    return;
+  }
 
-  if (playerName.length < 2 || playerName.length > 10)
+  if (playerName.length < 2 || playerName.length > 10) {
     invalidPlayerNameLength(dispatch);
-  if (!playerName.match(/^[a-zA-Z0-9]+$/)) invalidPlayerName(dispatch);
+    return;
+  }
+  if (!playerName.match(/^[a-zA-Z0-9]+$/)) {
+    invalidPlayerName(dispatch);
+    return;
+  }
 
   if (tid) {
-    if (!state.game.tournamentsModel[tid as AppTournamentId])
+    if (!state.game.tournamentsModel[tid as AppTournamentId]) {
       tournamentNotFound(dispatch, tid);
+      return;
+    }
     tournamentId = tid;
   } else {
     tournamentId = await generateUid(AppIdNumberType.Tournament);
@@ -79,8 +91,14 @@ export const clearPlayer = async (
   state: RootState,
 ): Promise<void> => {
   const { playerId }: { playerId: AppPlayerId } = payload;
-
-  if (!playerId) playerNotFound(dispatch, playerId);
+  if (playerId) {
+    payloadNotProvided(clearPlayer.name, dispatch, 'playerId');
+    return;
+  }
+  if (!(playerId in state.game.playersModel)) {
+    playerNotFound(dispatch, playerId);
+    return;
+  }
 
   const tournamentId = state.game.playersModel[playerId].tournamentId;
   dispatch.game.removePlayerReducer({
@@ -92,6 +110,7 @@ export const clearPlayer = async (
 export const sendTypeLog = async (
   dispatch: Dispatch,
   payload: sendTypeLogPlayload,
+  state: RootState,
 ): Promise<void> => {
   const {
     raceId,
@@ -100,13 +119,33 @@ export const sendTypeLog = async (
   }: { raceId: AppRaceId; playerId: AppPlayerId; playerLog: AppPlayerLog } =
     payload;
 
+  if (!raceId) {
+    payloadNotProvided(sendTypeLog.name, dispatch, 'raceId');
+    return;
+  }
+  if (!playerId) {
+    payloadNotProvided(sendTypeLog.name, dispatch, 'playerId');
+    return;
+  }
+
+  if (!(playerId in state.game.playersModel)) {
+    playerNotFound(dispatch, playerId);
+    return;
+  }
+  if (!(raceId in state.game.racesModel)) {
+    console.log('notrace');
+    raceNotFound(dispatch, raceId);
+    return;
+  }
+
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
-
-  if (!playerId) playerNotFound(dispatch, playerId);
-  if (!raceId) raceNotFound(dispatch, raceId);
-
   dispatch.game.updatePlayerLogReducer({
     playerLogId,
     playerLog,
   });
 };
+
+// TODO: update documentaion
+// TODO: check every log raiser return void
+// TODO: send func name with every raisers
+// TODO: When adding player if tournament state was empty then change it to lobby
