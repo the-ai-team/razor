@@ -49,8 +49,8 @@ jest.mock('@razor/util', () => ({
   }),
   generateAvatarLink: jest.fn(() => mockAvatarLink1),
 }));
-jest.mock('../loggers', () => ({
-  ...jest.requireActual('../loggers'),
+jest.mock('../raisers', () => ({
+  ...jest.requireActual('../raisers'),
   tournamentNotFound: jest.fn(),
   invalidPlayerNameLength: jest.fn(),
   invalidPlayerName: jest.fn(),
