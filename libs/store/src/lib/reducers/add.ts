@@ -13,11 +13,10 @@ export const addTournamentReducer = (
   payload: addTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
-
+  // Check if tournament id is provided
   if (tournamentId) {
+    // Check if tournament id is valid
     if (tournamentId in state.tournamentsModel) {
-      //TODO: error raiser
-      console.log('Tournament already exists');
       return state;
     }
     const newState: AppStateModel = {
@@ -44,12 +43,12 @@ export const addRaceReducer = (
     extractIdType.tournament,
   ) as AppTournamentId;
   if (raceId) {
+    // Check if tournament does not exists
     if (!(tournamentId in state.tournamentsModel)) {
-      console.log('Tournament does not exist');
       return state;
     }
+    // Check if race already exists
     if (raceId in state.racesModel) {
-      console.log('Race already exists');
       return state;
     }
     const newState: AppStateModel = {
@@ -77,6 +76,7 @@ export const addPlayerReducer = (
   payload: addPlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId, player } = payload;
+  // Check if tournament id and player if is provided
   if (playerId && tournamentId) {
     if (!(tournamentId in state.tournamentsModel)) {
       return state;
@@ -91,10 +91,7 @@ export const addPlayerReducer = (
         [tournamentId]: {
           ...state.tournamentsModel[tournamentId],
           playerIds: [
-            ...(state.tournamentsModel[tournamentId] &&
-            state.tournamentsModel[tournamentId].playerIds
-              ? state.tournamentsModel[tournamentId].playerIds
-              : []),
+            ...state.tournamentsModel[tournamentId].playerIds,
             playerId,
           ],
         },
