@@ -6,6 +6,7 @@ import {
   AppTournamentId,
 } from '@razor/models';
 import { giveZeroPadding } from '@razor/util';
+import { range } from 'lodash';
 
 const mockPlayerName = (n: number) => {
   return `Player${n}`;
@@ -32,11 +33,12 @@ export const M_PLAYER_AVATAR1 = mockPlayerAvatar(1);
 export const M_PLAYER_AVATAR2 = mockPlayerAvatar(2);
 export const M_PLAYER_AVATAR3 = mockPlayerAvatar(3);
 
+/** Generate player from id(number) given */
 export const mockPlayer = (
   n: number,
   tid: AppTournamentId = 'T:testTR00',
   state: AppPlayerState = AppPlayerState.Idle,
-) => ({
+): AppPlayer => ({
   avatarLink: `https://avatars.dicebear.com/api/open-peeps/${n}.svg`,
   name: `Player${n}`,
   state: state,
@@ -49,13 +51,15 @@ export const M_PLAYER1: AppPlayer = mockPlayer(1);
 export const M_PLAYER2: AppPlayer = mockPlayer(2);
 export const M_PLAYER3: AppPlayer = mockPlayer(3);
 
+/** Generate players model withing range given */
 export const mockPlayersModel = (
-  len: number,
+  pIdRange: [number, number],
   tid: AppTournamentId = 'T:testTR00',
+  state: AppPlayerState = AppPlayerState.Idle,
 ): AppPlayers => {
   const players: AppPlayers = {};
-  for (let i = 1; i <= len; i++) {
-    players[mockPlayerId(i)] = mockPlayer(i, tid);
+  for (const i of range(pIdRange[0], pIdRange[1])) {
+    players[mockPlayerId(+i)] = mockPlayer(+i, tid, state);
   }
   return players;
 };
