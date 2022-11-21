@@ -23,15 +23,15 @@ import {
 import { Dispatch, RootState } from '../store';
 
 //TODO: should move this to server later
-const loadRacingText = async (): Promise<string> => {
-  const url = 'http://www.metaphorpsum.com/paragraphs/1/8';
+// const loadRacingText = async (): Promise<string> => {
+//   const url = 'http://www.metaphorpsum.com/paragraphs/1/8';
 
-  return fetch(url)
-    .then(response => response.text())
-    .then(data => {
-      return data;
-    });
-};
+//   return fetch(url)
+//     .then(response => response.text())
+//     .then(data => {
+//       return data;
+//     });
+// };
 
 export const startCountdown = async (
   dispatch: Dispatch,
@@ -78,7 +78,9 @@ export const startCountdown = async (
     }
   }
 
-  const raceText = await loadRacingText();
+  // const raceText = await loadRacingText();
+  const raceText =
+    'A brian sees an actor as a whinny mirror. Galleies are foetid colds. Extending this logic, their laborer was, in this moment, a disguised century. Authors often misinterpret the trade as a crudest band, when in actuality it feels more like a kooky richard. A sociology can hardly be considered a proxy plow without also being a tempo. Some posit the howling ketchup to be less than gardant. A german can hardly be considered a scleroid mosque without also being a fireman. The first colloid lotion is, in its own way, a pantry.';
   const timeoutDuration = await calculateTimeoutTimer(raceText);
 
   const race: AppRace = {
