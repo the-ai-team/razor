@@ -36,7 +36,7 @@ export const joinPlayer = async (
     return;
   }
 
-  if (playerName.length < 2 || playerName.length > 10) {
+  if (playerName.length < 2 || playerName.length > 16) {
     invalidPlayerNameLength(dispatch);
     return;
   }
@@ -91,7 +91,7 @@ export const clearPlayer = async (
   state: RootState,
 ): Promise<void> => {
   const { playerId }: { playerId: AppPlayerId } = payload;
-  if (playerId) {
+  if (!playerId) {
     payloadNotProvided(clearPlayer.name, dispatch, 'playerId');
     return;
   }
@@ -132,8 +132,8 @@ export const sendTypeLog = async (
     playerNotFound(dispatch, playerId);
     return;
   }
+
   if (!(raceId in state.game.racesModel)) {
-    console.log('notrace');
     raceNotFound(dispatch, raceId);
     return;
   }
