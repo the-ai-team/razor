@@ -1,12 +1,15 @@
 import {
   AppPlayer,
   AppPlayerId,
+  AppPlayerLog,
+  AppPlayerLogId,
   AppPlayers,
   AppPlayerState,
+  AppRaceId,
   AppTournamentId,
 } from '@razor/models';
 import { giveZeroPadding } from '@razor/util';
-import { range } from 'lodash';
+import { random, range } from 'lodash';
 
 const mockPlayerName = (n: number) => {
   return `Player${n}`;
@@ -62,4 +65,66 @@ export const mockPlayersModel = (
     players[mockPlayerId(+i)] = mockPlayer(+i, tid, state);
   }
   return players;
+};
+
+export const mockPlayerLogId = (
+  rid: AppRaceId = 'T:testTR00-R:000',
+  pid: AppPlayerId = 'P:testPL00',
+): AppPlayerLogId => {
+  return `${rid}-${pid}`;
+};
+
+export const mockPlayerLogs = (textLength: number): AppPlayerLog[] => {
+  const playerLogs: AppPlayerLog[] = [];
+  let timestamp = 1234567000;
+  // starting log
+  playerLogs.push({
+    timestamp,
+    textLength: 0,
+  });
+
+  let typedLength = random(5, 10);
+  timestamp += random(1, 3);
+
+  while (typedLength < textLength) {
+    playerLogs.push({
+      timestamp,
+      textLength: typedLength,
+    });
+    timestamp += random(1, 3);
+    typedLength += random(6, 12);
+  }
+
+  playerLogs.push({
+    timestamp: timestamp + random(1, 3),
+    textLength,
+  });
+
+  return playerLogs;
+};
+
+export const mockTimeoutPlayerLogs = (textLength: number): AppPlayerLog[] => {
+  const playerLogs: AppPlayerLog[] = [];
+  let timestamp = 1234567000;
+  // starting log
+  playerLogs.push({
+    timestamp,
+    textLength: 0,
+  });
+
+  let typedLength = random(5, 10);
+  timestamp += random(1, 3);
+
+  const lastTypedLength = textLength - random(5, 60);
+
+  while (typedLength < lastTypedLength) {
+    playerLogs.push({
+      timestamp,
+      textLength: typedLength,
+    });
+    timestamp += random(1, 3);
+    typedLength += random(6, 12);
+  }
+
+  return playerLogs;
 };

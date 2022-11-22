@@ -35,6 +35,10 @@ export const M_TR3_RACE_ID1 = mockRaceId('T:testTR03', 1);
 export const M_TR3_RACE_ID2 = mockRaceId('T:testTR03', 2);
 export const M_TR3_RACE_ID3 = mockRaceId('T:testTR03', 3);
 
+// Predefined texts
+export const M_RACE_TEXT0 =
+  'A brian sees an actor as a whinny mirror. Galleies are foetid colds. Extending this logic, their laborer was, in this moment, a disguised century. Authors often misinterpret the trade as a crudest band, when in actuality it feels more like a kooky richard. A sociology can hardly be considered a proxy plow without also being a tempo. Some posit the howling ketchup to be less than gardant. A german can hardly be considered a scleroid mosque without also being a fireman. The first colloid lotion is, in its own way, a pantry.';
+
 /** Generate race */
 export const mockRace = (
   pIdRange: [number, number],
@@ -49,7 +53,7 @@ export const mockRace = (
     };
   }
   return {
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    text: M_RACE_TEXT0,
     timeoutDuration: 100,
     startedTimestamp: 1234567890,
     players,
@@ -57,3 +61,5 @@ export const mockRace = (
     raceStartedBy,
   };
 };
+
+export const M_RACE0: AppRace = mockRace([0, 3]);
