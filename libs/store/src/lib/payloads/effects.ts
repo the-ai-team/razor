@@ -18,7 +18,9 @@ export type setReadyTournamentPayload = {
 };
 export type startCountdownPayload = {
   tournamentId: AppTournamentId;
+  /** Id of player who started the race */
   playerId: AppPlayerId;
+  raceText: string;
 };
 export type endCountdownPayload = {
   tournamentId: AppTournamentId;

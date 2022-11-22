@@ -30,6 +30,10 @@ export type addLeaderboardReducerPayload = {
   leaderboardId: AppRaceId;
   leaderboard: AppLeaderboard;
 };
+export type updatePlayerReducerPayload = {
+  playerId: AppPlayerId;
+  player: AppPlayer;
+};
 export type updateTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;
