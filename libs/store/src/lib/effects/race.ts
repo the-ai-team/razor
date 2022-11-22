@@ -1,6 +1,9 @@
 import {
+  AppPlayer,
   AppPlayerId,
   AppPlayerProfiles,
+  AppPlayers,
+  AppPlayerState,
   AppRace,
   AppRaceId,
   AppTournament,
@@ -41,20 +44,29 @@ export const startCountdown = async (
   const {
     tournamentId,
     playerId,
-  }: { tournamentId: AppTournamentId; playerId: AppPlayerId } = payload;
+    raceText,
+  }: {
+    tournamentId: AppTournamentId;
+    playerId: AppPlayerId;
+    raceText: string;
+  } = payload;
 
-  if (!state.game.tournamentsModel[tournamentId])
+  if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `Started by: ${playerId}`);
-  if (!state.game.playersModel[playerId])
+    return;
+  }
+  if (!(playerId in state.game.playersModel)) {
     playerNotFound(
       dispatch,
       playerId,
       `While tournament starting: ${tournamentId}`,
     );
+    return;
+  }
 
   const numberOfRacesBefore =
-    state.game.tournamentsModel[tournamentId] &&
     state.game.tournamentsModel[tournamentId].raceIds.length;
+
   const raceIndex = numberOfRacesBefore
     ? giveZeroPadding(numberOfRacesBefore.toString(), 3)
     : '000';
@@ -62,25 +74,32 @@ export const startCountdown = async (
   const players: AppPlayerProfiles = {};
 
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
-    const player = state.game.playersModel[id];
-    if (!player) {
-      if (!state.game.playersModel[playerId])
-        playerNotFound(
-          dispatch,
-          playerId,
-          `While players are being added to: ${tournamentId}`,
-        );
+    if (!(id in state.game.playersModel)) {
+      playerNotFound(
+        dispatch,
+        id,
+        `While tournament starting: ${tournamentId}`,
+      );
+      return;
     } else {
+      const player = state.game.playersModel[id];
       players[id] = {
         name: player.name,
         avatarLink: player.avatarLink,
       };
+
+      // Updating player state in playersModel
+      const playerData: AppPlayer = {
+        ...player,
+        state: AppPlayerState.Racing,
+      };
+      dispatch.game.updatePlayerReducer({
+        playerId: id,
+        player: playerData,
+      });
     }
   }
 
-  // const raceText = await loadRacingText();
-  const raceText =
-    'A brian sees an actor as a whinny mirror. Galleies are foetid colds. Extending this logic, their laborer was, in this moment, a disguised century. Authors often misinterpret the trade as a crudest band, when in actuality it feels more like a kooky richard. A sociology can hardly be considered a proxy plow without also being a tempo. Some posit the howling ketchup to be less than gardant. A german can hardly be considered a scleroid mosque without also being a fireman. The first colloid lotion is, in its own way, a pantry.';
   const timeoutDuration = await calculateTimeoutTimer(raceText);
 
   const race: AppRace = {
@@ -116,13 +135,14 @@ export const endCoundown = async (
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;
 
-  if (!state.game.tournamentsModel[tournamentId])
+  if (!state.game.tournamentsModel[tournamentId]) {
     tournamentNotFound(dispatch, tournamentId, `While countdown ending`);
+    return;
+  }
 
   const tournament: AppTournament = {
     ...state.game.tournamentsModel[tournamentId],
     state: AppTournamentState.Race,
-    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
   };
   dispatch.game.updateTournamentReducer({
     tournamentId,
@@ -137,8 +157,10 @@ export const endRace = async (
 ): Promise<void> => {
   const { raceId }: { raceId: AppRaceId } = payload;
 
-  if (!state.game.racesModel[raceId])
+  if (!(raceId in state.game.racesModel)) {
     raceNotFound(dispatch, raceId, `While race ending`);
+    return;
+  }
 
   const tournamentId: AppTournamentId = extractId(
     raceId,
@@ -166,4 +188,30 @@ export const endRace = async (
     leaderboardId: raceId,
     leaderboard,
   });
+
+  const race: AppRace = {
+    ...state.game.racesModel[raceId],
+    isOnGoing: false,
+  };
+  dispatch.game.updateRaceReducer({
+    raceId,
+    race,
+  });
+
+  /** Set player state to `idle` of all players in the tournament. */
+  for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
+    if (id in state.game.playersModel) {
+      if (state.game.playersModel[id].state != AppPlayerState.Idle) {
+        const player: AppPlayer = {
+          ...state.game.playersModel[id],
+          state: AppPlayerState.Idle,
+        };
+
+        dispatch.game.updatePlayerReducer({
+          playerId: id,
+          player,
+        });
+      }
+    }
+  }
 };
