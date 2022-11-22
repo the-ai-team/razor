@@ -50,6 +50,7 @@ jest.mock('@razor/util', () => ({
   generateAvatarLink: jest.fn(() => M_PLAYER_AVATAR0),
 }));
 
+// TODO: remove if not needed
 // when(generateUid)
 //   .calledWith(AppIdNumberType.Tournament)
 //   .mockImplementation(async () => M_TOURNAMENT_ID1);
@@ -183,7 +184,7 @@ describe('[Effects] Player', () => {
   });
 
   describe('Player Leave', () => {
-    it('(valid id) => Clear Player', async () => {
+    it('(valid id) => Clear player', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -208,6 +209,40 @@ describe('[Effects] Player', () => {
           [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 3]),
         },
         playersModel: mockPlayersModel([1, 3], M_TOURNAMENT_ID0),
+      };
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
+    });
+    it('(valid id and 1 player remaining) => Clear player, Set tournament to empty', async () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: { ...M_TOURNAMENT0, playerIds: [M_PLAYER_ID0] },
+        },
+        playersModel: mockPlayersModel([0, 1], M_TOURNAMENT_ID0),
+        racesModel: {
+          [M_TR0_RACE_ID0]: mockRace([0, 1]),
+        },
+      };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
+
+      await store.dispatch.game.clearPlayer({
+        playerId: M_PLAYER_ID0,
+      });
+      const storeState = store.getState();
+
+      const expectedResult: AppStateModel = {
+        ...initialValues,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...mockTournament(M_TOURNAMENT_ID0, [0, 1], [0, 0]),
+            state: AppTournamentState.Empty,
+          },
+        },
+        playersModel: {},
       };
       expect(storeState).toEqual({
         ...initialStoreState,
