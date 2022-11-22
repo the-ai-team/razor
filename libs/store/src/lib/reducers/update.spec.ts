@@ -1,4 +1,8 @@
-import { AppStateModel, AppTournamentState } from '@razor/models';
+import {
+  AppPlayerState,
+  AppStateModel,
+  AppTournamentState,
+} from '@razor/models';
 import { initializeStore } from '../store';
 
 const initialState: AppStateModel = {
@@ -11,6 +15,57 @@ const initialState: AppStateModel = {
 };
 
 describe('[Reducers] Update operations', () => {
+  // ====== Update Plyaer ====== //
+  it('Update Player', () => {
+    const initialValues: AppStateModel = {
+      ...initialState,
+      playersModel: {
+        ...initialState.playersModel,
+        'P:testPLAY': {
+          name: 'Player1',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+          state: AppPlayerState.Idle,
+          tournamentId: 'T:testTR00',
+        },
+      },
+    };
+
+    const store = initializeStore(initialValues);
+    const initialStoreState = store.getState();
+
+    store.dispatch.game.updatePlayerReducer({
+      playerId: 'P:testPLAY',
+      player: {
+        name: 'PlayerNew',
+        avatarLink:
+          'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+        state: AppPlayerState.Racing,
+        tournamentId: 'T:testTR00',
+      },
+    });
+
+    const expectedResult = {
+      ...initialValues,
+      playersModel: {
+        ...initialValues.playersModel,
+        'P:testPLAY': {
+          name: 'PlayerNew',
+          avatarLink:
+            'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
+          state: AppPlayerState.Racing,
+          tournamentId: 'T:testTR00',
+        },
+      },
+    };
+
+    const storeState = store.getState();
+    expect(storeState).toEqual({
+      ...initialStoreState,
+      game: expectedResult,
+    });
+  });
+
   // ====== Update Tournament ====== //
   it('Update tournament', () => {
     const initialValues: AppStateModel = {
@@ -56,8 +111,8 @@ describe('[Reducers] Update operations', () => {
       },
     };
 
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+    const storeState = store.getState();
+    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
   // ====== Update Race ====== //
@@ -125,8 +180,8 @@ describe('[Reducers] Update operations', () => {
       },
     };
 
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+    const storeState = store.getState();
+    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
   // ====== Update PlayerLog ====== //
@@ -162,8 +217,8 @@ describe('[Reducers] Update operations', () => {
       },
     };
 
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+    const storeState = store.getState();
+    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
   it('Update playerLog', () => {
     const initialValues: AppStateModel = {
@@ -216,7 +271,7 @@ describe('[Reducers] Update operations', () => {
       },
     };
 
-    const gameState = store.getState();
-    expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
+    const storeState = store.getState();
+    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 });
