@@ -114,10 +114,8 @@ export const addLeaderboardReducer = (
   const { leaderboardId, leaderboard } = payload;
   if (leaderboardId) {
     if (leaderboardId in state.leaderboardsModel) {
-      console.log('Leaderboard already exists');
       return state;
     }
-
     const newState: AppStateModel = {
       ...state,
       leaderboardsModel: {

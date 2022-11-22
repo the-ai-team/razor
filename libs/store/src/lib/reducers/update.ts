@@ -1,6 +1,7 @@
 import { AppStateModel } from '@razor/models';
 import {
   updatePlayerLogReducerPayload,
+  updatePlayerReducerPayload,
   updateRaceReducerPayload,
   updateTournamentReducerPayload,
 } from '../payloads';
@@ -34,6 +35,23 @@ export const updateRaceReducer = (
       ...state.racesModel,
       [raceId]: {
         ...race,
+      },
+    },
+  };
+  return newState;
+};
+
+export const updatePlayerReducer = (
+  state: AppStateModel,
+  payload: updatePlayerReducerPayload,
+): AppStateModel => {
+  const { playerId, player } = payload;
+  const newState: AppStateModel = {
+    ...state,
+    playersModel: {
+      ...state.playersModel,
+      [playerId]: {
+        ...player,
       },
     },
   };
