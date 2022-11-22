@@ -99,12 +99,27 @@ export const clearPlayer = async (
     playerNotFound(dispatch, playerId);
     return;
   }
-
   const tournamentId = state.game.playersModel[playerId].tournamentId;
   dispatch.game.removePlayerReducer({
     tournamentId,
     playerId,
   });
+
+  // If player is the last one in the tournament, change the tournament state to empty
+  const playerIdsInTournament =
+    state.game.tournamentsModel[tournamentId].playerIds;
+  if (playerIdsInTournament.length === 1) {
+    if (playerIdsInTournament[0] === playerId) {
+      dispatch.game.updateTournamentReducer({
+        tournamentId,
+        tournament: {
+          ...state.game.tournamentsModel[tournamentId],
+          state: AppTournamentState.Empty,
+          playerIds: [],
+        },
+      });
+    }
+  }
 };
 
 export const sendTypeLog = async (
