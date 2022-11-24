@@ -68,8 +68,8 @@ export const mockPlayersModel = (
 };
 
 export const mockPlayerLogId = (
-  rid: AppRaceId = 'T:testTR00-R:000',
-  pid: AppPlayerId = 'P:testPL00',
+  rid: AppRaceId,
+  pid: AppPlayerId,
 ): AppPlayerLogId => {
   return `${rid}-${pid}`;
 };
