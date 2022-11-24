@@ -10,7 +10,6 @@ import {
 } from '@razor/models';
 import { generateLeaderboard } from '@razor/util';
 import { range } from 'lodash';
-import { initialState } from '../initialState';
 import {
   mockPlayerId,
   mockPlayerLogId,
@@ -38,6 +37,15 @@ import {
 } from '../mocks';
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { initializeStore } from '../store';
+
+const initialState: AppStateModel = {
+  tournamentsModel: {},
+  playersModel: {},
+  racesModel: {},
+  leaderboardsModel: {},
+  playerLogsModel: {},
+  errorLogsModel: {},
+};
 
 jest.mock('@razor/util', () => ({
   ...jest.requireActual('@razor/util'),
