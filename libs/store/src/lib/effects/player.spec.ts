@@ -106,9 +106,9 @@ describe('[Effects] Player', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
-          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 3]),
+          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 2]),
         },
-        playersModel: mockPlayersModel([1, 3], M_TOURNAMENT_ID0),
+        playersModel: mockPlayersModel([1, 2], M_TOURNAMENT_ID0),
         racesModel: {
           [M_TR0_RACE_ID0]: mockRace([1, 3]),
         },
@@ -131,9 +131,10 @@ describe('[Effects] Player', () => {
               ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].playerIds,
               M_PLAYER_ID0,
             ],
+            state: AppTournamentState.Ready,
           },
         },
-        playersModel: mockPlayersModel([0, 3], M_TOURNAMENT_ID0),
+        playersModel: mockPlayersModel([0, 2], M_TOURNAMENT_ID0),
       };
       expect(storeState).toEqual({
         ...initialStoreState,
