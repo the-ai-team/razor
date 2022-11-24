@@ -12,7 +12,5 @@ export const tournamentNotFound = async (
     related: additionalMessage ? additionalMessage : '',
     type: AppMessageLogType.Error,
   });
+  return;
 };
-
-// TODO: add return types
-// TODO: write docs
