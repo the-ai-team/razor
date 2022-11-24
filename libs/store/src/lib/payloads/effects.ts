@@ -3,6 +3,7 @@ import {
   AppPlayerLog,
   AppRaceId,
   AppTournamentId,
+  AppTournamentState,
 } from '@razor/models';
 
 //effectsPayloads
@@ -13,8 +14,9 @@ export type joinPlayerPayload = {
 export type clearPlayerPayload = {
   playerId: AppPlayerId;
 };
-export type setReadyTournamentPayload = {
+export type setTournamentStatePayload = {
   tournamentId: AppTournamentId;
+  tournamentState: AppTournamentState;
 };
 export type startCountdownPayload = {
   tournamentId: AppTournamentId;
