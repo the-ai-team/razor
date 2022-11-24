@@ -1,26 +1,31 @@
-import { setReadyTournamentPayload } from '../payloads';
-import { Dispatch, RootState } from '../store';
 import {
   AppTournament,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
+import { setTournamentStatePayload } from '../payloads';
 import { tournamentNotFound } from '../raisers';
+import { Dispatch, RootState } from '../store';
 
-export const setReadyTournament = async (
+export const setStateTournament = async (
   dispatch: Dispatch,
-  payload: setReadyTournamentPayload,
+  payload: setTournamentStatePayload,
   state: RootState,
 ): Promise<void> => {
-  const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+  const {
+    tournamentId,
+    tournamentState,
+  }: { tournamentId: AppTournamentId; tournamentState: AppTournamentState } =
+    payload;
 
-  if (!state.game.tournamentsModel[tournamentId])
+  if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `While setting ready`);
+    return;
+  }
 
   const tournament: AppTournament = {
-    state: AppTournamentState.Ready,
-    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds],
-    playerIds: [...state.game.tournamentsModel[tournamentId].playerIds],
+    ...state.game.tournamentsModel[tournamentId],
+    state: tournamentState,
   };
   dispatch.game.updateTournamentReducer({
     tournamentId,

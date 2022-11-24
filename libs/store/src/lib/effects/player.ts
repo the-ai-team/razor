@@ -72,6 +72,15 @@ export const joinPlayer = async (
       },
     });
   }
+  if (
+    state.game.tournamentsModel[tid as AppTournamentId] &&
+    state.game.tournamentsModel[tid as AppTournamentId].playerIds.length >= 1
+  ) {
+    dispatch.game.setStateTournament({
+      tournamentId: formattedTournamentId,
+      tournamentState: AppTournamentState.Ready,
+    });
+  }
   //Joining tournament
   dispatch.game.addPlayerReducer({
     tournamentId: formattedTournamentId,
@@ -110,13 +119,9 @@ export const clearPlayer = async (
     state.game.tournamentsModel[tournamentId].playerIds;
   if (playerIdsInTournament.length === 1) {
     if (playerIdsInTournament[0] === playerId) {
-      dispatch.game.updateTournamentReducer({
+      dispatch.game.setStateTournament({
         tournamentId,
-        tournament: {
-          ...state.game.tournamentsModel[tournamentId],
-          state: AppTournamentState.Empty,
-          playerIds: [],
-        },
+        tournamentState: AppTournamentState.Empty,
       });
     }
   }
