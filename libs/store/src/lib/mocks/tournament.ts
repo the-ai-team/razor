@@ -1,12 +1,11 @@
 import {
-  AppPlayerId,
   AppTournament,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
 import { giveZeroPadding } from '@razor/util';
 import { range } from 'lodash';
-import { mockPlayerId } from '../mocks';
+import { mockPlayerId } from './player';
 import { mockRaceId } from './race';
 
 export const mockTournamentId = (n: number): AppTournamentId => {

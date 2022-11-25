@@ -39,6 +39,9 @@ export const M_TR3_RACE_ID3 = mockRaceId('T:testTR03', 3);
 export const M_RACE_TEXT0 =
   'A brian sees an actor as a whinny mirror. Galleies are foetid colds. Extending this logic, their laborer was, in this moment, a disguised century. Authors often misinterpret the trade as a crudest band, when in actuality it feels more like a kooky richard. A sociology can hardly be considered a proxy plow without also being a tempo. Some posit the howling ketchup to be less than gardant. A german can hardly be considered a scleroid mosque without also being a fireman. The first colloid lotion is, in its own way, a pantry.';
 
+export const M_RACE_TEXT1 =
+  "A vinyl is a pan's cotton. Their trowel was, in this moment, a taintless brass. In modern times the dam grenade reveals itself as an unfree gander to those who look. Seaborne edwards show us how answers can be noses. Some caddish sodas are thought of simply as januaries. The xyloid odometer reveals itself as a masking airbus to those who look. A good-bye is an oily persian. However, the scorpions could be said to resemble stagnant amusements.";
+
 /** Generate race */
 export const mockRace = (
   pIdRange: [number, number],
