@@ -3,15 +3,16 @@
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {}
+    },
+    {
       "files": ["*.ts", "*.tsx"],
-      "rules": {
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          { "allowTypedFunctionExpressions": true }
-        ],
-        "@typescript-eslint/no-explicit-any": "error",
-        "no-unused-vars": "error"
-      }
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
     }
   ]
 }
