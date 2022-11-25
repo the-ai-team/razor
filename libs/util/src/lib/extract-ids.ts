@@ -11,6 +11,14 @@ export const extractId = (
   outputIdType: extractIdType,
 ) => {
   let outputId = '';
+  if (inputIdType === outputIdType) {
+    return inputId;
+  }
+
+  const validInput = checkValidityOfId(inputIdType, inputId);
+  if (!validInput) {
+    return 'invalidInput';
+  }
 
   const splitedId = inputId.split('-');
   switch (outputIdType) {
@@ -37,8 +45,21 @@ export const extractId = (
   }
 
   if (outputId === 'error') {
-    throw new Error('Invalid inputIdType or outputIdType');
+    return 'invalidType';
   }
 
   return outputId;
+};
+
+export const checkValidityOfId = (type: extractIdType, id: string) => {
+  switch (type) {
+    case extractIdType.tournament:
+      return id.match(/^T:[a-zA-Z0-9]{8}$/);
+    case extractIdType.player:
+      return id.match(/^P:[a-zA-Z0-9]{8}$/);
+    case extractIdType.race:
+      return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}$/);
+    case extractIdType.playerLog:
+      return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}-P:[a-zA-Z0-9]{8}$/);
+  }
 };
