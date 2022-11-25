@@ -1,23 +1,25 @@
 import {
+  AppFinishedLeaderboardEntry,
   AppFinishedPlayerValues,
   AppLeaderboard,
-  AppLeaderboardEntry,
   AppPlayerId,
   AppPlayerLog,
   AppPlayerLogId,
   AppPlayerLogs,
   AppPlayerStatus,
   AppRaceId,
+  AppTimeoutLeaderboardEntry,
   AppTimeoutPlayerValues,
 } from '@razor/models';
-import { extractId, extractIdType } from './extractIds';
+import { extractId, extractIdType } from './extract-ids';
 
 export const generateLeaderboard = (
   playerLogs: AppPlayerLogs,
   raceId: AppRaceId,
   raceTextLength: number,
 ): AppLeaderboard => {
-  const leaderboardEntries: AppLeaderboard = [];
+  const completeEntries: AppFinishedLeaderboardEntry[] = [];
+  const timeoutEntries: AppTimeoutLeaderboardEntry[] = [];
 
   for (const playerLogId in playerLogs) {
     const raceIdOfPlayerLog: AppRaceId = extractId(
@@ -68,19 +70,27 @@ export const generateLeaderboard = (
         timeoutPlayerValues = { distance };
       }
     }
-    const leaderboardEntry: AppLeaderboardEntry = {
-      playerId: playerIdOfPlayerLog,
-      status:
-        playerLastTextLength === raceTextLength
-          ? AppPlayerStatus.Complete
-          : AppPlayerStatus.Timeout,
-      values:
-        playerLastTextLength === raceTextLength
-          ? finishedPlayerValues
-          : timeoutPlayerValues,
-    };
-    leaderboardEntries.push(leaderboardEntry);
+    if (playerLastTextLength === raceTextLength) {
+      completeEntries.push({
+        playerId: playerIdOfPlayerLog,
+        status: AppPlayerStatus.Complete,
+        values: finishedPlayerValues,
+      });
+    } else {
+      timeoutEntries.push({
+        playerId: playerIdOfPlayerLog,
+        status: AppPlayerStatus.Timeout,
+        values: timeoutPlayerValues,
+      });
+    }
   }
+
+  completeEntries.sort((a, b) => b.values.wpm - a.values.wpm);
+  timeoutEntries.sort((a, b) => b.values.distance - a.values.distance);
+  const leaderboardEntries: AppLeaderboard = [
+    ...completeEntries,
+    ...timeoutEntries,
+  ];
   return leaderboardEntries;
 };
 
