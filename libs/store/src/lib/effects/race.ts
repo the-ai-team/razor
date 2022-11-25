@@ -2,7 +2,6 @@ import {
   AppPlayer,
   AppPlayerId,
   AppPlayerProfiles,
-  AppPlayers,
   AppPlayerState,
   AppRace,
   AppRaceId,
@@ -17,12 +16,12 @@ import {
   generateLeaderboard,
   giveZeroPadding,
 } from '@razor/util';
-import { playerNotFound, tournamentNotFound, raceNotFound } from '../raisers';
 import {
   endCountdownPayload,
   endRacePayload,
   startCountdownPayload,
 } from '../payloads';
+import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
 //TODO: should move this to server later

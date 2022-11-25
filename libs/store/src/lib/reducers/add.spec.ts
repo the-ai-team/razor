@@ -725,8 +725,3 @@ describe('[Reducers] Add operations', () => {
     });
   });
 });
-
-//TODO: Add tests for check already exisitng data return the same state
-//TODO: init mock values as constants.
-//TODO: remove unwanted spread operators
-//TODO: write validity checkers for ids

@@ -164,8 +164,3 @@ export const sendTypeLog = async (
     playerLog,
   });
 };
-
-// TODO: update documentaion
-// TODO: check every log raiser return void
-// TODO: send func name with every raisers
-// TODO: When adding player if tournament state was empty then change it to lobby

@@ -392,5 +392,3 @@ describe('End Race', () => {
     expect(raceNotFound).toHaveBeenCalled();
   });
 });
-
-// TODO: if extra objects provided check whether they are changing.

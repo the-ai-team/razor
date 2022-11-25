@@ -138,5 +138,3 @@ describe('[Reducers] Logger', () => {
     });
   });
 });
-
-//TODO: give interfaces to expected result and initial values

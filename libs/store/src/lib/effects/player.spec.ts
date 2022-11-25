@@ -51,18 +51,6 @@ jest.mock('@razor/util', () => ({
   generateAvatarLink: jest.fn(() => M_PLAYER_AVATAR0),
 }));
 
-// TODO: remove if not needed
-// when(generateUid)
-//   .calledWith(AppIdNumberType.Tournament)
-//   .mockImplementation(async () => M_TOURNAMENT_ID1);
-// when(generateUid)
-//   .calledWith(AppIdNumberType.Player)
-//   .mockImplementation(async () => M_PLAYER_ID0);
-// when(generateUid)
-//   .calledWith(AppIdNumberType.General)
-//   .mockImplementation(async () => M_GENERAL_ID0);
-// (generateAvatarLink as jest.Mock).mockReturnValue(M_PLAYER_AVATAR0);
-
 jest.mock('../raisers', () => ({
   ...jest.requireActual('../raisers'),
   tournamentNotFound: jest.fn(),
@@ -414,7 +402,3 @@ describe('[Effects] Player Log', () => {
     });
   });
 });
-
-//TODO: add descriptive names, give them all same format
-//TODO: seprate mock objects from test files
-// TODO: rmeove unwanted models in initial values. initial state cannot change if its on test
