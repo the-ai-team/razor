@@ -1,7 +1,9 @@
-const averageWPM = 50;
+import { AVERAGE_WPM } from '@razor/constants';
+
+const averageWPM = AVERAGE_WPM;
 
 export const calculateTimeoutTimer = async (text: string) => {
-  const averageWordLength = text.length / 5;
-  const timeoutDuration = Math.ceil((averageWordLength / averageWPM) * 60);
+  const wordCount = text.length / 5;
+  const timeoutDuration = Math.ceil((wordCount / averageWPM) * 60);
   return timeoutDuration;
 };
