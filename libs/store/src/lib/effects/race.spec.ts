@@ -10,6 +10,7 @@ import {
 } from '@razor/models';
 import { generateLeaderboard } from '@razor/util';
 import { range } from 'lodash';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
   mockPlayerId,
   mockPlayerLogId,
@@ -34,7 +35,7 @@ import {
   M_TOURNAMENT_ID0,
   M_TR0_RACE_ID0,
   M_TR0_RACE_ID1,
-} from '../mocks';
+} from '@razor/mocks';
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { initializeStore } from '../store';
 

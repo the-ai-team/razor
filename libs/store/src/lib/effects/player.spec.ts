@@ -4,6 +4,7 @@ import {
   AppStateModel,
   AppTournamentState,
 } from '@razor/models';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
   mockPlayersModel,
   mockRace,
@@ -15,7 +16,7 @@ import {
   M_TOURNAMENT0,
   M_TOURNAMENT_ID0,
   M_TR0_RACE_ID0,
-} from '../mocks';
+} from '@razor/mocks';
 import {
   invalidPlayerName,
   invalidPlayerNameLength,
