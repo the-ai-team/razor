@@ -3,7 +3,7 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-import { giveZeroPadding } from '@razor/util';
+import { giveZeroPadding } from './give-zero-padding';
 import { range } from 'lodash';
 import { mockPlayerId } from './player';
 import { mockRaceId } from './race';
