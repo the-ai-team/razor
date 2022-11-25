@@ -1,4 +1,5 @@
 import { TextEncoder } from 'util';
+global.TextEncoder = TextEncoder;
 
 export const generateAvatarLink = async (
   playerName: string,
@@ -9,10 +10,10 @@ export const generateAvatarLink = async (
   return image;
 };
 
-function bytesToHex(bytes: Uint8Array) {
+const bytesToHex = (bytes: Uint8Array) => {
   return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
-}
+};
 
-function stringToUTF8Bytes(text: string) {
+const stringToUTF8Bytes = (text: string) => {
   return new TextEncoder().encode(text);
-}
+};
