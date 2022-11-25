@@ -19,6 +19,13 @@ export interface AppLeaderboardEntry {
   status: AppPlayerStatus;
   values: AppFinishedPlayerValues | AppTimeoutPlayerValues;
 }
+export interface AppFinishedLeaderboardEntry extends AppLeaderboardEntry {
+  values: AppFinishedPlayerValues;
+}
+export interface AppTimeoutLeaderboardEntry extends AppLeaderboardEntry {
+  values: AppTimeoutPlayerValues;
+}
+
 export type AppLeaderboard = AppLeaderboardEntry[];
 
 export type AppLeaderboards = Record<AppRaceId, AppLeaderboard>;
