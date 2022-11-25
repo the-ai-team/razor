@@ -5,12 +5,11 @@ export const raceNotFound = async (
   dispatch: Dispatch,
   rid: string,
   additionalMessage?: string,
-) => {
+): Promise<void> => {
   dispatch.game.sendLogMessage({
     message: `Race with id ${rid} does not exist`,
     code: AppErrorCode.RaceNotExists,
     related: additionalMessage ? additionalMessage : '',
     type: AppMessageLogType.Error,
   });
-  return;
 };

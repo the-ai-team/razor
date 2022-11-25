@@ -57,7 +57,7 @@ describe('[Reducers] Logger', () => {
   it('should remove older logs if max logs count exceed when dispatching errors to the state', () => {
     //Initialize store with 1024 logs
     const maxLogs = MAX_ERR_LOGS_COUNT;
-    const errorLogsGenerator = (count: number) => {
+    const errorLogsGenerator = (count: number): AppErrorLogs => {
       const codes = [
         AppErrorCode.TournamentNotExists,
         AppErrorCode.PlayerNotExists,

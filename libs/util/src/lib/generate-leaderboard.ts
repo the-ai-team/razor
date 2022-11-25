@@ -143,7 +143,7 @@ const calculateQuarterWPM = (
   endTimestamp: number,
   startTextLength: number,
   endTextLength: number,
-) => {
+): number => {
   const timeElapsed = endTimestamp - startTimestamp;
   const textLength = endTextLength - startTextLength;
   const wpm = textLength / 5 / (timeElapsed / 60);

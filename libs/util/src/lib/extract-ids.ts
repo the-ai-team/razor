@@ -1,3 +1,10 @@
+import {
+  AppPlayerId,
+  AppPlayerLogId,
+  AppRaceId,
+  AppTournamentId,
+} from '@razor/models';
+
 export enum extractIdType {
   tournament = 'tournament',
   player = 'player',
@@ -9,7 +16,7 @@ export const extractId = (
   inputId: string,
   inputIdType: extractIdType,
   outputIdType: extractIdType,
-) => {
+): string | AppTournamentId | AppPlayerId | AppRaceId | AppPlayerLogId => {
   let outputId = '';
   if (inputIdType === outputIdType) {
     return inputId;
@@ -51,7 +58,10 @@ export const extractId = (
   return outputId;
 };
 
-export const checkValidityOfId = (type: extractIdType, id: string) => {
+export const checkValidityOfId = (
+  type: extractIdType,
+  id: string,
+): RegExpMatchArray | null => {
   switch (type) {
     case extractIdType.tournament:
       return id.match(/^T:[a-zA-Z0-9]{8}$/);

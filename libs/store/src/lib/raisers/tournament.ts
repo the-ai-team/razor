@@ -5,7 +5,7 @@ export const tournamentNotFound = async (
   dispatch: Dispatch,
   tid: string,
   additionalMessage?: string,
-) => {
+): Promise<void> => {
   dispatch.game.sendLogMessage({
     message: `Tournament with id ${tid} does not exist`,
     code: AppErrorCode.TournamentNotExists,

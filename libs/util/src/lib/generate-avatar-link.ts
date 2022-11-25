@@ -10,10 +10,10 @@ export const generateAvatarLink = async (
   return image;
 };
 
-const bytesToHex = (bytes: Uint8Array) => {
+const bytesToHex = (bytes: Uint8Array): string => {
   return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
 };
 
-const stringToUTF8Bytes = (text: string) => {
+const stringToUTF8Bytes = (text: string): Uint8Array => {
   return new TextEncoder().encode(text);
 };
