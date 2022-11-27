@@ -12,7 +12,7 @@ describe('[Effects] Logger', () => {
       const code = AppErrorCode.PlayerNotExists;
       const message = 'Player with id P:notExist does not exist.';
       const related = 'While removing player';
-      store.dispatch.game.sendLogMessage({
+      await store.dispatch.game.sendLogMessage({
         message: message,
         code: code,
         related: related,
