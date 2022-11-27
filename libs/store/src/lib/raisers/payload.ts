@@ -12,5 +12,4 @@ export const payloadNotProvided = async (
     related: '',
     type: AppMessageLogType.Error,
   });
-  return;
 };

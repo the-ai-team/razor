@@ -32,5 +32,4 @@ export const invalidPlayerNameLength = async (
     related: '',
     type: AppMessageLogType.Error,
   });
-  return;
 };
