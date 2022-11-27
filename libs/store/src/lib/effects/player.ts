@@ -72,6 +72,19 @@ export const joinPlayer = async (
       },
     });
   }
+
+  // Converting tournament state to "Lobby" from "Empty" if it had no players.
+  if (
+    state.game.tournamentsModel[tid as AppTournamentId] &&
+    state.game.tournamentsModel[tid as AppTournamentId].playerIds.length == 0
+  ) {
+    dispatch.game.setStateTournament({
+      tournamentId: formattedTournamentId,
+      tournamentState: AppTournamentState.Lobby,
+    });
+  }
+
+  // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
   if (
     state.game.tournamentsModel[tid as AppTournamentId] &&
     state.game.tournamentsModel[tid as AppTournamentId].playerIds.length >= 1
@@ -81,6 +94,7 @@ export const joinPlayer = async (
       tournamentState: AppTournamentState.Ready,
     });
   }
+
   //Joining tournament
   dispatch.game.addPlayerReducer({
     tournamentId: formattedTournamentId,
