@@ -90,7 +90,47 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
+    it('(with valid tournament id and tournament is empty) => Add player to playersModel and existing tournamentsModel, Change tournament state to Lobby.', async () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...mockTournament(M_TOURNAMENT_ID0, [0, 1], [0, 0]),
+            state: AppTournamentState.Empty,
+          },
+        },
+        racesModel: {
+          [M_TR0_RACE_ID0]: mockRace([1, 3]),
+        },
+      };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
 
+      await store.dispatch.game.joinPlayer({
+        tid: M_TOURNAMENT_ID0,
+        playerName: M_PLAYER_NAME0,
+      });
+      const storeState = store.getState();
+
+      const expectedResult: AppStateModel = {
+        ...initialValues,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
+            playerIds: [
+              ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].playerIds,
+              M_PLAYER_ID0,
+            ],
+            state: AppTournamentState.Lobby,
+          },
+        },
+        playersModel: mockPlayersModel([0, 1], M_TOURNAMENT_ID0),
+      };
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
+    });
     it('(with valid tournament id) => Add player to playersModel and existing tournamentsModel', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
