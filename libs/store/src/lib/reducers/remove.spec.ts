@@ -15,8 +15,7 @@ const initialState: AppStateModel = {
 };
 
 describe('[Reducers] Remove operations', () => {
-  // ====== Remove Player ====== //
-  it('Remove player', () => {
+  it('(id) => Remove player', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       playersModel: {
@@ -78,8 +77,7 @@ describe('[Reducers] Remove operations', () => {
     expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
-  // ===== Remove Tournament ===== //
-  it('Remove tournament', () => {
+  it('(id) => Remove tournament', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       tournamentsModel: {

@@ -16,9 +16,8 @@ const initialState: AppStateModel = {
 };
 
 describe('[Reducers] Add operations', () => {
-  // ====== Add Tournament ====== //
   describe('Add tournament', () => {
-    it('(with id) => Add new tournament', () => {
+    it('(id) => Add new tournament to tournaments model', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
@@ -46,7 +45,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
     });
-    it('(existing tournament) => Return same state', () => {
+    it('(existing id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -93,9 +92,8 @@ describe('[Reducers] Add operations', () => {
     });
   });
 
-  // ====== Add Race ====== //
   describe('Add race', () => {
-    it('(with id) => Add new race', () => {
+    it('(id) => Add new race to races model', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -173,7 +171,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
     });
-    it('(not existing tournament) => Return same state', () => {
+    it('(not existing related tournament) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -214,7 +212,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(existing race) => Return same state', () => {
+    it('(existing id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -276,7 +274,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(race id not provided) => Return same state', () => {
+    it('(without id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -321,9 +319,8 @@ describe('[Reducers] Add operations', () => {
     });
   });
 
-  // ====== Add Player ====== //
   describe('Add Player', () => {
-    it('(with id) => Add new player, add player id to tournament', () => {
+    it('(id) => Add new player, add player id to tournament', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -378,7 +375,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
     });
-    it('(player id not provided) => Return same state', () => {
+    it('(without id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -410,7 +407,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(tournament id not provided) => Return same state', () => {
+    it('(without tournament id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -442,7 +439,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(tournament does not exists) => Return same state', () => {
+    it('(not existing related tournament) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -471,7 +468,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(player already exists) => Return same state', () => {
+    it('(existing id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -509,7 +506,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(with valid id of empty tournament) => Add new player, add player id to empty tournament', () => {
+    it('(all valid, empty tournament) => Add new player, add player id to tournament, set tournament state to lobby', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -517,7 +514,7 @@ describe('[Reducers] Add operations', () => {
           'T:testTOUR': {
             playerIds: [],
             raceIds: [],
-            state: AppTournamentState.Lobby,
+            state: AppTournamentState.Empty,
           },
         },
       };
@@ -543,10 +540,8 @@ describe('[Reducers] Add operations', () => {
           ...initialValues.tournamentsModel,
           'T:testTOUR': {
             ...initialValues.tournamentsModel['T:testTOUR'],
-            playerIds: [
-              ...initialValues.tournamentsModel['T:testTOUR'].playerIds,
-              'P:testPLAY',
-            ],
+            playerIds: ['P:testPLAY'],
+            state: AppTournamentState.Lobby,
           },
         },
         playersModel: {
@@ -566,9 +561,8 @@ describe('[Reducers] Add operations', () => {
     });
   });
 
-  // ====== Add Leaderboard ====== //
   describe('Add Leaderboard', () => {
-    it('(with id)', () => {
+    it('(id) => Add leaderboard', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
@@ -673,7 +667,7 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('id already exists => Return same state', () => {
+    it('(existing id) => Return same state', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         leaderboardsModel: {

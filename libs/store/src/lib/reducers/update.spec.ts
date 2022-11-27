@@ -15,8 +15,7 @@ const initialState: AppStateModel = {
 };
 
 describe('[Reducers] Update operations', () => {
-  // ====== Update Plyaer ====== //
-  it('Update Player', () => {
+  it('(id) => Update Player', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       playersModel: {
@@ -66,8 +65,7 @@ describe('[Reducers] Update operations', () => {
     });
   });
 
-  // ====== Update Tournament ====== //
-  it('Update tournament', () => {
+  it('(id) => Update tournament', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       tournamentsModel: {
@@ -83,13 +81,10 @@ describe('[Reducers] Update operations', () => {
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
 
-    // updateTournamnetReducer is only changing the state of the tournament.
-    //
-    // adding plyaer ids or race ids to the tournament,
-    // is done in the addPlayer and addRace reducers respectively.
-    //
-    // when the race start effect calls,
-    // it will recall both updateTournament and addRace reducers separately.
+    /** updateTournamnetReducer is only changing the state of the tournament.
+     * adding plyaer ids or race ids to the tournament, is done in the addPlayer and addRace reducers respectively.
+     * when the race start effect calls, it will recall both updateTournament and addRace reducers separately.
+     */
     store.dispatch.game.updateTournamentReducer({
       tournamentId: 'T:testTOUR',
       tournament: {
@@ -115,8 +110,7 @@ describe('[Reducers] Update operations', () => {
     expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
-  // ====== Update Race ====== //
-  it('Update race', () => {
+  it('(id) => Update race', () => {
     const initialValues: AppStateModel = {
       ...initialState,
       racesModel: {
@@ -184,94 +178,101 @@ describe('[Reducers] Update operations', () => {
     expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
-  // ====== Update PlayerLog ====== //
-  it('Update first playerLog', () => {
-    const initialValues: AppStateModel = {
-      ...initialState,
-      playerLogsModel: {
-        ...initialState.playerLogsModel,
-      },
-    };
+  describe('Update player logs', () => {
+    it('(id, empty player logs) => Add first player log to player logs array in player logs model', () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        playerLogsModel: {
+          ...initialState.playerLogsModel,
+        },
+      };
 
-    const store = initializeStore(initialValues);
-    const initialStoreState = store.getState();
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
 
-    store.dispatch.game.updatePlayerLogReducer({
-      playerLogId: 'T:testTOUR-R:001-P:testPLAY',
-      playerLog: {
-        timestamp: 1234567000,
-        textLength: 0,
-      },
+      store.dispatch.game.updatePlayerLogReducer({
+        playerLogId: 'T:testTOUR-R:001-P:testPLAY',
+        playerLog: {
+          timestamp: 1234567000,
+          textLength: 0,
+        },
+      });
+
+      const expectedResult = {
+        ...initialValues,
+        playerLogsModel: {
+          ...initialValues.playerLogsModel,
+          'T:testTOUR-R:001-P:testPLAY': [
+            {
+              timestamp: 1234567000,
+              textLength: 0,
+            },
+          ],
+        },
+      };
+
+      const storeState = store.getState();
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
     });
+    it('(id) => Push new player log to existing player logs array in player logs model', () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        playerLogsModel: {
+          ...initialState.playerLogsModel,
+          'T:testTOUR-R:001-P:testPLAY': [
+            {
+              timestamp: 1234567000,
+              textLength: 0,
+            },
+            {
+              timestamp: 1234567002,
+              textLength: 8,
+            },
+            {
+              timestamp: 1234567005,
+              textLength: 14,
+            },
+            {
+              timestamp: 1234567008,
+              textLength: 20,
+            },
+          ],
+        },
+      };
 
-    const expectedResult = {
-      ...initialValues,
-      playerLogsModel: {
-        ...initialValues.playerLogsModel,
-        'T:testTOUR-R:001-P:testPLAY': [
-          {
-            timestamp: 1234567000,
-            textLength: 0,
-          },
-        ],
-      },
-    };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
 
-    const storeState = store.getState();
-    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
-  });
-  it('Update playerLog', () => {
-    const initialValues: AppStateModel = {
-      ...initialState,
-      playerLogsModel: {
-        ...initialState.playerLogsModel,
-        'T:testTOUR-R:001-P:testPLAY': [
-          {
-            timestamp: 1234567000,
-            textLength: 0,
-          },
-          {
-            timestamp: 1234567002,
-            textLength: 8,
-          },
-          {
-            timestamp: 1234567005,
-            textLength: 14,
-          },
-          {
-            timestamp: 1234567008,
-            textLength: 20,
-          },
-        ],
-      },
-    };
+      store.dispatch.game.updatePlayerLogReducer({
+        playerLogId: 'T:testTOUR-R:001-P:testPLAY',
+        playerLog: {
+          timestamp: 1234567010,
+          textLength: 26,
+        },
+      });
 
-    const store = initializeStore(initialValues);
-    const initialStoreState = store.getState();
+      const expectedResult = {
+        ...initialValues,
+        playerLogsModel: {
+          ...initialValues.playerLogsModel,
+          'T:testTOUR-R:001-P:testPLAY': [
+            ...initialValues.playerLogsModel['T:testTOUR-R:001-P:testPLAY'],
+            {
+              timestamp: 1234567010,
+              textLength: 26,
+            },
+          ],
+        },
+      };
 
-    store.dispatch.game.updatePlayerLogReducer({
-      playerLogId: 'T:testTOUR-R:001-P:testPLAY',
-      playerLog: {
-        timestamp: 1234567010,
-        textLength: 26,
-      },
+      const storeState = store.getState();
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
     });
-
-    const expectedResult = {
-      ...initialValues,
-      playerLogsModel: {
-        ...initialValues.playerLogsModel,
-        'T:testTOUR-R:001-P:testPLAY': [
-          ...initialValues.playerLogsModel['T:testTOUR-R:001-P:testPLAY'],
-          {
-            timestamp: 1234567010,
-            textLength: 26,
-          },
-        ],
-      },
-    };
-
-    const storeState = store.getState();
-    expect(storeState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 });

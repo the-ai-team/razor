@@ -23,8 +23,8 @@ describe('[Reducers] Logger', () => {
   beforeEach(() => {
     jest.resetModules();
   });
-  // ====== Log Error ====== //
-  it('should dispatch new log to the state', () => {
+
+  it('(id) => Add new log to logs model', () => {
     const initialValues = initialState;
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
@@ -54,9 +54,16 @@ describe('[Reducers] Logger', () => {
     expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
   });
 
-  it('should remove older logs if max logs count exceed when dispatching errors to the state', () => {
-    //Initialize store with 1024 logs
+  it('(all valid, logs exceeding max limit) => Remove older logs, Add new log to logs model', () => {
     const maxLogs = MAX_ERR_LOGS_COUNT;
+
+    // TODO: move function to mocks
+    /** Generate sample error logs.
+     * Return error log with given length.
+     *
+     * @param {number} count - Log length
+     * @returns {AppErrorLogs} - Mock error logs
+     */
     const errorLogsGenerator = (count: number): AppErrorLogs => {
       const codes = [
         AppErrorCode.TournamentNotExists,
@@ -83,7 +90,9 @@ describe('[Reducers] Logger', () => {
       }
       return errorLogs;
     };
-    const initialErrorLogs = errorLogsGenerator(maxLogs + 10); //Adding additional logs to check the oldest log is removed while the logs count is exceeding the max logs count
+
+    // Adding few additional logs to check the every older logs which exceeding limit are removed.
+    const initialErrorLogs = errorLogsGenerator(maxLogs + 10);
 
     const initialValues: AppStateModel = {
       ...initialState,
@@ -93,13 +102,14 @@ describe('[Reducers] Logger', () => {
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
 
-    //Initilize a log which is ready to be dispatched
+    // Initilize a log which is ready to be dispatched.
     const newErrorLog: AppErrorLog = {
       message: 'Tournament with id T:testTOR3 does not exist',
       code: AppErrorCode.TournamentNotExists,
       related: '',
     };
 
+    // Initilaize error logs model with initial logs.
     let errorLogs: AppErrorLogs = {
       ...initialErrorLogs,
     };
@@ -114,13 +124,13 @@ describe('[Reducers] Logger', () => {
       logDiff++;
     }
 
-    // Adding the new log to the logs
+    // Adding the newly created log to the logs model
     errorLogs = {
       ...errorLogs,
       ['1234567890-test9999']: newErrorLog,
     };
 
-    // Dispatch the new log to the state
+    // Dispatch the new error logs to the state
     store.dispatch.game.logErrorReducer({
       errorLog: newErrorLog,
       errorTimestamp: '1234567890-test9999',
