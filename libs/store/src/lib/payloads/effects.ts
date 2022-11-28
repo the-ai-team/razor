@@ -6,27 +6,33 @@ import {
 } from '@razor/models';
 
 //effectsPayloads
-export type joinPlayerPayload = {
+export type JoinPlayerPayload = {
   tid: string;
   playerName: string;
 };
-export type clearPlayerPayload = {
+
+export type ClearPlayerPayload = {
   playerId: AppPlayerId;
 };
-export type setReadyTournamentPayload = {
+
+export type SetReadyTournamentPayload = {
   tournamentId: AppTournamentId;
 };
-export type startCountdownPayload = {
+
+export type StartCountdownPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
 };
-export type endCountdownPayload = {
+
+export type EndCountdownPayload = {
   tournamentId: AppTournamentId;
 };
-export type endRacePayload = {
+
+export type EndRacePayload = {
   raceId: AppRaceId;
 };
-export type sendTypeLogPlayload = {
+
+export type SendTypeLogPlayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
   /** Timestamp, and text length from players machine */

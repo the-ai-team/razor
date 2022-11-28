@@ -1,4 +1,4 @@
-import { setReadyTournamentPayload } from '../payloads';
+import { SetReadyTournamentPayload } from '../payloads';
 import { Dispatch, RootState } from '../store';
 import {
   AppTournament,
@@ -9,7 +9,7 @@ import { tournamentNotFound } from '../loggers';
 
 export const setReadyTournament = async (
   dispatch: Dispatch,
-  payload: setReadyTournamentPayload,
+  payload: SetReadyTournamentPayload,
   state: RootState,
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;

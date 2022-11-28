@@ -1,12 +1,12 @@
 import { AppMessageLog } from '@razor/models';
 import {
-  clearPlayerPayload,
-  endCountdownPayload,
-  endRacePayload,
-  joinPlayerPayload,
-  sendTypeLogPlayload,
-  setReadyTournamentPayload,
-  startCountdownPayload,
+  ClearPlayerPayload,
+  EndCountdownPayload,
+  EndRacePayload,
+  JoinPlayerPayload,
+  SendTypeLogPlayload,
+  SetReadyTournamentPayload,
+  StartCountdownPayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
 import { sendLogMessage } from './logger';
@@ -15,18 +15,18 @@ import { endCoundown, endRace, startCountdown } from './race';
 import { setReadyTournament } from './tournament';
 
 export const effects = (dispatch: Dispatch) => ({
-  joinPlayer: (payload: joinPlayerPayload, state: RootState) =>
+  joinPlayer: (payload: JoinPlayerPayload, state: RootState) =>
     joinPlayer(dispatch, payload, state),
-  clearPlayer: (payload: clearPlayerPayload, state: RootState) =>
+  clearPlayer: (payload: ClearPlayerPayload, state: RootState) =>
     clearPlayer(dispatch, payload, state),
-  setReadyTournament: (payload: setReadyTournamentPayload, state: RootState) =>
+  setReadyTournament: (payload: SetReadyTournamentPayload, state: RootState) =>
     setReadyTournament(dispatch, payload, state),
-  startCountdown: (payload: startCountdownPayload, state: RootState) =>
+  startCountdown: (payload: StartCountdownPayload, state: RootState) =>
     startCountdown(dispatch, payload, state),
-  endCoundown: (payload: endCountdownPayload, state: RootState) =>
+  endCoundown: (payload: EndCountdownPayload, state: RootState) =>
     endCoundown(dispatch, payload, state),
-  endRace: (payload: endRacePayload, state: RootState) =>
+  endRace: (payload: EndRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
-  sendTypeLog: (payload: sendTypeLogPlayload) => sendTypeLog(dispatch, payload),
+  sendTypeLog: (payload: SendTypeLogPlayload) => sendTypeLog(dispatch, payload),
   sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
 });
