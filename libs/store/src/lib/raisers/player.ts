@@ -6,7 +6,7 @@ export const playerNotFound = async (
   pid: string,
   additionalMessage?: string,
 ): Promise<void> => {
-  dispatch.game.sendLogMessage({
+  await dispatch.game.sendLogMessage({
     message: `Player with id ${pid} does not exist`,
     code: AppErrorCode.PlayerNotExists,
     related: additionalMessage ? additionalMessage : '',
@@ -15,7 +15,7 @@ export const playerNotFound = async (
 };
 
 export const invalidPlayerName = async (dispatch: Dispatch): Promise<void> => {
-  dispatch.game.sendLogMessage({
+  await dispatch.game.sendLogMessage({
     message: 'Player name is invalid',
     code: AppErrorCode.InvalidPlayerName,
     related: '',
@@ -26,7 +26,7 @@ export const invalidPlayerName = async (dispatch: Dispatch): Promise<void> => {
 export const invalidPlayerNameLength = async (
   dispatch: Dispatch,
 ): Promise<void> => {
-  dispatch.game.sendLogMessage({
+  await dispatch.game.sendLogMessage({
     message: `Player name is too long or too short`,
     code: AppErrorCode.InvalidPlayerName,
     related: '',

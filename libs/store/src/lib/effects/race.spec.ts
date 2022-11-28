@@ -252,7 +252,7 @@ describe('[Effects] Race', () => {
   });
 
   describe('End Race Countdown', () => {
-    it('(race id) => End countdown', async () => {
+    it('(race id) => End countdown', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -272,7 +272,7 @@ describe('[Effects] Race', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.endCoundown({
+      store.dispatch.game.endCoundown({
         tournamentId: M_TOURNAMENT_ID0,
       });
       const storeState = store.getState();
@@ -292,14 +292,14 @@ describe('[Effects] Race', () => {
         game: expectedResult,
       });
     });
-    it('(not existing tournament) => Raise error', async () => {
+    it('(not existing tournament) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
       };
 
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.endCoundown({
+      store.dispatch.game.endCoundown({
         tournamentId: 'T:notExist',
       });
 
@@ -309,7 +309,7 @@ describe('[Effects] Race', () => {
 });
 
 describe('End Race', () => {
-  it("(race id) => End race, Set players' state to idle, Set tournament state to leaderboard", async () => {
+  it("(race id) => End race, Set players' state to idle, Set tournament state to leaderboard", () => {
     const initialPlayerLogs: AppPlayerLogs = {};
 
     for (const i of range(0, 4)) {
@@ -351,7 +351,7 @@ describe('End Race', () => {
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
 
-    await store.dispatch.game.endRace({
+    store.dispatch.game.endRace({
       raceId: M_TR0_RACE_ID0,
     });
     const storeState = store.getState();

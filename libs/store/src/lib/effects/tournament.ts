@@ -17,11 +17,11 @@ import { Dispatch, RootState } from '../store';
  * ### Related raisers
  * - tournamentNotFound
  */
-export const setTournamentState = async (
+export const setTournamentState = (
   dispatch: Dispatch,
   payload: SetTournamentStatePayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { tournamentId, tournamentState } = payload;
 
   if (!(tournamentId in state.game.tournamentsModel)) {

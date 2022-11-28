@@ -24,7 +24,7 @@ jest.mock('../raisers', () => ({
 
 describe('[Effects] Tournament', () => {
   describe('Set state', () => {
-    it('(id) => Change tournament state', async () => {
+    it('(id) => Change tournament state', () => {
       const initialValues = {
         ...initialState,
         tournamentsModel: {
@@ -36,7 +36,7 @@ describe('[Effects] Tournament', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.setTournamentState({
+      store.dispatch.game.setTournamentState({
         tournamentId: M_TOURNAMENT_ID0,
         tournamentState: AppTournamentState.Ready,
       });
@@ -57,7 +57,7 @@ describe('[Effects] Tournament', () => {
       });
     });
 
-    it('(invalid id) => Raise error', async () => {
+    it('(invalid id) => Raise error', () => {
       const initialValues = {
         ...initialState,
         tournamentsModel: {
@@ -67,7 +67,7 @@ describe('[Effects] Tournament', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.setTournamentState({
+      store.dispatch.game.setTournamentState({
         tournamentId: 'T:notExist',
         tournamentState: AppTournamentState.Ready,
       });

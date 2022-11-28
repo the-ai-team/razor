@@ -141,11 +141,11 @@ export const startCountdown = async (
  * ### Related raisers
  * - tournamentNotFound
  */
-export const endCoundown = async (
+export const endCoundown = (
   dispatch: Dispatch,
   payload: EndCountdownPayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { tournamentId } = payload;
 
   // If the tournament is not found, call the raiser.
@@ -185,11 +185,11 @@ export const endCoundown = async (
  * ### Related raisers
  * - raceNotFound
  */
-export const endRace = async (
+export const endRace = (
   dispatch: Dispatch,
   payload: EndRacePayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { raceId } = payload;
 
   // If the race is not found, call the raiser.

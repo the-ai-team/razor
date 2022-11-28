@@ -6,7 +6,7 @@ export const payloadNotProvided = async (
   dispatch: Dispatch,
   payloadName: string,
 ): Promise<void> => {
-  dispatch.game.sendLogMessage({
+  await dispatch.game.sendLogMessage({
     message: `[${funcName}] ${payloadName} is not provided`,
     code: AppErrorCode.PayloadNotProvided,
     related: '',

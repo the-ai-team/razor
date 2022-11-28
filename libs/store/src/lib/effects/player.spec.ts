@@ -210,7 +210,7 @@ describe('[Effects] Player', () => {
   });
 
   describe('Player Leave', () => {
-    it('(id) => Clear player', async () => {
+    it('(id) => Clear player', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -224,7 +224,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.clearPlayer({
+      store.dispatch.game.clearPlayer({
         playerId: M_PLAYER_ID0,
       });
       const storeState = store.getState();
@@ -241,7 +241,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(all valid, only player remaining) => Clear player, Set tournament to empty', async () => {
+    it('(all valid, only player remaining) => Clear player, Set tournament to empty', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -255,7 +255,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.clearPlayer({
+      store.dispatch.game.clearPlayer({
         playerId: M_PLAYER_ID0,
       });
       const storeState = store.getState();
@@ -275,7 +275,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(invalid id) => Raise error', async () => {
+    it('(invalid id) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -288,16 +288,16 @@ describe('[Effects] Player', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.clearPlayer({
+      store.dispatch.game.clearPlayer({
         playerId: 'P:thisIdDoesNotExist',
       });
       expect(playerNotFound).toHaveBeenCalled();
     });
-    it('(empty payload) => Raise error', async () => {
+    it('(empty payload) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await store.dispatch.game.clearPlayer({} as any);
+      store.dispatch.game.clearPlayer({} as any);
       expect(payloadNotProvided).toHaveBeenCalled();
     });
   });

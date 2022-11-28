@@ -6,7 +6,7 @@ export const raceNotFound = async (
   rid: string,
   additionalMessage?: string,
 ): Promise<void> => {
-  dispatch.game.sendLogMessage({
+  await dispatch.game.sendLogMessage({
     message: `Race with id ${rid} does not exist`,
     code: AppErrorCode.RaceNotExists,
     related: additionalMessage ? additionalMessage : '',

@@ -154,11 +154,11 @@ export const joinPlayer = async (
  * - payloadNotProvided
  * - playerNotFound
  */
-export const clearPlayer = async (
+export const clearPlayer = (
   dispatch: Dispatch,
   payload: ClearPlayerPayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { playerId } = payload;
 
   // If the player id is not provided, call the raiser.
@@ -210,11 +210,11 @@ export const clearPlayer = async (
  * - playerNotFound
  * - raceNotFound
  */
-export const sendTypeLog = async (
+export const sendTypeLog = (
   dispatch: Dispatch,
   payload: SendTypeLogPlayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { raceId, playerId, playerLog } = payload;
 
   // If the race id is not provided, call the raiser.
