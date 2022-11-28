@@ -64,11 +64,9 @@ export const startCountdown = async (
   }
 
   const numberOfRacesBefore =
-    state.game.tournamentsModel[tournamentId].raceIds.length;
+    state.game.tournamentsModel[tournamentId].raceIds.length || 0;
 
-  const raceIndex = numberOfRacesBefore
-    ? giveZeroPadding(numberOfRacesBefore.toString(), 3)
-    : '000';
+  const raceIndex = giveZeroPadding(numberOfRacesBefore.toString(), 3);
   const raceId: AppRaceId = `${tournamentId}-R:${raceIndex}`;
   const players: AppPlayerProfiles = {};
 
