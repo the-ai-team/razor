@@ -8,8 +8,8 @@ import {
   updateTournamentReducerPayload,
 } from '../payloads';
 
-/** Reducer effect for update a tournament in state model.
- * Tournament in tournaments model will be updated with given tournament.
+/** Reducer function for updating a tournament in the state model.
+ * Tournament in tournaments model will be updated with the given tournament.
  *
  * @param {AppStateModel} state - Current state model
  * @param {updateTournamentReducerPayload} payload - Payload for update tournament
@@ -20,7 +20,7 @@ export const updateTournamentReducer = (
   payload: updateTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
-
+  //TODO: if the tournament id not found, return the state
   /** State model after updating specific tournament in tournaments model. */
   const newState: AppStateModel = {
     ...state,
@@ -34,8 +34,8 @@ export const updateTournamentReducer = (
   return newState;
 };
 
-/** Reducer effect for update a race in state model.
- * Race in races model will be updated with given race.
+/** Reducer function for updating a race in the state model.
+ * Race in races model will be updated with the given race.
  *
  * @param {AppStateModel} state - Current state model
  * @param {updateRaceReducerPayload} payload - Payload for update race
@@ -46,7 +46,7 @@ export const updateRaceReducer = (
   payload: updateRaceReducerPayload,
 ): AppStateModel => {
   const { raceId, race } = payload;
-
+  //TODO: if race id not found, return state
   /** State model after updating specific race in races model. */
   const newState: AppStateModel = {
     ...state,
@@ -60,8 +60,8 @@ export const updateRaceReducer = (
   return newState;
 };
 
-/** Reducer effect for update a player in state model.
- * Player in players model will be updated with given player.
+/** Reducer function for updating a player in the state model.
+ * Player in players model will be updated with the given player.
  *
  * @param {AppStateModel} state - Current state model
  * @param {updatePlayerReducerPayload} payload - Payload for update player
@@ -71,6 +71,7 @@ export const updatePlayerReducer = (
   state: AppStateModel,
   payload: updatePlayerReducerPayload,
 ): AppStateModel => {
+  //TODO: if the player id is not found, return the state
   const { playerId, player } = payload;
 
   /** State model after updating specific player in players model. */
@@ -86,11 +87,11 @@ export const updatePlayerReducer = (
   return newState;
 };
 
-/** Reducer effect for update a player log in state model.
- * Player log in player logs model will be updated with given player log.
+/** Reducer function for updating a player log-in state model.
+ * Player log-in player logs model will be updated with the given player log.
  *
  * @param {AppStateModel} state - Current state model
- * @param {updatePlayerLogReducerPayload} payload - Payload for update player log
+ * @param {updatePlayerLogReducerPayload} payload - Payload for updating player log
  * @returns {AppStateModel} - New state model if successful, else current state model
  */
 export const updatePlayerLogReducer = (
@@ -98,8 +99,8 @@ export const updatePlayerLogReducer = (
   payload: updatePlayerLogReducerPayload,
 ): AppStateModel => {
   const { playerLogId, playerLog } = payload;
-
-  /** State model after updating specific player log in player logs model. */
+  //TODO: if player id is not found, return the state
+  /** State model after updating specific player log-in player logs model. */
   const newState: AppStateModel = {
     ...state,
     playerLogsModel: {

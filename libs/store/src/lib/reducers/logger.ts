@@ -5,9 +5,9 @@ import { AppErrorTimestamp, AppStateModel } from '@razor/models';
 import { omit } from 'lodash';
 import { logErrorReducerPayload } from '../payloads';
 
-/** Reducer effect for log an error to state model.
- * Error will be added to errors model.
- * If errors model is at max capacity, oldest errors will be removed.
+/** Reducer function for logging an error to state model.
+ * Error will be added to the errors model.
+ * If the errors model is at its max capacity, the oldest errors will be removed.
  
  * @param {AppStateModel} state - Current state model
  * @param {logErrorReducerPayload} payload - Payload for log error

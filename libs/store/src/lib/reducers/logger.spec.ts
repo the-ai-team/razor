@@ -59,7 +59,7 @@ describe('[Reducers] Logger', () => {
 
     // TODO: move function to mocks
     /** Generate sample error logs.
-     * Return error log with given length.
+     * Return error log with the given length.
      *
      * @param {number} count - Log length
      * @returns {AppErrorLogs} - Mock error logs
@@ -91,7 +91,7 @@ describe('[Reducers] Logger', () => {
       return errorLogs;
     };
 
-    // Adding few additional logs to check the every older logs which exceeding limit are removed.
+    // Adding a few additional logs to check every older log that exceeds the limit is removed.
     const initialErrorLogs = errorLogsGenerator(maxLogs + 10);
 
     const initialValues: AppStateModel = {
@@ -102,7 +102,7 @@ describe('[Reducers] Logger', () => {
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
 
-    // Initilize a log which is ready to be dispatched.
+    // Initilize a log that is ready to be dispatched.
     const newErrorLog: AppErrorLog = {
       message: 'Tournament with id T:testTOR3 does not exist',
       code: AppErrorCode.TournamentNotExists,

@@ -9,8 +9,8 @@ import {
   addTournamentReducerPayload,
 } from '../payloads';
 
-/** Reducer effect for add tournament to state model.
- * Tournament will be added to tournaments model.
+/** Reducer function for adding tournament to state model.
+ * Tournament will be added to the tournaments model.
  *
  * @param {AppStateModel} state - Current state model
  * @param {addTournamentReducerPayload} payload - Payload for add tournament
@@ -23,12 +23,12 @@ export const addTournamentReducer = (
   const { tournamentId, tournament } = payload;
   // If tournament id is provided.
   if (tournamentId) {
-    // If tournament already exists.
+    // If the tournament already exists.
     if (tournamentId in state.tournamentsModel) {
       return state;
     }
 
-    /** State model with tournamnet added to tournaments model with data assigned. */
+    /** State model with tournament added to tournaments model with data assigned. */
     const newState: AppStateModel = {
       ...state,
       tournamentsModel: {
@@ -42,11 +42,11 @@ export const addTournamentReducer = (
   }
 };
 
-/** Reducer effect for add race to state model.
- * Race will be added to races model and race id will be added to relevant tournament.
+/** Reducer function for adding race to state model.
+ * Race will be added to the races model and race id will be added to the relevant tournament.
  *
  * @param {AppStateModel} state - Current state model
- * @param {addRaceReducerPayload} payload - Payload for add race
+ * @param {addRaceReducerPayload} payload - Payload for adding race
  * @returns {AppStateModel} - New state model if successful, else current state model
  */
 export const addRaceReducer = (
@@ -63,7 +63,7 @@ export const addRaceReducer = (
 
   // If race id is provided.
   if (raceId) {
-    // If tournament does not exists.
+    // If the tournament does not exists.
     if (!(tournamentId in state.tournamentsModel)) {
       return state;
     }
@@ -72,7 +72,7 @@ export const addRaceReducer = (
       return state;
     }
 
-    /** State model with new race added to races model and race id added to tournament. */
+    /** State model with new race added to races model and race id added to the tournament. */
     const newState: AppStateModel = {
       ...state,
       tournamentsModel: {
@@ -93,8 +93,8 @@ export const addRaceReducer = (
   }
 };
 
-/** Reducer effect for add player to state model.
- * Player will be added to players model and player id will be added to relevant tournament.
+/** Reducer function for adding a player to the state model.
+ * Player will be added to the players model and the player id will be added to the relevant tournament.
  *
  * @param {AppStateModel} state - Current state model
  * @param {addLeaderboardReducerPayload} payload - Payload for add leaderboard
@@ -107,16 +107,16 @@ export const addPlayerReducer = (
   const { tournamentId, playerId, player } = payload;
   // If tournament id and player id is provided
   if (playerId && tournamentId) {
-    // If tournament does not exists.
+    // If the tournament does not exists.
     if (!(tournamentId in state.tournamentsModel)) {
       return state;
     }
-    // If player already exists.
+    // If the player already exists.
     if (playerId in state.playersModel) {
       return state;
     }
 
-    /** State model with new player added to players model and player id added to tournament. */
+    /** State model with new player added to players model and player id added to the tournament. */
     const newState: AppStateModel = {
       ...state,
       tournamentsModel: {
@@ -140,8 +140,8 @@ export const addPlayerReducer = (
   }
 };
 
-/** Reducer effect for add leaderboard to state model.
- * Leaderboard will be added to leaderboards model.
+/** Reducer function for adding leaderboard to state model.
+ * Leaderboard will be added to the leaderboards model.
  *
  * @param {AppStateModel} state - Current state model
  * @param {addLeaderboardReducerPayload} payload - Payload for add leaderboard

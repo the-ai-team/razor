@@ -82,8 +82,8 @@ describe('[Reducers] Update operations', () => {
     const initialStoreState = store.getState();
 
     /** updateTournamnetReducer is only changing the state of the tournament.
-     * adding plyaer ids or race ids to the tournament, is done in the addPlayer and addRace reducers respectively.
-     * when the race start effect calls, it will recall both updateTournament and addRace reducers separately.
+     * Adding player ids or race ids to the tournament, is done in the addPlayer and addRace reducers respectively.
+     * When the race start effect will be called, it will recall both updateTournament and addRace reducers separately.
      */
     store.dispatch.game.updateTournamentReducer({
       tournamentId: 'T:testTOUR',
