@@ -67,7 +67,7 @@ afterEach(() => {
 
 describe('[Effects] Player', () => {
   describe('Player Join', () => {
-    it('(without tournament ID) => Add player to playersModel, create tournament, add player to that tournament.', async () => {
+    it('(without tournament id) => Add player, Create tournament, Join player to the tournament.', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
@@ -90,7 +90,46 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(with valid tournament id and tournament is empty) => Add player to playersModel and existing tournamentsModel, Change tournament state to Lobby.', async () => {
+    it('(tournament id) => Add player, Join player to existing tournamentsModel', async () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 2]),
+        },
+        playersModel: mockPlayersModel([1, 2], M_TOURNAMENT_ID0),
+        racesModel: {
+          [M_TR0_RACE_ID0]: mockRace([1, 3]),
+        },
+      };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
+
+      await store.dispatch.game.joinPlayer({
+        tid: M_TOURNAMENT_ID0,
+        playerName: M_PLAYER_NAME0,
+      });
+      const storeState = store.getState();
+
+      const expectedResult: AppStateModel = {
+        ...initialValues,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
+            playerIds: [
+              ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].playerIds,
+              M_PLAYER_ID0,
+            ],
+            state: AppTournamentState.Ready,
+          },
+        },
+        playersModel: mockPlayersModel([0, 2], M_TOURNAMENT_ID0),
+      };
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
+    });
+    it('(all valid, empty tournament) => Add player, Join player to existing tournamentsModel, Change tournament state to Lobby.', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -131,47 +170,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(with valid tournament id) => Add player to playersModel and existing tournamentsModel', async () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        tournamentsModel: {
-          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 2]),
-        },
-        playersModel: mockPlayersModel([1, 2], M_TOURNAMENT_ID0),
-        racesModel: {
-          [M_TR0_RACE_ID0]: mockRace([1, 3]),
-        },
-      };
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      await store.dispatch.game.joinPlayer({
-        tid: M_TOURNAMENT_ID0,
-        playerName: M_PLAYER_NAME0,
-      });
-      const storeState = store.getState();
-
-      const expectedResult: AppStateModel = {
-        ...initialValues,
-        tournamentsModel: {
-          [M_TOURNAMENT_ID0]: {
-            ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
-            playerIds: [
-              ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].playerIds,
-              M_PLAYER_ID0,
-            ],
-            state: AppTournamentState.Ready,
-          },
-        },
-        playersModel: mockPlayersModel([0, 2], M_TOURNAMENT_ID0),
-      };
-      expect(storeState).toEqual({
-        ...initialStoreState,
-        game: expectedResult,
-      });
-    });
-
-    it('(with invalid tournament id) => Raise error', async () => {
+    it('(invalid tournament id) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
@@ -181,8 +180,7 @@ describe('[Effects] Player', () => {
       });
       expect(tournamentNotFound).toHaveBeenCalled();
     });
-
-    it('(with invalid player id length) => Raise error', async () => {
+    it('(invalid player name length) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
@@ -192,8 +190,7 @@ describe('[Effects] Player', () => {
       });
       expect(invalidPlayerNameLength).toHaveBeenCalled();
     });
-
-    it('(with invalid player id) => Raise error', async () => {
+    it('(invalid player name) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
@@ -203,8 +200,7 @@ describe('[Effects] Player', () => {
       });
       expect(invalidPlayerName).toHaveBeenCalled();
     });
-
-    it('(payload empty) => Raise error', async () => {
+    it('(empty payload) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -214,7 +210,7 @@ describe('[Effects] Player', () => {
   });
 
   describe('Player Leave', () => {
-    it('(valid id) => Clear player', async () => {
+    it('(id) => Clear player', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -245,7 +241,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(valid id and 1 player remaining) => Clear player, Set tournament to empty', async () => {
+    it('(all valid, only player remaining) => Clear player, Set tournament to empty', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -279,7 +275,6 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-
     it('(invalid id) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
@@ -298,7 +293,7 @@ describe('[Effects] Player', () => {
       });
       expect(playerNotFound).toHaveBeenCalled();
     });
-    it('(payload empty) => Raise error', async () => {
+    it('(empty payload) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -310,7 +305,7 @@ describe('[Effects] Player', () => {
 
 describe('[Effects] Player Log', () => {
   describe('Send Type Log', () => {
-    it('(valid race id and player id) => Send Type Log', async () => {
+    it('(race id & player id) => Send Type Log', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -358,7 +353,7 @@ describe('[Effects] Player Log', () => {
         game: expectedResult,
       });
     });
-    it('(player not exist) => Raise error', async () => {
+    it('(not existing player) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -387,7 +382,7 @@ describe('[Effects] Player Log', () => {
 
       expect(playerNotFound).toHaveBeenCalled();
     });
-    it('(race not exists) => Raise error', async () => {
+    it('(not existing race) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -414,7 +409,7 @@ describe('[Effects] Player Log', () => {
       });
       expect(raceNotFound).toHaveBeenCalled();
     });
-    it('(raceId payload empty) => Raise error', async () => {
+    it('(empty race id) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       await store.dispatch.game.sendTypeLog({
@@ -427,7 +422,7 @@ describe('[Effects] Player Log', () => {
       } as any);
       expect(payloadNotProvided).toHaveBeenCalled();
     });
-    it('(playerId payload empty) => Raise error', async () => {
+    it('(empty player id) => Raise error', async () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       await store.dispatch.game.sendTypeLog({

@@ -4,7 +4,7 @@ import { initializeStore } from '../store';
 
 describe('[Effects] Logger', () => {
   describe('Send log message', () => {
-    it('(error provided) => Send error to state, Log to console', async () => {
+    it('(error) => Send error to state, Log to console', async () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);
@@ -20,7 +20,7 @@ describe('[Effects] Logger', () => {
       });
       expect(consoleSpy).toBeCalledTimes(1);
     });
-    it('(warn provided) => Log to console', async () => {
+    it('(warn) => Log to console', async () => {
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);
@@ -36,7 +36,7 @@ describe('[Effects] Logger', () => {
       });
       expect(consoleSpy).toBeCalledTimes(1);
     });
-    it('(info provided) => Log to console', async () => {
+    it('(info) => Log to console', async () => {
       const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);

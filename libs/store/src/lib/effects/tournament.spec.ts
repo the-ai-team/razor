@@ -24,7 +24,7 @@ jest.mock('../raisers', () => ({
 
 describe('[Effects] Tournament', () => {
   describe('Set state', () => {
-    it('(valid id) => Change tournament state', async () => {
+    it('(id) => Change tournament state', async () => {
       const initialValues = {
         ...initialState,
         tournamentsModel: {

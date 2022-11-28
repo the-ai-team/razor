@@ -84,7 +84,7 @@ describe('[Effects] Race', () => {
       [M_TOURNAMENT_ID0]: M_TOURNAMENT0,
     };
 
-    describe('(with valid tournamentId & playerId)', () => {
+    describe('(tournamentId & playerId)', () => {
       describe.each([
         [
           'First race of the tournament',
@@ -178,7 +178,7 @@ describe('[Effects] Race', () => {
       );
     });
 
-    it('(tournament not exists) => Raise error', async () => {
+    it('(not existing tournament) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -200,7 +200,7 @@ describe('[Effects] Race', () => {
       expect(tournamentNotFound).toHaveBeenCalled();
     });
 
-    it('(player not exists) => Raise error', async () => {
+    it('(not existing player) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -222,7 +222,7 @@ describe('[Effects] Race', () => {
       expect(playerNotFound).toHaveBeenCalled();
     });
 
-    it('(player missing while adding to race) => Raise error', async () => {
+    it('(missing player, but in tournament) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -252,7 +252,7 @@ describe('[Effects] Race', () => {
   });
 
   describe('End Race Countdown', () => {
-    it('(with valid raceId)', async () => {
+    it('(race id) => End countdown', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -292,7 +292,7 @@ describe('[Effects] Race', () => {
         game: expectedResult,
       });
     });
-    it('(tournament not exists) => Raise error', async () => {
+    it('(not existing tournament) => Raise error', async () => {
       const initialValues: AppStateModel = {
         ...initialState,
       };
@@ -309,7 +309,7 @@ describe('[Effects] Race', () => {
 });
 
 describe('End Race', () => {
-  it('(with valid raceId) => End race, Set player state to idle. Set tournament state to leaderboard', async () => {
+  it("(race id) => End race, Set players' state to idle, Set tournament state to leaderboard", async () => {
     const initialPlayerLogs: AppPlayerLogs = {};
 
     for (const i of range(0, 4)) {
@@ -382,7 +382,7 @@ describe('End Race', () => {
     });
   });
 
-  it('(race not exists) => Raise error', async () => {
+  it('(not existing race) => Raise error', async () => {
     const initialValues = initialState;
     const store = initializeStore(initialValues);
     await store.dispatch.game.endRace({
