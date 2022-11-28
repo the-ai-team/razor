@@ -7,6 +7,20 @@ import { setTournamentStatePayload } from '../payloads';
 import { tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
+/** Effect function for setting tournament state.
+ * Run the validation for the received payload.
+ * If the tournament is found, then change the state of the tournament.
+ *
+ * @param {Dispatch} dispatch - The dispatch function of the store.
+ * @param {setTournamentStatePayload} payload - The payload of the action.
+ * @param {RootState} state - The state of the store.
+ *
+ * ### Related reducers and effects
+ * - updateTournamentReducer
+ *
+ * ### Related raisers
+ * - tournamentNotFound
+ */
 export const setStateTournament = async (
   dispatch: Dispatch,
   payload: setTournamentStatePayload,

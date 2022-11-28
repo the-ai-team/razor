@@ -15,6 +15,10 @@ import { clearPlayer, joinPlayer, sendTypeLog } from './player';
 import { endCoundown, endRace, startCountdown } from './race';
 import { setStateTournament } from './tournament';
 
+/** Effects functions of the store
+ *
+ * Effects are async calculating and generating operations which will pass the data to the reducers to dispatch to the store.
+ */
 export const effects = (dispatch: Dispatch) => ({
   joinPlayer: (payload: joinPlayerPayload, state: RootState) =>
     joinPlayer(dispatch, payload, state),
