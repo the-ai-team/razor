@@ -2,7 +2,6 @@
 
 import {
   AppPlayer,
-  AppPlayerId,
   AppPlayerProfiles,
   AppPlayerState,
   AppRace,
@@ -49,15 +48,7 @@ export const startCountdown = async (
   payload: StartCountdownPayload,
   state: RootState,
 ): Promise<void> => {
-  const {
-    tournamentId,
-    playerId,
-    raceText,
-  }: {
-    tournamentId: AppTournamentId;
-    playerId: AppPlayerId;
-    raceText: string;
-  } = payload;
+  const { tournamentId, playerId, raceText } = payload;
 
   if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `Started by: ${playerId}`);
@@ -157,7 +148,7 @@ export const endCoundown = async (
   payload: EndCountdownPayload,
   state: RootState,
 ): Promise<void> => {
-  const { tournamentId }: { tournamentId: AppTournamentId } = payload;
+  const { tournamentId } = payload;
 
   // If the tournament is not found, call the raiser.
   if (!state.game.tournamentsModel[tournamentId]) {
@@ -201,7 +192,7 @@ export const endRace = async (
   payload: EndRacePayload,
   state: RootState,
 ): Promise<void> => {
-  const { raceId }: { raceId: AppRaceId } = payload;
+  const { raceId } = payload;
 
   // If the race is not found, call the raiser.
   if (!(raceId in state.game.racesModel)) {

@@ -1,8 +1,4 @@
-import {
-  AppTournament,
-  AppTournamentId,
-  AppTournamentState,
-} from '@razor/models';
+import { AppTournament } from '@razor/models';
 import { SetTournamentStatePayload } from '../payloads';
 import { tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
@@ -26,11 +22,7 @@ export const setTournamentState = async (
   payload: SetTournamentStatePayload,
   state: RootState,
 ): Promise<void> => {
-  const {
-    tournamentId,
-    tournamentState,
-  }: { tournamentId: AppTournamentId; tournamentState: AppTournamentState } =
-    payload;
+  const { tournamentId, tournamentState } = payload;
 
   if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `While setting ready`);

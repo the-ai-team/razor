@@ -3,14 +3,17 @@
 import {
   AppIdNumberType,
   AppPlayerId,
-  AppPlayerLog,
   AppPlayerLogId,
   AppPlayerState,
-  AppRaceId,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
+import {
+  ClearPlayerPayload,
+  JoinPlayerPayload,
+  SendTypeLogPlayload,
+} from '../payloads';
 import {
   invalidPlayerName,
   invalidPlayerNameLength,
@@ -19,11 +22,6 @@ import {
   raceNotFound,
   tournamentNotFound,
 } from '../raisers';
-import {
-  ClearPlayerPayload,
-  JoinPlayerPayload,
-  SendTypeLogPlayload,
-} from '../payloads';
 import { Dispatch, RootState } from '../store';
 
 /** Effect function for joining player.
@@ -51,7 +49,7 @@ export const joinPlayer = async (
   payload: JoinPlayerPayload,
   state: RootState,
 ): Promise<void> => {
-  const { tid, playerName }: { tid: string; playerName: string } = payload;
+  const { tid, playerName } = payload;
   let tournamentId: string;
 
   // If the player name is not provided, call the raiser.
@@ -161,7 +159,7 @@ export const clearPlayer = async (
   payload: ClearPlayerPayload,
   state: RootState,
 ): Promise<void> => {
-  const { playerId }: { playerId: AppPlayerId } = payload;
+  const { playerId } = payload;
 
   // If the player id is not provided, call the raiser.
   if (!playerId) {
@@ -217,12 +215,7 @@ export const sendTypeLog = async (
   payload: SendTypeLogPlayload,
   state: RootState,
 ): Promise<void> => {
-  const {
-    raceId,
-    playerId,
-    playerLog,
-  }: { raceId: AppRaceId; playerId: AppPlayerId; playerLog: AppPlayerLog } =
-    payload;
+  const { raceId, playerId, playerLog } = payload;
 
   // If the race id is not provided, call the raiser.
   if (!raceId) {
