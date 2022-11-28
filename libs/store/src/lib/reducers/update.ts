@@ -2,10 +2,10 @@
 
 import { AppStateModel } from '@razor/models';
 import {
-  updatePlayerLogReducerPayload,
-  updatePlayerReducerPayload,
-  updateRaceReducerPayload,
-  updateTournamentReducerPayload,
+  UpdateTournamentReducerPayload,
+  UpdateRaceReducerPayload,
+  UpdatePlayerLogReducerPayload,
+  UpdatePlayerReducerPayload,
 } from '../payloads';
 
 /** Reducer function for updating a tournament in the state model.
@@ -17,7 +17,7 @@ import {
  */
 export const updateTournamentReducer = (
   state: AppStateModel,
-  payload: updateTournamentReducerPayload,
+  payload: UpdateTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
   //TODO: if the tournament id not found, return the state
@@ -43,7 +43,7 @@ export const updateTournamentReducer = (
  */
 export const updateRaceReducer = (
   state: AppStateModel,
-  payload: updateRaceReducerPayload,
+  payload: UpdateRaceReducerPayload,
 ): AppStateModel => {
   const { raceId, race } = payload;
   //TODO: if race id not found, return state
@@ -69,7 +69,7 @@ export const updateRaceReducer = (
  */
 export const updatePlayerReducer = (
   state: AppStateModel,
-  payload: updatePlayerReducerPayload,
+  payload: UpdatePlayerReducerPayload,
 ): AppStateModel => {
   //TODO: if the player id is not found, return the state
   const { playerId, player } = payload;
@@ -96,7 +96,7 @@ export const updatePlayerReducer = (
  */
 export const updatePlayerLogReducer = (
   state: AppStateModel,
-  payload: updatePlayerLogReducerPayload,
+  payload: UpdatePlayerLogReducerPayload,
 ): AppStateModel => {
   const { playerLogId, playerLog } = payload;
   //TODO: if player id is not found, return the state

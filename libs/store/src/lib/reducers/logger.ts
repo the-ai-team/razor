@@ -3,7 +3,7 @@
 import { MAX_ERR_LOGS_COUNT } from '@razor/constants';
 import { AppErrorTimestamp, AppStateModel } from '@razor/models';
 import { omit } from 'lodash';
-import { logErrorReducerPayload } from '../payloads';
+import { LogErrorReducerPayload } from '../payloads';
 
 /** Reducer function for logging an error to state model.
  * Error will be added to the errors model.
@@ -15,7 +15,7 @@ import { logErrorReducerPayload } from '../payloads';
  */
 export const logErrorReducer = (
   state: AppStateModel,
-  payload: logErrorReducerPayload,
+  payload: LogErrorReducerPayload,
 ): AppStateModel => {
   const { errorLog, errorTimestamp } = payload;
   let logModel = { ...state.errorLogsModel };

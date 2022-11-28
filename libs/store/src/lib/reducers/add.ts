@@ -3,10 +3,10 @@
 import { AppStateModel, AppTournamentId } from '@razor/models';
 import { extractId, extractIdType } from '@razor/util';
 import {
-  addLeaderboardReducerPayload,
-  addPlayerReducerPayload,
-  addRaceReducerPayload,
-  addTournamentReducerPayload,
+  AddLeaderboardReducerPayload,
+  AddPlayerReducerPayload,
+  AddRaceReducerPayload,
+  AddTournamentReducerPayload,
 } from '../payloads';
 
 /** Reducer function for adding tournament to state model.
@@ -18,7 +18,7 @@ import {
  */
 export const addTournamentReducer = (
   state: AppStateModel,
-  payload: addTournamentReducerPayload,
+  payload: AddTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
   // If tournament id is provided.
@@ -51,7 +51,7 @@ export const addTournamentReducer = (
  */
 export const addRaceReducer = (
   state: AppStateModel,
-  payload: addRaceReducerPayload,
+  payload: AddRaceReducerPayload,
 ): AppStateModel => {
   const { raceId, race } = payload;
   /** Extract tournaemnt id from race id */
@@ -102,7 +102,7 @@ export const addRaceReducer = (
  */
 export const addPlayerReducer = (
   state: AppStateModel,
-  payload: addPlayerReducerPayload,
+  payload: AddPlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId, player } = payload;
   // If tournament id and player id is provided
@@ -149,7 +149,7 @@ export const addPlayerReducer = (
  */
 export const addLeaderboardReducer = (
   state: AppStateModel,
-  payload: addLeaderboardReducerPayload,
+  payload: AddLeaderboardReducerPayload,
 ): AppStateModel => {
   const { leaderboardId, leaderboard } = payload;
   // If leaderboard id is provided.

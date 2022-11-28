@@ -20,9 +20,9 @@ import {
   tournamentNotFound,
 } from '../raisers';
 import {
-  clearPlayerPayload,
-  joinPlayerPayload,
-  sendTypeLogPlayload,
+  ClearPlayerPayload,
+  JoinPlayerPayload,
+  SendTypeLogPlayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
 
@@ -48,7 +48,7 @@ import { Dispatch, RootState } from '../store';
  */
 export const joinPlayer = async (
   dispatch: Dispatch,
-  payload: joinPlayerPayload,
+  payload: JoinPlayerPayload,
   state: RootState,
 ): Promise<void> => {
   const { tid, playerName }: { tid: string; playerName: string } = payload;
@@ -158,7 +158,7 @@ export const joinPlayer = async (
  */
 export const clearPlayer = async (
   dispatch: Dispatch,
-  payload: clearPlayerPayload,
+  payload: ClearPlayerPayload,
   state: RootState,
 ): Promise<void> => {
   const { playerId }: { playerId: AppPlayerId } = payload;
@@ -214,7 +214,7 @@ export const clearPlayer = async (
  */
 export const sendTypeLog = async (
   dispatch: Dispatch,
-  payload: sendTypeLogPlayload,
+  payload: SendTypeLogPlayload,
   state: RootState,
 ): Promise<void> => {
   const {

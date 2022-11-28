@@ -13,47 +13,57 @@ import {
 } from '@razor/models';
 
 //reducer Playloads
-export type addTournamentReducerPayload = {
+export type AddTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;
 };
-export type addRaceReducerPayload = {
+
+export type AddRaceReducerPayload = {
   raceId: AppRaceId;
   race: AppRace;
 };
-export type addPlayerReducerPayload = {
+
+export type AddPlayerReducerPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
   player: AppPlayer;
 };
-export type addLeaderboardReducerPayload = {
+
+export type AddLeaderboardReducerPayload = {
   leaderboardId: AppRaceId;
   leaderboard: AppLeaderboard;
 };
-export type updatePlayerReducerPayload = {
+
+export type UpdatePlayerReducerPayload = {
   playerId: AppPlayerId;
   player: AppPlayer;
 };
-export type updateTournamentReducerPayload = {
+
+export type UpdateTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;
 };
-export type updateRaceReducerPayload = {
+
+export type UpdateRaceReducerPayload = {
   raceId: AppRaceId;
   race: AppRace;
 };
-export type updatePlayerLogReducerPayload = {
+
+export type UpdatePlayerLogReducerPayload = {
   playerLogId: AppPlayerLogId;
   playerLog: AppPlayerLog;
 };
-export type removePlayerReducerPayload = {
+
+export type RemovePlayerReducerPayload = {
   tournamentId: AppTournamentId;
   playerId: AppPlayerId;
 };
-export type removeTournamentReducerPayload = {
+
+export type RemoveTournamentReducerPayload = {
   tournamentId: AppTournamentId;
 };
-export type logErrorReducerPayload = {
+
+export type LogErrorReducerPayload = {
   errorLog: AppErrorLog;
   errorTimestamp: AppErrorTimestamp;
 };

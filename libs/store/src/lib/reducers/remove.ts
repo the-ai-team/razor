@@ -7,8 +7,8 @@ import {
   AppPlayerId,
 } from '@razor/models';
 import {
-  removePlayerReducerPayload,
-  removeTournamentReducerPayload,
+  RemovePlayerReducerPayload,
+  RemoveTournamentReducerPayload,
 } from '../payloads';
 import { omit } from 'lodash';
 
@@ -22,7 +22,7 @@ import { omit } from 'lodash';
  */
 export const removePlayerReducer = (
   state: AppStateModel,
-  payload: removePlayerReducerPayload,
+  payload: RemovePlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId } = payload;
   //TODO: if player id is not found, return the state
@@ -66,7 +66,7 @@ export const removePlayerReducer = (
  */
 export const removeTournamentReducer = (
   state: AppStateModel,
-  payload: removeTournamentReducerPayload,
+  payload: RemoveTournamentReducerPayload,
 ): AppStateModel => {
   //TODO: if tournament id not found, return state
   const { tournamentId } = payload;

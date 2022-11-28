@@ -3,7 +3,7 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-import { setTournamentStatePayload } from '../payloads';
+import { SetTournamentStatePayload } from '../payloads';
 import { tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
@@ -12,7 +12,7 @@ import { Dispatch, RootState } from '../store';
  * If the tournament is found, then change the state of the tournament.
  *
  * @param {Dispatch} dispatch - The dispatch function of the store.
- * @param {setTournamentStatePayload} payload - The payload of the action.
+ * @param {SetTournamentStatePayload} payload - The payload of the action.
  * @param {RootState} state - The state of the store.
  *
  * ### Related reducers and effects
@@ -23,7 +23,7 @@ import { Dispatch, RootState } from '../store';
  */
 export const setStateTournament = async (
   dispatch: Dispatch,
-  payload: setTournamentStatePayload,
+  payload: SetTournamentStatePayload,
   state: RootState,
 ): Promise<void> => {
   const {

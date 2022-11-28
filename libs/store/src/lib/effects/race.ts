@@ -19,9 +19,9 @@ import {
   giveZeroPadding,
 } from '@razor/util';
 import {
-  endCountdownPayload,
-  endRacePayload,
-  startCountdownPayload,
+  EndCountdownPayload,
+  EndRacePayload,
+  StartCountdownPayload,
 } from '../payloads';
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
@@ -46,7 +46,7 @@ import { Dispatch, RootState } from '../store';
  */
 export const startCountdown = async (
   dispatch: Dispatch,
-  payload: startCountdownPayload,
+  payload: StartCountdownPayload,
   state: RootState,
 ): Promise<void> => {
   const {
@@ -154,7 +154,7 @@ export const startCountdown = async (
  */
 export const endCoundown = async (
   dispatch: Dispatch,
-  payload: endCountdownPayload,
+  payload: EndCountdownPayload,
   state: RootState,
 ): Promise<void> => {
   const { tournamentId }: { tournamentId: AppTournamentId } = payload;
@@ -198,7 +198,7 @@ export const endCoundown = async (
  */
 export const endRace = async (
   dispatch: Dispatch,
-  payload: endRacePayload,
+  payload: EndRacePayload,
   state: RootState,
 ): Promise<void> => {
   const { raceId }: { raceId: AppRaceId } = payload;
