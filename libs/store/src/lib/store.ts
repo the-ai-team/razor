@@ -19,12 +19,30 @@ export const game = createModel<RootModel>()({
 export interface RootModel extends Models<RootModel> {
   game: typeof game;
 }
+
+/** Models for store
+ *
+ * `game` model has state, reducers and effects.
+ * `state` will be initialized with initialState.
+ * `reducers` contain core functionalities with store such as adding, updating, deleting.
+ * `effects` contain async operations, calculating and generating operations which will pass down to reducers to add to the store.
+ */
 export const models: RootModel = { game };
 
+/** Redux rematch store
+ *
+ * Store has one model; game.
+ */
 export const store = init({
   models,
 });
 
+/** Function to initialize store
+ *
+ * This function will be used in tests to initialize many stores with custom initial state.
+ * @param {AppStateModel} initialState - Initial state model
+ * @returns {Store} - Generated redux rematch store
+ */
 export const initializeStore = (initialState: AppStateModel): Store => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const game: any = createModel<RootModel>()({
