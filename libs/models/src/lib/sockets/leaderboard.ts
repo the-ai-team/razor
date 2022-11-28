@@ -1,5 +1,5 @@
 interface FinishedPlayerValues {
-  /** Player words per mintue count */
+  /** Player words per minute count */
   wpm: number;
   /** Time taken by the player to finish the race */
   elpasedTime: number;

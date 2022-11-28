@@ -9,15 +9,15 @@ interface TimeLog {
 export enum PlayerState {
   /** **Player idle**
    *
-   * When a player not in a race but in the lobby.
+   * When a player is not in a race but in the lobby.
    *
    * Possible actions:
-   * In lobby, In leaderboard, etc.
+   * In the lobby, In the leaderboard, etc.
    */
   Idle = 'idle',
   /** **Player racing**
    *
-   * When a player in a race.
+   * When a player is in a race.
    *
    * Possible actions:
    * In race only.

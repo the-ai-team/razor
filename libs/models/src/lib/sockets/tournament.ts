@@ -5,15 +5,14 @@ import { Race } from './race';
 export enum TournamentState {
   /** **Lobby**
    *
-   * Every players are in lobby.
-   * *(Race is not started yet.)*
-   *
+   * Every player is in the lobby.
+   * (Race is not started yet.)
    */
   Lobby = 'lobby',
   /** **Ready**
    *
    * Two or more players available in the lobby.
-   * *(Race is not started yet.)*
+   * (Race is not started yet.)
    */
   Ready = 'ready',
   /** **Countdown**
@@ -43,19 +42,19 @@ export interface Tournament {
   id: string;
   /** Tournament state */
   state: TournamentState;
-  /** Races history and currect race
+  /** Races history and current race
    *
-   * can be empty if no races are started yet.
+   * It can be empty if no races are started yet.
    */
   races: Race[];
   /** Players in the tournament
    *
-   * can be empty if lobby is empty.
+   * It can be empty if the lobby is empty.
    */
   players: Player[];
   /** Leaderboards of the tournament
    *
-   * can be empty if first race is not finished yet.
+   * It can be empty if the first race is not finished yet.
    */
   raceLeaderboards: Leaderboard[];
 }
