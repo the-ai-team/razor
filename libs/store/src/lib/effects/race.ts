@@ -75,7 +75,7 @@ export const startCountdown = async (
       playerNotFound(
         dispatch,
         id,
-        `While tournament starting: ${tournamentId}`,
+        `While players are being added to: ${tournamentId}`,
       );
       return;
     } else {
@@ -242,18 +242,19 @@ export const endRace = async (
 
   // Set player state to "Idle" of all players in the tournament.
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
-    if (id in state.game.playersModel) {
-      if (state.game.playersModel[id].state != AppPlayerState.Idle) {
-        const player: AppPlayer = {
-          ...state.game.playersModel[id],
-          state: AppPlayerState.Idle,
-        };
+    if (
+      id in state.game.playersModel &&
+      state.game.playersModel[id].state != AppPlayerState.Idle
+    ) {
+      const player: AppPlayer = {
+        ...state.game.playersModel[id],
+        state: AppPlayerState.Idle,
+      };
 
-        dispatch.game.updatePlayerReducer({
-          playerId: id,
-          player,
-        });
-      }
+      dispatch.game.updatePlayerReducer({
+        playerId: id,
+        player,
+      });
     }
   }
 };
