@@ -21,7 +21,10 @@
         ],
         "for-direction": "error",
         "getter-return": "error",
-        "no-compare-neg-zero": "error"
+        "no-compare-neg-zero": "error",
+        "curly": "error",
+        "no-lonely-if": "error",
+        "require-await": "error"
       }
     },
     {
