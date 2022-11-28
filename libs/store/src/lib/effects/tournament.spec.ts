@@ -36,7 +36,7 @@ describe('[Effects] Tournament', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.setStateTournament({
+      await store.dispatch.game.setTournamentState({
         tournamentId: M_TOURNAMENT_ID0,
         tournamentState: AppTournamentState.Ready,
       });
@@ -67,7 +67,7 @@ describe('[Effects] Tournament', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.setStateTournament({
+      await store.dispatch.game.setTournamentState({
         tournamentId: 'T:notExist',
         tournamentState: AppTournamentState.Ready,
       });

@@ -36,7 +36,7 @@ import { Dispatch, RootState } from '../store';
  * @param {RootState} state - Current state model.
  *
  * ### Related reducers and effects
- * - setStateTournament (effect)
+ * - setTournamentState (effect)
  * - addTournamentReducer
  * - addPlayerReducer
  *
@@ -110,7 +110,7 @@ export const joinPlayer = async (
     state.game.tournamentsModel[tid as AppTournamentId] &&
     state.game.tournamentsModel[tid as AppTournamentId].playerIds.length == 0
   ) {
-    dispatch.game.setStateTournament({
+    dispatch.game.setTournamentState({
       tournamentId: formattedTournamentId,
       tournamentState: AppTournamentState.Lobby,
     });
@@ -121,7 +121,7 @@ export const joinPlayer = async (
     state.game.tournamentsModel[tid as AppTournamentId] &&
     state.game.tournamentsModel[tid as AppTournamentId].playerIds.length >= 1
   ) {
-    dispatch.game.setStateTournament({
+    dispatch.game.setTournamentState({
       tournamentId: formattedTournamentId,
       tournamentState: AppTournamentState.Ready,
     });
@@ -149,7 +149,7 @@ export const joinPlayer = async (
  * @param {RootState} state - Current state model.
  *
  * ### Related reducers and effects
- * - setStateTournament (effect)
+ * - setTournamentState (effect)
  * - removePlayerReducer
  *
  * ### Related raisers
@@ -188,7 +188,7 @@ export const clearPlayer = async (
     state.game.tournamentsModel[tournamentId].playerIds;
   if (playerIdsInTournament.length === 1) {
     if (playerIdsInTournament[0] === playerId) {
-      dispatch.game.setStateTournament({
+      dispatch.game.setTournamentState({
         tournamentId,
         tournamentState: AppTournamentState.Empty,
       });

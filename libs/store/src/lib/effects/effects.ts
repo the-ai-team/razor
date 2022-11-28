@@ -13,7 +13,7 @@ import { Dispatch, RootState } from '../store';
 import { sendLogMessage } from './logger';
 import { clearPlayer, joinPlayer, sendTypeLog } from './player';
 import { endCoundown, endRace, startCountdown } from './race';
-import { setStateTournament } from './tournament';
+import { setTournamentState } from './tournament';
 
 /** Effects functions of the store
  *
@@ -24,8 +24,8 @@ export const effects = (dispatch: Dispatch) => ({
     joinPlayer(dispatch, payload, state),
   clearPlayer: (payload: ClearPlayerPayload, state: RootState) =>
     clearPlayer(dispatch, payload, state),
-  setStateTournament: (payload: SetTournamentStatePayload, state: RootState) =>
-    setStateTournament(dispatch, payload, state),
+  setTournamentState: (payload: SetTournamentStatePayload, state: RootState) =>
+    setTournamentState(dispatch, payload, state),
   startCountdown: (payload: StartCountdownPayload, state: RootState) =>
     startCountdown(dispatch, payload, state),
   endCoundown: (payload: EndCountdownPayload, state: RootState) =>

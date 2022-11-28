@@ -165,7 +165,7 @@ export const endCoundown = async (
     return;
   }
 
-  // Use setStateTournament instead
+  // Use setTournamentState instead
   // Updating tournament state to Race
   const tournament: AppTournament = {
     ...state.game.tournamentsModel[tournamentId],
@@ -216,7 +216,7 @@ export const endRace = async (
     extractIdType.tournament,
   ) as AppTournamentId;
 
-  // TODO: use setStateTournament state instead
+  // TODO: use setTournamentState state instead
   // Set tournament state to Leaderboard.
   const tournament: AppTournament = {
     ...state.game.tournamentsModel[tournamentId],

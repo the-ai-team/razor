@@ -21,7 +21,7 @@ import { Dispatch, RootState } from '../store';
  * ### Related raisers
  * - tournamentNotFound
  */
-export const setStateTournament = async (
+export const setTournamentState = async (
   dispatch: Dispatch,
   payload: SetTournamentStatePayload,
   state: RootState,
