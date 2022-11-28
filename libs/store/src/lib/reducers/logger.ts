@@ -1,9 +1,9 @@
 import { AppErrorTimestamp, AppStateModel } from '@razor/models';
-import { logErrorReducerPayload } from '../payloads';
+import { LogErrorReducerPayload } from '../payloads';
 
 export const logErrorReducer = (
   state: AppStateModel,
-  payload: logErrorReducerPayload,
+  payload: LogErrorReducerPayload,
 ): AppStateModel => {
   const { errorLog, errorTimestamp } = payload;
   let logModel = { ...state.errorLogsModel };

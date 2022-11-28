@@ -4,12 +4,15 @@ import {
   AppRaceId,
   AppPlayerId,
 } from '@razor/models';
-import { removePlayerReducerPayload } from '../payloads';
+import {
+  RemovePlayerReducerPayload,
+  RemoveTournamentReducerPayload,
+} from '../payloads';
 
 // Basic Remove Operations
 export const removePlayerReducer = (
   state: AppStateModel,
-  payload: removePlayerReducerPayload,
+  payload: RemovePlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId } = payload;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -41,7 +44,7 @@ export const removePlayerReducer = (
 
 export const removeTournamentReducer = (
   state: AppStateModel,
-  payload: removePlayerReducerPayload,
+  payload: RemoveTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId } = payload;
   const playerIds = state.tournamentsModel[tournamentId].playerIds;
