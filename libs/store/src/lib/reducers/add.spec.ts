@@ -506,7 +506,8 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(all valid, empty tournament) => Add new player, add player id to tournament, set tournament state to lobby', () => {
+
+    it('(all valid, empty tournament) => Add new player, add player id to empty tournament', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -541,7 +542,8 @@ describe('[Reducers] Add operations', () => {
           'T:testTOUR': {
             ...initialValues.tournamentsModel['T:testTOUR'],
             playerIds: ['P:testPLAY'],
-            state: AppTournamentState.Lobby,
+            // Tournament state is not changing here, because changing state is handled by the effect.
+            state: AppTournamentState.Empty,
           },
         },
         playersModel: {
