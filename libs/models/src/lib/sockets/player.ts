@@ -2,7 +2,6 @@
 interface TimeLog {
   /** Correctly typed length by player */
   textLength: number;
-
   /** Time when player typed the last character */
   timestamp: number;
 }
@@ -16,7 +15,6 @@ export enum PlayerState {
    * In lobby, In leaderboard, etc.
    */
   Idle = 'idle',
-
   /** **Player racing**
    *
    * When a player in a race.
@@ -30,19 +28,15 @@ export enum PlayerState {
 export interface Player {
   /** Unique player id */
   id: string;
-
   /** Player name */
   name: string;
-
   /** Player avatar icon URL */
   avatarLink: string;
-
   /** Player state */
   state: PlayerState;
 }
 
 export interface PlayerWithLogs extends Omit<Player, 'state' | 'lobbyId'> {
-  //rem lobbyId
   /** Array of time logs of player */
   logs: TimeLog[];
 }

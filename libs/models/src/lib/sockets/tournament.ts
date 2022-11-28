@@ -10,32 +10,27 @@ export enum TournamentState {
    *
    */
   Lobby = 'lobby',
-
   /** **Ready**
    *
    * Two or more players available in the lobby.
    * *(Race is not started yet.)*
    */
   Ready = 'ready',
-
   /** **Countdown**
    *
    * A player pressed the `Play` button.
    */
   Countdown = 'countdown',
-
   /** **Race**
    *
    * The race is ongoing.
    */
   Race = 'race',
-
   /** **Leaderboard**
    *
    * The race is finished.
    */
   Leaderboard = 'leaderboard',
-
   /** **Empty**
    *
    * Lobby has no players. Waiting to destroy the lobby.
@@ -46,22 +41,18 @@ export enum TournamentState {
 export interface Tournament {
   /** Unique tournament id (/lobby ID) */
   id: string;
-
   /** Tournament state */
   state: TournamentState;
-
   /** Races history and currect race
    *
    * can be empty if no races are started yet.
    */
   races: Race[];
-
   /** Players in the tournament
    *
    * can be empty if lobby is empty.
    */
   players: Player[];
-
   /** Leaderboards of the tournament
    *
    * can be empty if first race is not finished yet.

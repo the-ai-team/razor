@@ -10,6 +10,7 @@ export interface AppFinishedPlayerValues {
   wpm: number;
   elpasedTime: number;
 }
+
 export interface AppTimeoutPlayerValues {
   distance: number;
 }
@@ -19,6 +20,7 @@ export interface AppLeaderboardEntry {
   status: AppPlayerStatus;
   values: AppFinishedPlayerValues | AppTimeoutPlayerValues;
 }
+
 export type AppLeaderboard = AppLeaderboardEntry[];
 
 export type AppLeaderboards = Record<AppRaceId, AppLeaderboard>;

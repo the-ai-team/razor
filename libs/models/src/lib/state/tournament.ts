@@ -18,4 +18,5 @@ export interface AppTournament {
   raceIds: Array<AppRaceId>;
   playerIds: Array<AppPlayerId>;
 }
+
 export type AppTournaments = Record<AppTournamentId, AppTournament>;

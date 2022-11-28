@@ -9,6 +9,7 @@ export enum AppIdNumberType {
   Tournament = 'tournament',
   General = 'general',
 }
+
 export interface AppStateModel {
   tournamentsModel: AppTournaments;
   playersModel: AppPlayers;
