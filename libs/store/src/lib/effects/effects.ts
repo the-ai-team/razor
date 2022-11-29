@@ -17,7 +17,7 @@ import { setTournamentState } from './tournament';
 
 /** Effects functions of the store
  *
- * Effects are async calculating and generating operations which will pass the data to the reducers to dispatch to the store.
+ * Effects are calculating and generating operations which will pass the data to the reducers to dispatch to the store.
  */
 export const effects = (dispatch: Dispatch) => ({
   joinPlayer: (payload: JoinPlayerPayload, state: RootState) =>

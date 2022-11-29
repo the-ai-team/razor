@@ -25,7 +25,7 @@ export interface RootModel extends Models<RootModel> {
  * `game` model has state, reducers and effects.
  * `state` will be initialized with initialState.
  * `reducers` contain core functionalities with store such as adding, updating, deleting.
- * `effects` contain async operations, calculating and generating operations which will pass down to reducers to add to the store.
+ * `effects` contain calculating and generating operations which will pass down to reducers to add to the store.
  */
 export const models: RootModel = { game };
 
