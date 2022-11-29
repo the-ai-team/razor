@@ -21,14 +21,15 @@ export const generateLeaderboard = (
   const completeEntries: AppFinishedLeaderboardEntry[] = [];
   const timeoutEntries: AppTimeoutLeaderboardEntry[] = [];
 
-  for (const playerLogId in playerLogs) {
-    const raceIdOfPlayerLog: AppRaceId = extractId(
+  let playerLogId: AppPlayerLogId;
+  for (playerLogId in playerLogs) {
+    const raceIdOfPlayerLog = extractId(
       playerLogId,
       extractIdType.playerLog,
       extractIdType.race,
     ) as AppRaceId;
 
-    const playerIdOfPlayerLog: AppPlayerId = extractId(
+    const playerIdOfPlayerLog = extractId(
       playerLogId,
       extractIdType.playerLog,
       extractIdType.player,

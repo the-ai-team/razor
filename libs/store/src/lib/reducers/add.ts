@@ -55,40 +55,44 @@ export const addRaceReducer = (
 ): AppStateModel => {
   const { raceId, race } = payload;
   /** Extract tournaemnt id from race id */
-  const tournamentId: AppTournamentId = extractId(
-    raceId,
-    extractIdType.race,
-    extractIdType.tournament,
-  ) as AppTournamentId;
+  try {
+    const tournamentId: AppTournamentId = extractId(
+      raceId,
+      extractIdType.race,
+      extractIdType.tournament,
+    );
 
-  // If race id is provided.
-  if (raceId) {
-    // If the tournament does not exists.
-    if (!(tournamentId in state.tournamentsModel)) {
-      return state;
-    }
-    // If race already exists.
-    if (raceId in state.racesModel) {
-      return state;
-    }
+    // If race id is provided.
+    if (raceId) {
+      // If the tournament does not exists.
+      if (!(tournamentId in state.tournamentsModel)) {
+        return state;
+      }
+      // If race already exists.
+      if (raceId in state.racesModel) {
+        return state;
+      }
 
-    /** State model with new race added to races model and race id added to the tournament. */
-    const newState: AppStateModel = {
-      ...state,
-      tournamentsModel: {
-        ...state.tournamentsModel,
-        [tournamentId]: {
-          ...state.tournamentsModel[tournamentId],
-          raceIds: [...state.tournamentsModel[tournamentId].raceIds, raceId],
+      /** State model with new race added to races model and race id added to the tournament. */
+      const newState: AppStateModel = {
+        ...state,
+        tournamentsModel: {
+          ...state.tournamentsModel,
+          [tournamentId]: {
+            ...state.tournamentsModel[tournamentId],
+            raceIds: [...state.tournamentsModel[tournamentId].raceIds, raceId],
+          },
         },
-      },
-      racesModel: {
-        ...state.racesModel,
-        [raceId]: { ...race },
-      },
-    };
-    return newState;
-  } else {
+        racesModel: {
+          ...state.racesModel,
+          [raceId]: { ...race },
+        },
+      };
+      return newState;
+    } else {
+      return state;
+    }
+  } catch (error) {
     return state;
   }
 };

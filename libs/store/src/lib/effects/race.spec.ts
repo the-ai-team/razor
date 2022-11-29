@@ -56,11 +56,9 @@ jest.mock('@razor/util', () => ({
 jest.mock('../raisers', () => ({
   ...jest.requireActual('../raisers'),
   tournamentNotFound: jest.fn(),
-  invalidPlayerNameLength: jest.fn(),
   invalidPlayerName: jest.fn(),
   playerNotFound: jest.fn(),
   raceNotFound: jest.fn(),
-  payloadNotProvided: jest.fn(),
 }));
 
 afterEach(() => {

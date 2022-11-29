@@ -5,6 +5,7 @@ import {
   AppTournamentId,
 } from '@razor/models';
 
+//TODO: change to pascal case
 export enum extractIdType {
   tournament = 'tournament',
   player = 'player',
@@ -12,50 +13,54 @@ export enum extractIdType {
   playerLog = 'playerLog',
 }
 
-export const extractId = (
-  inputId: string,
+type IdType = AppTournamentId | AppPlayerId | AppRaceId | AppPlayerLogId;
+
+type TypeMap = {
+  tournament: AppTournamentId;
+  player: AppPlayerId;
+  race: AppRaceId;
+  playerLog: AppPlayerLogId;
+};
+
+export const extractId = <T extends extractIdType>(
+  inputId: IdType,
   inputIdType: extractIdType,
-  outputIdType: extractIdType,
-): string | AppTournamentId | AppPlayerId | AppRaceId | AppPlayerLogId => {
-  let outputId = '';
+  outputIdType: T,
+): TypeMap[T] => {
   if (inputIdType === outputIdType) {
-    return inputId;
+    return inputId as TypeMap[T];
   }
 
   const validInput = checkValidityOfId(inputIdType, inputId);
   if (!validInput) {
-    return 'invalidInput';
+    throw new Error('Invalid input value');
   }
 
   const splitedId = inputId.split('-');
   switch (outputIdType) {
     case extractIdType.tournament:
-      outputId =
-        inputIdType === extractIdType.race
-          ? splitedId[0]
-          : inputIdType === extractIdType.playerLog
-          ? splitedId[0]
-          : 'error';
-      break;
+      if (inputIdType === extractIdType.race) {
+        return splitedId[0] as TypeMap[T];
+      } else if (inputIdType === extractIdType.playerLog) {
+        return splitedId[0] as TypeMap[T];
+      } else {
+        throw new Error('Invalid type');
+      }
     case extractIdType.player:
-      outputId =
-        inputIdType === extractIdType.playerLog ? splitedId[2] : 'error';
-      break;
+      if (inputIdType === extractIdType.playerLog) {
+        return splitedId[2] as TypeMap[T];
+      } else {
+        throw new Error('Invalid type');
+      }
     case extractIdType.race:
-      outputId =
-        inputIdType === extractIdType.playerLog
-          ? `${splitedId[0]}-${splitedId[1]}`
-          : 'error';
-      break;
+      if (inputIdType === extractIdType.playerLog) {
+        return `${splitedId[0]}-${splitedId[1]}` as TypeMap[T];
+      } else {
+        throw new Error('Invalid type');
+      }
     default:
-      outputId = 'error';
+      throw new Error('Invalid type');
   }
-
-  if (outputId === 'error') {
-    return 'invalidType';
-  }
-
-  return outputId;
 };
 
 export const checkValidityOfId = (

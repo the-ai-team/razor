@@ -5,6 +5,7 @@ import {
   M_TOURNAMENT_ID0,
   M_TR0_RACE_ID0,
 } from '@razor/mocks';
+import { AppTournamentId } from '@razor/models';
 import { extractId, extractIdType } from './extract-ids';
 
 describe('[Utils] extractIds', () => {
@@ -42,12 +43,15 @@ describe('[Utils] extractIds', () => {
       expect(raceId).toBe(M_TR0_RACE_ID0);
     });
     it('(invalid input id) => raise error', () => {
-      const tournamentId = extractId(
-        'invalid',
-        extractIdType.playerLog,
-        extractIdType.tournament,
-      );
-      expect(tournamentId).toBe('invalidInput');
+      try {
+        extractId(
+          'invalid' as AppTournamentId,
+          extractIdType.playerLog,
+          extractIdType.tournament,
+        );
+      } catch (e) {
+        expect((e as Error).message).toBe('Invalid input value');
+      }
     });
     it.each([
       [extractIdType.player, M_PLAYER_ID0, extractIdType.player],
@@ -77,8 +81,11 @@ describe('[Utils] extractIds', () => {
     ])(
       '(invalid input type but requesting %s) => raise error',
       (outputIdType, inputId, inputIdType) => {
-        const requestingId = extractId(inputId, inputIdType, outputIdType);
-        expect(requestingId).toBe('invalidType');
+        try {
+          extractId(inputId, inputIdType, outputIdType);
+        } catch (e) {
+          expect((e as Error).message).toBe('Invalid type');
+        }
       },
     );
   });
