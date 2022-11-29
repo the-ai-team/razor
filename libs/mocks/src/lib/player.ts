@@ -11,10 +11,10 @@ import {
 import { giveZeroPadding } from './give-zero-padding';
 import { random, range } from 'lodash';
 
-const mockPlayerName = (n: number) => {
+const mockPlayerName = (n: number): string => {
   return `Player${n}`;
 };
-const mockPlayerAvatar = (n: number) => {
+const mockPlayerAvatar = (n: number): string => {
   return `https://avatars.dicebear.com/api/open-peeps/${n}.svg`;
 };
 

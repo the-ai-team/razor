@@ -43,11 +43,11 @@ import { Dispatch, RootState } from '../store';
  *
  * @todo: complete later
  */
-export const startCountdown = async (
+export const startCountdown = (
   dispatch: Dispatch,
   payload: StartCountdownPayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { tournamentId, playerId, raceText } = payload;
 
   if (!(tournamentId in state.game.tournamentsModel)) {
@@ -97,7 +97,7 @@ export const startCountdown = async (
     }
   }
 
-  const timeoutDuration = await calculateTimeoutTimer(raceText);
+  const timeoutDuration = calculateTimeoutTimer(raceText);
 
   const race: AppRace = {
     text: raceText,

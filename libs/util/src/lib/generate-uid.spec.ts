@@ -6,8 +6,8 @@ describe('[Utils] generateUid', () => {
     [AppIdNumberType.Tournament, /^T:[0-9a-zA-Z]{8}$/],
     [AppIdNumberType.Player, /^P:[0-9a-zA-Z]{8}$/],
     [AppIdNumberType.General, /^[0-9a-zA-Z]{8}$/],
-  ])('Generate %s id', async (type, expected) => {
-    const id = await generateUid(type);
+  ])('Generate %s id', (type, expected) => {
+    const id = generateUid(type);
     expect(id).toMatch(expected);
   });
 });

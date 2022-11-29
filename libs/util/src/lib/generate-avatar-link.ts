@@ -1,9 +1,7 @@
 import { TextEncoder } from 'util';
 global.TextEncoder = TextEncoder;
 
-export const generateAvatarLink = async (
-  playerName: string,
-): Promise<string> => {
+export const generateAvatarLink = (playerName: string): string => {
   const seed = bytesToHex(stringToUTF8Bytes(playerName));
 
   const image = `https://avatars.dicebear.com/api/open-peeps/${seed}.svg`;

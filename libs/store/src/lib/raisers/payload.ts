@@ -1,12 +1,12 @@
 import { AppErrorCode, AppMessageLogType } from '@razor/models';
 import { Dispatch } from '../store';
 
-export const payloadNotProvided = async (
+export const payloadNotProvided = (
   funcName: string,
   dispatch: Dispatch,
   payloadName: string,
-): Promise<void> => {
-  await dispatch.game.sendLogMessage({
+): void => {
+  dispatch.game.sendLogMessage({
     message: `[${funcName}] ${payloadName} is not provided`,
     code: AppErrorCode.PayloadNotProvided,
     related: '',

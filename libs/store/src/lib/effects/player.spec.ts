@@ -67,12 +67,12 @@ afterEach(() => {
 
 describe('[Effects] Player', () => {
   describe('Player Join', () => {
-    it('(without tournament id) => Add player, Create tournament, Join player to the tournament.', async () => {
+    it('(without tournament id) => Add player, Create tournament, Join player to the tournament.', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: '',
         playerName: M_PLAYER_NAME0,
       });
@@ -90,7 +90,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(tournament id) => Add player, Join player to existing tournamentsModel', async () => {
+    it('(tournament id) => Add player, Join player to existing tournamentsModel', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -104,7 +104,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: M_TOURNAMENT_ID0,
         playerName: M_PLAYER_NAME0,
       });
@@ -129,7 +129,7 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(all valid, empty tournament) => Add player, Join player to existing tournamentsModel, Change tournament state to Lobby.', async () => {
+    it('(all valid, empty tournament) => Add player, Join player to existing tournamentsModel, Change tournament state to Lobby.', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -145,7 +145,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: M_TOURNAMENT_ID0,
         playerName: M_PLAYER_NAME0,
       });
@@ -170,41 +170,41 @@ describe('[Effects] Player', () => {
         game: expectedResult,
       });
     });
-    it('(invalid tournament id) => Raise error', async () => {
+    it('(invalid tournament id) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: 'thisIdDoesNotExist',
         playerName: M_PLAYER_NAME0,
       });
       expect(tournamentNotFound).toHaveBeenCalled();
     });
-    it('(invalid player name length) => Raise error', async () => {
+    it('(invalid player name length) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: '',
         playerName: 'thisPlayerNameIsTooLong',
       });
       expect(invalidPlayerNameLength).toHaveBeenCalled();
     });
-    it('(invalid player name) => Raise error', async () => {
+    it('(invalid player name) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.joinPlayer({
+      store.dispatch.game.joinPlayer({
         tid: '',
         playerName: 'N@m3IsN0tV@lid',
       });
       expect(invalidPlayerName).toHaveBeenCalled();
     });
-    it('(empty payload) => Raise error', async () => {
+    it('(empty payload) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await store.dispatch.game.joinPlayer({} as any);
+      store.dispatch.game.joinPlayer({} as any);
       expect(payloadNotProvided).toHaveBeenCalled();
     });
   });
@@ -305,7 +305,7 @@ describe('[Effects] Player', () => {
 
 describe('[Effects] Player Log', () => {
   describe('Send Type Log', () => {
-    it('(race id & player id) => Send Type Log', async () => {
+    it('(race id & player id) => Send Type Log', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -326,7 +326,7 @@ describe('[Effects] Player Log', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      await store.dispatch.game.sendTypeLog({
+      store.dispatch.game.sendTypeLog({
         playerId: M_PLAYER_ID0,
         raceId: M_TR0_RACE_ID0,
         playerLog: {
@@ -353,7 +353,7 @@ describe('[Effects] Player Log', () => {
         game: expectedResult,
       });
     });
-    it('(not existing player) => Raise error', async () => {
+    it('(not existing player) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -371,7 +371,7 @@ describe('[Effects] Player Log', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.sendTypeLog({
+      store.dispatch.game.sendTypeLog({
         raceId: M_TR0_RACE_ID0,
         playerId: 'P:thisIdDoesNotExist',
         playerLog: {
@@ -382,7 +382,7 @@ describe('[Effects] Player Log', () => {
 
       expect(playerNotFound).toHaveBeenCalled();
     });
-    it('(not existing race) => Raise error', async () => {
+    it('(not existing race) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -399,7 +399,7 @@ describe('[Effects] Player Log', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.sendTypeLog({
+      store.dispatch.game.sendTypeLog({
         raceId: 'T:testTR00-R:notExist',
         playerId: M_PLAYER_ID0,
         playerLog: {
@@ -409,10 +409,10 @@ describe('[Effects] Player Log', () => {
       });
       expect(raceNotFound).toHaveBeenCalled();
     });
-    it('(empty race id) => Raise error', async () => {
+    it('(empty race id) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
-      await store.dispatch.game.sendTypeLog({
+      store.dispatch.game.sendTypeLog({
         playerId: M_PLAYER_ID0,
         playerLog: {
           textLength: 0,
@@ -422,10 +422,10 @@ describe('[Effects] Player Log', () => {
       } as any);
       expect(payloadNotProvided).toHaveBeenCalled();
     });
-    it('(empty player id) => Raise error', async () => {
+    it('(empty player id) => Raise error', () => {
       const initialValues = initialState;
       const store = initializeStore(initialValues);
-      await store.dispatch.game.sendTypeLog({
+      store.dispatch.game.sendTypeLog({
         raceId: M_TR0_RACE_ID0,
         playerLog: {
           textLength: 0,

@@ -12,19 +12,19 @@ const initialState: AppStateModel = {
 };
 
 describe('[Raisers]', () => {
-  it('tournamentNotFound', async () => {
+  it('tournamentNotFound', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await tournamentNotFound(dispatch, 'T:notExist', 'message');
+    tournamentNotFound(dispatch, 'T:notExist', 'message');
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it('tournamentNotFound (without any message)', async () => {
+  it('tournamentNotFound (without any message)', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await tournamentNotFound(dispatch, 'T:notExist');
+    tournamentNotFound(dispatch, 'T:notExist');
     expect(consoleSpy).toHaveBeenCalled();
   });
 });

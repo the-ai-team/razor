@@ -1,12 +1,12 @@
 import { AppErrorCode, AppMessageLogType } from '@razor/models';
 import { Dispatch } from '../store';
 
-export const playerNotFound = async (
+export const playerNotFound = (
   dispatch: Dispatch,
   pid: string,
   additionalMessage?: string,
-): Promise<void> => {
-  await dispatch.game.sendLogMessage({
+): void => {
+  dispatch.game.sendLogMessage({
     message: `Player with id ${pid} does not exist`,
     code: AppErrorCode.PlayerNotExists,
     related: additionalMessage ? additionalMessage : '',
@@ -14,8 +14,8 @@ export const playerNotFound = async (
   });
 };
 
-export const invalidPlayerName = async (dispatch: Dispatch): Promise<void> => {
-  await dispatch.game.sendLogMessage({
+export const invalidPlayerName = (dispatch: Dispatch): void => {
+  dispatch.game.sendLogMessage({
     message: 'Player name is invalid',
     code: AppErrorCode.InvalidPlayerName,
     related: '',
@@ -23,10 +23,8 @@ export const invalidPlayerName = async (dispatch: Dispatch): Promise<void> => {
   });
 };
 
-export const invalidPlayerNameLength = async (
-  dispatch: Dispatch,
-): Promise<void> => {
-  await dispatch.game.sendLogMessage({
+export const invalidPlayerNameLength = (dispatch: Dispatch): void => {
+  dispatch.game.sendLogMessage({
     message: `Player name is too long or too short`,
     code: AppErrorCode.InvalidPlayerName,
     related: '',

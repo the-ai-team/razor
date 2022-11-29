@@ -12,19 +12,19 @@ const initialState: AppStateModel = {
 };
 
 describe('[Raisers]', () => {
-  it('raceNotFound', async () => {
+  it('raceNotFound', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await raceNotFound(dispatch, 'R:notExist', 'message');
+    raceNotFound(dispatch, 'R:notExist', 'message');
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it('raceNotFound (without any message)', async () => {
+  it('raceNotFound (without any message)', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await raceNotFound(dispatch, 'R:notExist');
+    raceNotFound(dispatch, 'R:notExist');
     expect(consoleSpy).toHaveBeenCalled();
   });
 });

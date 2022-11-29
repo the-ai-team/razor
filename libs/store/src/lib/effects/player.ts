@@ -44,11 +44,11 @@ import { Dispatch, RootState } from '../store';
  * - invalidPlayerNameLength
  * - tournamentNotFound
  */
-export const joinPlayer = async (
+export const joinPlayer = (
   dispatch: Dispatch,
   payload: JoinPlayerPayload,
   state: RootState,
-): Promise<void> => {
+): void => {
   const { tid, playerName } = payload;
   let tournamentId: string;
 
@@ -79,7 +79,7 @@ export const joinPlayer = async (
     tournamentId = tid;
   } else {
     // If the tournament id is not provided, generate a new tournament id.
-    tournamentId = await generateUid(AppIdNumberType.Tournament);
+    tournamentId = generateUid(AppIdNumberType.Tournament);
   }
 
   // TODO: remove unnecessary code
@@ -87,9 +87,9 @@ export const joinPlayer = async (
   const formattedTournamentId: AppTournamentId =
     tournamentId as AppTournamentId;
   // Generate a new player id.
-  const formattedPlayerId: AppPlayerId = (await generateUid(
+  const formattedPlayerId: AppPlayerId = generateUid(
     AppIdNumberType.Player,
-  )) as AppPlayerId;
+  ) as AppPlayerId;
 
   // If the tournament id was not provided, then add a new tournament.
   if (!tid) {
@@ -131,7 +131,7 @@ export const joinPlayer = async (
     playerId: formattedPlayerId,
     player: {
       name: playerName,
-      avatarLink: await generateAvatarLink(playerName),
+      avatarLink: generateAvatarLink(playerName),
       state: AppPlayerState.Idle,
       tournamentId: formattedTournamentId,
     },

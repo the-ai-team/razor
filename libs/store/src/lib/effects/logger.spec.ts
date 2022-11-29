@@ -4,7 +4,7 @@ import { initializeStore } from '../store';
 
 describe('[Effects] Logger', () => {
   describe('Send log message', () => {
-    it('(error) => Send error to state, Log to console', async () => {
+    it('(error) => Send error to state, Log to console', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);
@@ -12,7 +12,7 @@ describe('[Effects] Logger', () => {
       const code = AppErrorCode.PlayerNotExists;
       const message = 'Player with id P:notExist does not exist.';
       const related = 'While removing player';
-      await store.dispatch.game.sendLogMessage({
+      store.dispatch.game.sendLogMessage({
         message: message,
         code: code,
         related: related,
@@ -20,7 +20,7 @@ describe('[Effects] Logger', () => {
       });
       expect(consoleSpy).toBeCalledTimes(1);
     });
-    it('(warn) => Log to console', async () => {
+    it('(warn) => Log to console', () => {
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);
@@ -28,7 +28,7 @@ describe('[Effects] Logger', () => {
       const code = AppErrorCode.PlayerNotExists;
       const message = 'Player with id P:notExist does not exist.';
       const related = 'While removing player';
-      await store.dispatch.game.sendLogMessage({
+      store.dispatch.game.sendLogMessage({
         message: message,
         code: code,
         related: related,
@@ -36,7 +36,7 @@ describe('[Effects] Logger', () => {
       });
       expect(consoleSpy).toBeCalledTimes(1);
     });
-    it('(info) => Log to console', async () => {
+    it('(info) => Log to console', () => {
       const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
       const initialValues = initialState;
       const store = initializeStore(initialValues);
@@ -44,7 +44,7 @@ describe('[Effects] Logger', () => {
       const code = AppErrorCode.PlayerNotExists;
       const message = 'Player with id P:notExist does not exist.';
       const related = 'While removing player';
-      await store.dispatch.game.sendLogMessage({
+      store.dispatch.game.sendLogMessage({
         message: message,
         code: code,
         related: related,

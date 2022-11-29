@@ -104,7 +104,7 @@ describe('[Effects] Race', () => {
           initialTournamentsModel: AppTournaments,
           nextRaceId: AppRaceId,
         ) => {
-          it('=> Create race, Assign players, Update player state to race', async () => {
+          it('=> Create race, Assign players, Update player state to race', () => {
             const initialValues: AppStateModel = {
               ...initialState,
               tournamentsModel: initialTournamentsModel,
@@ -117,7 +117,7 @@ describe('[Effects] Race', () => {
               .useFakeTimers({ doNotFake: ['nextTick', 'setImmediate'] })
               .setSystemTime(new Date('2022-01-01'));
             const timeNow = new Date().getTime();
-            await store.dispatch.game.startCountdown({
+            store.dispatch.game.startCountdown({
               tournamentId: M_TOURNAMENT_ID0,
               playerId: M_PLAYER_ID0,
               raceText: M_RACE_TEXT0,
@@ -176,7 +176,7 @@ describe('[Effects] Race', () => {
       );
     });
 
-    it('(not existing tournament) => Raise error', async () => {
+    it('(not existing tournament) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -189,7 +189,7 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.startCountdown({
+      store.dispatch.game.startCountdown({
         tournamentId: 'T:notExist',
         playerId: M_PLAYER_ID0,
         raceText: M_RACE_TEXT0,
@@ -198,7 +198,7 @@ describe('[Effects] Race', () => {
       expect(tournamentNotFound).toHaveBeenCalled();
     });
 
-    it('(not existing player) => Raise error', async () => {
+    it('(not existing player) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -211,7 +211,7 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.startCountdown({
+      store.dispatch.game.startCountdown({
         tournamentId: M_TOURNAMENT_ID0,
         playerId: 'P:notExist',
         raceText: M_RACE_TEXT0,
@@ -220,7 +220,7 @@ describe('[Effects] Race', () => {
       expect(playerNotFound).toHaveBeenCalled();
     });
 
-    it('(missing player, but in tournament) => Raise error', async () => {
+    it('(missing player, but in tournament) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -239,7 +239,7 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      await store.dispatch.game.startCountdown({
+      store.dispatch.game.startCountdown({
         tournamentId: M_TOURNAMENT_ID0,
         playerId: M_PLAYER_ID0,
         raceText: M_RACE_TEXT0,
@@ -380,10 +380,10 @@ describe('End Race', () => {
     });
   });
 
-  it('(not existing race) => Raise error', async () => {
+  it('(not existing race) => Raise error', () => {
     const initialValues = initialState;
     const store = initializeStore(initialValues);
-    await store.dispatch.game.endRace({
+    store.dispatch.game.endRace({
       raceId: 'T:notExist-R:notExist',
     });
 

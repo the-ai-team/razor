@@ -16,35 +16,35 @@ const initialState: AppStateModel = {
 };
 
 describe('[Raisers]', () => {
-  it('playerNotFound', async () => {
+  it('playerNotFound', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await playerNotFound(dispatch, 'P:notExist', 'message');
+    playerNotFound(dispatch, 'P:notExist', 'message');
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it('playerNotFound (without any message)', async () => {
+  it('playerNotFound (without any message)', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await playerNotFound(dispatch, 'P:notExist');
+    playerNotFound(dispatch, 'P:notExist');
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it('invalidPlayerName', async () => {
+  it('invalidPlayerName', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await invalidPlayerName(dispatch);
+    invalidPlayerName(dispatch);
     expect(consoleSpy).toHaveBeenCalled();
   });
 
-  it('invalidPlayerNameLength', async () => {
+  it('invalidPlayerNameLength', () => {
     const store = initializeStore(initialState);
     const dispatch: Dispatch = store.dispatch;
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-    await invalidPlayerNameLength(dispatch);
+    invalidPlayerNameLength(dispatch);
     expect(consoleSpy).toHaveBeenCalled();
   });
 });

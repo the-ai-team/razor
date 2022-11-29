@@ -19,16 +19,16 @@ import { Dispatch } from '../store';
  * ### Related reducers and effects
  * - logErrorReducer
  */
-export const sendLogMessage = async (
+export const sendLogMessage = (
   dispatch: Dispatch,
   payload: AppMessageLog,
-): Promise<void> => {
+): void => {
   /** Current unix timestamp */
   const timestamp: number = new Date().getTime();
   const { message, code, related, type } = payload;
 
   /** General random id */
-  const randomId = await generateUid(AppIdNumberType.General);
+  const randomId = generateUid(AppIdNumberType.General);
 
   switch (type) {
     // If the type is an error, send the error to the state and log in to the console as an error.

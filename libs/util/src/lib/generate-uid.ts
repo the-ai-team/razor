@@ -9,7 +9,7 @@ import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet(NANOID_ALPHABET, GENERAL_ID_LENGTH);
 
-export const generateUid = async (type: AppIdNumberType): Promise<string> => {
+export const generateUid = (type: AppIdNumberType): string => {
   switch (type) {
     case AppIdNumberType.Tournament:
       return `T:${nanoid(TOURNAMENT_ID_LENGTH)}`;
