@@ -6,11 +6,13 @@
     "start": "nx serve",
     "build": "nx build client && nx build server",
     "test": "nx run-many --all --target=test",
-    "test:store": "nx test store --watch",
+    "test:store": "nx test store --watchAll",
+    "test:util": "nx test util --watchAll",
     "build:client": "nx build client",
     "build:server": "nx build server",
     "serve": "node dist/apps/server/main.js",
-    "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\""
+    "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
+    "lint": "nx run-many --all --target=lint"
   },
   "private": true,
   "engines": {
