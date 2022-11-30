@@ -1,4 +1,4 @@
-import { AppStateModel, AppErrorCode, AppMessageLogType } from '@razor/models';
+import { AppStateModel } from '@razor/models';
 import {
   createModel,
   init,
@@ -64,17 +64,3 @@ export const initializeStore = (initialState: AppStateModel): Store => {
 export type Store = typeof store;
 export type Dispatch = RematchDispatch<RootModel>;
 export type RootState = RematchRootState<RootModel>;
-
-store.dispatch.game.sendLogMessage({
-  message: ` is not provided`,
-  code: AppErrorCode.PayloadNotProvided,
-  related: '',
-  type: AppMessageLogType.Error,
-});
-// store.dispatch({
-//   type: 'game/joinPlayer',
-//   payload: {
-//     tid: 'T:rGl0zHJk',
-//     playerName: 'su ss',
-//   },
-// });
