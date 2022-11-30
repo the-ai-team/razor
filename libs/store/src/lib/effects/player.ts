@@ -87,9 +87,7 @@ export const joinPlayer = (
   const formattedTournamentId: AppTournamentId =
     tournamentId as AppTournamentId;
   // Generate a new player id.
-  const formattedPlayerId: AppPlayerId = generateUid(
-    AppIdNumberType.Player,
-  ) as AppPlayerId;
+  const formattedPlayerId: AppPlayerId = generateUid(AppIdNumberType.Player);
 
   // If the tournament id was not provided, then add a new tournament.
   if (!tid) {
