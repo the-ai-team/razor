@@ -4,18 +4,24 @@ import {
   PLAYER_ID_LENGTH,
   TOURNAMENT_ID_LENGTH,
 } from '@razor/constants';
-import { AppIdNumberType } from '@razor/models';
+import { AppIdNumberType, AppPlayerId, AppTournamentId } from '@razor/models';
 import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet(NANOID_ALPHABET, GENERAL_ID_LENGTH);
 
-export const generateUid = (type: AppIdNumberType): string => {
+type TypeMap = {
+  tournament: AppTournamentId;
+  player: AppPlayerId;
+  general: string;
+};
+
+export const generateUid = <T extends AppIdNumberType>(type: T): TypeMap[T] => {
   switch (type) {
     case AppIdNumberType.Tournament:
-      return `T:${nanoid(TOURNAMENT_ID_LENGTH)}`;
+      return `T:${nanoid(TOURNAMENT_ID_LENGTH)}` as TypeMap[T];
     case AppIdNumberType.Player:
-      return `P:${nanoid(PLAYER_ID_LENGTH)}`;
-    case AppIdNumberType.General:
-      return nanoid(GENERAL_ID_LENGTH);
+      return `P:${nanoid(PLAYER_ID_LENGTH)}` as TypeMap[T];
+    default:
+      return nanoid(GENERAL_ID_LENGTH) as TypeMap[T];
   }
 };
