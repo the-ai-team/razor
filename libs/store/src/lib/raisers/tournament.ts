@@ -9,7 +9,7 @@ export const tournamentNotFound = (
   dispatch.game.sendLogMessage({
     message: `Tournament with id ${tid} does not exist`,
     code: AppErrorCode.TournamentNotExists,
-    related: additionalMessage ? additionalMessage : '',
+    related: additionalMessage || '',
     type: AppMessageLogType.Error,
   });
 };

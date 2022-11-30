@@ -9,7 +9,7 @@ export const raceNotFound = (
   dispatch.game.sendLogMessage({
     message: `Race with id ${rid} does not exist`,
     code: AppErrorCode.RaceNotExists,
-    related: additionalMessage ? additionalMessage : '',
+    related: additionalMessage || '',
     type: AppMessageLogType.Error,
   });
 };

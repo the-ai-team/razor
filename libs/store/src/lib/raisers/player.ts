@@ -9,7 +9,7 @@ export const playerNotFound = (
   dispatch.game.sendLogMessage({
     message: `Player with id ${pid} does not exist`,
     code: AppErrorCode.PlayerNotExists,
-    related: additionalMessage ? additionalMessage : '',
+    related: additionalMessage || '',
     type: AppMessageLogType.Error,
   });
 };
