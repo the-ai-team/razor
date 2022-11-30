@@ -21,6 +21,13 @@ type TypeMap = {
   playerLog: AppPlayerLogId;
 };
 
+/** Extract an id from a compound id
+ *
+ * @param inputId - Compound id to extract from.
+ * @param inputIdType - Type of id to input id.
+ * @param outputIdType - Type of id to extract.
+ * @returns - Extracted id.
+ */
 export const extractId = <T extends ExtractIdType>(
   inputId: IdType,
   inputIdType: ExtractIdType,
@@ -30,14 +37,20 @@ export const extractId = <T extends ExtractIdType>(
     return inputId as TypeMap[T];
   }
 
+  // Check the validity of the input id.
   const validInput = checkValidityOfId(inputIdType, inputId);
+  // If invalid
   if (!validInput) {
     throw new Error('Invalid input value');
   }
 
+  // Split id into parts by '-'.
   const splitedId = inputId.split('-');
+  // Switching by output id type.
   switch (outputIdType) {
+    // Output id type is "tournament".
     case ExtractIdType.tournament:
+      // Extract the first part of the id if the input id type is "race" or "playerLog".
       if (inputIdType === ExtractIdType.race) {
         return splitedId[0] as TypeMap[T];
       } else if (inputIdType === ExtractIdType.playerLog) {
@@ -45,13 +58,17 @@ export const extractId = <T extends ExtractIdType>(
       } else {
         throw new Error('Invalid type');
       }
+    // Output id type is "player".
     case ExtractIdType.player:
+      // Extract the second part of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.playerLog) {
         return splitedId[2] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
+    // Output id type is "race"
     case ExtractIdType.race:
+      // Extract the first two parts of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.playerLog) {
         return `${splitedId[0]}-${splitedId[1]}` as TypeMap[T];
       } else {
@@ -62,9 +79,14 @@ export const extractId = <T extends ExtractIdType>(
   }
 };
 
+/** Checking validity of an id
+ *
+ * @param type - Type of id to check.
+ * @param id - Id to check.
+ */
 export const checkValidityOfId = (
   type: ExtractIdType,
-  id: string,
+  id: IdType,
 ): RegExpMatchArray | null => {
   switch (type) {
     case ExtractIdType.tournament:

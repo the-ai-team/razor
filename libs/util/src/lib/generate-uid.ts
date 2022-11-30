@@ -7,6 +7,7 @@ import {
 import { AppIdNumberType, AppPlayerId, AppTournamentId } from '@razor/models';
 import { customAlphabet } from 'nanoid';
 
+/** Nanoid with custom alphabet */
 const nanoid = customAlphabet(NANOID_ALPHABET, GENERAL_ID_LENGTH);
 
 type TypeMap = {
@@ -15,6 +16,11 @@ type TypeMap = {
   general: string;
 };
 
+/** Generate an unique id for given id type.
+ *
+ * @param {AppIdNumberType} type - Type of id to generate.
+ * @returns - Generated id.
+ */
 export const generateUid = <T extends AppIdNumberType>(type: T): TypeMap[T] => {
   switch (type) {
     case AppIdNumberType.Tournament:
