@@ -8,8 +8,6 @@ import {
   AppTournamentState,
 } from '@razor/models';
 
-// Payload data models for the effects.
-
 export type JoinPlayerPayload = {
   tid: string;
   playerName: string;
