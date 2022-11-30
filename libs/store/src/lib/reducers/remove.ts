@@ -25,7 +25,14 @@ export const removePlayerReducer = (
   payload: RemovePlayerReducerPayload,
 ): AppStateModel => {
   const { tournamentId, playerId } = payload;
-  //TODO: if player id is not found, return the state
+  // If the player does not exists.
+  if (!(playerId in state.playersModel)) {
+    return state;
+  }
+  // If the tournament does not exists.
+  if (!(tournamentId in state.tournamentsModel)) {
+    return state;
+  }
   /** New players model after removing specific player. */
   const newPlayersModel = omit(state.playersModel, [playerId]);
   /** State model after player removed from players model. */
@@ -68,8 +75,11 @@ export const removeTournamentReducer = (
   state: AppStateModel,
   payload: RemoveTournamentReducerPayload,
 ): AppStateModel => {
-  //TODO: if tournament id not found, return state
   const { tournamentId } = payload;
+  // If the tournament does not exists.
+  if (!(tournamentId in state.tournamentsModel)) {
+    return state;
+  }
   /** Player ids array of the tournament */
   const playerIds = state.tournamentsModel[tournamentId].playerIds;
   /** Race ids array of the tournament */

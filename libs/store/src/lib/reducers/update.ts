@@ -20,7 +20,10 @@ export const updateTournamentReducer = (
   payload: UpdateTournamentReducerPayload,
 ): AppStateModel => {
   const { tournamentId, tournament } = payload;
-  //TODO: if the tournament id not found, return the state
+  // If the tournament does not exists.
+  if (!(tournamentId in state.tournamentsModel)) {
+    return state;
+  }
   /** State model after updating specific tournament in tournaments model. */
   const newState: AppStateModel = {
     ...state,
@@ -46,7 +49,10 @@ export const updateRaceReducer = (
   payload: UpdateRaceReducerPayload,
 ): AppStateModel => {
   const { raceId, race } = payload;
-  //TODO: if race id not found, return state
+  // If the race does not exists.
+  if (!(raceId in state.racesModel)) {
+    return state;
+  }
   /** State model after updating specific race in races model. */
   const newState: AppStateModel = {
     ...state,
@@ -71,9 +77,11 @@ export const updatePlayerReducer = (
   state: AppStateModel,
   payload: UpdatePlayerReducerPayload,
 ): AppStateModel => {
-  //TODO: if the player id is not found, return the state
   const { playerId, player } = payload;
-
+  // If the player does not exists.
+  if (!(playerId in state.playersModel)) {
+    return state;
+  }
   /** State model after updating specific player in players model. */
   const newState: AppStateModel = {
     ...state,
@@ -99,18 +107,12 @@ export const updatePlayerLogReducer = (
   payload: UpdatePlayerLogReducerPayload,
 ): AppStateModel => {
   const { playerLogId, playerLog } = payload;
-  //TODO: if player id is not found, return the state
   /** State model after updating specific player log-in player logs model. */
   const newState: AppStateModel = {
     ...state,
     playerLogsModel: {
       ...state.playerLogsModel,
-      [playerLogId]: [
-        ...(state.playerLogsModel[playerLogId]
-          ? state.playerLogsModel[playerLogId]
-          : []),
-        playerLog,
-      ],
+      [playerLogId]: [...(state.playerLogsModel[playerLogId] || []), playerLog],
     },
   };
   return newState;
