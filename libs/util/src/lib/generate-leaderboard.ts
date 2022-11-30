@@ -2,7 +2,6 @@ import {
   AppFinishedLeaderboardEntry,
   AppFinishedPlayerValues,
   AppLeaderboard,
-  AppPlayerId,
   AppPlayerLog,
   AppPlayerLogId,
   AppPlayerLogs,
@@ -27,62 +26,49 @@ export const generateLeaderboard = (
       playerLogId,
       ExtractIdType.playerLog,
       ExtractIdType.race,
-    ) as AppRaceId;
+    );
 
     const playerIdOfPlayerLog = extractId(
       playerLogId,
       ExtractIdType.playerLog,
       ExtractIdType.player,
-    ) as AppPlayerId;
+    );
 
-    const playerLogsLength = playerLogs[playerLogId as AppPlayerLogId].length;
-    const playerLastTextLength =
-      playerLogs[playerLogId as AppPlayerLogId][playerLogsLength - 1]
-        .textLength;
-
-    let wpm, elpasedTime, distance;
-    let finishedPlayerValues: AppFinishedPlayerValues = {
-      wpm: 0,
-      elpasedTime: 0,
-    };
-    let timeoutPlayerValues: AppTimeoutPlayerValues = {
-      distance: 0,
-    };
     //Check whether race owns the racelog
     if (raceIdOfPlayerLog === raceId) {
+      const playerLogsLength = playerLogs[playerLogId].length;
+      const playerLastTextLength =
+        playerLogs[playerLogId][playerLogsLength - 1].textLength;
+
+      let wpm, elpasedTime, distance;
       // Check whether player has finished the race
       if (playerLastTextLength === raceTextLength) {
-        wpm = calculateWPM(
-          raceTextLength,
-          playerLogs[playerLogId as AppPlayerLogId],
-        );
+        wpm = calculateWPM(raceTextLength, playerLogs[playerLogId]);
         elpasedTime =
-          playerLogs[playerLogId as AppPlayerLogId][playerLogsLength - 1]
-            .timestamp - playerLogs[playerLogId as AppPlayerLogId][0].timestamp;
-        finishedPlayerValues = {
+          playerLogs[playerLogId][playerLogsLength - 1].timestamp -
+          playerLogs[playerLogId][0].timestamp;
+        const finishedPlayerValues: AppFinishedPlayerValues = {
           wpm,
           elpasedTime,
         };
+        completeEntries.push({
+          playerId: playerIdOfPlayerLog,
+          status: AppPlayerStatus.Complete,
+          values: finishedPlayerValues,
+        });
       } else {
         distance =
-          playerLogs[playerLogId as AppPlayerLogId][playerLogsLength - 1]
-            .textLength -
-          playerLogs[playerLogId as AppPlayerLogId][0].textLength;
-        timeoutPlayerValues = { distance };
+          playerLogs[playerLogId][playerLogsLength - 1].textLength -
+          playerLogs[playerLogId][0].textLength;
+        const timeoutPlayerValues: AppTimeoutPlayerValues = {
+          distance,
+        };
+        timeoutEntries.push({
+          playerId: playerIdOfPlayerLog,
+          status: AppPlayerStatus.Timeout,
+          values: timeoutPlayerValues,
+        });
       }
-    }
-    if (playerLastTextLength === raceTextLength) {
-      completeEntries.push({
-        playerId: playerIdOfPlayerLog,
-        status: AppPlayerStatus.Complete,
-        values: finishedPlayerValues,
-      });
-    } else {
-      timeoutEntries.push({
-        playerId: playerIdOfPlayerLog,
-        status: AppPlayerStatus.Timeout,
-        values: timeoutPlayerValues,
-      });
     }
   }
 
