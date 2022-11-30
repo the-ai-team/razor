@@ -71,25 +71,6 @@ describe('[Reducers] Add operations', () => {
 
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(without id) => Return same state', () => {
-      const initialValues = initialState;
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.addTournamentReducer({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        tournamentId: '' as string,
-        tournament: {
-          playerIds: ['P:testPLAY', 'P:testPLAY2'],
-          raceIds: ['T:testTOUR-R:001', 'T:testTOUR-R:002'],
-          state: AppTournamentState.Lobby,
-        },
-      });
-      const gameState = store.getState();
-
-      expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
-    });
   });
 
   describe('Add race', () => {
@@ -274,49 +255,6 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-    it('(without id) => Return same state', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        tournamentsModel: {
-          'T:testTOUR': {
-            playerIds: ['P:testPLAY', 'P:testPLY2'],
-            raceIds: ['T:testTOUR-R:000'],
-            state: AppTournamentState.Lobby,
-          },
-        },
-      };
-
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.addRaceReducer({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        raceId: '',
-        race: {
-          text: 'Voluptate occaecat laborum nisi nostrud. Esse pariatur cillum esse Lorem adipisicing ullamco anim sit tempor duis sunt.',
-          timeoutDuration: 200,
-          startedTimestamp: 1234567800,
-          players: {
-            'P:testPLY3': {
-              name: 'Player1',
-              avatarLink:
-                'https://avatars.dicebear.com/api/open-peeps/506c6179657231.svg',
-            },
-            'P:testPLY4': {
-              name: 'Player2',
-              avatarLink:
-                'https://avatars.dicebear.com/api/open-peeps/506c6179657232.svg',
-            },
-          },
-          isOnGoing: true,
-          raceStartedBy: 'P:testPLY3',
-        },
-      });
-
-      const gameState = store.getState();
-      expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
-    });
   });
 
   describe('Add Player', () => {
@@ -374,70 +312,6 @@ describe('[Reducers] Add operations', () => {
 
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
-    });
-    it('(without id) => Return same state', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        tournamentsModel: {
-          ...initialState.tournamentsModel,
-          'T:testTOUR': {
-            playerIds: [],
-            raceIds: [],
-            state: AppTournamentState.Lobby,
-          },
-        },
-      };
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.addPlayerReducer({
-        tournamentId: 'T:testTOUR',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        playerId: '',
-        player: {
-          name: 'NewPlayer',
-          avatarLink:
-            'https://avatars.dicebear.com/api/open-peeps/4e6577506c61796572.svg',
-          state: AppPlayerState.Idle,
-          tournamentId: 'T:testTOUR',
-        },
-      });
-
-      const gameState = store.getState();
-      expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
-    });
-    it('(without tournament id) => Return same state', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        tournamentsModel: {
-          ...initialState.tournamentsModel,
-          'T:testTOUR': {
-            playerIds: [],
-            raceIds: [],
-            state: AppTournamentState.Lobby,
-          },
-        },
-      };
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.addPlayerReducer({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        tournamentId: '',
-        playerId: 'P:testPLAY',
-        player: {
-          name: 'NewPlayer',
-          avatarLink:
-            'https://avatars.dicebear.com/api/open-peeps/4e6577506c61796572.svg',
-          state: AppPlayerState.Idle,
-          tournamentId: 'T:testTOUR',
-        },
-      });
-
-      const gameState = store.getState();
-      expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
     it('(not existing related tournament) => Return same state', () => {
       const initialValues: AppStateModel = {
@@ -506,7 +380,6 @@ describe('[Reducers] Add operations', () => {
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
-
     it('(all valid, empty tournament) => Add new player, add player id to empty tournament', () => {
       const initialValues: AppStateModel = {
         ...initialState,
@@ -616,58 +489,6 @@ describe('[Reducers] Add operations', () => {
 
       const gameState = store.getState();
       expect(gameState).toEqual({ ...initialStoreState, game: expectedResult });
-    });
-    it('(without id) => Return same state', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        leaderboardsModel: {
-          ['T:testTOUR-R:000']: [
-            {
-              playerId: 'P:testPLAY',
-              status: AppPlayerStatus.Complete,
-              values: {
-                wpm: 60,
-                elpasedTime: 68,
-              },
-            },
-            {
-              playerId: 'P:testPLY2',
-              status: AppPlayerStatus.Timeout,
-              values: {
-                distance: 55,
-              },
-            },
-          ],
-        },
-      };
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.addLeaderboardReducer({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        leaderboardId: '',
-        leaderboard: [
-          {
-            playerId: 'P:testPLAY',
-            status: AppPlayerStatus.Complete,
-            values: {
-              wpm: 60,
-              elpasedTime: 68,
-            },
-          },
-          {
-            playerId: 'P:testPLY2',
-            status: AppPlayerStatus.Timeout,
-            values: {
-              distance: 55,
-            },
-          },
-        ],
-      });
-
-      const gameState = store.getState();
-      expect(gameState).toEqual({ ...initialStoreState, game: initialValues });
     });
     it('(existing id) => Return same state', () => {
       const initialValues: AppStateModel = {
