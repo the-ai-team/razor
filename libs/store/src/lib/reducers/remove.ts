@@ -23,16 +23,9 @@ export const removePlayerReducer = (
       ...state.tournamentsModel,
       [tournamentId]: {
         ...state.tournamentsModel[tournamentId],
-        playerIds: [
-          ...state.tournamentsModel[tournamentId].playerIds.slice(
-            0,
-            state.tournamentsModel[tournamentId].playerIds.indexOf(playerId),
-          ),
-          ...state.tournamentsModel[tournamentId].playerIds.slice(
-            state.tournamentsModel[tournamentId].playerIds.indexOf(playerId) +
-              1,
-          ),
-        ],
+        playerIds: state.tournamentsModel[tournamentId].playerIds.filter(
+          id => id !== playerId,
+        ),
       },
     },
     playersModel: {
