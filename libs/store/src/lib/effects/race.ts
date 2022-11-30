@@ -41,7 +41,18 @@ import { Dispatch, RootState } from '../store';
  * If the player who pressed the start button and the relevant tournament are found, then the countdown will be started.
  * Tournament state will be changed to "Countdown".
  *
- * @todo: complete later
+ * @param {Dispatch} dispatch - Dispatch function from the store.
+ * @param {StartCountdownPayload} payload - Payload for starting the countdown of the
+ * @param {RootState} state - Current state model.
+ *
+ * ### Related reducers and effects
+ * - setTournamentState (effect)
+ * - updatePlayerReducer
+ * - updateRaceReducer
+ *
+ * ### Related raisers
+ * - tournamentNotFound
+ * - playerNotFound
  */
 export const startCountdown = (
   dispatch: Dispatch,
@@ -50,10 +61,12 @@ export const startCountdown = (
 ): void => {
   const { tournamentId, playerId, raceText } = payload;
 
+  // If the tournament is not found, call the raiser.
   if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `Started by: ${playerId}`);
     return;
   }
+  // If the player who started the tournament is not found, call the raiser.
   if (!(playerId in state.game.playersModel)) {
     playerNotFound(
       dispatch,
@@ -63,14 +76,19 @@ export const startCountdown = (
     return;
   }
 
+  // Number of races played in the past in this tournament.
   const numberOfRacesBefore =
     state.game.tournamentsModel[tournamentId].raceIds.length || 0;
-
+  // Race index for next tournament with zero padding. (e.g. 001, 002, 003...)
   const raceIndex = giveZeroPadding(numberOfRacesBefore.toString(), 3);
+  // Compound race id.
   const raceId: AppRaceId = `${tournamentId}-R:${raceIndex}`;
+  // Player profiles which need to add for the race details.
   const players: AppPlayerProfiles = {};
 
+  // Adding players in the tournament at this moment to the race.
   for (const id of state.game.tournamentsModel[tournamentId].playerIds) {
+    // If the player is not found, call the raiser.
     if (!(id in state.game.playersModel)) {
       playerNotFound(
         dispatch,
@@ -79,13 +97,14 @@ export const startCountdown = (
       );
       return;
     } else {
+      // Take the player in players model.
       const player = state.game.playersModel[id];
       players[id] = {
         name: player.name,
         avatarLink: player.avatarLink,
       };
 
-      // Updating player state in playersModel
+      // Updating player state in playersModel. ("Idle" -> "Racing")
       const playerData: AppPlayer = {
         ...player,
         state: AppPlayerState.Racing,
@@ -97,8 +116,10 @@ export const startCountdown = (
     }
   }
 
+  // Timeout duration for recived race text.
   const timeoutDuration = calculateTimeoutTimer(raceText);
 
+  // Race details.
   const race: AppRace = {
     text: raceText,
     timeoutDuration: timeoutDuration,
@@ -108,11 +129,13 @@ export const startCountdown = (
     raceStartedBy: playerId,
   };
 
+  // Updating tournament state in tournamentsModel. ("Ready" -> "Countdown")
   dispatch.game.setTournamentState({
     tournamentId,
     tournamentState: AppTournamentState.Countdown,
   });
 
+  // Add race to races model.
   dispatch.game.addRaceReducer({
     raceId,
     race,
