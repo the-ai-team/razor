@@ -1,3 +1,5 @@
+// ### [Payloads] Data models for the reducer payloads ### //
+
 import {
   AppTournamentId,
   AppTournament,
@@ -12,7 +14,6 @@ import {
   AppErrorTimestamp,
 } from '@razor/models';
 
-//reducer Playloads
 export type AddTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;

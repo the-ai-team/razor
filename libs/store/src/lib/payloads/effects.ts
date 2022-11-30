@@ -1,3 +1,5 @@
+// ### [Payloads] Data models for the effect payloads ### //
+
 import {
   AppPlayerId,
   AppPlayerLog,
@@ -6,7 +8,8 @@ import {
   AppTournamentState,
 } from '@razor/models';
 
-//effectsPayloads
+// Payload data models for the effects.
+
 export type JoinPlayerPayload = {
   tid: string;
   playerName: string;
