@@ -1,7 +1,7 @@
 // ### [Reducers] Basic add operations for store ### //
 
 import { AppStateModel, AppTournamentId } from '@razor/models';
-import { extractId, extractIdType } from '@razor/util';
+import { extractId, ExtractIdType } from '@razor/util';
 import {
   AddLeaderboardReducerPayload,
   AddPlayerReducerPayload,
@@ -51,8 +51,8 @@ export const addRaceReducer = (
   /** Extract tournaemnt id from race id */
   const tournamentId: AppTournamentId = extractId(
     raceId,
-    extractIdType.race,
-    extractIdType.tournament,
+    ExtractIdType.race,
+    ExtractIdType.tournament,
   );
   // If the tournament does not exists.
   if (!(tournamentId in state.tournamentsModel)) {

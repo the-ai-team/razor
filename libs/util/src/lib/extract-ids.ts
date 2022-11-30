@@ -5,8 +5,7 @@ import {
   AppTournamentId,
 } from '@razor/models';
 
-//TODO: change to pascal case
-export enum extractIdType {
+export enum ExtractIdType {
   tournament = 'tournament',
   player = 'player',
   race = 'race',
@@ -22,9 +21,9 @@ type TypeMap = {
   playerLog: AppPlayerLogId;
 };
 
-export const extractId = <T extends extractIdType>(
+export const extractId = <T extends ExtractIdType>(
   inputId: IdType,
-  inputIdType: extractIdType,
+  inputIdType: ExtractIdType,
   outputIdType: T,
 ): TypeMap[T] => {
   if (inputIdType === outputIdType) {
@@ -38,22 +37,22 @@ export const extractId = <T extends extractIdType>(
 
   const splitedId = inputId.split('-');
   switch (outputIdType) {
-    case extractIdType.tournament:
-      if (inputIdType === extractIdType.race) {
+    case ExtractIdType.tournament:
+      if (inputIdType === ExtractIdType.race) {
         return splitedId[0] as TypeMap[T];
-      } else if (inputIdType === extractIdType.playerLog) {
+      } else if (inputIdType === ExtractIdType.playerLog) {
         return splitedId[0] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
-    case extractIdType.player:
-      if (inputIdType === extractIdType.playerLog) {
+    case ExtractIdType.player:
+      if (inputIdType === ExtractIdType.playerLog) {
         return splitedId[2] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
-    case extractIdType.race:
-      if (inputIdType === extractIdType.playerLog) {
+    case ExtractIdType.race:
+      if (inputIdType === ExtractIdType.playerLog) {
         return `${splitedId[0]}-${splitedId[1]}` as TypeMap[T];
       } else {
         throw new Error('Invalid type');
@@ -64,17 +63,17 @@ export const extractId = <T extends extractIdType>(
 };
 
 export const checkValidityOfId = (
-  type: extractIdType,
+  type: ExtractIdType,
   id: string,
 ): RegExpMatchArray | null => {
   switch (type) {
-    case extractIdType.tournament:
+    case ExtractIdType.tournament:
       return id.match(/^T:[a-zA-Z0-9]{8}$/);
-    case extractIdType.player:
+    case ExtractIdType.player:
       return id.match(/^P:[a-zA-Z0-9]{8}$/);
-    case extractIdType.race:
+    case ExtractIdType.race:
       return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}$/);
-    case extractIdType.playerLog:
+    case ExtractIdType.playerLog:
       return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}-P:[a-zA-Z0-9]{8}$/);
   }
 };

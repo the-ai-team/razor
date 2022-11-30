@@ -13,7 +13,7 @@ import {
 import {
   calculateTimeoutTimer,
   extractId,
-  extractIdType,
+  ExtractIdType,
   generateLeaderboard,
   giveZeroPadding,
 } from '@razor/util';
@@ -194,8 +194,8 @@ export const endRace = (
   // Extract tournament id from race id.
   const tournamentId: AppTournamentId = extractId(
     raceId,
-    extractIdType.race,
-    extractIdType.tournament,
+    ExtractIdType.race,
+    ExtractIdType.tournament,
   ) as AppTournamentId;
 
   // TODO: use setTournamentState state instead

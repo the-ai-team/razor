@@ -6,39 +6,39 @@ import {
   M_TR0_RACE_ID0,
 } from '@razor/mocks';
 import { AppTournamentId } from '@razor/models';
-import { extractId, extractIdType } from './extract-ids';
+import { extractId, ExtractIdType } from './extract-ids';
 
 describe('[Utils] extractIds', () => {
   describe('Extract specifc id from compound ids', () => {
     it('(race id) => tournament id', () => {
       const tournamentId = extractId(
         M_TR0_RACE_ID0,
-        extractIdType.race,
-        extractIdType.tournament,
+        ExtractIdType.race,
+        ExtractIdType.tournament,
       );
       expect(tournamentId).toBe(M_TOURNAMENT_ID0);
     });
     it('(player log id) => tournament id', () => {
       const tournamentId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        extractIdType.playerLog,
-        extractIdType.tournament,
+        ExtractIdType.playerLog,
+        ExtractIdType.tournament,
       );
       expect(tournamentId).toBe(M_TOURNAMENT_ID0);
     });
     it('(player log id) => player id', () => {
       const playerId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        extractIdType.playerLog,
-        extractIdType.player,
+        ExtractIdType.playerLog,
+        ExtractIdType.player,
       );
       expect(playerId).toBe(M_PLAYER_ID0);
     });
     it('(player log id) => race id', () => {
       const raceId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        extractIdType.playerLog,
-        extractIdType.race,
+        ExtractIdType.playerLog,
+        ExtractIdType.race,
       );
       expect(raceId).toBe(M_TR0_RACE_ID0);
     });
@@ -46,21 +46,21 @@ describe('[Utils] extractIds', () => {
       try {
         extractId(
           'invalid' as AppTournamentId,
-          extractIdType.playerLog,
-          extractIdType.tournament,
+          ExtractIdType.playerLog,
+          ExtractIdType.tournament,
         );
       } catch (e) {
         expect((e as Error).message).toBe('Invalid input value');
       }
     });
     it.each([
-      [extractIdType.player, M_PLAYER_ID0, extractIdType.player],
-      [extractIdType.tournament, M_TOURNAMENT_ID0, extractIdType.tournament],
-      [extractIdType.race, M_TR0_RACE_ID0, extractIdType.race],
+      [ExtractIdType.player, M_PLAYER_ID0, ExtractIdType.player],
+      [ExtractIdType.tournament, M_TOURNAMENT_ID0, ExtractIdType.tournament],
+      [ExtractIdType.race, M_TR0_RACE_ID0, ExtractIdType.race],
       [
-        extractIdType.playerLog,
+        ExtractIdType.playerLog,
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        extractIdType.playerLog,
+        ExtractIdType.playerLog,
       ],
     ])(
       '(both request and input id are same, %s) => return same id',
@@ -70,14 +70,14 @@ describe('[Utils] extractIds', () => {
       },
     );
     it.each([
-      [extractIdType.tournament, M_PLAYER_ID0, extractIdType.player],
-      [extractIdType.player, M_TOURNAMENT_ID0, extractIdType.tournament],
-      [extractIdType.player, M_TR0_RACE_ID0, extractIdType.race],
-      [extractIdType.race, M_PLAYER_ID0, extractIdType.player],
-      [extractIdType.race, M_TOURNAMENT_ID0, extractIdType.tournament],
-      [extractIdType.playerLog, M_PLAYER_ID0, extractIdType.player],
-      [extractIdType.playerLog, M_TOURNAMENT_ID0, extractIdType.tournament],
-      [extractIdType.playerLog, M_TR0_RACE_ID0, extractIdType.race],
+      [ExtractIdType.tournament, M_PLAYER_ID0, ExtractIdType.player],
+      [ExtractIdType.player, M_TOURNAMENT_ID0, ExtractIdType.tournament],
+      [ExtractIdType.player, M_TR0_RACE_ID0, ExtractIdType.race],
+      [ExtractIdType.race, M_PLAYER_ID0, ExtractIdType.player],
+      [ExtractIdType.race, M_TOURNAMENT_ID0, ExtractIdType.tournament],
+      [ExtractIdType.playerLog, M_PLAYER_ID0, ExtractIdType.player],
+      [ExtractIdType.playerLog, M_TOURNAMENT_ID0, ExtractIdType.tournament],
+      [ExtractIdType.playerLog, M_TR0_RACE_ID0, ExtractIdType.race],
     ])(
       '(invalid input type but requesting %s) => raise error',
       (outputIdType, inputId, inputIdType) => {

@@ -11,7 +11,7 @@ import {
   AppTimeoutLeaderboardEntry,
   AppTimeoutPlayerValues,
 } from '@razor/models';
-import { extractId, extractIdType } from './extract-ids';
+import { extractId, ExtractIdType } from './extract-ids';
 
 export const generateLeaderboard = (
   playerLogs: AppPlayerLogs,
@@ -25,14 +25,14 @@ export const generateLeaderboard = (
   for (playerLogId in playerLogs) {
     const raceIdOfPlayerLog = extractId(
       playerLogId,
-      extractIdType.playerLog,
-      extractIdType.race,
+      ExtractIdType.playerLog,
+      ExtractIdType.race,
     ) as AppRaceId;
 
     const playerIdOfPlayerLog = extractId(
       playerLogId,
-      extractIdType.playerLog,
-      extractIdType.player,
+      ExtractIdType.playerLog,
+      ExtractIdType.player,
     ) as AppPlayerId;
 
     const playerLogsLength = playerLogs[playerLogId as AppPlayerLogId].length;
