@@ -73,14 +73,15 @@ describe('[Effects] Race', () => {
       [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 0], [0, 3]),
     };
     const nextRaceId0 = M_TR0_RACE_ID0;
+
     // test data for next races in tournament
     const initialRacesModel1 = {
       [M_TR0_RACE_ID0]: mockRace([0, 3]),
     };
-    const nextRaceId1 = M_TR0_RACE_ID1;
     const initialTournamentsModel1 = {
       [M_TOURNAMENT_ID0]: M_TOURNAMENT0,
     };
+    const nextRaceId1 = M_TR0_RACE_ID1;
 
     describe('(tournamentId & playerId)', () => {
       describe.each([

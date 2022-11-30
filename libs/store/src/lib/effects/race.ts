@@ -108,19 +108,12 @@ export const startCountdown = (
     raceStartedBy: playerId,
   };
 
-  const tournament: AppTournament = {
-    ...state.game.tournamentsModel[tournamentId],
-    state: AppTournamentState.Countdown,
-    raceIds: [...state.game.tournamentsModel[tournamentId].raceIds, raceId],
-  };
-
-  dispatch.game.updateTournamentReducer({
+  dispatch.game.setTournamentState({
     tournamentId,
-    tournament,
+    tournamentState: AppTournamentState.Countdown,
   });
 
-  //TODO: use add race instead
-  dispatch.game.updateRaceReducer({
+  dispatch.game.addRaceReducer({
     raceId,
     race,
   });
