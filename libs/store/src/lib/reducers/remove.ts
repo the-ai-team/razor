@@ -73,16 +73,21 @@ export const removeTournamentReducer = (
   if (!(tournamentId in state.tournamentsModel)) {
     return state;
   }
-  /** Player ids array of the tournament */
+  /** Player ids array of the tournament. */
   const playerIds = state.tournamentsModel[tournamentId].playerIds;
-  /** Race ids array of the tournament */
+  /** Race ids array of the tournament. */
   const raceIds = state.tournamentsModel[tournamentId].raceIds;
-  /** Empty array for player log id */
+  /** Empty array for player log id. */
   let playerLogIds: AppPlayerLogId[] = [];
 
-  // Adding relevant player log ids to the array
+  // For every race in the tournament.
   raceIds.forEach((raceId: AppRaceId) => {
-    // TODO: fix - mapping player ids should map the player ids in the race
+    /** Relavant race in races model. */
+    const race = state.racesModel[raceId];
+    /** Every player ids of the race. */
+    const playerIds = Object.keys(race.players) as AppPlayerId[];
+
+    // Removing relevant player logs from player logs model.
     const specificPlayerLogsId = playerIds.map(
       (playerId: AppPlayerId): AppPlayerLogId => {
         return `${raceId}-${playerId}`;
