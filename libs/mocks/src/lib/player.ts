@@ -54,7 +54,13 @@ export const M_PLAYER1: AppPlayer = mockPlayer(1);
 export const M_PLAYER2: AppPlayer = mockPlayer(2);
 export const M_PLAYER3: AppPlayer = mockPlayer(3);
 
-/** Generate players model withing range given */
+/** Generate mock players model withing range given
+ *
+ * @param {[number,number]} pIdRange - Range of player id to generate
+ * @param {AppTournamentId} tid - Tournament id to assign to players
+ * @param {AppPlayerState} state - Player state to assign to players
+ * @returns {AppPlayers} - Mock players model
+ */
 export const mockPlayersModel = (
   pIdRange: [number, number],
   tid: AppTournamentId = 'T:testTR00',
@@ -67,6 +73,12 @@ export const mockPlayersModel = (
   return players;
 };
 
+/** Generate mock player log id
+ *
+ * @param {AppRaceId} rid - Race id
+ * @param {AppPlayerId} pid - Player id
+ * @returns {AppPlayerLogId} - Mock player log id
+ */
 export const mockPlayerLogId = (
   rid: AppRaceId,
   pid: AppPlayerId,
@@ -74,6 +86,11 @@ export const mockPlayerLogId = (
   return `${rid}-${pid}`;
 };
 
+/** Generate mock completed player logs
+ *
+ * @param {number} textLength - Length of race text.
+ * @returns {AppPlayerLog} - Mock completed player logs.
+ */
 export const mockPlayerLogs = (textLength: number): AppPlayerLog[] => {
   const playerLogs: AppPlayerLog[] = [];
   let timestamp = 1234567000;
@@ -103,10 +120,11 @@ export const mockPlayerLogs = (textLength: number): AppPlayerLog[] => {
   return playerLogs;
 };
 
+/** Generate mock incompleted player logs. */
 export const mockTimeoutPlayerLogs = (textLength: number): AppPlayerLog[] => {
   const playerLogs: AppPlayerLog[] = [];
   let timestamp = 1234567000;
-  // starting log
+  // race starting log.
   playerLogs.push({
     timestamp,
     textLength: 0,

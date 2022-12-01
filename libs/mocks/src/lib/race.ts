@@ -9,10 +9,16 @@ import { giveZeroPadding } from './give-zero-padding';
 import { range } from 'lodash';
 import { mockPlayerId } from './player';
 
+/** Mock race id
+ *
+ * @param {AppTournamentId} tournamentId - Tournament id to assign.
+ * @param {number} raceNumber - Race number to assign.
+ */
 export const mockRaceId = (
   tournamentId: AppTournamentId,
-  rN: number,
-): AppRaceId => `${tournamentId}-R:${giveZeroPadding(rN.toString(), 3)}`;
+  raceNumber: number,
+): AppRaceId =>
+  `${tournamentId}-R:${giveZeroPadding(raceNumber.toString(), 3)}`;
 
 // Predefined race ids
 export const M_TR0_RACE_ID0 = mockRaceId('T:testTR00', 0);
@@ -42,7 +48,11 @@ export const M_RACE_TEXT0 =
 export const M_RACE_TEXT1 =
   "A vinyl is a pan's cotton. Their trowel was, in this moment, a taintless brass. In modern times the dam grenade reveals itself as an unfree gander to those who look. Seaborne edwards show us how answers can be noses. Some caddish sodas are thought of simply as januaries. The xyloid odometer reveals itself as a masking airbus to those who look. A good-bye is an oily persian. However, the scorpions could be said to resemble stagnant amusements.";
 
-/** Generate race */
+/** Generate mock race
+ *
+ * @param {AppTournamentId} pIdRange - Player ids to assign.
+ * @param {boolean} isOnGoing - Race is ongoing or not.
+ */
 export const mockRace = (
   pIdRange: [number, number],
   isOnGoing = false,
