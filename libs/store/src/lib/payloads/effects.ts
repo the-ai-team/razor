@@ -9,7 +9,7 @@ import {
 } from '@razor/models';
 
 export type JoinPlayerPayload = {
-  tid: string;
+  receivedTournamentId: AppTournamentId | '';
   playerName: string;
 };
 

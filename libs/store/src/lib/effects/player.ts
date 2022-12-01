@@ -5,7 +5,6 @@ import {
   AppPlayerId,
   AppPlayerLogId,
   AppPlayerState,
-  AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
@@ -49,8 +48,9 @@ export const joinPlayer = (
   payload: JoinPlayerPayload,
   state: RootState,
 ): void => {
-  const { tid, playerName } = payload;
-  let tournamentId: string;
+  const { receivedTournamentId, playerName } = payload;
+  // Tournament id with correct format.
+  let tournamentId;
 
   // If the player name is not provided, call the raiser.
   if (!playerName) {
@@ -69,30 +69,41 @@ export const joinPlayer = (
   }
 
   // If the tournament id is provided,
-  if (tid) {
+  if (receivedTournamentId) {
     // If the tournament is not found, call the raiser.
-    if (!state.game.tournamentsModel[tid as AppTournamentId]) {
-      tournamentNotFound(dispatch, tid);
+    if (!state.game.tournamentsModel[receivedTournamentId]) {
+      tournamentNotFound(dispatch, receivedTournamentId);
       return;
     }
     // If the tournament is found, set the tournament id.
-    tournamentId = tid;
+    tournamentId = receivedTournamentId;
+
+    // Converting tournament state to "Lobby" from "Empty" if it had no players.
+    if (
+      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length == 0
+    ) {
+      dispatch.game.setTournamentState({
+        tournamentId,
+        tournamentState: AppTournamentState.Lobby,
+      });
+    }
+
+    // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
+    if (
+      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length >= 1
+    ) {
+      dispatch.game.setTournamentState({
+        tournamentId,
+        tournamentState: AppTournamentState.Ready,
+      });
+    }
   } else {
     // If the tournament id is not provided, generate a new tournament id.
     tournamentId = generateUid(AppIdNumberType.Tournament);
-  }
 
-  // TODO: remove unnecessary code
-  // Take tournament id as AppTournamentId
-  const formattedTournamentId: AppTournamentId =
-    tournamentId as AppTournamentId;
-  // Generate a new player id.
-  const formattedPlayerId: AppPlayerId = generateUid(AppIdNumberType.Player);
-
-  // If the tournament id was not provided, then add a new tournament.
-  if (!tid) {
+    // If the tournament id was not provided, then add a new tournament.
     dispatch.game.addTournamentReducer({
-      tournamentId: formattedTournamentId,
+      tournamentId,
       tournament: {
         state: AppTournamentState.Lobby,
         raceIds: [],
@@ -101,37 +112,18 @@ export const joinPlayer = (
     });
   }
 
-  // Converting tournament state to "Lobby" from "Empty" if it had no players.
-  if (
-    state.game.tournamentsModel[tid as AppTournamentId] &&
-    state.game.tournamentsModel[tid as AppTournamentId].playerIds.length == 0
-  ) {
-    dispatch.game.setTournamentState({
-      tournamentId: formattedTournamentId,
-      tournamentState: AppTournamentState.Lobby,
-    });
-  }
-
-  // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
-  if (
-    state.game.tournamentsModel[tid as AppTournamentId] &&
-    state.game.tournamentsModel[tid as AppTournamentId].playerIds.length >= 1
-  ) {
-    dispatch.game.setTournamentState({
-      tournamentId: formattedTournamentId,
-      tournamentState: AppTournamentState.Ready,
-    });
-  }
+  // Generate a new player id.
+  const playerId: AppPlayerId = generateUid(AppIdNumberType.Player);
 
   // Add the new player.
   dispatch.game.addPlayerReducer({
-    tournamentId: formattedTournamentId,
-    playerId: formattedPlayerId,
+    tournamentId,
+    playerId: playerId,
     player: {
       name: playerName,
       avatarLink: generateAvatarLink(playerName),
       state: AppPlayerState.Idle,
-      tournamentId: formattedTournamentId,
+      tournamentId,
     },
   });
 };

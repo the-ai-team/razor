@@ -2,6 +2,7 @@ import {
   AppIdNumberType,
   AppPlayerState,
   AppStateModel,
+  AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
@@ -73,7 +74,7 @@ describe('[Effects] Player', () => {
       const initialStoreState = store.getState();
 
       store.dispatch.game.joinPlayer({
-        tid: '',
+        receivedTournamentId: '',
         playerName: M_PLAYER_NAME0,
       });
       const storeState = store.getState();
@@ -105,7 +106,7 @@ describe('[Effects] Player', () => {
       const initialStoreState = store.getState();
 
       store.dispatch.game.joinPlayer({
-        tid: M_TOURNAMENT_ID0,
+        receivedTournamentId: M_TOURNAMENT_ID0,
         playerName: M_PLAYER_NAME0,
       });
       const storeState = store.getState();
@@ -146,7 +147,7 @@ describe('[Effects] Player', () => {
       const initialStoreState = store.getState();
 
       store.dispatch.game.joinPlayer({
-        tid: M_TOURNAMENT_ID0,
+        receivedTournamentId: M_TOURNAMENT_ID0,
         playerName: M_PLAYER_NAME0,
       });
       const storeState = store.getState();
@@ -175,7 +176,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.joinPlayer({
-        tid: 'thisIdDoesNotExist',
+        receivedTournamentId: 'thisIdDoesNotExist' as AppTournamentId,
         playerName: M_PLAYER_NAME0,
       });
       expect(tournamentNotFound).toHaveBeenCalled();
@@ -185,7 +186,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.joinPlayer({
-        tid: '',
+        receivedTournamentId: '',
         playerName: 'thisPlayerNameIsTooLong',
       });
       expect(invalidPlayerNameLength).toHaveBeenCalled();
@@ -195,7 +196,7 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.joinPlayer({
-        tid: '',
+        receivedTournamentId: '',
         playerName: 'N@m3IsN0tV@lid',
       });
       expect(invalidPlayerName).toHaveBeenCalled();
