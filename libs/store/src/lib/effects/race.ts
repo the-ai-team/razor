@@ -221,15 +221,10 @@ export const endRace = (
     ExtractIdType.tournament,
   ) as AppTournamentId;
 
-  // TODO: use setTournamentState state instead
   // Set tournament state to Leaderboard.
-  const tournament: AppTournament = {
-    ...state.game.tournamentsModel[tournamentId],
-    state: AppTournamentState.Leaderboard,
-  };
-  dispatch.game.updateTournamentReducer({
+  dispatch.game.setTournamentState({
     tournamentId,
-    tournament,
+    tournamentState: AppTournamentState.Leaderboard,
   });
 
   // Get recived race text length.
