@@ -1,4 +1,6 @@
 import { MAX_ERR_LOGS_COUNT } from '@razor/constants';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { errorLogsGenerator } from '@razor/mocks';
 import {
   AppErrorCode,
   AppErrorLog,
@@ -6,7 +8,6 @@ import {
   AppErrorTimestamp,
   AppStateModel,
 } from '@razor/models';
-import { giveZeroPadding } from '@razor/util';
 import { omit } from 'lodash';
 import { initializeStore } from '../store';
 
@@ -56,40 +57,6 @@ describe('[Reducers] Logger', () => {
 
   it('(all valid, logs exceeding max limit) => Remove older logs, Add new log to logs model', () => {
     const maxLogs = MAX_ERR_LOGS_COUNT;
-
-    // TODO: move function to mocks
-    /** Generate sample error logs.
-     * Return error log with the given length.
-     *
-     * @param {number} count - Log length
-     * @returns {AppErrorLogs} - Mock error logs
-     */
-    const errorLogsGenerator = (count: number): AppErrorLogs => {
-      const codes = [
-        AppErrorCode.TournamentNotExists,
-        AppErrorCode.PlayerNotExists,
-        AppErrorCode.RaceNotExists,
-        AppErrorCode.InvalidPlayerName,
-      ];
-      const messages = [
-        'Tournament with id T:testTOUR does not exist',
-        'Player with id P:testPLAYER does not exist',
-        'Race with id R:testRACE does not exist',
-        'Player name is invalid',
-      ];
-
-      const errorLogs: AppErrorLogs = {};
-      for (let i = 0; i < count; i++) {
-        const id = `1234567890-test${giveZeroPadding(i.toString(), 4)}`;
-        const randomNum = Math.floor(Math.random() * 4);
-        errorLogs[id] = {
-          message: messages[randomNum],
-          code: codes[randomNum],
-          related: '',
-        };
-      }
-      return errorLogs;
-    };
 
     // Adding a few additional logs to check every older log that exceeds the limit is removed.
     const initialErrorLogs = errorLogsGenerator(maxLogs + 10);
