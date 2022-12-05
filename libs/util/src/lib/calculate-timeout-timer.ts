@@ -1,7 +1,5 @@
 import { AVERAGE_WPM } from '@razor/constants';
 
-const averageWPM = AVERAGE_WPM;
-
 /** Calculating timeout timer for the race text.
  *
  * @param {string} text - Race text.
@@ -15,6 +13,6 @@ export const calculateTimeoutTimer = (text: string): number => {
   const wordCount = text.length / 5;
 
   /** Timeout timer in seconds. */
-  const timeoutDuration = Math.ceil((wordCount / averageWPM) * 60);
+  const timeoutDuration = Math.ceil((wordCount / AVERAGE_WPM) * 60);
   return timeoutDuration;
 };
