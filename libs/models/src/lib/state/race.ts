@@ -9,7 +9,7 @@ export type AppPlayerProfiles = Record<AppPlayerId, AppPlayerProfile>;
 
 /** Race id
  *
- * Sample Id - `T:skt_2JVn-R:050`
+ * Sample Id - `T:sktm2JVn-R:050`
  */
 export type AppRaceId = `${AppTournamentId}-R:${string}`;
 
