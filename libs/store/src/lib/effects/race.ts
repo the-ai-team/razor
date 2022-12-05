@@ -1,5 +1,6 @@
 // ### [Effects] Race operations ### //
 
+import { RACE_ID_LENGTH } from '@razor/constants';
 import {
   AppPlayer,
   AppPlayerProfiles,
@@ -80,7 +81,10 @@ export const startCountdown = (
   const numberOfRacesBefore =
     state.game.tournamentsModel[tournamentId].raceIds.length || 0;
   // Race index for next tournament with zero padding. (e.g. 001, 002, 003...)
-  const raceIndex = giveZeroPadding(numberOfRacesBefore.toString(), 3);
+  const raceIndex = giveZeroPadding(
+    numberOfRacesBefore.toString(),
+    RACE_ID_LENGTH,
+  );
   // Compound race id.
   const raceId: AppRaceId = `${tournamentId}-R:${raceIndex}`;
   // Player profiles which need to add for the race details.
