@@ -50,7 +50,7 @@ const initialState: AppStateModel = {
 
 jest.mock('@razor/util', () => ({
   ...jest.requireActual('@razor/util'),
-  calculateTimeoutTimer: jest.fn().mockReturnValue(100),
+  computeRaceDuration: jest.fn().mockReturnValue(100),
 }));
 
 jest.mock('../raisers', () => ({

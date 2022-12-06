@@ -5,7 +5,7 @@ import { AVERAGE_WPM } from '@razor/constants';
  * @param {string} text - Race text.
  * @returns {number} - Maximum allowed duration in seconds.
  */
-export const calculateTimeoutTimer = (text: string): number => {
+export const computeRaceDuration = (text: string): number => {
   /** Average word count
    *
    * Assuming that the average word has 5 letters.

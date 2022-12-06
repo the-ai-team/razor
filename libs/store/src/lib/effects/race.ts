@@ -12,7 +12,7 @@ import {
   AppTournamentState,
 } from '@razor/models';
 import {
-  calculateTimeoutTimer,
+  computeRaceDuration,
   extractId,
   ExtractIdType,
   generateLeaderboard,
@@ -121,7 +121,7 @@ export const startCountdown = (
   }
 
   // Timeout duration for recived race text.
-  const timeoutDuration = calculateTimeoutTimer(raceText);
+  const timeoutDuration = computeRaceDuration(raceText);
 
   // Race details.
   const race: AppRace = {
