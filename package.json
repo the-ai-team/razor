@@ -5,14 +5,18 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build client && nx build server",
-    "test": "nx run-many --all --target=test",
+    "test": "nx run-many --all --target=test && npm run coverage:merge && npm run coverage:summary",
+    "coverage:merge": "npx istanbul-merge --out ./coverage/coverage-final.json ./coverage/libs/*/coverage-final.json",
+    "coverage:summary": "npx istanbul report --include ./coverage/coverage-final.json --dir ./coverage/complete json-summary html",
     "test:store": "nx test store --watchAll",
     "test:util": "nx test util --watchAll",
     "build:client": "nx build client",
     "build:server": "nx build server",
     "serve": "node dist/apps/server/main.js",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
-    "lint": "nx run-many --all --target=lint"
+    "lint": "nx run-many --all --target=lint",
+    "make-badges": "istanbul-badges-readme --coverageDir='./coverage/complete'  --logo='jest'",
+    "make-badges:ci": "npm run make-badges -- --ci"
   },
   "private": true,
   "engines": {
@@ -22,6 +26,7 @@
     "@reduxjs/toolkit": "^1.8.6",
     "@rematch/core": "^2.2.0",
     "core-js": "^3.6.5",
+    "coverage-badges-cli": "^1.0.11",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "nanoid": "^3.3.4",
@@ -67,6 +72,7 @@
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "4.6.0",
     "husky": "^8.0.1",
+    "istanbul-badges-readme": "^1.8.4",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "lint-staged": "^13.0.3",
