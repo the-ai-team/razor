@@ -8,7 +8,7 @@
     "test": "nx run-many --all --target=test npm run coverage:merge && npm run coverage:summary",
     "coverage:codecov": "codecov",
     "coverage:merge": "npx istanbul-merge --out ./coverage/coverage-final.json ./coverage/libs/*/coverage-final.json",
-    "coverage:summary": "npx istanbul report --include ./coverage/coverage-final.json --dir ./coverage/complete json-summary html lcov",
+    "coverage:summary": "npx istanbul report --include ./coverage/coverage-final.json --dir ./coverage json-summary clover",
     "test:store": "nx test store --watchAll",
     "test:util": "nx test util --watchAll",
     "build:client": "nx build client",
