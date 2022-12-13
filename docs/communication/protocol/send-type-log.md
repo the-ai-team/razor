@@ -28,24 +28,17 @@ This socket protocol will use to sent race start type log (`textLength` will be 
 "data": {
     "race-id": RACE_ID,
     "player-log": {
-        // Player data //
-        "id": PLAYER_ID,
-        "name": "",
-        "avatarLink": "",
-
-        // Log data //
-        "logs": {
-            "textLength": 0,
-            "timestamp": 0
-        }
+        // Server will get player id using session and socket id.
+        "textLength": 0,
+        "timestamp": 0
     }
 }
 ```
 
-## Sock02 (Update type logs) | From server | Message
+## Sock02 (Update type logs) | From server (To all) | Message
 
 ```json
-"type": "FS/INF/UPDATE_TYPE_LOGS"
+"type": "FS_ALL/INF/UPDATE_TYPE_LOGS"
 "data": {
     "raceId": RACE_ID,
     "playersWithLogs": <PlayerWithLogsPacket>[]

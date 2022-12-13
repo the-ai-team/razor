@@ -21,15 +21,15 @@ sequenceDiagram
 
 ```json
 "type": "TS/CMD/START_RACE"
-"data": {
-    "playerId": PLAYER_ID // Player who pressed the start button
-}
+"data": {}
 ```
 
-## Sock02 (Start countdown) | From server | Command
+// Race started player id will not send to server. But server will get it using session and socket id.
+
+## Sock02 (Start countdown) | From server (To all) | Command
 
 ```json
-"type": "FS/CMD/START_COUNTDOWN"
+"type": "FS_ALL/CMD/START_COUNTDOWN"
 "data": {
     "race": {
         "id": "",

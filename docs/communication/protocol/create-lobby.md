@@ -66,14 +66,14 @@ sequenceDiagram
     "playerId": PLAYER_ID,
     "tournamentId": TOURNAMENT_ID,
     "snapshot": {
-        "stateModelSegment": {
-            "playersModel": <Player>[],
-            "tournamentsModel": <Tournament>[],
-            "racesModel": <Race>[],
-            "leaderboardsModel": <Leaderboard>[]
-        }
+        "stateModelSegment": {}
     }
 }
 ```
 
 references: [Data Models](../../../../libs/models/src/lib/sockets)
+
+~ Further consider ~  
+When player joining if the player sent a session id, the server will check if the session id is valid.  
+If session is valid, the server will use the session id to retrieve the player id and other details. Also, server will disconnect the any old socket connection and replace with new one. \*If player didn't send a tournament id server will check whether player with session id is already assigned to a tournament.  
+If session id is invalid, the server will create a new player id and send it back to the client.

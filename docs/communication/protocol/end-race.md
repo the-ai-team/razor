@@ -39,26 +39,26 @@ sequenceDiagram
 ```json
 "type": "TS/INF/TIMEOUT_PLAYER",
 "data": {
-    "playerId": PLAYER_ID,
+    // Server will get player id using session and socket id.
     "timestamp": 0
 }
 ```
 
-## Sock02 (Force end) | From server | Command
+## Sock02 (Force end) | From server (To specific player) | Command
 
 ```json
-"type":" FS/CMD/FORCE_END"
+"type":" FS_ONE/CMD/FORCE_END"
 "data": {
-    "playerId": PLAYER_ID,
+    // Server timestamp
     "timestamp": 0
 }
 
 ```
 
-## Sock03 (Send Leaderboard) | From server | Message
+## Sock03 (Send Leaderboard) | From server (To all) | Message
 
 ```json
-"type": "FS/INF/SEND_LEADERBOARD"
+"type": "FS_ALL/INF/SEND_LEADERBOARD"
 "data": {
     "leaderboard":{
         "raceId": RACE_ID,

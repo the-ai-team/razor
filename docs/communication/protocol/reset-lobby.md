@@ -16,10 +16,10 @@ sequenceDiagram
 
 ---
 
-## Sock01 (Reset lobby) | From server | Command
+## Sock01 (Reset lobby) | From server (To all) | Command
 
 ```json
-"type": "FS/CMD/RESET_LOBBY"
+"type": "FS_ALL/CMD/RESET_LOBBY"
 "data": {}
 ```
 

@@ -16,10 +16,10 @@ sequenceDiagram
 
 ---
 
-## Sock01 (Clear player) | From server | Command
+## Sock01 (Clear player) | From server (To all) | Command
 
 ```json
-"type": "FS/CMD/PLAYER_CLEAR",
+"type": "FS_ALL/CMD/PLAYER_CLEAR",
 "data": {
     "playerId": PLAYER_ID
 }

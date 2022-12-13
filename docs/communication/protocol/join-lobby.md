@@ -65,10 +65,10 @@ sequenceDiagram
 }
 ```
 
-## Sock01 (Send data to other players) | From Server | Message
+## Sock01 (Send data to other players) | From Server (To all) | Message
 
 ```json
-"type": "FS/INF/PLAYER_JOIN",
+"type": "FS_ALL/INF/PLAYER_JOIN",
 "data": {
     "player": {
         "id": PLAYER_ID,
@@ -84,3 +84,8 @@ sequenceDiagram
 ```
 
 references: [Data Models](../../../../libs/models/src/lib/sockets)
+
+~ Further consider ~  
+When player joining if the player sent a session id, the server will check if the session id is valid.  
+If session id is valid, the server will use the session id to retrieve the player id and other details. Also, server will disconnect the any old socket connection and replace with new one.  
+If session id is invalid, the server will create a new player id and send it back to the client.
