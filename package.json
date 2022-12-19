@@ -46,6 +46,7 @@
     "@nrwl/node": "^15.0.13",
     "@nrwl/nx-cloud": "^15.0.2",
     "@nrwl/react": "^15.0.13",
+    "@nrwl/web": "^15.3.3",
     "@nrwl/workspace": "^15.3.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^6.5.1",
