@@ -35,15 +35,15 @@ export const generateLeaderboard = (
     /** Race id of relevant player log id. */
     const raceIdOfPlayerLog = extractId(
       playerLogId,
-      ExtractIdType.playerLog,
-      ExtractIdType.race,
+      ExtractIdType.PlayerLog,
+      ExtractIdType.Race,
     );
 
     /** Player id of relevant player log id. */
     const playerIdOfPlayerLog = extractId(
       playerLogId,
-      ExtractIdType.playerLog,
-      ExtractIdType.player,
+      ExtractIdType.PlayerLog,
+      ExtractIdType.Player,
     );
 
     // Check whether the race owns the race log.

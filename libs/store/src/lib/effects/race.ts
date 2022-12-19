@@ -221,8 +221,8 @@ export const endRace = (
   // Extract tournament id from race id.
   const tournamentId: AppTournamentId = extractId(
     raceId,
-    ExtractIdType.race,
-    ExtractIdType.tournament,
+    ExtractIdType.Race,
+    ExtractIdType.Tournament,
   ) as AppTournamentId;
 
   // Set tournament state to Leaderboard.

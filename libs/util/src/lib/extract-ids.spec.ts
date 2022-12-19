@@ -13,32 +13,32 @@ describe('[Utils] extractIds', () => {
     it('(race id) => tournament id', () => {
       const tournamentId = extractId(
         M_TR0_RACE_ID0,
-        ExtractIdType.race,
-        ExtractIdType.tournament,
+        ExtractIdType.Race,
+        ExtractIdType.Tournament,
       );
       expect(tournamentId).toBe(M_TOURNAMENT_ID0);
     });
     it('(player log id) => tournament id', () => {
       const tournamentId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        ExtractIdType.playerLog,
-        ExtractIdType.tournament,
+        ExtractIdType.PlayerLog,
+        ExtractIdType.Tournament,
       );
       expect(tournamentId).toBe(M_TOURNAMENT_ID0);
     });
     it('(player log id) => player id', () => {
       const playerId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        ExtractIdType.playerLog,
-        ExtractIdType.player,
+        ExtractIdType.PlayerLog,
+        ExtractIdType.Player,
       );
       expect(playerId).toBe(M_PLAYER_ID0);
     });
     it('(player log id) => race id', () => {
       const raceId = extractId(
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        ExtractIdType.playerLog,
-        ExtractIdType.race,
+        ExtractIdType.PlayerLog,
+        ExtractIdType.Race,
       );
       expect(raceId).toBe(M_TR0_RACE_ID0);
     });
@@ -46,21 +46,21 @@ describe('[Utils] extractIds', () => {
       try {
         extractId(
           'invalid' as AppTournamentId,
-          ExtractIdType.playerLog,
-          ExtractIdType.tournament,
+          ExtractIdType.PlayerLog,
+          ExtractIdType.Tournament,
         );
       } catch (e) {
         expect((e as Error).message).toBe('Invalid input value');
       }
     });
     it.each([
-      [ExtractIdType.player, M_PLAYER_ID0, ExtractIdType.player],
-      [ExtractIdType.tournament, M_TOURNAMENT_ID0, ExtractIdType.tournament],
-      [ExtractIdType.race, M_TR0_RACE_ID0, ExtractIdType.race],
+      [ExtractIdType.Player, M_PLAYER_ID0, ExtractIdType.Player],
+      [ExtractIdType.Tournament, M_TOURNAMENT_ID0, ExtractIdType.Tournament],
+      [ExtractIdType.Race, M_TR0_RACE_ID0, ExtractIdType.Race],
       [
-        ExtractIdType.playerLog,
+        ExtractIdType.PlayerLog,
         mockPlayerLogId(M_TR0_RACE_ID0, M_PLAYER_ID0),
-        ExtractIdType.playerLog,
+        ExtractIdType.PlayerLog,
       ],
     ])(
       '(both request and input id are same, %s) => return same id',
@@ -70,14 +70,14 @@ describe('[Utils] extractIds', () => {
       },
     );
     it.each([
-      [ExtractIdType.tournament, M_PLAYER_ID0, ExtractIdType.player],
-      [ExtractIdType.player, M_TOURNAMENT_ID0, ExtractIdType.tournament],
-      [ExtractIdType.player, M_TR0_RACE_ID0, ExtractIdType.race],
-      [ExtractIdType.race, M_PLAYER_ID0, ExtractIdType.player],
-      [ExtractIdType.race, M_TOURNAMENT_ID0, ExtractIdType.tournament],
-      [ExtractIdType.playerLog, M_PLAYER_ID0, ExtractIdType.player],
-      [ExtractIdType.playerLog, M_TOURNAMENT_ID0, ExtractIdType.tournament],
-      [ExtractIdType.playerLog, M_TR0_RACE_ID0, ExtractIdType.race],
+      [ExtractIdType.Tournament, M_PLAYER_ID0, ExtractIdType.Player],
+      [ExtractIdType.Player, M_TOURNAMENT_ID0, ExtractIdType.Tournament],
+      [ExtractIdType.Player, M_TR0_RACE_ID0, ExtractIdType.Race],
+      [ExtractIdType.Race, M_PLAYER_ID0, ExtractIdType.Player],
+      [ExtractIdType.Race, M_TOURNAMENT_ID0, ExtractIdType.Tournament],
+      [ExtractIdType.PlayerLog, M_PLAYER_ID0, ExtractIdType.Player],
+      [ExtractIdType.PlayerLog, M_TOURNAMENT_ID0, ExtractIdType.Tournament],
+      [ExtractIdType.PlayerLog, M_TR0_RACE_ID0, ExtractIdType.Race],
     ])(
       '(invalid input type but requesting %s) => raise error',
       (outputIdType, inputId, inputIdType) => {

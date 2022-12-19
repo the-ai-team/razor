@@ -51,8 +51,8 @@ export const addRaceReducer = (
   /** Extract tournaemnt id from race id */
   const tournamentId: AppTournamentId = extractId(
     raceId,
-    ExtractIdType.race,
-    ExtractIdType.tournament,
+    ExtractIdType.Race,
+    ExtractIdType.Tournament,
   );
   // If the tournament does not exists.
   if (!(tournamentId in state.tournamentsModel)) {
