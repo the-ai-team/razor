@@ -81,11 +81,9 @@ describe('[Utils] extractIds', () => {
     ])(
       '(invalid input type but requesting %s) => raise error',
       (outputIdType, inputId, inputIdType) => {
-        try {
-          extractId(inputId, inputIdType, outputIdType);
-        } catch (e) {
-          expect((e as Error).message).toBe('Invalid type');
-        }
+        expect(() => extractId(inputId, inputIdType, outputIdType)).toThrow(
+          new Error('Invalid type'),
+        );
       },
     );
   });
