@@ -1,5 +1,4 @@
 import { TextEncoder } from 'util';
-global.TextEncoder = TextEncoder;
 
 /** Generate avatar link
  *
