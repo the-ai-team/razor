@@ -39,16 +39,12 @@ export const extractId = <T extends ExtractIdType>(
 
   // Check the validity of the input id.
   const validInput = checkValidityOfId(inputIdType, inputId);
-  // If invalid
   if (!validInput) {
     throw new Error('Invalid input value');
   }
-
-  // Split id into parts by '-'.
   const splitedId = inputId.split('-');
-  // Switching by output id type.
+
   switch (outputIdType) {
-    // Output id type is "tournament".
     case ExtractIdType.Tournament:
       // Extract the first part of the id if the input id type is "race" or "playerLog".
       if (inputIdType === ExtractIdType.Race) {
@@ -58,7 +54,6 @@ export const extractId = <T extends ExtractIdType>(
       } else {
         throw new Error('Invalid type');
       }
-    // Output id type is "player".
     case ExtractIdType.Player:
       // Extract the second part of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.PlayerLog) {
@@ -66,7 +61,6 @@ export const extractId = <T extends ExtractIdType>(
       } else {
         throw new Error('Invalid type');
       }
-    // Output id type is "race"
     case ExtractIdType.Race:
       // Extract the first two parts of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.PlayerLog) {

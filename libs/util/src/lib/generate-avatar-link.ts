@@ -1,11 +1,6 @@
 import { TextEncoder } from 'util';
 global.TextEncoder = TextEncoder;
 
-/** Generate avatar link
- *
- * @param {string} playerName - Player Name
- * @returns {string} - Generated avatar link.
- */
 export const generateAvatarLink = (playerName: string): string => {
   /** Convert player name text to hex value to use as a seed. */
   const seed = bytesToHex(stringToUTF8Bytes(playerName));
