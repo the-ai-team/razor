@@ -47,7 +47,7 @@ describe('(Utils) generateLeaderboard', () => {
           status: AppPlayerStatus.Complete,
           values: expect.objectContaining({
             wpm: expect.any(Number),
-            elpasedTime: expect.any(Number),
+            elapsedTime: expect.any(Number),
           }),
         }),
         expect.objectContaining({

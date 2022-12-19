@@ -42,29 +42,29 @@ export const extractId = <T extends ExtractIdType>(
   if (!validInput) {
     throw new Error('Invalid input value');
   }
-  const splitedId = inputId.split('-');
+  const splittedId = inputId.split('-');
 
   switch (outputIdType) {
     case ExtractIdType.Tournament:
       // Extract the first part of the id if the input id type is "race" or "playerLog".
       if (inputIdType === ExtractIdType.Race) {
-        return splitedId[0] as TypeMap[T];
+        return splittedId[0] as TypeMap[T];
       } else if (inputIdType === ExtractIdType.PlayerLog) {
-        return splitedId[0] as TypeMap[T];
+        return splittedId[0] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
     case ExtractIdType.Player:
       // Extract the second part of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.PlayerLog) {
-        return splitedId[2] as TypeMap[T];
+        return splittedId[2] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
     case ExtractIdType.Race:
       // Extract the first two parts of the id if the input id type is "playerLog".
       if (inputIdType === ExtractIdType.PlayerLog) {
-        return `${splitedId[0]}-${splitedId[1]}` as TypeMap[T];
+        return `${splittedId[0]}-${splittedId[1]}` as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }

@@ -52,12 +52,12 @@ export const generateLeaderboard = (
       if (playerLastTextLength === raceTextLength) {
         const wpm = calculateWPM(raceTextLength, playerLogs[playerLogId]);
         // Elapsed time = Last timestamp - First timestamp
-        const elpasedTime =
+        const elapsedTime =
           playerLogs[playerLogId][playerLogsLength - 1].timestamp -
           playerLogs[playerLogId][0].timestamp;
         const finishedPlayerValues: AppFinishedPlayerValues = {
           wpm,
-          elpasedTime,
+          elapsedTime,
         };
 
         completeEntries.push({
