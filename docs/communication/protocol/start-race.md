@@ -24,7 +24,7 @@ sequenceDiagram
 "data": {}
 ```
 
-// Race started player id will not send to server. But server will get it using session and socket id.
+// Race started player id will not send to the server. But the server will get it using session and socket id.
 
 ## Sock02 (Start countdown) | From server (To all) | Command
 
@@ -36,10 +36,28 @@ sequenceDiagram
         "text": "",
         "timeoutDuration": 0,
         "startedTimestamp": 0,
-        "players": <PlayerWithLogs>[],
+        "playerLogs": <PlayerLogsCollection>[],
         "raceStartedBy": ""
-    }
 }
+```
+
+### **PlayerLogsCollection**
+
+```ts
+interface PlayerLogsCollection {
+    // Player details
+    id: string;
+    name: string;
+    avatarLink: string;
+    logs: [
+        {
+            textLength: number,
+            timestamp: number
+        }
+        ...
+    ];
+}
+
 ```
 
 references: [Data Models](../../../../libs/models/src/lib/sockets)

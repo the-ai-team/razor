@@ -25,7 +25,7 @@ sequenceDiagram
 
 ---
 
-## Req01 (Player send username with tournament id) | HTTP => Socket
+## Req01 (Player sends username with tournament id) | HTTP => Socket
 
 ```json
 "method": 'POST',
@@ -47,7 +47,7 @@ sequenceDiagram
 }
 ```
 
-## Res01 (Response with snapshot of the state)
+## Res01 (Response with a snapshot of the state)
 
 ```json
 "set-cookie": "auth=AUTH_ID",
@@ -86,6 +86,6 @@ sequenceDiagram
 references: [Data Models](../../../../libs/models/src/lib/sockets)
 
 ~ Further consider ~  
-When player joining if the player sent a session id, the server will check if the session id is valid.  
-If session id is valid, the server will use the session id to retrieve the player id and other details. Also, server will disconnect the any old socket connection and replace with new one.  
-If session id is invalid, the server will create a new player id and send it back to the client.
+When a player joins if the player sends a session id, the server will check whether the session id is valid or not.  
+If the session id is valid, the server will use the session id to retrieve the player id and other details. Also, the server will disconnect any old socket connection and replace it with a new one.  
+If the session id is invalid, the server will create a new player id and send it back to the client.

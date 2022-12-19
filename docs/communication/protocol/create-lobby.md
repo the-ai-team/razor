@@ -65,9 +65,7 @@ sequenceDiagram
 "body": {
     "playerId": PLAYER_ID,
     "tournamentId": TOURNAMENT_ID,
-    "snapshot": {
-        "stateModelSegment": {}
-    }
+    "snapshot": {} // Empty Snapshot
 }
 ```
 

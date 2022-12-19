@@ -67,4 +67,16 @@ sequenceDiagram
 }
 ```
 
+### **LeaderboardEntry**
+
+```ts
+interface LeaderboardEntry {
+  playerId: string;
+  playerName: string;
+  playerAvatarLink: string;
+  status: 'Completed' | 'Timeout';
+  values: FinishedPlayerValues | TimeoutPlayerValues;
+}
+```
+
 references: [Data Models](../../../../libs/models/src/lib/sockets)

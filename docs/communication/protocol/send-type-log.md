@@ -21,7 +21,7 @@ sequenceDiagram
 
 ## Sock01 (Send type logs) | To server | Message
 
-This socket protocol will use to sent race start type log (`textLength` will be 0) and race end type log (`textLength` will be the length of the race text).
+This socket protocol will use to send the race start type log (`textLength` will be 0) and race end type log (`textLength` will be the length of the race text).
 
 ```json
 "type": "TS/INF/SEND_TYPE_LOG"
@@ -43,6 +43,27 @@ This socket protocol will use to sent race start type log (`textLength` will be 
     "raceId": RACE_ID,
     "playersWithLogs": <PlayerWithLogsPacket>[]
 }
+```
+
+### **PlayerLogsCollection**
+
+```ts
+// Server sends player logs packet by packet, as the race continues.
+interface PlayerLogsCollection {
+    id: string;
+    name: string;
+    avatarLink: string;
+    logs: [
+        {
+            textLength: number,
+            timestamp: number
+        }
+        ...
+    ];
+    // Keeping last timestamp will make easy to merge updates from server to client.
+    lastTimestamp: number;
+}
+
 ```
 
 references: [Data Models](../../../../libs/models/src/lib/sockets)
