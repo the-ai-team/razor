@@ -40,8 +40,8 @@ export const store = init({
 /** Function to initialize store
  *
  * This function will be used in tests to initialize many stores with custom initial state.
- * @param {AppStateModel} initialState - Initial state model
- * @returns {Store} - Generated redux rematch store
+ * @param initialState - Initial state model
+ * @returns Generated redux rematch store
  */
 export const initializeStore = (initialState: AppStateModel): Store => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

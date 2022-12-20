@@ -56,10 +56,10 @@ export const M_PLAYER3: AppPlayer = mockPlayer(3);
 
 /** Generate mock players model withing range given
  *
- * @param {[number,number]} pIdRange - Range of player id to generate
- * @param {AppTournamentId} tid - Tournament id to assign to players
- * @param {AppPlayerState} state - Player state to assign to players
- * @returns {AppPlayers} - Mock players model
+ * @param pIdRange - Range of player id to generate
+ * @param tid - Tournament id to assign to players
+ * @param state - Player state to assign to players
+ * @returns Mock players model
  */
 export const mockPlayersModel = (
   pIdRange: [number, number],
@@ -75,9 +75,9 @@ export const mockPlayersModel = (
 
 /** Generate mock player log id
  *
- * @param {AppRaceId} rid - Race id
- * @param {AppPlayerId} pid - Player id
- * @returns {AppPlayerLogId} - Mock player log id
+ * @param rid - Race id
+ * @param pid - Player id
+ * @returns Mock player log id
  */
 export const mockPlayerLogId = (
   rid: AppRaceId,
@@ -88,8 +88,8 @@ export const mockPlayerLogId = (
 
 /** Generate mock completed player logs
  *
- * @param {number} textLength - Length of race text.
- * @returns {AppPlayerLog} - Mock completed player logs.
+ * @param textLength - Length of race text.
+ * @returns Mock completed player logs.
  */
 export const mockPlayerLogs = (textLength: number): AppPlayerLog[] => {
   const playerLogs: AppPlayerLog[] = [];

@@ -4,8 +4,8 @@ import { giveZeroPadding } from './give-zero-padding';
 /** Generate sample error logs.
  * Return error log with the given length.
  *
- * @param {number} count - Log length
- * @returns {AppErrorLogs} - Mock error logs
+ * @param count - Log length
+ * @returns Mock error logs
  */
 export const errorLogsGenerator = (count: number): AppErrorLogs => {
   const codes = [

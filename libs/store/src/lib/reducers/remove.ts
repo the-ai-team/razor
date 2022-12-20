@@ -16,9 +16,9 @@ import { omit } from 'lodash';
  * Player will be removed from players model.
  * Related player ids array of the tournament will be updated.
  *
- * @param {AppStateModel} state - Current state model
- * @param {removePlayerReducerPayload} payload - Payload for removing player
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for removing player
+ * @returns New state model if successful, else current state model
  */
 export const removePlayerReducer = (
   state: AppStateModel,
@@ -60,9 +60,9 @@ export const removePlayerReducer = (
  * Each race of the tournament will be removed from the races model.
  * Each player log of the tournament will be removed from the player logs model.
  *
- * @param {AppStateModel} state - Current state model
- * @param {removeTournamentReducerPayload} payload - Payload for removing tournament
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for removing tournament
+ * @returns New state model if successful, else current state model
  */
 export const removeTournamentReducer = (
   state: AppStateModel,

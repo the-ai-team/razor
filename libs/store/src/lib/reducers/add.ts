@@ -12,9 +12,9 @@ import {
 /** Reducer function for adding tournament to state model.
  * Tournament will be added to the tournaments model.
  *
- * @param {AppStateModel} state - Current state model
- * @param {addTournamentReducerPayload} payload - Payload for add tournament
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for add tournament
+ * @returns New state model if successful, else current state model
  */
 export const addTournamentReducer = (
   state: AppStateModel,
@@ -39,9 +39,9 @@ export const addTournamentReducer = (
 /** Reducer function for adding race to state model.
  * Race will be added to the races model and race id will be added to the relevant tournament.
  *
- * @param {AppStateModel} state - Current state model
- * @param {addRaceReducerPayload} payload - Payload for adding race
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for adding race
+ * @returns New state model if successful, else current state model
  */
 export const addRaceReducer = (
   state: AppStateModel,
@@ -83,9 +83,9 @@ export const addRaceReducer = (
 /** Reducer function for adding a player to the state model.
  * Player will be added to the players model and the player id will be added to the relevant tournament.
  *
- * @param {AppStateModel} state - Current state model
- * @param {addLeaderboardReducerPayload} payload - Payload for add leaderboard
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for add leaderboard
+ * @returns New state model if successful, else current state model
  */
 export const addPlayerReducer = (
   state: AppStateModel,
@@ -124,9 +124,9 @@ export const addPlayerReducer = (
 /** Reducer function for adding leaderboard to state model.
  * Leaderboard will be added to the leaderboards model.
  *
- * @param {AppStateModel} state - Current state model
- * @param {addLeaderboardReducerPayload} payload - Payload for add leaderboard
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for add leaderboard
+ * @returns New state model if successful, else current state model
  */
 export const addLeaderboardReducer = (
   state: AppStateModel,
