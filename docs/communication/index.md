@@ -2,8 +2,8 @@
 
 ### Establishing socket connection
 
-- [Creating new lobby](./protocol/create-lobby.md)
-- [Joining existing lobby](./protocol/join-lobby.md)
+- [Creating new tournament](./protocol/create-lobby.md)
+- [Joining existing tournament](./protocol/join-lobby.md)
 
 ### After establishing connection
 

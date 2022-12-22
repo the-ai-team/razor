@@ -28,11 +28,12 @@ sequenceDiagram
 ## Req01 (Player sends username with tournament id) | HTTP => Socket
 
 ```json
-"method": 'POST',
+"method": "GET",
 "upgrade": "websocket",
-"path": "/room/:id",
-"body": {
-    "playerName": ""
+"path": "/",
+"data": {
+    "playerName": "name",
+    "tournamentId": "id"
 }
 ```
 

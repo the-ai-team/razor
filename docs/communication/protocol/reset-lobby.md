@@ -19,7 +19,7 @@ sequenceDiagram
 ## Sock01 (Reset lobby) | From server (To all) | Command
 
 ```json
-"type": "FS_ALL/CMD/RESET_LOBBY"
+"type": "FS_ALL/CMD/RESET_LOBBY",
 "data": {}
 ```
 

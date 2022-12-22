@@ -29,18 +29,18 @@ sequenceDiagram
 ## Req01 (Player send username without tournament id) | HTTP => Socket
 
 ```json
-"method": "POST"
-"upgrade": "websocket"
-"path": "/room"
-"body": {
-    "playerName": ""
+"method": "GET",
+"upgrade": "websocket",
+"path": "/",
+"data": {
+    "playerName": "name"
 }
 ```
 
 ## Data01 (Record with session(auth) id, socket id & player id)
 
 ```json
-"type": "STORE/CLIENT"
+"type": "STORE/CLIENT",
 "data": {
     "session": AUTH_ID,
     "socketId": SOCKET_ID,
@@ -51,7 +51,7 @@ sequenceDiagram
 ## Data02 (Record with socket room id & tournament id)
 
 ```json
-"type": "STORE/ROOM"
+"type": "STORE/ROOM",
 "data": {
     "room": SOCKET_ROOM_ID,
     "tournamentId": TOURNAMENT_ID
@@ -61,7 +61,7 @@ sequenceDiagram
 ## Res01 (Response with snapshot of the state)
 
 ```json
-"set-cookie": "auth=AUTH_ID"
+"set-cookie": "auth=AUTH_ID",
 "body": {
     "playerId": PLAYER_ID,
     "tournamentId": TOURNAMENT_ID,

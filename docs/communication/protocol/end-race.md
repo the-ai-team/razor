@@ -47,7 +47,7 @@ sequenceDiagram
 ## Sock02 (Force end) | From server (To specific player) | Command
 
 ```json
-"type":" FS_ONE/CMD/FORCE_END"
+"type":" FS_ONE/CMD/FORCE_END",
 "data": {
     // Server timestamp
     "timestamp": 0
@@ -58,7 +58,7 @@ sequenceDiagram
 ## Sock03 (Send Leaderboard) | From server (To all) | Message
 
 ```json
-"type": "FS_ALL/INF/SEND_LEADERBOARD"
+"type": "FS_ALL/INF/SEND_LEADERBOARD",
 "data": {
     "leaderboard":{
         "raceId": RACE_ID,
