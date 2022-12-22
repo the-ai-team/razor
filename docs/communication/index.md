@@ -2,8 +2,8 @@
 
 ### Establishing socket connection
 
-- [Creating new tournament](./protocol/create-lobby.md)
-- [Joining existing tournament](./protocol/join-lobby.md)
+- [Creating new tournament](./protocol/create-tournament.md)
+- [Joining existing tournament](./protocol/join-tournament.md)
 
 ### After establishing connection
 
@@ -14,4 +14,4 @@
   - Ending type log will consider as a `Player Race Complete`
 - [Ending Race (By timeout or Force end)](./protocol/end-race.md)
 - [Clearing(Removing) Player (Player disconnect)](./protocol/clear-player.md)
-- [Reset Tournament (Leaderboard => Lobby)](./protocol/reset-lobby.md)
+- [Reset Tournament (Leaderboard => Lobby)](./protocol/reset-tournament.md)
