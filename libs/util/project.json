@@ -26,7 +26,9 @@
       "outputs": ["coverage/libs/util"],
       "options": {
         "jestConfig": "libs/util/jest.config.ts",
-        "passWithNoTests": true
+        "verbose": true,
+        "passWithNoTests": true,
+        "codeCoverage": true
       }
     }
   },

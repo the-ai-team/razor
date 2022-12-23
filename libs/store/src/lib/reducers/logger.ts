@@ -1,6 +1,18 @@
+// ### [Reducers] Basic logger operations for store ### //
+
+import { MAX_ERR_LOGS_COUNT } from '@razor/constants';
 import { AppErrorTimestamp, AppStateModel } from '@razor/models';
+import { omit } from 'lodash';
 import { LogErrorReducerPayload } from '../payloads';
 
+/** Reducer function for logging an error to state model.
+ * Error will be added to the errors model.
+ * If the errors model is at its max capacity, the oldest errors will be removed.
+ 
+ * @param state - Current state model
+ * @param payload - Payload for log error
+ * @returns New state model if successful, else current state model
+ */
 export const logErrorReducer = (
   state: AppStateModel,
   payload: LogErrorReducerPayload,
@@ -8,19 +20,23 @@ export const logErrorReducer = (
   const { errorLog, errorTimestamp } = payload;
   let logModel = { ...state.errorLogsModel };
 
-  const maxLogs = 1024;
-  const logsLength = Object.keys(state.errorLogsModel).length;
+  const maxLogs = MAX_ERR_LOGS_COUNT;
+  /** Current logs length */
+  const logsLength = Object.keys(logModel).length;
 
-  if (logsLength > maxLogs - 1) {
-    const lastKey: AppErrorTimestamp = Object.keys(state.errorLogsModel)[0];
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [lastKey]: removedLog, ...newLogModel } = state.errorLogsModel;
-    logModel = { ...newLogModel };
+  /** Number of logs exceeding the limit */
+  let logDiff = maxLogs - logsLength;
+  // While logs are exceeding the limit.
+  while (logDiff <= 0) {
+    /** Oldest log id */
+    const lastKey: AppErrorTimestamp = Object.keys(logModel)[0];
+    /** New logs model after removing the oldest. */
+    const newLogsModel = omit(logModel, [lastKey]);
+    logModel = { ...newLogsModel };
+    logDiff++;
   }
 
-  console.log(state.errorLogsModel);
-
+  /** State model with new error log added to errors model. */
   const newState: AppStateModel = {
     ...state,
     errorLogsModel: {

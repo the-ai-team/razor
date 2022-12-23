@@ -13,7 +13,7 @@ export enum AppTournamentState {
 
 /** Tournament id
  *
- * Sample Id - `T:skt_2JVn`
+ * Sample Id - `T:sktm2JVn`
  */
 export type AppTournamentId = `T:${string}`;
 

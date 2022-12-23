@@ -1,3 +1,5 @@
+// ### [Payloads] Data models for the reducer payloads ### //
+
 import {
   AppTournamentId,
   AppTournament,
@@ -12,7 +14,6 @@ import {
   AppErrorTimestamp,
 } from '@razor/models';
 
-//reducer Playloads
 export type AddTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;
@@ -29,6 +30,16 @@ export type AddPlayerReducerPayload = {
   player: AppPlayer;
 };
 
+export type AddLeaderboardReducerPayload = {
+  leaderboardId: AppRaceId;
+  leaderboard: AppLeaderboard;
+};
+
+export type UpdatePlayerReducerPayload = {
+  playerId: AppPlayerId;
+  player: AppPlayer;
+};
+
 export type UpdateTournamentReducerPayload = {
   tournamentId: AppTournamentId;
   tournament: AppTournament;
@@ -37,11 +48,6 @@ export type UpdateTournamentReducerPayload = {
 export type UpdateRaceReducerPayload = {
   raceId: AppRaceId;
   race: AppRace;
-};
-
-export type UpdateLeaderboardReducerPayload = {
-  leaderboardId: AppRaceId;
-  leaderboard: AppLeaderboard;
 };
 
 export type UpdatePlayerLogReducerPayload = {

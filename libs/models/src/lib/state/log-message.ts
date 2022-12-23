@@ -4,6 +4,7 @@ export enum AppErrorCode {
   PlayerNotExists = 'PLAYER_NOT_FOUND',
   InvalidPlayerName = 'INVALID_PLAYER_NAME',
   RaceNotExists = 'RACE_NOT_FOUND',
+  PayloadNotProvided = 'PAYLOAD_NOT_PROVIDED',
 }
 
 /** Types of log messages. */

@@ -31,7 +31,7 @@ export type AppPlayers = Record<AppPlayerId, AppPlayer>;
 
 /** Player log id
  *
- * Sample Id - `T:skt_2JVn-R:050-P:oNgXdluf`
+ * Sample Id - `T:sktm2JVn-R:050-P:oNgXdluf`
  */
 export type AppPlayerLogId = `${AppRaceId}-${AppPlayerId}`;
 

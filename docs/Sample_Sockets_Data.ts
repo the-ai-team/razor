@@ -1,6 +1,9 @@
-import { PlayerStatus } from '../libs/models/leaderboard';
-import { PlayerState } from '../libs/models/player';
-import { Tournament, TournamentState } from '../libs/models/tournament';
+import { PlayerStatus } from '../libs/models/src/lib/sockets/leaderboard';
+import { PlayerState } from '../libs/models/src/lib/sockets/player';
+import {
+  Tournament,
+  TournamentState,
+} from '../libs/models/src/lib/sockets/tournament';
 
 const Tournament1: Tournament = {
   id: '1',
@@ -12,6 +15,7 @@ const Tournament1: Tournament = {
       text: 'Tempor in aliqua exercitation ad ex. Sint eiusmod nulla culpa quis enim adipisicing eiusmod qui tempor do tempor fugiat pariatur. Adipisicing occaecat minim labore eiusmod est anim quis quis non eiusmod pariatur minim eiusmod. Consectetur ullamco tempor aute aute incididunt. Esse reprehenderit magna eu cupidatat id eiusmod aliquip cillum pariatur ut labore culpa pariatur qui. Cupidatat anim excepteur elit ad dolore non consequat cupidatat in.',
       timeoutDuration: 60,
       startedTimestamp: 1620000000,
+      raceStartedBy: 'P:ss',
       //player logs while racing
       players: [
         {
@@ -59,6 +63,7 @@ const Tournament1: Tournament = {
       text: 'Tempor in aliqua exercitation ad ex. Sint eiusmod nulla culpa quis enim adipisicing eiusmod qui tempor do tempor fugiat pariatur. Adipisicing occaecat minim labore eiusmod est anim quis quis non eiusmod pariatur minim eiusmod. Consectetur ullamco tempor aute aute incididunt. Esse reprehenderit magna eu cupidatat id eiusmod aliquip cillum pariatur ut labore culpa pariatur qui. Cupidatat anim excepteur elit ad dolore non consequat cupidatat in.',
       timeoutDuration: 60,
       startedTimestamp: 1620000000,
+      raceStartedBy: 'P:ss',
       players: [
         {
           id: '1',

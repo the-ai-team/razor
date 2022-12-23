@@ -1,13 +1,15 @@
+// ### [Payloads] Data models for the effect payloads ### //
+
 import {
   AppPlayerId,
   AppPlayerLog,
   AppRaceId,
   AppTournamentId,
+  AppTournamentState,
 } from '@razor/models';
 
-//effectsPayloads
 export type JoinPlayerPayload = {
-  tid: string;
+  receivedTournamentId: AppTournamentId | '';
   playerName: string;
 };
 
@@ -15,13 +17,16 @@ export type ClearPlayerPayload = {
   playerId: AppPlayerId;
 };
 
-export type SetReadyTournamentPayload = {
+export type SetTournamentStatePayload = {
   tournamentId: AppTournamentId;
+  tournamentState: AppTournamentState;
 };
 
 export type StartCountdownPayload = {
   tournamentId: AppTournamentId;
+  /** Id of player who started the race */
   playerId: AppPlayerId;
+  raceText: string;
 };
 
 export type EndCountdownPayload = {
