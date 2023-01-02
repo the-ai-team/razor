@@ -5,14 +5,19 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build client && nx build server",
-    "test": "nx run-many --all --target=test",
+    "test": "nx run-many --all --target=test && npm run coverage:merge && npm run coverage:summary",
+    "coverage:codecov": "codecov",
+    "coverage:merge": "npx istanbul-merge --out ./coverage/coverage-final.json ./coverage/libs/*/coverage-final.json",
+    "coverage:summary": "npx istanbul report --include ./coverage/coverage-final.json --dir ./coverage json-summary clover",
     "test:store": "nx test store --watchAll",
     "test:util": "nx test util --watchAll",
     "build:client": "nx build client",
     "build:server": "nx build server",
     "serve": "node dist/apps/server/main.js",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
-    "lint": "nx run-many --all --target=lint"
+    "lint": "nx run-many --all --target=lint",
+    "make-badges": "istanbul-badges-readme --coverageDir='./coverage'  --logo='jest'",
+    "make-badges:ci": "npm run make-badges -- --ci --exitCode=1"
   },
   "private": true,
   "engines": {
@@ -45,6 +50,8 @@
     "@nrwl/react": "^15.0.13",
     "@nrwl/web": "^15.0.13",
     "@nrwl/workspace": "14.8.4",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+    "@svgr/webpack": "^6.5.1",
     "@testing-library/react": "13.4.0",
     "@types/jest": "28.1.1",
     "@types/lodash": "^4.14.189",
@@ -55,6 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.40.0",
     "babel-jest": "28.1.1",
+    "codecov": "^3.8.3",
     "commitizen": "^4.2.5",
     "cypress": "^10.7.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -68,15 +76,20 @@
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "4.6.0",
     "husky": "^8.0.1",
+    "istanbul": "^0.4.5",
+    "istanbul-badges-readme": "^1.8.4",
+    "istanbul-merge": "^1.1.1",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "lint-staged": "^13.0.3",
     "nx": "14.8.4",
+    "nyc": "^15.1.0",
     "prettier": "^2.7.1",
     "react-test-renderer": "18.2.0",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "url-loader": "^4.1.1"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
