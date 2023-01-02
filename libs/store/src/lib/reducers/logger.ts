@@ -9,9 +9,9 @@ import { LogErrorReducerPayload } from '../payloads';
  * Error will be added to the errors model.
  * If the errors model is at its max capacity, the oldest errors will be removed.
  
- * @param {AppStateModel} state - Current state model
- * @param {logErrorReducerPayload} payload - Payload for log error
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for log error
+ * @returns New state model if successful, else current state model
  */
 export const logErrorReducer = (
   state: AppStateModel,

@@ -11,9 +11,9 @@ import {
 /** Reducer function for updating a tournament in the state model.
  * Tournament in tournaments model will be updated with the given tournament.
  *
- * @param {AppStateModel} state - Current state model
- * @param {updateTournamentReducerPayload} payload - Payload for update tournament
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for update tournament
+ * @returns New state model if successful, else current state model
  */
 export const updateTournamentReducer = (
   state: AppStateModel,
@@ -40,9 +40,9 @@ export const updateTournamentReducer = (
 /** Reducer function for updating a race in the state model.
  * Race in races model will be updated with the given race.
  *
- * @param {AppStateModel} state - Current state model
- * @param {updateRaceReducerPayload} payload - Payload for update race
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for update race
+ * @returns New state model if successful, else current state model
  */
 export const updateRaceReducer = (
   state: AppStateModel,
@@ -69,9 +69,9 @@ export const updateRaceReducer = (
 /** Reducer function for updating a player in the state model.
  * Player in players model will be updated with the given player.
  *
- * @param {AppStateModel} state - Current state model
- * @param {updatePlayerReducerPayload} payload - Payload for update player
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for update player
+ * @returns New state model if successful, else current state model
  */
 export const updatePlayerReducer = (
   state: AppStateModel,
@@ -98,9 +98,9 @@ export const updatePlayerReducer = (
 /** Reducer function for updating a player log-in state model.
  * Player log-in player logs model will be updated with the given player log.
  *
- * @param {AppStateModel} state - Current state model
- * @param {updatePlayerLogReducerPayload} payload - Payload for updating player log
- * @returns {AppStateModel} - New state model if successful, else current state model
+ * @param state - Current state model
+ * @param payload - Payload for updating player log
+ * @returns New state model if successful, else current state model
  */
 export const updatePlayerLogReducer = (
   state: AppStateModel,

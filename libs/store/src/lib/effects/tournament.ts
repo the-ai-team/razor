@@ -7,9 +7,9 @@ import { Dispatch, RootState } from '../store';
  * Run the validation for the received payload.
  * If the tournament is found, then change the state of the tournament.
  *
- * @param {Dispatch} dispatch - The dispatch function of the store.
- * @param {SetTournamentStatePayload} payload - The payload of the action.
- * @param {RootState} state - The state of the store.
+ * @param dispatch - The dispatch function of the store.
+ * @param payload - The payload of the action.
+ * @param state - The state of the store.
  *
  * ### Related reducers and effects
  * - updateTournamentReducer

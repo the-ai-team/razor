@@ -3,9 +3,9 @@ import { Dispatch } from '../store';
 
 /** Logger raiser if a player cannot be found in players model.
  *
- * @param {Dispatch} dispatch - Dispatch function of the store.
- * @param {string} playerId - Id of the player who is not found.
- * @param {string} additionalMessage - Additional message to be logged.
+ * @param dispatch - Dispatch function of the store.
+ * @param playerId - Id of the player who is not found.
+ * @param additionalMessage - Additional message to be logged.
  */
 export const playerNotFound = (
   dispatch: Dispatch,
@@ -22,7 +22,7 @@ export const playerNotFound = (
 
 /** Logger raiser if a player name is invalid.
  *
- * @param {Dispatch} dispatch - Dispatch function of the store.
+ * @param dispatch - Dispatch function of the store.
  */
 export const invalidPlayerName = (dispatch: Dispatch): void => {
   dispatch.game.sendLogMessage({
@@ -35,7 +35,7 @@ export const invalidPlayerName = (dispatch: Dispatch): void => {
 
 /** Logger raiser if a player name length is invalid.
  *
- * @param {Dispatch} dispatch - Dispatch function of the store.
+ * @param dispatch - Dispatch function of the store.
  */
 export const invalidPlayerNameLength = (dispatch: Dispatch): void => {
   dispatch.game.sendLogMessage({
