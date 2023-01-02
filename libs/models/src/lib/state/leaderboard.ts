@@ -10,7 +10,7 @@ export enum AppPlayerStatus {
 /** Leaderboard entry values of the completed player. */
 export interface AppFinishedPlayerValues {
   wpm: number;
-  elpasedTime: number;
+  elapsedTime: number;
 }
 
 /** Leaderboard entry values of the incompleted (who end the race by timeout) player. */

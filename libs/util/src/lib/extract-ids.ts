@@ -6,10 +6,10 @@ import {
 } from '@razor/models';
 
 export enum ExtractIdType {
-  tournament = 'tournament',
-  player = 'player',
-  race = 'race',
-  playerLog = 'playerLog',
+  Tournament = 'tournament',
+  Player = 'player',
+  Race = 'race',
+  PlayerLog = 'playerLog',
 }
 
 type IdType = AppTournamentId | AppPlayerId | AppRaceId | AppPlayerLogId;
@@ -39,38 +39,32 @@ export const extractId = <T extends ExtractIdType>(
 
   // Check the validity of the input id.
   const validInput = checkValidityOfId(inputIdType, inputId);
-  // If invalid
   if (!validInput) {
     throw new Error('Invalid input value');
   }
+  const splittedId = inputId.split('-');
 
-  // Split id into parts by '-'.
-  const splitedId = inputId.split('-');
-  // Switching by output id type.
   switch (outputIdType) {
-    // Output id type is "tournament".
-    case ExtractIdType.tournament:
+    case ExtractIdType.Tournament:
       // Extract the first part of the id if the input id type is "race" or "playerLog".
-      if (inputIdType === ExtractIdType.race) {
-        return splitedId[0] as TypeMap[T];
-      } else if (inputIdType === ExtractIdType.playerLog) {
-        return splitedId[0] as TypeMap[T];
+      if (inputIdType === ExtractIdType.Race) {
+        return splittedId[0] as TypeMap[T];
+      } else if (inputIdType === ExtractIdType.PlayerLog) {
+        return splittedId[0] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
-    // Output id type is "player".
-    case ExtractIdType.player:
+    case ExtractIdType.Player:
       // Extract the second part of the id if the input id type is "playerLog".
-      if (inputIdType === ExtractIdType.playerLog) {
-        return splitedId[2] as TypeMap[T];
+      if (inputIdType === ExtractIdType.PlayerLog) {
+        return splittedId[2] as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
-    // Output id type is "race"
-    case ExtractIdType.race:
+    case ExtractIdType.Race:
       // Extract the first two parts of the id if the input id type is "playerLog".
-      if (inputIdType === ExtractIdType.playerLog) {
-        return `${splitedId[0]}-${splitedId[1]}` as TypeMap[T];
+      if (inputIdType === ExtractIdType.PlayerLog) {
+        return `${splittedId[0]}-${splittedId[1]}` as TypeMap[T];
       } else {
         throw new Error('Invalid type');
       }
@@ -89,13 +83,13 @@ export const checkValidityOfId = (
   id: IdType,
 ): RegExpMatchArray | null => {
   switch (type) {
-    case ExtractIdType.tournament:
+    case ExtractIdType.Tournament:
       return id.match(/^T:[a-zA-Z0-9]{8}$/);
-    case ExtractIdType.player:
+    case ExtractIdType.Player:
       return id.match(/^P:[a-zA-Z0-9]{8}$/);
-    case ExtractIdType.race:
+    case ExtractIdType.Race:
       return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}$/);
-    case ExtractIdType.playerLog:
+    case ExtractIdType.PlayerLog:
       return id.match(/^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}-P:[a-zA-Z0-9]{8}$/);
   }
 };

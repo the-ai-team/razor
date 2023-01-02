@@ -450,7 +450,7 @@ describe('[Reducers] Add operations', () => {
             status: AppPlayerStatus.Complete,
             values: {
               wpm: 60,
-              elpasedTime: 68,
+              elapsedTime: 68,
             },
           },
           {
@@ -473,7 +473,7 @@ describe('[Reducers] Add operations', () => {
               status: AppPlayerStatus.Complete,
               values: {
                 wpm: 60,
-                elpasedTime: 68,
+                elapsedTime: 68,
               },
             },
             {
@@ -500,7 +500,7 @@ describe('[Reducers] Add operations', () => {
               status: AppPlayerStatus.Complete,
               values: {
                 wpm: 60,
-                elpasedTime: 68,
+                elapsedTime: 68,
               },
             },
             {
@@ -524,7 +524,7 @@ describe('[Reducers] Add operations', () => {
             status: AppPlayerStatus.Complete,
             values: {
               wpm: 60,
-              elpasedTime: 68,
+              elapsedTime: 68,
             },
           },
           {

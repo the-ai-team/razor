@@ -20,10 +20,10 @@ export const M_TOURNAMENT_ID3 = mockTournamentId(3);
 
 /** Generate mock tournament.
  *
- * @param {number} tournamentId - Tournament id
- * @param {[number, number]} rIdRange - Race ids to assign.
- * @param {[number, number]} pIdRange - Player ids to assign.
- * @param {AppTournamentState} state - Tournament state
+ * @param tournamentId - Tournament id
+ * @param rIdRange - Race ids to assign.
+ * @param pIdRange - Player ids to assign.
+ * @param state - Tournament state
  */
 export const mockTournament = (
   tournamentId: AppTournamentId,

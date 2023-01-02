@@ -28,9 +28,9 @@ import { Dispatch, RootState } from '../store';
  * If an id is provided, then the player will be joined to the tournament.
  * If an id is not provided, then the new tournament will be generated and the player will be joined to the new tournament.
  *
- * @param {Dispatch} dispatch - Dispatch function from the store.
- * @param {joinPlayerPayload} payload - Payload for joining player.
- * @param {RootState} state - Current state model.
+ * @param dispatch - Dispatch function from the store.
+ * @param payload - Payload for joining player.
+ * @param state - Current state model.
  *
  * ### Related reducers and effects
  * - setTournamentState (effect)
@@ -132,9 +132,9 @@ export const joinPlayer = (
  * Run the validation for the received payload.
  * If the player is found, then the player will be cleared.
  *
- * @param {Dispatch} dispatch - Dispatch function from the store.
- * @param {clearPlayerPayload} payload - Payload for clearing player.
- * @param {RootState} state - Current state model.
+ * @param dispatch - Dispatch function from the store.
+ * @param payload - Payload for clearing player.
+ * @param state - Current state model.
  *
  * ### Related reducers and effects
  * - setTournamentState (effect)
@@ -188,9 +188,9 @@ export const clearPlayer = (
  * Run the validation for the received payload.
  * If the player and race are found, then the player logs will be sent.
  *
- * @param {Dispatch} dispatch - Dispatch function from the store.
- * @param {sendPlayerLogsPayload} payload - Payload for sending player logs.
- * @param {RootState} state - Current state model.
+ * @param dispatch - Dispatch function from the store.
+ * @param payload - Payload for sending player logs.
+ * @param state - Current state model.
  *
  * ### Related reducers and effects
  * - updatePlayerLogReducer

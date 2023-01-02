@@ -11,8 +11,8 @@ import { mockPlayerId } from './player';
 
 /** Mock race id
  *
- * @param {AppTournamentId} tournamentId - Tournament id to assign.
- * @param {number} raceNumber - Race number to assign.
+ * @param tournamentId - Tournament id to assign.
+ * @param raceNumber - Race number to assign.
  */
 export const mockRaceId = (
   tournamentId: AppTournamentId,
@@ -50,8 +50,8 @@ export const M_RACE_TEXT1 =
 
 /** Generate mock race
  *
- * @param {AppTournamentId} pIdRange - Player ids to assign.
- * @param {boolean} isOnGoing - Race is ongoing or not.
+ * @param pIdRange - Player ids to assign.
+ * @param isOnGoing - Race is ongoing or not.
  */
 export const mockRace = (
   pIdRange: [number, number],

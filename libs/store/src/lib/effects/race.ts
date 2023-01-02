@@ -42,9 +42,9 @@ import { Dispatch, RootState } from '../store';
  * If the player who pressed the start button and the relevant tournament are found, then the countdown will be started.
  * Tournament state will be changed to "Countdown".
  *
- * @param {Dispatch} dispatch - Dispatch function from the store.
- * @param {StartCountdownPayload} payload - Payload for starting the countdown of the
- * @param {RootState} state - Current state model.
+ * @param dispatch - Dispatch function from the store.
+ * @param payload - Payload for starting the countdown of the
+ * @param state - Current state model.
  *
  * ### Related reducers and effects
  * - setTournamentState (effect)
@@ -151,9 +151,9 @@ export const startCountdown = (
  * If the tournament is found, then the countdown will be ended.
  * Tournament state will be updated to "Race".
  *
- * @param {Dispatch} dispatch - The dispatch function of the store.
- * @param {endCountdownPayload} payload - The payload of the action.
- * @param {RootState} state - The state of the store.
+ * @param dispatch - The dispatch function of the store.
+ * @param payload - The payload of the action.
+ * @param state - The state of the store.
  *
  * ### Related reducers and effects
  * - updateTournamentReducer
@@ -192,9 +192,9 @@ export const endCoundown = (
  * Leaderboard will be generated.
  * Tournament state will be updated to "Leaderboard".
  *
- * @param {Dispatch} dispatch - The dispatch function of the store.
- * @param {endRacePayload} payload - The payload of the action.
- * @param {RootState} state - The state of the store.
+ * @param dispatch - The dispatch function of the store.
+ * @param payload - The payload of the action.
+ * @param state - The state of the store.
  *
  * ### Related reducers and effects
  * - updateTournamentReducer
@@ -221,8 +221,8 @@ export const endRace = (
   // Extract tournament id from race id.
   const tournamentId: AppTournamentId = extractId(
     raceId,
-    ExtractIdType.race,
-    ExtractIdType.tournament,
+    ExtractIdType.Race,
+    ExtractIdType.Tournament,
   ) as AppTournamentId;
 
   // Set tournament state to Leaderboard.

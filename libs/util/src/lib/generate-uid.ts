@@ -18,7 +18,7 @@ type TypeMap = {
 
 /** Generate an unique id for given id type.
  *
- * @param {AppIdNumberType} type - Type of id to generate.
+ * @param type - Type of id to generate.
  * @returns - Generated id.
  */
 export const generateUid = <T extends AppIdNumberType>(type: T): TypeMap[T] => {

@@ -27,6 +27,7 @@
     "@reduxjs/toolkit": "^1.8.6",
     "@rematch/core": "^2.2.0",
     "core-js": "^3.6.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "nanoid": "^3.3.4",
