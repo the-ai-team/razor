@@ -2,8 +2,7 @@ import { store } from '@razor/store';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-
-import App from './app/app';
+import { Layout } from './pages';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -12,7 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <Layout />
     </Provider>
   </StrictMode>,
 );
