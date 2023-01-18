@@ -11,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <Layout />
+      <div className='h-screen'>
+        <Layout />
+      </div>
     </Provider>
   </StrictMode>,
 );
