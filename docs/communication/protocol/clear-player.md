@@ -10,6 +10,9 @@ sequenceDiagram
     participant V as Viewer
 
     C->>S: Socket disconnect
+
+    Note over S: Wait for reconnecting
+
     S-->>S: Remove player
     S->>V: Socket Command [Sock01]
 ```
