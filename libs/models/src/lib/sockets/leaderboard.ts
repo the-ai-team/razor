@@ -1,4 +1,4 @@
-import { raceId } from './race';
+import { RaceId } from './race';
 
 // ==== Enums ==== //
 /** How is the player ended the race */
@@ -46,7 +46,7 @@ export interface LeaderboardEntry {
 
 export interface Leaderboard {
   /** Race Id */
-  raceId: raceId;
+  raceId: RaceId;
   /** Leaderboard entires of players */
   entries: LeaderboardEntry[];
 }

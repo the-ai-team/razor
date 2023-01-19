@@ -8,13 +8,13 @@ const raceIdSchema = z.custom<`T:${string}-R:${string}`>(id =>
 
 // ==== Types ==== //
 // Race id template literal
-export type raceId = z.input<typeof raceIdSchema>;
+export type RaceId = z.input<typeof raceIdSchema>;
 
 // ==== Interfaces ==== //
 // Note: `Race` does not need to be a schema; because it's only bound to the server-to-client communication.
 export interface Race {
   /** Unique race id */
-  id: raceId;
+  id: RaceId;
   /** Race text which players are typing  */
   text: string;
   /** Race timeout timer (in seconds) which is calculated by the server.  */

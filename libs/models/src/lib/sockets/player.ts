@@ -33,13 +33,13 @@ export enum PlayerState {
 
 // ==== Types ==== //
 /** Player id template literal */
-export type playerId = z.input<typeof playerIdSchema>;
+export type PlayerId = z.input<typeof playerIdSchema>;
 
 // ==== Interfaces ==== //
 // Note: `Player` does not need to be a schema; because it's only bound to the server-to-client communication.
 export interface Player {
   /** Unique player id */
-  id: playerId;
+  id: PlayerId;
   /** Player name */
   name: string;
   /** Player avatar icon URL */
