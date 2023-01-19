@@ -10,7 +10,7 @@ sequenceDiagram
     participant V as Viewer
 
     loop Waiting players to end their race locally
-        rect rgb(40, 40, 40)
+        rect rgba(191, 223, 255, 0.5)
             C->>S: Socket Message [Sock01]
             S-->>S: Update race
         end
@@ -19,7 +19,7 @@ sequenceDiagram
     Note over S,C: After server race timeout
 
     break Server waiting time ends
-        rect rgb(40, 40, 40)
+        rect rgba(191, 223, 255, 0.5)
             S-->>C: Socket Command [Sock02]
             S-->>S: Update race
             Note over S,C: If a player has not ended.¹

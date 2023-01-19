@@ -12,7 +12,7 @@ sequenceDiagram
 
     C->>S: POST /room/:id [Req01]
 
-    rect rgb(40, 40, 40)
+    rect rgba(191, 223, 255, 0.5)
         S-->>S: Check tournament availability
         S-->>S: Validate player name
         S-->>S: Join tournament

@@ -11,7 +11,7 @@ sequenceDiagram
 
     C->>S: POST /room [Req01]
 
-    rect rgb(40, 40, 40)
+    rect rgba(191, 223, 255, 0.5)
         S-->>S: Validate Player name
         S-->>S: Create player
         S-->>S: Create tournament
