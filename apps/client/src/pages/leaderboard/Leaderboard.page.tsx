@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
-export const Leaderboard: React.FC = (): ReactElement => {
+export function Leaderboard(): ReactElement {
   return <div>Leaderboard</div>;
-};
+}

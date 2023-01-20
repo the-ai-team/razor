@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
-export const Room: React.FC = (): ReactElement => {
+export function Room(): ReactElement {
   return <div>Room</div>;
-};
+}

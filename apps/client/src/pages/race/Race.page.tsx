@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
-export const Race: React.FC = (): ReactElement => {
+export function Race(): ReactElement {
   return <div>Race</div>;
-};
+}

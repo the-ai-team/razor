@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import Loader from 'pixelarticons/svg/loader.svg';
 
-export const Loading: React.FC = (): ReactElement => {
+export function Loading(): ReactElement {
   return (
     <div className='flex h-full'>
       <div className='m-auto flex gap-2'>
@@ -10,4 +10,4 @@ export const Loading: React.FC = (): ReactElement => {
       </div>
     </div>
   );
-};
+}
