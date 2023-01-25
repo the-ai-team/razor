@@ -23,12 +23,12 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/util"],
+      "outputs": ["coverage"],
       "options": {
         "jestConfig": "libs/util/jest.config.ts",
-        "verbose": true,
         "passWithNoTests": true,
-        "codeCoverage": true
+        "codeCoverage": true,
+        "coverageReporters": ["json", "text", "html"]
       }
     }
   },
