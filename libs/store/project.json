@@ -26,9 +26,9 @@
       "outputs": ["coverage/libs/store"],
       "options": {
         "jestConfig": "libs/store/jest.config.ts",
-        "verbose": true,
         "passWithNoTests": true,
-        "codeCoverage": true
+        "codeCoverage": true,
+        "coverageReporters": ["json", "text", "html"]
       }
     }
   },
