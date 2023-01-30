@@ -18,7 +18,8 @@
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
     "lint": "nx run-many --all --target=lint",
     "make-badges": "istanbul-badges-readme --coverageDir='./coverage'  --logo='jest'",
-    "make-badges:ci": "npm run make-badges -- --ci --exitCode=1"
+    "make-badges:ci": "npm run make-badges -- --ci --exitCode=1",
+    "prepare": "husky install"
   },
   "private": true,
   "engines": {
@@ -94,7 +95,7 @@
     "eslint-plugin-react": "7.31.11",
     "eslint-plugin-react-hooks": "4.6.0",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^8.0.1",
+    "husky": "^8.0.0",
     "istanbul": "^0.4.5",
     "istanbul-badges-readme": "^1.8.4",
     "istanbul-merge": "^1.1.1",
