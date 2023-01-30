@@ -1,5 +1,7 @@
 import { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+// Components
+import { Text } from '../../components/atoms/text/Text.component';
 
 export function Leaderboard(): ReactElement {
   const navigate = useNavigate();
@@ -13,7 +15,9 @@ export function Leaderboard(): ReactElement {
 
   return (
     <div>
-      <h1>Leaderboard</h1>
+      <Text type='Heading' size='Large'>
+        Leaderboard
+      </Text>
     </div>
   );
 }
