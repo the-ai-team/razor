@@ -6,5 +6,10 @@
     "allowJs": true,
     "types": ["cypress", "node"]
   },
-  "include": ["*.ts", "*.js"]
+  "include": ["*.ts", "*.js"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }

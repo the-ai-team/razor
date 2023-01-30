@@ -2,8 +2,8 @@ import { store } from '@razor/store';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-
-import App from './app/app';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Home, Layout, Leaderboard, Race, Room } from './pages';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -12,7 +12,20 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path=':id'>
+              <Route index element={<Home />} />
+              <Route path='room' element={<Room />} />
+              <Route path='race' element={<Race />} />
+              <Route path='leaderboard' element={<Leaderboard />} />
+            </Route>
+          </Route>
+          <Route path='*' element={<Navigate to='/' />} />
+        </Routes>
+      </BrowserRouter>
     </Provider>
   </StrictMode>,
 );
