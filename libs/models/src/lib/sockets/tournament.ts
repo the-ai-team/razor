@@ -1,7 +1,23 @@
+import { z } from 'zod';
 import { Leaderboard } from './leaderboard';
 import { Player } from './player';
 import { Race } from './race';
 
+// ==== Primary Schemas ==== //
+export const timestampSchema = z
+  .number()
+  .int()
+  .nonnegative()
+  .refine(
+    value => value.toString().length === 13,
+    'Timestamp must be in milliseconds (13 digits).',
+  );
+
+export const tournamentIdSchema = z.custom<`T:${string}`>(id =>
+  /^T:[a-zA-Z0-9]{8}$/.test(id as string),
+);
+
+// ==== Enums ==== //
 export enum TournamentState {
   /** **Lobby**
    *
@@ -37,6 +53,12 @@ export enum TournamentState {
   Empty = 'empty',
 }
 
+// ==== Types ==== //
+/** Tournament id template literal */
+export type TournamentId = z.input<typeof tournamentIdSchema>;
+
+// ==== Interfaces ==== //
+// Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
 export interface Tournament {
   /** Unique tournament id (/lobby ID) */
   id: string;
