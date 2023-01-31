@@ -79,7 +79,9 @@ export function Text({
     }
   };
 
+  /** Related text size to the text variant */
   const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
+
   if (!textSizeValue) {
     return <span>{children}</span>;
   } else {
