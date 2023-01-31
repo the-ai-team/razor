@@ -56,3 +56,19 @@ export const NANOID_ALPHABET =
  * - compute timeout util function
  */
 export const AVERAGE_WPM = 50;
+
+/** Required player name range length
+ *
+ * Minimum and maximum length respectively.
+ *
+ * Use by,
+ * - player name validation in sockets data models
+ */
+export const PLAYER_NAME_RANGE = [2, 16] as const;
+
+/** Maximum allowed text length
+ *
+ * Use by,
+ * - text length of player log validation in sockets data models
+ */
+export const MAX_ALLOWED_TEXT_LENGTH = 1000;
