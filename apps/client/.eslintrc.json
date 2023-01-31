@@ -13,7 +13,6 @@
           }
         ],
         "react/prop-types": "error",
-        "react/require-default-props": "error",
         "react/no-array-index-key": "error"
       }
     }
