@@ -4,7 +4,7 @@ import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 // Constants
 import { TextStyles } from '../../../constants';
 // Styles
-import './text.scss';
+import './text.css';
 
 interface TextProps {
   type: TextTypeTag;
