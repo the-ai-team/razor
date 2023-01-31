@@ -9,7 +9,6 @@ import './text.css';
 interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
-  // eslint-disable-next-line react/require-default-props
   colorClass?: string;
   children: string;
 }
