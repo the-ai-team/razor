@@ -45,10 +45,8 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            # Storybook components 
-            ## Build Results  
-            - ${{steps.chromatic.outputs.buildUrl}}
-            ## Storybook Preview  
-            - ${{steps.chromatic.outputs.storybookUrl}}
-            ## Component Count
-            - ${{steps.chromatic.outputs.componentCount}}
+            |  Name | Link |
+            | --- | --- |
+            | Build Results | ${{steps.chromatic.outputs.buildUrl}} |
+            | Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |
+            | Component Count | ${{steps.chromatic.outputs.componentCount}} |
