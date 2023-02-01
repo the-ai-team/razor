@@ -26,6 +26,12 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           flags: coverage
+  test:
+    name: Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: npm
       - uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
