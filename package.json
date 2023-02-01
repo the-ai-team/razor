@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "storybook": "nx run client:storybook",
+    "build-storybook": "nx run client:build-storybook",
     "build": "nx build client && nx build server",
     "test": "nx run-many --all --target=test && npm run coverage:merge && npm run coverage:summary",
     "coverage:codecov": "codecov",
