@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["!**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nrwl/nx", "sort-exports"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -24,7 +24,8 @@
         "no-compare-neg-zero": "error",
         "curly": "error",
         "no-lonely-if": "error",
-        "require-await": "error"
+        "require-await": "error",
+        "sort-exports/sort-exports": ["error", { "sortDir": "asc" }]
       }
     },
     {
