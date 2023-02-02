@@ -4,9 +4,11 @@ import { Story, Meta } from '@storybook/react';
 export default {
   title: 'Molecules/Button',
   component: Button,
+  argTypes: {
+    onClick: { action: 'clicked' },
+  },
   args: {
     children: 'Click Me',
-    onClick: (): void => console.log('Clicked'),
     isCarVisible: false,
     isDisable: false,
     isButtonDanger: false,
