@@ -3,7 +3,7 @@ import { Text } from '../../';
 import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
 import cs from 'classnames';
 
-interface ButtonProps {
+export interface ButtonProps {
   onClick: () => void;
   isCarVisible?: boolean;
   isDisable?: boolean;
@@ -47,7 +47,7 @@ export function Button({
             )
       }
       disabled={isDisable}>
-      {isCarVisible && (
+      {isCarVisible ? (
         <CarIcon
           className={
             isDisable
@@ -63,7 +63,7 @@ export function Button({
                 )
           }
         />
-      )}
+      ) : null}
       <Text type='Label' size='Medium' className='truncate'>
         {children}
       </Text>
