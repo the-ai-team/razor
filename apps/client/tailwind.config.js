@@ -20,7 +20,11 @@ module.exports = {
         40: '#B12A30',
         50: '#D34446',
       },
+      error:{
+        60: '#FF5449'
+      },
       white: colors.white,
+      surface: '#201A1A',
     },
     fontFamily: {
       sora: ['"Sora"', 'sans-serif'],
