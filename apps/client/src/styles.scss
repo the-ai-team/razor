@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind components;
+@tailwind base;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Roboto+Mono:wght@400;500&family=Sora:wght@400;600&display=swap');
+
+/* font-family: 'Major Mono Display', monospace;
+font-family: 'Roboto Mono', monospace;
+font-family: 'Sora', sans-serif;   */
+
+body {
+  font-family: 'Sora', sans-serif;
+}
