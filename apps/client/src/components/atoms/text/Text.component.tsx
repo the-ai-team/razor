@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import cs from 'classnames';
 // Interfaces
 import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 // Constants
@@ -92,7 +93,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-display font-sora ${classNames}`}>
+            className={cs('font-sora tracking-[-.25px]', classNames)}>
             {children}
           </div>
         );
@@ -100,7 +101,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-title font-sora ${classNames}`}>
+            className={cs('font-sora tracking-[.15px]', classNames)}>
             {children}
           </div>
         );
@@ -108,7 +109,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-label font-major-mono-display ${classNames}`}>
+            className={cs('font-major tracking-[.5px]', classNames)}>
             {children}
           </div>
         );
@@ -117,7 +118,7 @@ export function Text({
           <Heading
             size={size}
             style={{ fontSize: textSizeValue }}
-            className={`variant-heading font-roboto-mono ${classNames}`}>
+            className={cs('font-roboto tracking-[.15px]', classNames)}>
             {children}
           </Heading>
         );
@@ -126,7 +127,7 @@ export function Text({
           <Paragraph
             size={size}
             style={{ fontSize: textSizeValue }}
-            className={`variant-paragraph font-roboto-mono ${classNames}`}>
+            className={cs('font-roboto', classNames)}>
             {children}
           </Paragraph>
         );

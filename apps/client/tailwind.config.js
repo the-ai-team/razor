@@ -22,6 +22,11 @@ module.exports = {
       },
       white: colors.white,
     },
+    fontFamily: {
+      sora: ['"Sora"', 'sans-serif'],
+      roboto: ['"Roboto Mono"', 'monospace'],
+      major: ['"Major Mono Display"', 'monospace'],
+    },
   },
   plugins: [],
 };
