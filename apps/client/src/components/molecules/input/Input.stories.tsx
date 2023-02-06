@@ -29,3 +29,8 @@ Invalid.args = {
   isInvalid: true,
   value: '$This1sInval!d',
 };
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  isDisable: true,
+};
