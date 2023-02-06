@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Text } from '../../';
 
-interface DescriptionProps {
+export interface DescriptionProps {
   title: string;
   image?: string;
   children: string;
@@ -13,14 +13,14 @@ export function Description({
   children,
 }: DescriptionProps): ReactElement {
   return (
-    <div className='description'>
+    <div>
       <Text type='Title' size='Medium'>
         {title}
       </Text>
       {image ? (
-        <img src={image} alt={title} />
+        <img className='my-4 rounded-md w-full' src={image} alt={title} />
       ) : (
-        <div className='bg-text-light my-4 h-60 rounded-md w-full' />
+        <div className='bg-neutral-90 my-4 h-60 rounded-md w-full' />
       )}
       <Text type='Paragraph' size='Small'>
         {children}
