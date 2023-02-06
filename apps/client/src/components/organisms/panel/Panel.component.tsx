@@ -3,7 +3,7 @@ import { Description, Text } from '../..';
 import { ReactComponent as ArrowHeadTop } from 'pixelarticons/svg/chevron-up.svg';
 import cs from 'classnames';
 
-interface PanelProps {
+export interface PanelProps {
   title: string;
   children: ReactElement<typeof Description>[];
 }
@@ -31,7 +31,7 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         'flex flex-col',
         'absolute top-5 right-5',
         'px-10',
-        'w-1/3 max-w-xl max-h-[1200px] rounded-md bg-bg-brown',
+        'w-1/3 max-w-xl max-h-[1200px] min-w-[600px] rounded-md bg-bg-brown',
         'border-4 border-bg-brown-100',
         'transition-all duration-300',
       )}
@@ -58,7 +58,7 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         </div>
       </div>
       <div>
-        <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-text-light'>
+        <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-neutral-90'>
           <ArrowHeadTop
             className={cs('w-10 h-10 transition-all duration-300', {
               'rotate-180': isCollapse,
