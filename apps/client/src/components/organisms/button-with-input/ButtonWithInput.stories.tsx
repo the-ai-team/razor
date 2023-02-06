@@ -13,7 +13,7 @@ export default {
   args: {
     isDisable: false,
     children: 'ButtonWithInput',
-    inputPlaceholder: 'TYpeHere',
+    inputPlaceholder: 'Type Here',
     inputSize: 8,
     maxInputLength: 8,
   },
@@ -24,3 +24,8 @@ const Template: Story<ButtonWithInputProps> = args => (
 );
 
 export const Default = Template.bind({});
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  isDisable: true,
+};
