@@ -1,4 +1,5 @@
-import { Text } from './Text.component';
+import { Meta, Story } from '@storybook/react';
+import { Text, TextProps } from './Text.component';
 
 export default {
   title: 'Atoms/Text',
@@ -8,9 +9,9 @@ export default {
     size: 'Medium',
     type: 'Display',
   },
-};
+} as Meta<TextProps>;
 
-const Template = args => <Text {...args} />;
+const Template: Story<TextProps> = args => <Text {...args} />;
 
 export const DisplaySmall = Template.bind({});
 DisplaySmall.args = {

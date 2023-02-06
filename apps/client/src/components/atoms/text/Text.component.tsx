@@ -6,7 +6,7 @@ import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
 
-interface TextProps {
+export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   // eslint-disable-next-line react/require-default-props
