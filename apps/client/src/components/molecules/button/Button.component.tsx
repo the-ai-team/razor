@@ -48,7 +48,8 @@ export function Button({
                   isButtonDanger,
               },
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
-              'border hover:border-4 border-neutral-40',
+              'border hover:border-[4px] border-neutral-40',
+              'm-[4px] hover:m-[1px]',
               'relative py-2 px-10 min-w-min rounded',
               { 'w-full': isFillWidth },
             )
