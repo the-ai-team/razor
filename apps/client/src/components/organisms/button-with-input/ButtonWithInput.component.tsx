@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Button, Input } from '../molecules';
+import { Button, Input } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;

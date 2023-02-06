@@ -1,1 +1,1 @@
-export * from './ButtonWithInput.component';
+export * from './button-with-input';
