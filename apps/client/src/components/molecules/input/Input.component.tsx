@@ -1,7 +1,8 @@
 import cs from 'classnames';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 
 export interface InputProps {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
@@ -10,6 +11,7 @@ export interface InputProps {
 }
 
 export function Input({
+  onChange,
   value,
   placeholder,
   props,
@@ -19,7 +21,6 @@ export function Input({
   placeholder ||= '';
   isValid ||= false;
   isInvalid ||= false;
-  const [inputValue, setInputValue] = useState<string>(value || '');
 
   return (
     <input
@@ -35,10 +36,8 @@ export function Input({
         'transition-all duration-300',
       )}
       type='text'
-      value={inputValue}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-        setInputValue(e.target.value);
-      }}
+      value={value}
+      onChange={onChange}
       placeholder={placeholder}
       {...props}
     />
