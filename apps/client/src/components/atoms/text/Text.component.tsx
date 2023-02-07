@@ -7,11 +7,15 @@ import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
 
+type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+
 interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   colorClass?: string;
   className?: string;
+  isAnimatable?: boolean;
+  asHeading?: allowedTags;
   children: string;
 }
 
@@ -20,6 +24,8 @@ export function Text({
   size,
   colorClass,
   className,
+  isAnimatable,
+  asHeading,
   children,
 }: TextProps): ReactElement {
   const textVariant: TextVariant = `${type}.${size}`;
@@ -83,7 +89,12 @@ export function Text({
 
   /** Related text size to the text variant */
   const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
-  const classNames = (colorClass || 'text-neutral-90') + ' ' + className;
+  const classNames =
+    (colorClass || 'text-neutral-90') +
+    ' ' +
+    className +
+    ' ' +
+    (isAnimatable && 'transition-all duration-300');
 
   if (!textSizeValue) {
     return <span>{children}</span>;
@@ -114,6 +125,17 @@ export function Text({
           </div>
         );
       case 'Heading':
+        // If the text is animatable, then we use custom Heading component to avoid rerendering of element.
+        if (isAnimatable) {
+          const Tag = asHeading || 'h1';
+          return (
+            <Tag
+              style={{ fontSize: textSizeValue }}
+              className={cs('font-roboto tracking-[.15px]', classNames)}>
+              {children}
+            </Tag>
+          );
+        }
         return (
           <Heading
             size={size}
