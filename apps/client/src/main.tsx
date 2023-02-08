@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
+import './i18n';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

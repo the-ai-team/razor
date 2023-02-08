@@ -1,0 +1,20 @@
+{
+  "page": "Home",
+  "panel": {
+    "title": "Home",
+    "descriptions": [
+      {
+        "title": "What is Razor?",
+        "content": "Welcome to the Razor, the free and open-source typing racing platform. Race against friends and improve your typing skills while having fun in private lobbies on Razor. So, grab your keyboard and get ready to Raze!"
+      },
+      {
+        "title": "Private Room",
+        "content": "A room is a private space where you and your friends can gather before starting a race. You can create your own room or join someone else's using a link. Players can wait in the room until others arrive, and anyone can start the race whenever they're ready."
+      },
+      {
+        "title": "Open Source",
+        "content": "Razor is an open-source project, which means that anyone can contribute to the project. You can find the source code on GitHub(https://github.com)."
+      }
+    ]
+  }
+}
