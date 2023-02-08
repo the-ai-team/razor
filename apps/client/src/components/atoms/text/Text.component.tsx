@@ -4,8 +4,6 @@ import Linkify from 'react-linkify';
 import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
 // Constants
 import { TextStyles } from '../../../constants';
-// Styles
-import './text.css';
 
 interface TextContainerProps {
   style: {
