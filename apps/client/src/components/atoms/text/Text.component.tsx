@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import cs from 'classnames';
+import Linkify from 'react-linkify';
 // Interfaces
 import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 // Constants
@@ -72,16 +73,36 @@ export function Text({
     className,
     children,
   }: SubTextProps): React.ReactElement => {
+    const content = (
+      <Linkify
+        componentDecorator={(
+          decoratedHref,
+          decoratedText,
+          key,
+        ): ReactElement => (
+          <a
+            target='_blank'
+            rel='noopener noreferrer'
+            href={decoratedHref}
+            key={key}
+            className='text-neutral-40 underline hover:no-underline'>
+            {decoratedText}
+          </a>
+        )}>
+        {children}
+      </Linkify>
+    );
+
     if (size === 'Medium') {
       return (
         <p style={style} className={`${className} font-medium text-indent`}>
-          {children}
+          {content}
         </p>
       );
     } else {
       return (
         <p style={style} className={className}>
-          {children}
+          {content}
         </p>
       );
     }
