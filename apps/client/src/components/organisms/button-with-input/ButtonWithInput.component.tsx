@@ -8,6 +8,7 @@ export interface ButtonWithInputProps {
   inputPlaceholder?: string;
   inputSize?: number;
   maxInputLength?: number;
+  icon?: ReactElement;
 }
 
 export function ButtonWithInput({
@@ -17,6 +18,7 @@ export function ButtonWithInput({
   inputPlaceholder,
   inputSize,
   maxInputLength,
+  icon,
 }: ButtonWithInputProps): ReactElement {
   inputSize ||= 12;
   maxInputLength ||= 12;
@@ -38,6 +40,7 @@ export function ButtonWithInput({
     <Button
       isDisable={isDisable}
       onClick={buttonClickHandler}
+      icon={icon}
       input={
         <div>
           <Input

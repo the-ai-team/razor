@@ -11,6 +11,7 @@ export interface ButtonProps {
   children: string;
   input?: ReactElement;
   isFillWidth?: boolean;
+  icon?: ReactElement;
 }
 
 export function Button({
@@ -21,6 +22,7 @@ export function Button({
   children,
   input,
   isFillWidth,
+  icon,
 }: ButtonProps): ReactElement {
   isCarVisible ||= false;
   isDisable ||= false;
@@ -48,8 +50,8 @@ export function Button({
                   isButtonDanger,
               },
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
-              'border hover:border-[4px] border-neutral-40',
-              'm-[4px] hover:m-[1px]',
+              'border hover:ring-[4px] border-neutral-40 ring-neutral-40',
+              // 'm-[4px] hover:m-[1px]',
               'relative py-2 px-10 min-w-min rounded',
               { 'w-full': isFillWidth },
             )
@@ -77,6 +79,7 @@ export function Button({
         <Text type='Label' size='Medium' className='truncate'>
           {children}
         </Text>
+        {icon ? icon : null}
       </div>
     </button>
   );

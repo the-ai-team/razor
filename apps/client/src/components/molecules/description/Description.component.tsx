@@ -13,7 +13,7 @@ export function Description({
   children,
 }: DescriptionProps): ReactElement {
   return (
-    <div>
+    <div className='w-full'>
       <Text type='Title' size='Medium'>
         {title}
       </Text>
