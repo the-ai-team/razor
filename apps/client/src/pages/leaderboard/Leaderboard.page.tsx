@@ -2,6 +2,7 @@ import { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Components
 import { Text } from '../../components/atoms/text/Text.component';
+import { TextSize, TextType } from '../../models';
 
 export function Leaderboard(): ReactElement {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export function Leaderboard(): ReactElement {
 
   return (
     <div>
-      <Text type='Heading' size='Large'>
+      <Text type={TextType.Heading} size={TextSize.Large}>
         Leaderboard
       </Text>
     </div>

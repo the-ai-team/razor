@@ -1,79 +1,88 @@
-import { ReactElement } from 'react';
-import cs from 'classnames';
+import React, { ReactElement } from 'react';
 import Linkify from 'react-linkify';
 // Interfaces
-import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
+import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
 // Constants
 import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
 
-type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+interface TextContainerProps {
+  style: {
+    fontSize: `${number}rem`;
+  };
+  className: string;
+  tag: TextTag;
+  children: ReactElement;
+}
+
+export function TextContainer({
+  style,
+  className,
+  tag,
+  children,
+}: TextContainerProps): ReactElement {
+  const Element = tag;
+  return (
+    <Element style={style} className={className}>
+      {children}
+    </Element>
+  );
+}
 
 interface TextProps {
-  type: TextTypeTag;
-  size: TextSizeTag;
+  type: TextType;
+  size: TextSize;
   colorClass?: string;
   className?: string;
   isAnimatable?: boolean;
-  asHeading?: allowedTags;
+  as?: TextTag;
   children: string;
 }
 
+/**
+ *
+ * @param type Text type - Display, Title, Paragraph, etc.
+ * @param size Text size - Small, Medium, Large, etc.
+ * @param children - Text content
+ * @param [colorClass=text-neutral-90] Text color text-neutral-90, text-white, etc. (optional)
+ * @param [className] - Additional class names (optional)
+ * @param [isAnimatable] - Whether the text should be animatable (optional)
+ * @param [as] - HTML tag to render the text as, this is tag will be use explicity if component is animatable.  (optional)
+ * @returns
+ */
 export function Text({
   type,
   size,
-  colorClass,
-  className,
-  isAnimatable,
-  asHeading,
   children,
+  colorClass = 'text-neutral-90',
+  className = '',
+  isAnimatable = false,
+  as,
 }: TextProps): ReactElement {
   const textVariant: TextVariant = `${type}.${size}`;
+  const textData = TextStyles.TEXT_MAP.get(textVariant);
+  // predefined tag by styles
+  const textTag = as || textData?.tag || TextTag.Span;
+  const textClasses =
+    (colorClass || 'text-neutral-90') +
+    ' ' +
+    className +
+    ' ' +
+    (isAnimatable && 'transition-all duration-300') +
+    ' ' +
+    textData?.definedClasses;
 
-  interface SubTextProps {
-    size: TextSizeTag;
-    style: React.CSSProperties;
-    className: string;
-    children: string;
+  if (!textData) {
+    throw new Error(`Text variant ${textVariant} not found`);
   }
 
-  // === Heading ===
-  const Heading = ({
-    size,
-    style,
-    className,
-    children,
-  }: SubTextProps): React.ReactElement => {
-    if (size === 'Large') {
-      return (
-        <h1 style={style} className={className + ' font-medium'}>
-          {children}
-        </h1>
-      );
-    } else if (size === 'Medium') {
-      return (
-        <h2 style={style} className={className}>
-          {children}
-        </h2>
-      );
-    } else {
-      return (
-        <h3 style={style} className={className}>
-          {children}
-        </h3>
-      );
-    }
-  };
-
-  // === Paragraph ===
-  const Paragraph = ({
-    size,
-    style,
-    className,
-    children,
-  }: SubTextProps): React.ReactElement => {
-    const content = (
+  const textContainerProps = {
+    style: {
+      fontSize: textData.size,
+    },
+    className: textClasses,
+    children: (
       <Linkify
         componentDecorator={(
           decoratedHref,
@@ -91,92 +100,13 @@ export function Text({
         )}>
         {children}
       </Linkify>
-    );
-
-    if (size === 'Medium') {
-      return (
-        <p style={style} className={`${className} font-medium text-indent`}>
-          {content}
-        </p>
-      );
-    } else {
-      return (
-        <p style={style} className={className}>
-          {content}
-        </p>
-      );
-    }
+    ),
   };
 
-  /** Related text size to the text variant */
-  const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
-  const classNames =
-    (colorClass || 'text-neutral-90') +
-    ' ' +
-    className +
-    ' ' +
-    (isAnimatable && 'transition-all duration-300');
-
-  if (!textSizeValue) {
-    return <span>{children}</span>;
-  } else {
-    switch (type) {
-      case 'Display':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-sora tracking-[-.25px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Title':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-sora tracking-[.15px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Label':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-major tracking-[.5px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Heading':
-        // If the text is animatable, then we use custom Heading component to avoid rerendering of element.
-        if (isAnimatable) {
-          const Tag = asHeading || 'h1';
-          return (
-            <Tag
-              style={{ fontSize: textSizeValue }}
-              className={cs('font-roboto tracking-[.15px]', classNames)}>
-              {children}
-            </Tag>
-          );
-        }
-        return (
-          <Heading
-            size={size}
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-roboto tracking-[.15px]', classNames)}>
-            {children}
-          </Heading>
-        );
-      case 'Paragraph':
-        return (
-          <Paragraph
-            size={size}
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-roboto', classNames)}>
-            {children}
-          </Paragraph>
-        );
-      // This function never reaches the default case.
-      default:
-        throw new Error('Unexpected object: ' + type);
-    }
+  if (isAnimatable) {
+    const textTag = as || TextTag.Span;
+    return React.createElement(textTag, textContainerProps);
   }
+
+  return <TextContainer {...textContainerProps} tag={textTag} />;
 }
