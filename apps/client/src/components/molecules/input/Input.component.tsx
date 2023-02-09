@@ -14,17 +14,12 @@ export interface InputProps {
 export function Input({
   onChange,
   value,
-  placeholder,
   props,
-  isValid,
-  isInvalid,
-  isDisable,
+  placeholder = '',
+  isValid = false,
+  isInvalid = false,
+  isDisable = false,
 }: InputProps): ReactElement {
-  placeholder ||= '';
-  isValid ||= false;
-  isInvalid ||= false;
-  isDisable ||= false;
-
   return (
     <span
       className={

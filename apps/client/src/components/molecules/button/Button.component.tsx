@@ -6,30 +6,25 @@ import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
 
 export interface ButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  children: string;
+  input?: ReactElement;
+  icon?: ReactElement;
   isCarVisible?: boolean;
   isDisable?: boolean;
   isButtonDanger?: boolean;
-  children: string;
-  input?: ReactElement;
   isFillWidth?: boolean;
-  icon?: ReactElement;
 }
 
 export function Button({
   onClick,
-  isCarVisible,
-  isDisable,
-  isButtonDanger,
   children,
-  input,
-  isFillWidth,
   icon,
+  input,
+  isDisable = false,
+  isCarVisible = false,
+  isButtonDanger = false,
+  isFillWidth = false,
 }: ButtonProps): ReactElement {
-  isCarVisible ||= false;
-  isDisable ||= false;
-  isButtonDanger ||= false;
-  isFillWidth ||= false;
-
   return (
     <button
       type='button'
@@ -52,7 +47,6 @@ export function Button({
               },
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
               'border hover:ring-[4px] border-neutral-40 ring-neutral-40',
-              // 'm-[4px] hover:m-[1px]',
               'relative py-2 px-10 min-w-min rounded',
               { 'w-full': isFillWidth },
             )

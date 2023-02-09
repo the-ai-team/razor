@@ -3,26 +3,23 @@ import { Button, Input } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
-  isDisable?: boolean;
   children: string;
+  isDisable?: boolean;
   inputPlaceholder?: string;
+  icon?: ReactElement;
   inputSize?: number;
   maxInputLength?: number;
-  icon?: ReactElement;
 }
 
 export function ButtonWithInput({
   onClick,
-  isDisable,
   children,
+  isDisable,
   inputPlaceholder,
-  inputSize,
-  maxInputLength,
   icon,
+  inputSize = 12,
+  maxInputLength = 12,
 }: ButtonWithInputProps): ReactElement {
-  inputSize ||= 12;
-  maxInputLength ||= 12;
-
   const [inputValue, setInputValue] = useState<string>('');
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
