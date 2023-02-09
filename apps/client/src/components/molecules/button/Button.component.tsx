@@ -15,6 +15,17 @@ export interface ButtonProps {
   isFillWidth?: boolean;
 }
 
+/**
+ *
+ * @param onClick - Button click handler; (e: React.MouseEvent<HTMLButtonElement>) => void;
+ * @param children - Text content
+ * @param icon - Icon to be displayed on the left side of the button (optional)
+ * @param input - Input element to be displayed on the left side of the button (optional); this property is used in ButtonWithInput component
+ * @param [isDisable=false] - Disables the button (optional)
+ * @param [isCarVisible=false] - Displays the interactive car icon on the button (optional)
+ * @param [isButtonDanger=false] - Changes the button color to red (optional)
+ * @param [isFillWidth=false] - Enabling this will expand the button inside parent (optional)
+ */
 export function Button({
   onClick,
   children,

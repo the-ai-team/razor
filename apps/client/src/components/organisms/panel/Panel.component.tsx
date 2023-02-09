@@ -11,6 +11,11 @@ export interface PanelProps {
     | ReactElement<typeof Description>[];
 }
 
+/**
+ *
+ * @param title - Title of the panel
+ * @param children - Content of the panel (Description components)
+ */
 export function Panel({ title, children }: PanelProps): ReactElement {
   const [isCollapse, setCollapse] = useState(true);
   useEffect(() => {

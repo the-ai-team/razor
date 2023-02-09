@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
+  value: string;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   isValid?: boolean;
@@ -11,6 +11,16 @@ export interface InputProps {
   isDisable?: boolean;
 }
 
+/**
+ *
+ * @param onChange - Input change handler; (e: React.ChangeEvent<HTMLInputElement>) => void;
+ * @param value - Input value
+ * @param [placeholder] - Input placeholder (optional)
+ * @param [props] - Additional props to pass to input element (optional)
+ * @param [isValid] - Whether input text is valid (optional)
+ * @param [isInvalid] - Whether input text is invalid (optional)
+ * @param [isDisable] - Whether input is disabled (optional)
+ */
 export function Input({
   onChange,
   value,

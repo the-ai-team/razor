@@ -46,7 +46,6 @@ interface TextProps {
  * @param [className] - Additional class names (optional)
  * @param [isAnimatable] - Whether the text should be animatable (optional)
  * @param [as] - HTML tag to render the text as, this is tag will be use explicity if component is animatable.  (optional)
- * @returns
  */
 export function Text({
   type,
