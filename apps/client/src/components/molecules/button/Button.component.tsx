@@ -81,11 +81,11 @@ export function Button({
         />
       ) : null}
       <div className='flex items-center flex-grow justify-center gap-10'>
-        {input ? input : null}
+        {input}
         <Text type={TextType.Label} size={TextSize.Medium} className='truncate'>
           {children}
         </Text>
-        {icon ? icon : null}
+        {icon}
       </div>
     </button>
   );
