@@ -1,14 +1,13 @@
 import React, { ReactElement } from 'react';
 import Linkify from 'react-linkify';
+import cs from 'classnames';
 // Interfaces
 import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
 // Constants
 import { TextStyles } from '../../../constants';
 
 interface TextContainerProps {
-  style: {
-    fontSize: `${number}rem`;
-  };
+  style: React.CSSProperties;
   className: string;
   tag: TextTag;
   children: ReactElement;
@@ -62,14 +61,12 @@ export function Text({
   const textData = TextStyles.TEXT_MAP.get(textVariant);
   // predefined tag by styles
   const textTag = as || textData?.tag || TextTag.Span;
-  const textClasses =
-    (colorClass || 'text-neutral-90') +
-    ' ' +
-    className +
-    ' ' +
-    (isAnimatable && 'transition-all duration-300') +
-    ' ' +
-    textData?.definedClasses;
+  const textClasses = cs(
+    colorClass,
+    { className: className },
+    { 'transition-all duration-300': isAnimatable },
+    textData?.definedClasses,
+  );
 
   if (!textData) {
     throw new Error(`Text variant ${textVariant} not found`);

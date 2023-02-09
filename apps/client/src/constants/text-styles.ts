@@ -116,7 +116,7 @@ export const TEXT_MAP = new Map<
     {
       size: '1.63rem',
       tag: TextTag.Paragraph,
-      definedClasses: 'font-roboto font-medium text-indent',
+      definedClasses: 'font-roboto font-medium indent-32',
     },
   ],
   [
