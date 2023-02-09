@@ -54,7 +54,7 @@ export function Home(): ReactElement {
           onChange={(e): void => setUserName(e.target.value)}
           placeholder='Your Handle'
         />
-        <Button onClick={routeToRoom} isFillWidth={true} isCarVisible={true}>
+        <Button onClick={routeToRoom} isFullWidth={true} isCarVisible={true}>
           {id ? 'Join' : 'Create'}
         </Button>
       </div>

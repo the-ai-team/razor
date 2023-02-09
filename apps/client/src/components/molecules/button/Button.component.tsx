@@ -12,7 +12,7 @@ export interface ButtonProps {
   isCarVisible?: boolean;
   isDisable?: boolean;
   isButtonDanger?: boolean;
-  isFillWidth?: boolean;
+  isFullWidth?: boolean;
 }
 
 /**
@@ -24,7 +24,7 @@ export interface ButtonProps {
  * @param [isDisable=false] - Disables the button (optional)
  * @param [isCarVisible=false] - Displays the interactive car icon on the button (optional)
  * @param [isButtonDanger=false] - Changes the button color to red (optional)
- * @param [isFillWidth=false] - Enabling this will expand the button inside parent (optional)
+ * @param [isFullWidth=false] - Enabling this will expand the button inside parent (optional)
  */
 export function Button({
   onClick,
@@ -34,7 +34,7 @@ export function Button({
   isDisable = false,
   isCarVisible = false,
   isButtonDanger = false,
-  isFillWidth = false,
+  isFullWidth = false,
 }: ButtonProps): ReactElement {
   return (
     <button
@@ -47,7 +47,7 @@ export function Button({
               'cursor-not-allowed',
               'bg-transparent',
               'border border-neutral-40',
-              { 'w-full': isFillWidth },
+              { 'w-full': isFullWidth },
               'relative py-2 px-10 min-w-min rounded',
             )
           : cs(
@@ -59,7 +59,7 @@ export function Button({
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
               'border hover:ring-[4px] border-neutral-40 ring-neutral-40',
               'relative py-2 px-10 min-w-min rounded',
-              { 'w-full': isFillWidth },
+              { 'w-full': isFullWidth },
             )
       }
       disabled={isDisable}>

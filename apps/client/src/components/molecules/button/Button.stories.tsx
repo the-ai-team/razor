@@ -12,7 +12,7 @@ export default {
     isCarVisible: false,
     isDisable: false,
     isButtonDanger: false,
-    isFillWidth: true,
+    isFullWidth: true,
   },
 } as Meta<ButtonProps>;
 
