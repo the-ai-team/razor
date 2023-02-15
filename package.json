@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
+    "start:server": "nx serve server",
     "build": "nx build client && nx build server",
     "test": "nx run-many --all --target=test && npm run coverage:merge && npm run coverage:summary",
     "coverage:codecov": "codecov",
