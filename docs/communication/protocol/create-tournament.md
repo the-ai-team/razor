@@ -58,7 +58,7 @@ _Auth token will be only available if the user has logged in before and disconne
 Socket message
 
 ```json
-"type": "TS/INT/JOIN_LOBBY",
+"type": "TS/INT/CREATE_LOBBY",
 "data": {
     "playerName": "name",
     "tournamentId": "" // empty string
