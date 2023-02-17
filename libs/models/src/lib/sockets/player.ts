@@ -1,5 +1,6 @@
 import { PLAYER_NAME_RANGE } from '@razor/constants';
 import { z } from 'zod';
+import { Tournament, TournamentId } from './tournament';
 
 // ==== Primary Schemas ==== //
 export const playerIdSchema = z.custom<`P:${string}`>(id =>
@@ -46,4 +47,21 @@ export interface Player {
   avatarLink: string;
   /** Player state */
   state: PlayerState;
+}
+
+export type AuthToken = string;
+export type socketId = string;
+
+// Data sent from the client to the server with socket establishment
+export interface InitialClientData {
+  playerName: string;
+  roomId?: string;
+}
+
+// Data sent from the server to the client after socket establishment
+export interface InitialServerData {
+  playerId: PlayerId;
+  tournamentId: TournamentId;
+  /** Tournament snapshot */
+  snapshot: Tournament;
 }
