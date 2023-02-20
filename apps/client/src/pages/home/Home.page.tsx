@@ -1,9 +1,10 @@
 import cs from 'classnames';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 // Assets
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
-import logo from '../../assets/images/logo.png';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
 // Components
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ import {
   Input,
   Panel,
 } from '../../components';
+import { generateAvatarLink } from '@razor/util';
 
 export function Home(): ReactElement {
   const { id } = useParams();
@@ -33,6 +35,20 @@ export function Home(): ReactElement {
   };
 
   const [userName, setUserName] = useState<string>('');
+  const [avtarURL, setAvtarURL] = useState<string>('');
+
+  useEffect(() => {
+    if (userName === '') {
+      setAvtarURL('');
+    } else {
+      setAvtarURL(generateAvatarLink(userName));
+    }
+
+    // return () => {
+    //   second
+    // }
+  }, [userName]);
+
   const { t } = useTranslation('home');
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -47,7 +63,21 @@ export function Home(): ReactElement {
           'flex flex-col justify-center items-center',
           'w-[500px] gap-8',
         )}>
-        <img src={logo} className='-mb-16' alt='' />
+        {/* <img src={logo} className='-mb-16' alt='' /> */}
+        <div className='relative'>
+          {avtarURL ? (
+            <>
+              <LogoFill className='-mb-16' />
+              <img
+                src={avtarURL}
+                alt=''
+                className='w-14 h-14 absolute top-[56%] right-[18%] rounded-2xl overflow-hidden'
+              />
+            </>
+          ) : (
+            <Logo className='-mb-16' />
+          )}
+        </div>
         {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         <Input
           value={userName}
