@@ -23,4 +23,12 @@ export class TokenPlayerMap {
     }
     return null;
   }
+
+  // update player's socket id when player reconnects
+  updatePlayerSocketId(authToken: AuthToken, socketId: socketId): void {
+    const data = this.map.get(authToken);
+    if (data) {
+      this.map.set(authToken, { ...data, socketId });
+    }
+  }
 }

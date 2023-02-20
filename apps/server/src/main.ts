@@ -37,7 +37,9 @@ io.on('connection', socket => {
     socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
     // TODO: Add player to map should need plyaer id which needs to be generated in the join player controller
     // So, following method should be called in the join player controller later.
-    tokenPlayerMap.addPlayer(token || newToken, 'P:123456', socket.id);
+    tokenPlayerMap.addPlayer(newToken, 'P:123456', socket.id);
+  } else {
+    tokenPlayerMap.updatePlayerSocketId(token, socket.id);
   }
 
   // TODO: function needs to implement to clear player from map when player disconnects and after several retries.
