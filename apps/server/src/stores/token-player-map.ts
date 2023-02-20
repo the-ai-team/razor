@@ -51,4 +51,23 @@ export class TokenPlayerMap {
     }
     return null;
   }
+
+  //get auth token by socket id
+  getAuthTokenBySocketId(socketId: socketId): AuthToken | null {
+    for (const [key, value] of this.map.entries()) {
+      if (value.socketId === socketId) {
+        return key;
+      }
+    }
+    return null;
+  }
+
+  viewMap(): void {
+    console.log(this.map);
+  }
+
+  // clear player after retries
+  clearPlayer(authToken: AuthToken): void {
+    this.map.delete(authToken);
+  }
 }

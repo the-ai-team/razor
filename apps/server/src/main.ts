@@ -1,4 +1,5 @@
 import { PROTO_AUTH_TOKEN_TRANSFER } from '@razor/constants';
+import { AuthToken } from '@razor/models';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -27,8 +28,28 @@ const io = new Server(server, {
 
 const tokenPlayerMap = new TokenPlayerMap();
 
+const reconnect = (authToken: AuthToken): void => {
+  setTimeout(() => {
+    if (!tokenPlayerMap.getPlayer(authToken)) {
+      return;
+    }
+    // Get socket id from current player data. If player connected again socket id should be already updated.
+    const { socketId } = tokenPlayerMap.getPlayer(authToken);
+
+    // If player still not connected then delete the player from map.
+    const isSocketConnected = io.sockets.sockets.get(socketId)?.connected;
+    if (!isSocketConnected) {
+      tokenPlayerMap.clearPlayer(authToken);
+      console.log(`🗑🔴 User Deleted: ${socketId}`);
+    } else {
+      console.log(`🔗🟢 User connected from a new socket.`);
+    }
+  }, 5000);
+};
+
 io.on('connection', socket => {
   console.log(`👤🟢 User connected: ${socket.id}`);
+  tokenPlayerMap.viewMap();
 
   const token = socket.handshake.auth.token;
   const playerData = tokenPlayerMap.getPlayer(token);
@@ -51,9 +72,12 @@ io.on('connection', socket => {
     pubsub.publish(event, { playerId, data });
   });
 
-  // TODO: function needs to implement to clear player from map when player disconnects and after several retries.
   socket.on('disconnect', () => {
     console.log(`👤🔴 User disconnected: ${socket.id}`);
+    const authToken = tokenPlayerMap.getAuthTokenBySocketId(socket.id);
+    if (authToken) {
+      reconnect(authToken);
+    }
   });
 });
 
