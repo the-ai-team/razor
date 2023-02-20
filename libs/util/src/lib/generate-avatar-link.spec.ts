@@ -1,4 +1,7 @@
+import { TextEncoder } from 'util';
 import { generateAvatarLink } from './generate-avatar-link';
+
+global.TextEncoder = TextEncoder;
 
 describe('[Utils] generateAvatarLink', () => {
   it.each([
