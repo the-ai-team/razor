@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 const allowedOrigin =
-  process.env.NX_ALLOWED_ORIGINS.split(', ') || 'http://localhost:4200';
+  process.env.NX_ALLOWED_ORIGINS?.split(', ') || 'http://localhost:4200';
 
 const io = new Server(server, {
   cors: {
