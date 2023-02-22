@@ -19,8 +19,5 @@ COPY . ./
 # Build only server
 RUN npm run build:server
 
-# Expose port
-EXPOSE 8080
-
 # Run the web service on container startup.
 CMD [ "npm", "run", "serve" ]
