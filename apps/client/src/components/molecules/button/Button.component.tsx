@@ -6,7 +6,7 @@ import cs from 'classnames';
 export interface ButtonProps {
   onClick: () => void;
   isCarVisible?: boolean;
-  isDisable?: boolean;
+  isDisabled?: boolean;
   isButtonDanger?: boolean;
   children: string;
 }
@@ -14,12 +14,12 @@ export interface ButtonProps {
 export function Button({
   onClick,
   isCarVisible,
-  isDisable,
+  isDisabled,
   isButtonDanger,
   children,
 }: ButtonProps): ReactElement {
   isCarVisible ||= false;
-  isDisable ||= false;
+  isDisabled ||= false;
   isButtonDanger ||= false;
 
   return (
@@ -27,7 +27,7 @@ export function Button({
       type='button'
       onClick={onClick}
       className={
-        isDisable
+        isDisabled
           ? cs(
               'opacity-40',
               'cursor-not-allowed',
@@ -46,11 +46,11 @@ export function Button({
               'relative py-2 px-4 w-full min-w-min rounded',
             )
       }
-      disabled={isDisable}>
+      disabled={isDisabled}>
       {isCarVisible ? (
         <CarIcon
           className={
-            isDisable
+            isDisabled
               ? cs(
                   'invisible',
                   'absolute -top-1/4 w-full',
