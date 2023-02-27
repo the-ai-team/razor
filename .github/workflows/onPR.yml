@@ -40,6 +40,7 @@ jobs:
         name: Create chromatic comment
         uses: peter-evans/create-or-update-comment@v2
         with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ## Chromatic build output
@@ -48,6 +49,7 @@ jobs:
             | Build Results | ${{steps.chromatic.outputs.buildUrl}} |
             | Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |
             | Component Count | ${{steps.chromatic.outputs.componentCount}} |
+          edit-mode: replace
       - run: npm run build
       - run: npm run test
       - run: npm run make-badges:ci
