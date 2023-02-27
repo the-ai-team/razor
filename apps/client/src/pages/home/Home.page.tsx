@@ -22,7 +22,7 @@ export function Home(): ReactElement {
   return (
     <div>
       <h1>Home</h1>
-      {id && <p>(id: {id})</p>}
+      {id ? <p>(id: {id})</p> : null}
       {id ? (
         <button className='bg-blue-500' type='button' onClick={routeToRoom}>
           Join
