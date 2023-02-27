@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
       - uses: actions/checkout@v1
+      - run: npm install
       - uses: chromaui/action@v1
         id: chromatic
         with:
