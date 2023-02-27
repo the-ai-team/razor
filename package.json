@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "storybook": "nx run client:storybook",
+    "build-storybook": "nx run client:build-storybook",
     "build": "nx build client && nx build server",
     "test": "nx run-many --all --target=test && npm run coverage:merge && npm run coverage:summary",
     "coverage:codecov": "codecov",
@@ -81,6 +82,7 @@
     "autoprefixer": "10.4.13",
     "babel-jest": "28.1.1",
     "babel-loader": "8.1.0",
+    "chromatic": "^6.15.0",
     "codecov": "^3.8.3",
     "commitizen": "^4.2.5",
     "css-loader": "^6.4.0",

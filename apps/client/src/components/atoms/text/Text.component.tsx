@@ -6,7 +6,7 @@ import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
 
-interface TextProps {
+export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   // eslint-disable-next-line react/require-default-props
@@ -79,7 +79,9 @@ export function Text({
     }
   };
 
+  /** Related text size to the text variant */
   const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
+
   if (!textSizeValue) {
     return <span>{children}</span>;
   } else {
