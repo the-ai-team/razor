@@ -18,7 +18,8 @@
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
     "lint": "nx run-many --all --target=lint",
     "make-badges": "istanbul-badges-readme --coverageDir='./coverage'  --logo='jest'",
-    "make-badges:ci": "npm run make-badges -- --ci --exitCode=1"
+    "make-badges:ci": "npm run make-badges -- --ci --exitCode=1",
+    "prepare": "husky install"
   },
   "private": true,
   "engines": {

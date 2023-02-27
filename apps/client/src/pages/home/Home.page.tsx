@@ -1,5 +1,7 @@
 import { ReactElement } from 'react';
 import { useNavigate, useParams } from 'react-router';
+// Components
+import { Text } from '../../components/atoms/text/Text.component';
 
 export function Home(): ReactElement {
   const { id } = useParams();
@@ -21,14 +23,16 @@ export function Home(): ReactElement {
 
   return (
     <div>
-      <h1>Home</h1>
-      {id ? <p>(id: {id})</p> : null}
+      <Text type='Heading' size='Large'>
+        Home
+      </Text>
+      {id ? <p className='text-white'>(id: {id})</p> : null}
       {id ? (
-        <button className='bg-blue-500' type='button' onClick={routeToRoom}>
+        <button className='bg-white' type='button' onClick={routeToRoom}>
           Join
         </button>
       ) : (
-        <button className='bg-blue-500' type='button' onClick={routeToRoom}>
+        <button className='bg-white' type='button' onClick={routeToRoom}>
           Create
         </button>
       )}
