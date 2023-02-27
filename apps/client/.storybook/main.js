@@ -8,7 +8,15 @@ const config = {
     '../src/components/**/*.stories.mdx',
     '../src/components/**/*.stories.@(js|jsx|ts|tsx)',
   ],
-  addons: [...rootMain.addons, '@nrwl/react/plugins/storybook', 'storybook-addon-paddings'],
+  addons: [
+    ...rootMain.addons,
+    '@nrwl/react/plugins/storybook',
+    'storybook-addon-paddings',
+  ],
+  babel: async options => ({
+    ...options,
+    presets: ['@babel/preset-env'],
+  }),
   webpackFinal: async (config, { configType }) => {
     // apply any global webpack configs that might have been specified in .storybook/main.ts
     if (rootMain.webpackFinal) {

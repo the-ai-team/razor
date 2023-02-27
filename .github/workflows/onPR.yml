@@ -12,34 +12,18 @@ jobs:
         node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run build 
-      - run: npm run test
-      - run: npm run make-badges:ci
-      - run: npm run coverage:codecov
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          flags: coverage
-  test:
-    name: Chromatic
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - uses: chromaui/action@v1
+      - run: npm run build-storybook
+      - run: npx chromatic --project-token ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - run: npm run build
         id: chromatic
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish Summary
-        run: |
-          echo "${{steps.chromatic.outputs.buildUrl}}" >> $GITHUB_STEP_SUMMARY
       - name: Create chromatic comment
         uses: peter-evans/create-or-update-comment@v2
         with:
@@ -50,3 +34,10 @@ jobs:
             | Build Results | ${{steps.chromatic.outputs.buildUrl}} |
             | Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |
             | Component Count | ${{steps.chromatic.outputs.componentCount}} |
+      - run: npm run test
+      - run: npm run make-badges:ci
+      - run: npm run coverage:codecov
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          flags: coverage
