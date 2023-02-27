@@ -26,7 +26,7 @@ export function Home(): ReactElement {
       <Text type='Heading' size='Large'>
         Home
       </Text>
-      {id && <p className='text-white'>(id: {id})</p>}
+      {id ? <p className='text-white'>(id: {id})</p> : null}
       {id ? (
         <button className='bg-white' type='button' onClick={routeToRoom}>
           Join
