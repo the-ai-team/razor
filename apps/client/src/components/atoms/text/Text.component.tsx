@@ -10,6 +10,7 @@ export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   colorClass?: string;
+  className?: string;
   children: string;
 }
 
@@ -17,6 +18,7 @@ export function Text({
   type,
   size,
   colorClass,
+  className,
   children,
 }: TextProps): ReactElement {
   const textVariant: TextVariant = `${type}.${size}`;
@@ -80,6 +82,7 @@ export function Text({
 
   /** Related text size to the text variant */
   const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
+  const classNames = (colorClass || 'text-neutral-90') + ' ' + className;
 
   if (!textSizeValue) {
     return <span>{children}</span>;
@@ -89,9 +92,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-display font-sora ${
-              colorClass || 'text-text-light'
-            }`}>
+            className={`variant-display font-sora ${classNames}`}>
             {children}
           </div>
         );
@@ -99,9 +100,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-title font-sora ${
-              colorClass || 'text-text-light'
-            }`}>
+            className={`variant-title font-sora ${classNames}`}>
             {children}
           </div>
         );
@@ -109,9 +108,7 @@ export function Text({
         return (
           <div
             style={{ fontSize: textSizeValue }}
-            className={`variant-label font-major-mono-display ${
-              colorClass || 'text-text-light'
-            }`}>
+            className={`variant-label font-major-mono-display ${classNames}`}>
             {children}
           </div>
         );
@@ -120,9 +117,7 @@ export function Text({
           <Heading
             size={size}
             style={{ fontSize: textSizeValue }}
-            className={`variant-heading font-roboto-mono ${
-              colorClass || 'text-text-light'
-            }`}>
+            className={`variant-heading font-roboto-mono ${classNames}`}>
             {children}
           </Heading>
         );
@@ -131,9 +126,7 @@ export function Text({
           <Paragraph
             size={size}
             style={{ fontSize: textSizeValue }}
-            className={`variant-paragraph font-roboto-mono ${
-              colorClass || 'text-text-light'
-            }`}>
+            className={`variant-paragraph font-roboto-mono ${classNames}`}>
             {children}
           </Paragraph>
         );
