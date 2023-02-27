@@ -9,20 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [16.19.0]
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - name: Chromatic build and deploy
-        run: npx chromatic --project-token ${{ secrets.CHROMATIC_PROJECT_TOKEN }} --exit-zero-on-changes --auto-accept-changes --debug --no-interactive
+      - uses: actions/checkout@v1
+      - run: npm install
+      - uses: chromaui/action@v1
         id: chromatic
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Summary
+        run: |
+          echo "${{steps.chromatic.outputs.buildUrl}}" >> $GITHUB_STEP_SUMMARY
       - name: Create chromatic comment
         uses: peter-evans/create-or-update-comment@v2
         with:
