@@ -13,6 +13,10 @@ module.exports = {
       text: {
         light: '#F4DDDB',
       },
+      bg:{
+        brown: '#3B2D2C',
+        'brown-100': '#6B5A59',
+      },
       white: colors.white,
     },
   },

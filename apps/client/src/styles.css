@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Roboto+Mono:wght@400;500&family=Sora:wght@400;600&display=swap');
+
 @tailwind components;
 @tailwind base;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Roboto+Mono:wght@400;500&family=Sora:wght@400;600&display=swap');
 
 /* font-family: 'Major Mono Display', monospace;
 font-family: 'Roboto Mono', monospace;
@@ -10,4 +11,37 @@ font-family: 'Sora', sans-serif;   */
 
 body {
   font-family: 'Sora', sans-serif;
+}
+
+.scrollbar::-webkit-scrollbar {
+  display: block;
+  width: 10px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #f4dddb;
+  border-radius: 10px;
+  border-right: none;
+  border-left: none;
+}
+
+.scrollbar::-webkit-scrollbar-track-piece:end {
+  background: #201a1a;
+  border-radius: 10px;
+  margin-bottom: 100px;
+}
+
+.scrollbar::-webkit-scrollbar-track-piece:start {
+  background: #201a1a;
+  border-radius: 10px;
+  margin-top: 100px;
+}
+
+.scrollbar{
+  scrollbar-width: 50px;
+  scrollbar-color: #f4dddb #201a1a;
+  scrollbar-gutter: stable both-edges;
 }
