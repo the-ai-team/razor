@@ -15,7 +15,7 @@ export function Leaderboard(): ReactElement {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
