@@ -20,9 +20,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
       - name: Chromatic build and deploy
-        run: npx chromatic --project-token ${{ secrets.CHROMATIC_PROJECT_TOKEN }} --exit-zero-on-changes --auto-accept-changes
+        run: npx chromatic --project-token ${{ secrets.CHROMATIC_PROJECT_TOKEN }} --exit-zero-on-changes --auto-accept-changes --debug --no-interactive
         id: chromatic
       - name: Create chromatic comment
         uses: peter-evans/create-or-update-comment@v2
@@ -34,6 +33,7 @@ jobs:
             | Build Results | ${{steps.chromatic.outputs.buildUrl}} |
             | Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |
             | Component Count | ${{steps.chromatic.outputs.componentCount}} |
+      - run: npm run build
       - run: npm run test
       - run: npm run make-badges:ci
       - run: npm run coverage:codecov
