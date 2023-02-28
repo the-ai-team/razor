@@ -8,8 +8,9 @@ import {
   AppRaceId,
   AppTournamentId,
 } from '@razor/models';
-import { giveZeroPadding } from './give-zero-padding';
 import { random, range } from 'lodash';
+
+import { giveZeroPadding } from './give-zero-padding';
 
 const mockPlayerName = (n: number): string => {
   return `Player${n}`;

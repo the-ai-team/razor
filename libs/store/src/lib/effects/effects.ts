@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { AppMessageLog } from '@razor/models';
+
 import {
   ClearPlayerPayload,
   EndCountdownPayload,
@@ -10,6 +11,7 @@ import {
   StartCountdownPayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
+
 import { sendLogMessage } from './logger';
 import { clearPlayer, joinPlayer, sendTypeLog } from './player';
 import { endCoundown, endRace, startCountdown } from './race';

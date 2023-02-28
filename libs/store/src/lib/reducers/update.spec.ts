@@ -3,6 +3,7 @@ import {
   AppStateModel,
   AppTournamentState,
 } from '@razor/models';
+
 import { initializeStore } from '../store';
 
 const initialState: AppStateModel = {

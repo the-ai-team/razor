@@ -1,5 +1,7 @@
 import { Meta, Story } from '@storybook/react';
+
 import { Description } from '../../molecules';
+
 import { Panel, PanelProps } from './Panel.component';
 
 export default {

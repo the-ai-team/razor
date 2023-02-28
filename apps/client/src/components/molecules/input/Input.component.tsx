@@ -1,5 +1,5 @@
-import cs from 'classnames';
 import React, { ReactElement } from 'react';
+import cs from 'classnames';
 
 export enum InputState {
   Valid = 'valid',

@@ -8,6 +8,7 @@ import {
   AppTournamentState,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
+
 import {
   ClearPlayerPayload,
   JoinPlayerPayload,

@@ -1,7 +1,8 @@
-import cs from 'classnames';
 import { ReactElement } from 'react';
-import { Text } from '../../';
+import cs from 'classnames';
+
 import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
+import { Text } from '../../';
 
 export interface ButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;

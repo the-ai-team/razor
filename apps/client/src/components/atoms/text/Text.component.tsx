@@ -1,10 +1,12 @@
 import { ReactElement } from 'react';
-import cs from 'classnames';
 import Linkify from 'react-linkify';
-// Interfaces
-import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
+import cs from 'classnames';
+
 // Constants
 import { TextStyles } from '../../../constants';
+// Interfaces
+import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
+
 // Styles
 import './text.css';
 

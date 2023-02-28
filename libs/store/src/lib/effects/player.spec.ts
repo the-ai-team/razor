@@ -1,3 +1,16 @@
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import {
+  M_GENERAL_ID0,
+  M_PLAYER_AVATAR0,
+  M_PLAYER_ID0,
+  M_PLAYER_NAME0,
+  M_TOURNAMENT_ID0,
+  M_TOURNAMENT0,
+  M_TR0_RACE_ID0,
+  mockPlayersModel,
+  mockRace,
+  mockTournament,
+} from '@razor/mocks';
 import {
   AppIdNumberType,
   AppPlayerState,
@@ -5,19 +18,7 @@ import {
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import {
-  mockPlayersModel,
-  mockRace,
-  mockTournament,
-  M_GENERAL_ID0,
-  M_PLAYER_AVATAR0,
-  M_PLAYER_ID0,
-  M_PLAYER_NAME0,
-  M_TOURNAMENT0,
-  M_TOURNAMENT_ID0,
-  M_TR0_RACE_ID0,
-} from '@razor/mocks';
+
 import {
   invalidPlayerName,
   invalidPlayerNameLength,

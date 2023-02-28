@@ -1,16 +1,17 @@
 // ### [Reducers] Basic remove operations for store ### //
 
 import {
-  AppStateModel,
+  AppPlayerId,
   AppPlayerLogId,
   AppRaceId,
-  AppPlayerId,
+  AppStateModel,
 } from '@razor/models';
+import { omit } from 'lodash';
+
 import {
   RemovePlayerReducerPayload,
   RemoveTournamentReducerPayload,
 } from '../payloads';
-import { omit } from 'lodash';
 
 /** Reducer function for removing the player from the state model.
  * Player will be removed from players model.

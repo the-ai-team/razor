@@ -1,5 +1,7 @@
 import { AppStateModel } from '@razor/models';
+
 import { Dispatch, initializeStore } from '../store';
+
 import { raceNotFound } from './race';
 
 const initialState: AppStateModel = {

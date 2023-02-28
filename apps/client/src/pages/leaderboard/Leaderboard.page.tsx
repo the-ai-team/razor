@@ -1,5 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 // Components
 import { Text } from '../../components/atoms/text/Text.component';
 

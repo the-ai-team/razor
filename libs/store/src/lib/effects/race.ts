@@ -18,6 +18,7 @@ import {
   generateLeaderboard,
   giveZeroPadding,
 } from '@razor/util';
+
 import {
   EndCountdownPayload,
   EndRacePayload,

@@ -1,4 +1,4 @@
-import { AppPlayerId, AppPlayer } from './player';
+import { AppPlayer, AppPlayerId } from './player';
 import { AppTournamentId } from './tournament';
 
 /** Player profile */

@@ -1,11 +1,12 @@
 /* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
-  mockPlayerLogId,
   M_PLAYER_ID0,
   M_TOURNAMENT_ID0,
   M_TR0_RACE_ID0,
+  mockPlayerLogId,
 } from '@razor/mocks';
 import { AppTournamentId } from '@razor/models';
+
 import { extractId, ExtractIdType } from './extract-ids';
 
 describe('[Utils] extractIds', () => {

@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+
 import { Text } from '../../';
 
 export interface DescriptionProps {

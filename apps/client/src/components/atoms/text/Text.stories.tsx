@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+
 import { Text, TextProps } from './Text.component';
 
 export default {

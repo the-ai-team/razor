@@ -1,13 +1,15 @@
-import cs from 'classnames';
 import { ReactElement, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-// Assets
-import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
-import { ReactComponent as Logo } from '../../assets/images/logo.svg';
-import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
 // Components
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
-import { useTranslation } from 'react-i18next';
+import { generateAvatarLink } from '@razor/util';
+import cs from 'classnames';
+// Assets
+import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
+
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
 import {
   Button,
   ButtonWithInput,
@@ -15,7 +17,6 @@ import {
   Input,
   Panel,
 } from '../../components';
-import { generateAvatarLink } from '@razor/util';
 
 export function Home(): ReactElement {
   const { id } = useParams();
