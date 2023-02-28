@@ -57,7 +57,7 @@ export function ButtonWithInput({
             onChange={inputChangeHandler}
             placeholder={inputPlaceholder}
             props={{ size: inputSize, maxLength: maxInputLength }}
-            isDisable={isDisabled}
+            isDisabled={isDisabled}
             state={inputState}
           />
         </div>

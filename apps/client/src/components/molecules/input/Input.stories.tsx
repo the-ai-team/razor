@@ -30,5 +30,5 @@ Invalid.args = {
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  isDisable: true,
+  isDisabled: true,
 };
