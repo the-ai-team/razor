@@ -1,30 +1,29 @@
 import cs from 'classnames';
 import React, { ReactElement } from 'react';
 
+export enum InputState {
+  Valid = 'valid',
+  Invalid = 'invalid',
+  Neutral = 'neutral',
+}
+
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
-  isValid?: boolean;
-  isInvalid?: boolean;
+  state?: InputState;
   isDisable?: boolean;
 }
 
 export function Input({
   onChange,
   value,
-  placeholder,
+  placeholder = '',
   props,
-  isValid,
-  isInvalid,
-  isDisable,
+  state = InputState.Neutral,
+  isDisable = false,
 }: InputProps): ReactElement {
-  placeholder ||= '';
-  isValid ||= false;
-  isInvalid ||= false;
-  isDisable ||= false;
-
   return (
     <input
       className={
@@ -39,9 +38,12 @@ export function Input({
               'transition-all duration-300',
             )
           : cs(
-              { 'border-white text-white': isValid },
-              { 'border-error-60 text-error-60': isInvalid },
-              { 'text-neutral-90 border-neutral-40': !isValid && !isInvalid },
+              { 'border-white text-white': state === InputState.Valid },
+              { 'border-error-60 text-error-60': state === InputState.Invalid },
+              {
+                'text-neutral-90 border-neutral-40':
+                  state === InputState.Neutral,
+              },
               'border-b hover:border-b-2 focus:border-b-4',
               'focus:ring-0 outline-none',
               'w-full py-2 px-4 min-w-max',

@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Description, Text } from '../..';
-import { ReactComponent as ArrowHeadTop } from 'pixelarticons/svg/chevron-up.svg';
+import { ReactComponent as ArrowHeadTopIcon } from 'pixelarticons/svg/chevron-up.svg';
 import cs from 'classnames';
 
 export interface PanelProps {
@@ -20,8 +20,6 @@ export function Panel({ title, children }: PanelProps): ReactElement {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [isCollapse]);
-
-  //set min sizes to panel
 
   return (
     <div
@@ -59,7 +57,7 @@ export function Panel({ title, children }: PanelProps): ReactElement {
       </div>
       <div>
         <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-neutral-90'>
-          <ArrowHeadTop
+          <ArrowHeadTopIcon
             className={cs('w-10 h-10 transition-all duration-300', {
               'rotate-180': isCollapse,
             })}
