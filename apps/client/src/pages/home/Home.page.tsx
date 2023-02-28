@@ -119,17 +119,6 @@ export function Home(): ReactElement {
           </ButtonWithInput>
         )}
       </div>
-
-      {/* {id && <p className='text-white'>(id: {id})</p>}
-      {id ? (
-        <button className='bg-white' type='button' onClick={routeToRoom}>
-          Join
-        </button>
-      ) : (
-        <button className='bg-white' type='button' onClick={routeToRoom}>
-          Create
-        </button> */}
-      {/* )} */}
     </div>
   );
 }

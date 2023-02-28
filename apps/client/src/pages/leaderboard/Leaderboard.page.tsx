@@ -8,10 +8,14 @@ export function Leaderboard(): ReactElement {
 
   useEffect(() => {
     // after 2 seconds redirect to room
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       navigate('../room');
     }, 2000);
-  }, []);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [navigate]);
 
   return (
     <div>

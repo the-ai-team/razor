@@ -10,7 +10,7 @@ import './text.css';
 
 type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-interface TextProps {
+export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   colorClass?: string;
@@ -115,7 +115,7 @@ export function Text({
     ' ' +
     className +
     ' ' +
-    (isAnimatable && 'transition-all duration-300');
+    (isAnimatable ? 'transition-all duration-300' : '');
 
   if (!textSizeValue) {
     return <span>{children}</span>;
