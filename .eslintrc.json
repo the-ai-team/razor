@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["!**/*", ".storybook"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nrwl/nx", "sort-exports"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -25,6 +25,12 @@
         "curly": "error",
         "no-lonely-if": "error",
         "require-await": "error"
+      }
+    },
+    {
+      "files": ["index.ts"],
+      "rules": {
+        "sort-exports/sort-exports": "error"
       }
     },
     {
