@@ -1,22 +1,24 @@
 import { ReactElement, useState } from 'react';
-import { Button, Input } from '../../molecules';
+import { Button, Input, InputState } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
-  isDisable?: boolean;
+  isDisabled?: boolean;
   children: string;
   inputPlaceholder?: string;
   inputSize?: number;
   maxInputLength?: number;
+  inputState?: InputState;
 }
 
 export function ButtonWithInput({
   onClick,
-  isDisable,
+  isDisabled,
   children,
   inputPlaceholder,
   inputSize,
   maxInputLength,
+  inputState = InputState.Neutral,
 }: ButtonWithInputProps): ReactElement {
   inputSize ||= 12;
   maxInputLength ||= 12;
@@ -36,7 +38,7 @@ export function ButtonWithInput({
 
   return (
     <Button
-      isDisable={isDisable}
+      isDisabled={isDisabled}
       onClick={buttonClickHandler}
       input={
         <div>
@@ -44,7 +46,8 @@ export function ButtonWithInput({
             onChange={inputChangeHandler}
             placeholder={inputPlaceholder}
             props={{ size: inputSize, maxLength: maxInputLength }}
-            isDisable={isDisable}
+            isDisable={isDisabled}
+            state={inputState}
           />
         </div>
       }>
