@@ -28,8 +28,24 @@ export function Input({
     <span
       className={
         isDisable
-          ? cs('border-b border-neutral-40', 'opacity-40', 'cursor-not-allowed')
+          ? cs(
+              'opacity-40',
+              'cursor-not-allowed',
+              'relative inline-block',
+              'w-full min-w-max',
+              'before:block before:absolute before:inset-0',
+              'before:border-b before:border-neutral-40',
+            )
           : cs(
+              { 'before:border-white text-white': state === InputState.Valid },
+              {
+                'before:border-error-60 text-error-60':
+                  state === InputState.Invalid,
+              },
+              {
+                'before:border-neutral-40 text-neutral-90':
+                  state === InputState.Neutral,
+              },
               'relative inline-block',
               'w-full min-w-max',
               'before:block before:absolute before:inset-0',
@@ -45,19 +61,11 @@ export function Input({
                 'text-neutral-90 bg-[transparent]',
                 'placeholder-neutral-40 font-sora tracking-[.5px] text-[1.63rem] text-center',
                 'transition-all duration-300',
-                'w-full min-w-max py-4 px-4',
+                'w-full min-w-max py-3 px-4',
               )
             : cs(
-                { 'border-white text-white': state === InputState.Valid },
-                {
-                  'border-error-60 text-error-60': state === InputState.Invalid,
-                },
-                {
-                  'text-neutral-90 border-neutral-40':
-                    state === InputState.Neutral,
-                },
                 'focus:ring-0 outline-none',
-                'relative w-full min-w-max py-2 px-4',
+                'relative w-full min-w-max py-3 px-4',
                 'bg-[transparent] hover:bg-neutral-40/20 focus:bg-neutral-40/20 hover:rounded focus:rounded',
                 'placeholder-neutral-40 font-sora tracking-[.5px] text-[1.63rem] text-center',
                 'transition-all duration-300',
