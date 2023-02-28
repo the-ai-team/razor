@@ -10,7 +10,7 @@ export default {
   args: {
     children: 'Click Me',
     isCarVisible: false,
-    isDisable: false,
+    isDisabled: false,
     isButtonDanger: false,
     isFillWidth: true,
   },
@@ -29,7 +29,7 @@ Interactive.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
   children: "You Can't click Me",
-  isDisable: true,
+  isDisabled: true,
 };
 
 export const Danger = Template.bind({});
