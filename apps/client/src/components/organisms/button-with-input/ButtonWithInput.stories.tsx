@@ -1,4 +1,5 @@
 import { Meta, Story } from '@storybook/react';
+import { InputState } from '../../molecules';
 import {
   ButtonWithInputProps,
   ButtonWithInput,
@@ -11,11 +12,12 @@ export default {
     onClick: { action: 'clicked' },
   },
   args: {
-    isDisable: false,
+    isDisabled: false,
     children: 'ButtonWithInput',
     inputPlaceholder: 'Type Here',
     inputSize: 8,
     maxInputLength: 8,
+    inputState: InputState.Neutral,
   },
 } as Meta<ButtonWithInputProps>;
 
@@ -27,5 +29,5 @@ export const Default = Template.bind({});
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  isDisable: true,
+  isDisabled: true,
 };

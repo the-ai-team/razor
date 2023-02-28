@@ -1,5 +1,6 @@
 import { TextSize, TextType } from '../../../models';
-import { Text } from './Text.component';
+import { Meta, Story } from '@storybook/react';
+import { Text, TextProps } from './Text.component';
 
 export default {
   title: 'Atoms/Text',
@@ -9,9 +10,9 @@ export default {
     size: TextSize.Medium,
     type: TextType.Display,
   },
-};
+} as Meta<TextProps>;
 
-const Template = args => <Text {...args} />;
+const Template: Story<TextProps> = args => <Text {...args} />;
 
 export const DisplaySmall = Template.bind({});
 DisplaySmall.args = {
@@ -52,7 +53,7 @@ TitleLarge.args = {
 export const TitleXSmall = Template.bind({});
 TitleXSmall.args = {
   type: TextType.Title,
-  size: TextSize.ExtraSmall
+  size: TextSize.ExtraSmall,
 };
 
 export const Title2XSmall = Template.bind({});
@@ -64,25 +65,25 @@ Title2XSmall.args = {
 export const LabelSmall = Template.bind({});
 LabelSmall.args = {
   type: TextType.Label,
-  size: TextSize.Small
+  size: TextSize.Small,
 };
 
 export const LabelMedium = Template.bind({});
 LabelMedium.args = {
   type: TextType.Label,
-  size: TextSize.Medium
+  size: TextSize.Medium,
 };
 
 export const HeadingMedium = Template.bind({});
 HeadingMedium.args = {
   type: TextType.Heading,
-  size: TextSize.Medium
+  size: TextSize.Medium,
 };
 
 export const HeadingLarge = Template.bind({});
 HeadingLarge.args = {
   type: TextType.Heading,
-  size: TextSize.Large
+  size: TextSize.Large,
 };
 
 export const ParagraphSmall = Template.bind({});

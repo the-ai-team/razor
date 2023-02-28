@@ -7,7 +7,7 @@ import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
 export interface ButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isCarVisible?: boolean;
-  isDisable?: boolean;
+  isDisabled?: boolean;
   isButtonDanger?: boolean;
   children: string;
   input?: ReactElement;
@@ -18,7 +18,7 @@ export interface ButtonProps {
 export function Button({
   onClick,
   isCarVisible,
-  isDisable,
+  isDisabled,
   isButtonDanger,
   children,
   input,
@@ -26,7 +26,7 @@ export function Button({
   icon,
 }: ButtonProps): ReactElement {
   isCarVisible ||= false;
-  isDisable ||= false;
+  isDisabled ||= false;
   isButtonDanger ||= false;
   isFillWidth ||= false;
 
@@ -35,7 +35,7 @@ export function Button({
       type='button'
       onClick={onClick}
       className={
-        isDisable
+        isDisabled
           ? cs(
               'opacity-40',
               'cursor-not-allowed',
@@ -52,16 +52,15 @@ export function Button({
               },
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
               'border hover:ring-[4px] border-neutral-40 ring-neutral-40',
-              // 'm-[4px] hover:m-[1px]',
               'relative py-2 px-10 min-w-min rounded',
               { 'w-full': isFillWidth },
             )
       }
-      disabled={isDisable}>
+      disabled={isDisabled}>
       {isCarVisible ? (
         <CarIcon
           className={
-            isDisable
+            isDisabled
               ? cs(
                   'invisible',
                   'absolute -top-1/4 w-full',
