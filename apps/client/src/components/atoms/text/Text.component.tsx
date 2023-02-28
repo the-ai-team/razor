@@ -10,7 +10,7 @@ import './text.css';
 
 type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-interface TextProps {
+export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   colorClass?: string;
