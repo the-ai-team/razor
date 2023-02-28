@@ -1,6 +1,6 @@
 {
   "extends": ["plugin:@nrwl/nx/react", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", ".storybook"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
@@ -13,7 +13,6 @@
           }
         ],
         "react/prop-types": "error",
-        "react/require-default-props": "error",
         "react/no-array-index-key": "error"
       }
     }
