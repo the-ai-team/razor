@@ -2,12 +2,9 @@ import { ReactElement } from 'react';
 import Linkify from 'react-linkify';
 import cs from 'classnames';
 
-// Constants
 import { TextStyles } from '../../../constants';
-// Interfaces
 import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 
-// Styles
 import './text.css';
 
 type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

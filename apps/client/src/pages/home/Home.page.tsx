@@ -1,11 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-// Components
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
-// Assets
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
