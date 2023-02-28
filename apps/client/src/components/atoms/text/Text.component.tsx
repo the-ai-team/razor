@@ -115,7 +115,7 @@ export function Text({
     ' ' +
     className +
     ' ' +
-    (isAnimatable && 'transition-all duration-300');
+    (isAnimatable ? 'transition-all duration-300' : '');
 
   if (!textSizeValue) {
     return <span>{children}</span>;
