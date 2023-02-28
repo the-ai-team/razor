@@ -1,32 +1,33 @@
 import cs from 'classnames';
 import React, { ReactElement, useState } from 'react';
 
+enum InputState {
+  Valid = 'valid',
+  Invalid = 'invalid',
+  Neutral = 'neutral',
+}
+
 export interface InputProps {
   value?: string;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
-  isValid?: boolean;
-  isInvalid?: boolean;
+  state?: InputState;
 }
 
 export function Input({
   value,
-  placeholder,
+  placeholder = '',
   props,
-  isValid,
-  isInvalid,
+  state = InputState.Neutral,
 }: InputProps): ReactElement {
-  placeholder ||= '';
-  isValid ||= false;
-  isInvalid ||= false;
   const [inputValue, setInputValue] = useState<string>(value || '');
 
   return (
     <input
       className={cs(
-        { 'border-white text-white': isValid },
-        { 'border-error-60 text-error-60': isInvalid },
-        { 'text-neutral-90 border-neutral-40': !isValid && !isInvalid },
+        { 'border-white text-white': state === InputState.Valid },
+        { 'border-error-60 text-error-60': state === InputState.Invalid },
+        { 'text-neutral-90 border-neutral-40': state === InputState.Neutral },
         'border-b hover:border-b-2 focus:border-b-4',
         'focus:ring-0 outline-none',
         'w-full py-2 px-4 min-w-max',
