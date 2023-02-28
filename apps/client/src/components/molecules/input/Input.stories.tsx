@@ -1,4 +1,4 @@
-import { Input, InputProps } from './Input.component';
+import { Input, InputProps, InputState } from './Input.component';
 import { Story, Meta } from '@storybook/react';
 
 export default {
@@ -6,8 +6,6 @@ export default {
   component: Input,
   args: {
     placeholder: 'Your Handle',
-    isValid: false,
-    isInvalid: false,
     props: {
       size: 12,
     },
@@ -20,12 +18,12 @@ export const Default = Template.bind({});
 
 export const Valid = Template.bind({});
 Valid.args = {
-  isValid: true,
+  state: InputState.Valid,
   value: 'ThisIsValid',
 };
 
 export const Invalid = Template.bind({});
 Invalid.args = {
-  isInvalid: true,
+  state: InputState.Invalid,
   value: '$This1sInval!d',
 };

@@ -1,7 +1,7 @@
 import cs from 'classnames';
 import React, { ReactElement, useState } from 'react';
 
-enum InputState {
+export enum InputState {
   Valid = 'valid',
   Invalid = 'invalid',
   Neutral = 'neutral',
