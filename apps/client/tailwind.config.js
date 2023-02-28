@@ -20,10 +20,10 @@ module.exports = {
         40: '#B12A30',
         50: '#D34446',
       },
-      error:{
-        60: '#FF5449'
+      error: {
+        60: '#FF5449',
       },
-      bg:{
+      bg: {
         brown: '#3B2D2C',
         'brown-100': '#6B5A59',
       },

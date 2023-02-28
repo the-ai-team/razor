@@ -1,5 +1,5 @@
 import { ReactElement, useState } from 'react';
-import { Button, Input } from '../../molecules';
+import { Button, Input, InputState } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -8,7 +8,8 @@ export interface ButtonWithInputProps {
   icon?: ReactElement;
   inputSize?: number;
   maxInputLength?: number;
-  isDisable?: boolean;
+  isDisabled?: boolean;
+  inputState?: InputState;
 }
 
 /**
@@ -19,7 +20,7 @@ export interface ButtonWithInputProps {
  * @param [icon] - Icon to be displayed on the left side of the button (optional)
  * @param [inputSize=12] - Size of the input element (optional)
  * @param [maxInputLength=12] - Max length of the input element (optional)
- * @param [isDisable=false] - Disables the button (optional)
+ * @param [isDisabled=false] - Disables the button (optional)
  */
 export function ButtonWithInput({
   onClick,
@@ -28,7 +29,8 @@ export function ButtonWithInput({
   icon,
   inputSize = 12,
   maxInputLength = 12,
-  isDisable = false,
+  isDisabled = false,
+  inputState = InputState.Neutral,
 }: ButtonWithInputProps): ReactElement {
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -45,7 +47,7 @@ export function ButtonWithInput({
 
   return (
     <Button
-      isDisable={isDisable}
+      isDisabled={isDisabled}
       onClick={buttonClickHandler}
       icon={icon}
       input={
@@ -55,7 +57,8 @@ export function ButtonWithInput({
             onChange={inputChangeHandler}
             placeholder={inputPlaceholder}
             props={{ size: inputSize, maxLength: maxInputLength }}
-            isDisable={isDisable}
+            isDisable={isDisabled}
+            state={inputState}
           />
         </div>
       }>

@@ -27,7 +27,7 @@ export function TextContainer({
   );
 }
 
-interface TextProps {
+export interface TextProps {
   type: TextType;
   size: TextSize;
   colorClass?: string;

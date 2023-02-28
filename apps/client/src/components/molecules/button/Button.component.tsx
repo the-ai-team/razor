@@ -10,7 +10,7 @@ export interface ButtonProps {
   input?: ReactElement;
   icon?: ReactElement;
   isCarVisible?: boolean;
-  isDisable?: boolean;
+  isDisabled?: boolean;
   isButtonDanger?: boolean;
   isFullWidth?: boolean;
 }
@@ -21,7 +21,7 @@ export interface ButtonProps {
  * @param children - Text content
  * @param icon - Icon to be displayed on the left side of the button (optional)
  * @param input - Input element to be displayed on the left side of the button (optional); this property is used in ButtonWithInput component
- * @param [isDisable=false] - Disables the button (optional)
+ * @param [isDisabled=false] - Disables the button (optional)
  * @param [isCarVisible=false] - Displays the interactive car icon on the button (optional)
  * @param [isButtonDanger=false] - Changes the button color to red (optional)
  * @param [isFullWidth=false] - Enabling this will expand the button inside parent (optional)
@@ -31,7 +31,7 @@ export function Button({
   children,
   icon,
   input,
-  isDisable = false,
+  isDisabled = false,
   isCarVisible = false,
   isButtonDanger = false,
   isFullWidth = false,
@@ -41,7 +41,7 @@ export function Button({
       type='button'
       onClick={onClick}
       className={
-        isDisable
+        isDisabled
           ? cs(
               'opacity-40',
               'cursor-not-allowed',
@@ -62,11 +62,11 @@ export function Button({
               { 'w-full': isFullWidth },
             )
       }
-      disabled={isDisable}>
+      disabled={isDisabled}>
       {isCarVisible ? (
         <CarIcon
           className={
-            isDisable
+            isDisabled
               ? cs(
                   'invisible',
                   'absolute -top-1/4 w-full',
