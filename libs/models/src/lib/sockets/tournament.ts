@@ -3,19 +3,33 @@ import { Leaderboard } from './leaderboard';
 import { Player } from './player';
 import { Race } from './race';
 
-// ==== Primary Schemas ==== //
-export const timestampSchema = z
-  .number()
-  .int()
-  .nonnegative()
-  .refine(
-    value => value.toString().length === 13,
-    'Timestamp must be in milliseconds (13 digits).',
-  );
+// ==== Interfaces ==== //
+// Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
+export interface Tournament {
+  /** Unique tournament id (/lobby ID) */
+  id: string;
+  /** Tournament state */
+  state: TournamentState;
+  /** Races history and current race
+   *
+   * It can be empty if no races are started yet.
+   */
+  races: Race[];
+  /** Players in the tournament
+   *
+   * It can be empty if the lobby is empty.
+   */
+  players: Player[];
+  /** Leaderboards of the tournament
+   *
+   * It can be empty if the first race is not finished yet.
+   */
+  raceLeaderboards: Leaderboard[];
+}
 
-export const tournamentIdSchema = z.custom<`T:${string}`>(id =>
-  /^T:[a-zA-Z0-9]{8}$/.test(id as string),
-);
+// ==== Types ==== //
+/** Tournament id template literal */
+export type TournamentId = z.input<typeof tournamentIdSchema>;
 
 // ==== Enums ==== //
 export enum TournamentState {
@@ -53,30 +67,16 @@ export enum TournamentState {
   Empty = 'empty',
 }
 
-// ==== Types ==== //
-/** Tournament id template literal */
-export type TournamentId = z.input<typeof tournamentIdSchema>;
+// ==== Primary Schemas ==== //
+export const timestampSchema = z
+  .number()
+  .int()
+  .nonnegative()
+  .refine(
+    value => value.toString().length === 13,
+    'Timestamp must be in milliseconds (13 digits).',
+  );
 
-// ==== Interfaces ==== //
-// Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
-export interface Tournament {
-  /** Unique tournament id (/lobby ID) */
-  id: string;
-  /** Tournament state */
-  state: TournamentState;
-  /** Races history and current race
-   *
-   * It can be empty if no races are started yet.
-   */
-  races: Race[];
-  /** Players in the tournament
-   *
-   * It can be empty if the lobby is empty.
-   */
-  players: Player[];
-  /** Leaderboards of the tournament
-   *
-   * It can be empty if the first race is not finished yet.
-   */
-  raceLeaderboards: Leaderboard[];
-}
+export const tournamentIdSchema = z.custom<`T:${string}`>(id =>
+  /^T:[a-zA-Z0-9]{8}$/.test(id as string),
+);

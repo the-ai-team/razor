@@ -1,15 +1,22 @@
 import { PLAYER_NAME_RANGE } from '@razor/constants';
 import { z } from 'zod';
 
-// ==== Primary Schemas ==== //
-export const playerIdSchema = z.custom<`P:${string}`>(id =>
-  /^P:[a-zA-Z0-9]{8}$/.test(id as string),
-);
-export const playerNameSchema = z
-  .string()
-  .min(PLAYER_NAME_RANGE[0])
-  .max(PLAYER_NAME_RANGE[1])
-  .regex(/^[a-zA-Z0-9_]+$/);
+// ==== Interfaces ==== //
+// Note: `Player` does not need to be a schema; because it's only bound to the server-to-client communication.
+export interface Player {
+  /** Unique player id */
+  id: PlayerId;
+  /** Player name */
+  name: string;
+  /** Player avatar icon URL */
+  avatarLink: string;
+  /** Player state */
+  state: PlayerState;
+}
+
+// ==== Types ==== //
+/** Player id template literal */
+export type PlayerId = z.input<typeof playerIdSchema>;
 
 // ==== Enums ==== //
 export enum PlayerState {
@@ -31,19 +38,13 @@ export enum PlayerState {
   Racing = 'racing',
 }
 
-// ==== Types ==== //
-/** Player id template literal */
-export type PlayerId = z.input<typeof playerIdSchema>;
+// ==== Primary Schemas ==== //
+export const playerIdSchema = z.custom<`P:${string}`>(id =>
+  /^P:[a-zA-Z0-9]{8}$/.test(id as string),
+);
 
-// ==== Interfaces ==== //
-// Note: `Player` does not need to be a schema; because it's only bound to the server-to-client communication.
-export interface Player {
-  /** Unique player id */
-  id: PlayerId;
-  /** Player name */
-  name: string;
-  /** Player avatar icon URL */
-  avatarLink: string;
-  /** Player state */
-  state: PlayerState;
-}
+export const playerNameSchema = z
+  .string()
+  .min(PLAYER_NAME_RANGE[0])
+  .max(PLAYER_NAME_RANGE[1])
+  .regex(/^[a-zA-Z0-9_]+$/);
