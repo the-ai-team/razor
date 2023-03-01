@@ -42,6 +42,7 @@
     "socket.io-client": "^4.6.0",
     "tslib": "^2.3.0",
     "util": "^0.12.5",
+    "winston": "^3.8.2",
     "zod": "^3.20.2"
   },
   "devDependencies": {
