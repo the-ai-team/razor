@@ -1,12 +1,10 @@
 import { RaceId } from './race';
 
-// ==== Enums ==== //
-/** How is the player ended the race */
-export enum PlayerStatus {
-  /** Player finished the race by completing the text */
-  Complete = 'complete',
-  /** Player finished by timeout */
-  Timeout = 'timeout',
+export interface Leaderboard {
+  /** Race Id */
+  raceId: RaceId;
+  /** Leaderboard entires of players */
+  entries: LeaderboardEntry[];
 }
 
 // ==== Interfaces ==== //
@@ -44,9 +42,11 @@ export interface LeaderboardEntry {
   values: FinishedPlayerValues | TimeoutPlayerValues;
 }
 
-export interface Leaderboard {
-  /** Race Id */
-  raceId: RaceId;
-  /** Leaderboard entires of players */
-  entries: LeaderboardEntry[];
+// ==== Enums ==== //
+/** How is the player ended the race */
+export enum PlayerStatus {
+  /** Player finished the race by completing the text */
+  Complete = 'complete',
+  /** Player finished by timeout */
+  Timeout = 'timeout',
 }

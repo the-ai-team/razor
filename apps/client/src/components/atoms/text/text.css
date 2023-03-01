@@ -1,0 +1,35 @@
+.font-major-mono-display {
+  font-family: 'Major Mono Display', monospace;
+}
+
+.font-roboto-mono {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.font-sora {
+  font-family: 'Sora', sans-serif;
+}
+
+.variant-display {
+  letter-spacing: -0.25px;
+}
+
+.variant-title {
+  letter-spacing: 0.15px;
+}
+
+.variant-label {
+  letter-spacing: 0.5px;
+}
+
+.varint-heading {
+  letter-spacing: 0.15px;
+}
+
+.variant-paragraph {
+  letter-spacing: 0px;
+}
+
+.text-indent {
+  text-indent: 5em;
+}
