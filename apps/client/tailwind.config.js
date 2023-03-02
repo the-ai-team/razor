@@ -20,11 +20,20 @@ module.exports = {
         40: '#B12A30',
         50: '#D34446',
       },
-      bg:{
+      error: {
+        60: '#FF5449',
+      },
+      bg: {
         brown: '#3B2D2C',
         'brown-100': '#6B5A59',
       },
       white: colors.white,
+      surface: '#201A1A',
+    },
+    fontFamily: {
+      sora: ['"Sora"', 'sans-serif'],
+      roboto: ['"Roboto Mono"', 'monospace'],
+      major: ['"Major Mono Display"', 'monospace'],
     },
   },
   plugins: [],
