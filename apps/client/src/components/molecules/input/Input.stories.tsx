@@ -27,3 +27,8 @@ Invalid.args = {
   state: InputState.Invalid,
   value: '$This1sInval!d',
 };
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+  isDisable: true,
+};

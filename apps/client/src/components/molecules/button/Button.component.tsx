@@ -1,14 +1,16 @@
+import cs from 'classnames';
 import { ReactElement } from 'react';
 import { Text } from '../../';
 import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
-import cs from 'classnames';
 
 export interface ButtonProps {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isCarVisible?: boolean;
   isDisabled?: boolean;
   isButtonDanger?: boolean;
   children: string;
+  input?: ReactElement;
+  isFillWidth?: boolean;
 }
 
 export function Button({
@@ -17,10 +19,13 @@ export function Button({
   isDisabled,
   isButtonDanger,
   children,
+  input,
+  isFillWidth,
 }: ButtonProps): ReactElement {
   isCarVisible ||= false;
   isDisabled ||= false;
   isButtonDanger ||= false;
+  isFillWidth ||= false;
 
   return (
     <button
@@ -33,7 +38,8 @@ export function Button({
               'cursor-not-allowed',
               'bg-transparent',
               'border border-neutral-40',
-              'relative py-2 px-4 w-full min-w-min rounded',
+              { 'w-full': isFillWidth },
+              'relative py-2 px-10 min-w-min rounded',
             )
           : cs(
               'group',
@@ -43,7 +49,8 @@ export function Button({
               },
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
               'border hover:border-4 border-neutral-40',
-              'relative py-2 px-4 w-full min-w-min rounded',
+              'relative py-2 px-10 min-w-min rounded',
+              { 'w-full': isFillWidth },
             )
       }
       disabled={isDisabled}>
@@ -64,9 +71,12 @@ export function Button({
           }
         />
       ) : null}
-      <Text type='Label' size='Medium' className='truncate'>
-        {children}
-      </Text>
+      <div className='flex items-center flex-grow justify-center gap-10'>
+        {input ? input : null}
+        <Text type='Label' size='Medium' className='truncate'>
+          {children}
+        </Text>
+      </div>
     </button>
   );
 }
