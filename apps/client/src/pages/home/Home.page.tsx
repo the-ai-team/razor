@@ -59,16 +59,23 @@ export function Home(): ReactElement {
         </Button>
       </div>
       <Panel title={t('panel.title')}>
-        {panelImages.map((image, index) => {
-          return (
-            <Description
-              key={image}
-              title={t(`panel.descriptions.${index}.title`)}
-              image={image}>
-              {t(`panel.descriptions.${index}.content`)}
-            </Description>
-          );
-        })}
+        <Description
+          title={t(`panel.descriptions.0.title`)}
+          image={panelImages[0]}>
+          {t(`panel.descriptions.0.content`)}
+        </Description>
+        <Description
+          title={t(`panel.descriptions.1.title`)}
+          image={panelImages[1]}>
+          {t(`panel.descriptions.1.content`)}
+        </Description>
+        <Description
+          title={t(`panel.descriptions.2.title`)}
+          image={panelImages[2]}>
+          {t(`panel.descriptions.2.content`, {
+            link: `https://github.com/the-ai-team/razor`,
+          })}
+        </Description>
       </Panel>
 
       <div className='absolute bottom-4 left-4'>
