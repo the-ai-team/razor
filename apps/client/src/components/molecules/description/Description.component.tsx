@@ -1,11 +1,12 @@
 import { ReactElement } from 'react';
+import { Trans } from 'react-i18next';
 import { Text } from '../../';
 import { TextSize, TextType } from '../../../models';
 
 export interface DescriptionProps {
   title: string;
   image?: string;
-  children: string;
+  children: string | ReactElement<typeof Trans>;
 }
 
 /**

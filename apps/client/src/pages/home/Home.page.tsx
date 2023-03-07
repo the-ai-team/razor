@@ -6,12 +6,13 @@ import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.
 import logo from '../../assets/images/logo.png';
 // Components
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonWithInput,
   Description,
   Input,
+  Link,
   Panel,
 } from '../../components';
 
@@ -52,23 +53,35 @@ export function Home(): ReactElement {
         <Input
           value={userName}
           onChange={(e): void => setUserName(e.target.value)}
-          placeholder='Your Handle'
+          placeholder={t('inputs.handle') as string}
         />
         <Button onClick={routeToRoom} isFullWidth={true} isCarVisible={true}>
-          {id ? 'Join' : 'Create'}
+          {id ? t('actions.join') : t('actions.create')}
         </Button>
       </div>
       <Panel title={t('panel.title')}>
-        {panelImages.map((image, index) => {
-          return (
-            <Description
-              key={image}
-              title={t(`panel.descriptions.${index}.title`)}
-              image={image}>
-              {t(`panel.descriptions.${index}.content`)}
-            </Description>
-          );
-        })}
+        <Description
+          title={t('panel.descriptions.0.title')}
+          image={panelImages[0]}>
+          {t('panel.descriptions.0.content') as string}
+        </Description>
+        <Description
+          title={t('panel.descriptions.1.title')}
+          image={panelImages[1]}>
+          {t('panel.descriptions.1.content') as string}
+        </Description>
+        <Description
+          title={t('panel.descriptions.2.title')}
+          image={panelImages[2]}>
+          <Trans
+            i18nKey='panel.descriptions.2.content'
+            components={{
+              RepoLink: (
+                <Link url='https://github.com/the-ai-team/razor'>Github</Link>
+              ),
+            }}
+          />
+        </Description>
       </Panel>
 
       <div className='absolute bottom-4 left-4'>
@@ -76,7 +89,7 @@ export function Home(): ReactElement {
           <Button
             onClick={(): void => navigate('../')}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
-            Create a Room
+            {t('actions.create_room')}
           </Button>
         ) : (
           <ButtonWithInput
@@ -85,7 +98,7 @@ export function Home(): ReactElement {
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
-            Join a Room
+            {t('actions.join_room')}
           </ButtonWithInput>
         )}
       </div>
