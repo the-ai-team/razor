@@ -1,16 +1,14 @@
 import React, { ReactElement } from 'react';
-import Linkify from 'react-linkify';
 import cs from 'classnames';
-// Interfaces
 import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
-// Constants
 import { TextStyles } from '../../../constants';
+import { Trans } from 'react-i18next';
 
 interface TextContainerProps {
   style: React.CSSProperties;
   className: string;
   tag: TextTag;
-  children: ReactElement;
+  children: string | ReactElement<typeof Trans>;
 }
 
 export function TextContainer({
@@ -34,14 +32,15 @@ export interface TextProps {
   className?: string;
   isAnimatable?: boolean;
   as?: TextTag;
-  children: string;
+  // children can be either string or i18next TransComponent
+  children: string | ReactElement<typeof Trans>;
 }
 
 /**
  *
  * @param type Text type - Display, Title, Paragraph, etc.
  * @param size Text size - Small, Medium, Large, etc.
- * @param children - Text content
+ * @param children - Inner content (Text or text with links)
  * @param [colorClass=text-neutral-90] Text color text-neutral-90, text-white, etc. (optional)
  * @param [className] - Additional class names (optional)
  * @param [isAnimatable] - Whether the text should be animatable (optional)
@@ -77,25 +76,7 @@ export function Text({
       fontSize: textData.size,
     },
     className: textClasses,
-    children: (
-      <Linkify
-        componentDecorator={(
-          decoratedHref,
-          decoratedText,
-          key,
-        ): ReactElement => (
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            href={decoratedHref}
-            key={key}
-            className='text-neutral-40 underline hover:no-underline'>
-            {decoratedText}
-          </a>
-        )}>
-        {children}
-      </Linkify>
-    ),
+    children,
   };
 
   if (isAnimatable) {
@@ -104,4 +85,22 @@ export function Text({
   }
 
   return <TextContainer {...textContainerProps} tag={textTag} />;
+}
+
+export interface LinkProps {
+  url: string;
+  children: string;
+}
+
+// Link component (This is a child of Text component)
+export function Link({ url, children }: LinkProps): ReactElement {
+  return (
+    <a
+      target='_blank'
+      rel='noopener noreferrer'
+      href={url}
+      className='text-neutral-40 underline hover:no-underline'>
+      {children}
+    </a>
+  );
 }

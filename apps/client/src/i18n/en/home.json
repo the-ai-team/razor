@@ -13,8 +13,17 @@
       },
       {
         "title": "Open Source",
-        "content": "Razor is an open-source project, which means that anyone can contribute to the project. You can find the source code on GitHub(https://github.com)."
+        "content": "Razor is an open-source project, which means that anyone can contribute to the project. You can find the source code on <RepoLink>GitHub</RepoLink>."
       }
     ]
+  },
+  "actions": {
+    "join": "Join",
+    "create": "Create",
+    "join_room": "Join a room",
+    "create_room": "Create a room"
+  },
+  "inputs": {
+    "handle": "Your Handle"
   }
 }
