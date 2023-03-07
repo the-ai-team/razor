@@ -52,28 +52,28 @@ export function Home(): ReactElement {
         <Input
           value={userName}
           onChange={(e): void => setUserName(e.target.value)}
-          placeholder='Your Handle'
+          placeholder={t('inputs.handle') as string}
         />
         <Button onClick={routeToRoom} isFillWidth={true} isCarVisible={true}>
-          {id ? 'Join' : 'Create'}
+          {id ? t('actions.join') : t('actions.create')}
         </Button>
       </div>
       <Panel title={t('panel.title')}>
         <Description
-          title={t(`panel.descriptions.0.title`)}
+          title={t('panel.descriptions.0.title')}
           image={panelImages[0]}>
-          {t(`panel.descriptions.0.content`)}
+          {t('panel.descriptions.0.content')}
         </Description>
         <Description
-          title={t(`panel.descriptions.1.title`)}
+          title={t('panel.descriptions.1.title')}
           image={panelImages[1]}>
-          {t(`panel.descriptions.1.content`)}
+          {t('panel.descriptions.1.content')}
         </Description>
         <Description
-          title={t(`panel.descriptions.2.title`)}
+          title={t('panel.descriptions.2.title')}
           image={panelImages[2]}>
-          {t(`panel.descriptions.2.content`, {
-            link: `https://github.com/the-ai-team/razor`,
+          {t('panel.descriptions.2.content', {
+            link: 'https://github.com/the-ai-team/razor',
           })}
         </Description>
       </Panel>
@@ -83,7 +83,7 @@ export function Home(): ReactElement {
           <Button
             onClick={(): void => navigate('../')}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
-            Create a Room
+            {t('actions.create_room')}
           </Button>
         ) : (
           <ButtonWithInput
@@ -92,7 +92,7 @@ export function Home(): ReactElement {
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
-            Join a Room
+            {t('actions.join_room')}
           </ButtonWithInput>
         )}
       </div>
