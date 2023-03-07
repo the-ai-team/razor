@@ -6,12 +6,13 @@ import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.
 import logo from '../../assets/images/logo.png';
 // Components
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonWithInput,
   Description,
   Input,
+  Link,
   Panel,
 } from '../../components';
 
@@ -62,19 +63,24 @@ export function Home(): ReactElement {
         <Description
           title={t('panel.descriptions.0.title')}
           image={panelImages[0]}>
-          {t('panel.descriptions.0.content')}
+          {t('panel.descriptions.0.content') as string}
         </Description>
         <Description
           title={t('panel.descriptions.1.title')}
           image={panelImages[1]}>
-          {t('panel.descriptions.1.content')}
+          {t('panel.descriptions.1.content') as string}
         </Description>
         <Description
           title={t('panel.descriptions.2.title')}
           image={panelImages[2]}>
-          {t('panel.descriptions.2.content', {
-            link: 'https://github.com/the-ai-team/razor',
-          })}
+          <Trans
+            i18nKey='panel.descriptions.2.content'
+            components={{
+              RepoLink: (
+                <Link url='https://github.com/the-ai-team/razor'>Github</Link>
+              ),
+            }}
+          />
         </Description>
       </Panel>
 

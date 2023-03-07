@@ -1,12 +1,15 @@
 import { ReactElement } from 'react';
 import cs from 'classnames';
-import Linkify from 'react-linkify';
 // Interfaces
 import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 // Constants
 import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
+import { Trans } from 'react-i18next';
+
+// Link
+import React from 'react';
 
 type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -17,7 +20,8 @@ export interface TextProps {
   className?: string;
   isAnimatable?: boolean;
   asHeading?: allowedTags;
-  children: string;
+  // children can be either string or i18next TransComponent
+  children: string | ReactElement<typeof Trans>;
 }
 
 export function Text({
@@ -35,7 +39,8 @@ export function Text({
     size: TextSizeTag;
     style: React.CSSProperties;
     className: string;
-    children: string;
+    // children can be either string or i18next TransComponent
+    children: string | ReactElement<typeof Trans>;
   }
 
   // === Heading ===
@@ -44,7 +49,7 @@ export function Text({
     style,
     className,
     children,
-  }: SubTextProps): React.ReactElement => {
+  }: SubTextProps): ReactElement => {
     if (size === 'Large') {
       return (
         <h1 style={style} className={className + ' font-medium'}>
@@ -72,37 +77,17 @@ export function Text({
     style,
     className,
     children,
-  }: SubTextProps): React.ReactElement => {
-    const content = (
-      <Linkify
-        componentDecorator={(
-          decoratedHref,
-          decoratedText,
-          key,
-        ): ReactElement => (
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            href={decoratedHref}
-            key={key}
-            className='text-neutral-40 underline hover:no-underline'>
-            {decoratedText}
-          </a>
-        )}>
-        {children}
-      </Linkify>
-    );
-
+  }: SubTextProps): ReactElement => {
     if (size === 'Medium') {
       return (
         <p style={style} className={`${className} font-medium text-indent`}>
-          {content}
+          {children}
         </p>
       );
     } else {
       return (
         <p style={style} className={className}>
-          {content}
+          {children}
         </p>
       );
     }
@@ -179,4 +164,22 @@ export function Text({
         throw new Error('Unexpected object: ' + type);
     }
   }
+}
+
+export interface LinkProps {
+  url: string;
+  children: string;
+}
+
+// Link component (This is a child of Text component)
+export function Link({ url, children }: LinkProps): ReactElement {
+  return (
+    <a
+      target='_blank'
+      rel='noopener noreferrer'
+      href={url}
+      className='text-neutral-40 underline hover:no-underline'>
+      {children}
+    </a>
+  );
 }
