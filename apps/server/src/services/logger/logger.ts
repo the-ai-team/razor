@@ -11,7 +11,7 @@ import { cloudLogger } from './cloud-logger';
 
 export enum LogLevels {
   Error = 'ERROR',
-  Warn = 'WARN',
+  Warn = 'WARNING',
   Info = 'INFO',
   Debug = 'DEBUG',
 }
@@ -23,7 +23,6 @@ export const logLevels = {
   [LogLevels.Debug]: 3,
 };
 
-console.log(process.env.NODE_ENV);
 let wlogger = null;
 if (process.env.NODE_ENV === 'development') {
   wlogger = localLogger();
@@ -68,18 +67,18 @@ export class Logger {
   }
 
   public error(message: string, context: ContextOutput): void {
-    wlogger.error(message, context);
+    wlogger.log(LogLevels.Error, message, context);
   }
 
   public warn(message: string, context: ContextOutput): void {
-    wlogger.warn(message, context);
+    wlogger.log(LogLevels.Warn, message, context);
   }
 
   public info(message: string, context: ContextOutput): void {
-    wlogger.info(message, context);
+    wlogger.log(LogLevels.Info, message, context);
   }
 
   public debug(message: string, context: ContextOutput): void {
-    wlogger.debug(message, context);
+    wlogger.log(LogLevels.Debug, message, context);
   }
 }

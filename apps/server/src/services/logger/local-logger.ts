@@ -1,5 +1,5 @@
 import { createLogger, format, Logger, transports, addColors } from 'winston';
-import { logLevels } from './logger';
+import { LogLevels, logLevels } from './logger';
 
 const { printf, timestamp, combine, colorize, errors, label } = format;
 
@@ -13,14 +13,14 @@ export const localLogger = (): Logger => {
   );
 
   addColors({
-    error: 'bold red',
-    warn: 'bold yellow',
-    info: 'blue',
-    debug: 'dim white',
+    [LogLevels.Error]: 'bold red',
+    [LogLevels.Warn]: 'bold yellow',
+    [LogLevels.Info]: 'blue',
+    [LogLevels.Debug]: 'dim white',
   });
 
   return createLogger({
-    level: 'debug',
+    level: LogLevels.Debug,
     levels: logLevels,
     format: combine(
       colorize({ all: true }),
