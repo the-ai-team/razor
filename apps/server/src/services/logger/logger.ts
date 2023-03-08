@@ -9,23 +9,8 @@ import { tokenPlayerMap } from '../../stores';
 import { localLogger } from './local-logger';
 import { cloudLogger } from './cloud-logger';
 
-export enum LogLevels {
-  Error = 'error',
-  Warn = 'warn',
-  Info = 'info',
-  Debug = 'debug',
-}
-
-export const logLevels = {
-  [LogLevels.Error]: 0,
-  [LogLevels.Warn]: 1,
-  [LogLevels.Info]: 2,
-  [LogLevels.Debug]: 3,
-};
-
-console.log(process.env.NODE_ENV);
 let wlogger = null;
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'ss') {
   wlogger = localLogger();
 } else {
   wlogger = cloudLogger();

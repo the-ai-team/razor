@@ -28,7 +28,7 @@ const io = new Server(server, {
   },
 });
 
-const logger = new Logger('server-main');
+const logger = new Logger('main');
 
 const reconnect = (authToken: AuthToken): void => {
   setTimeout(() => {

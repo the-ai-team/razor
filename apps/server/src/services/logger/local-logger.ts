@@ -1,17 +1,17 @@
 import { createLogger, format, Logger, transports, addColors } from 'winston';
-import { logLevels } from './logger';
+import { logLevels } from './levels';
 
 const { printf, timestamp, combine, colorize, errors, label } = format;
 
-export const localLogger = (): Logger => {
-  const logFormat = printf(
-    ({ subject, label, level, message, timestamp, ...args }) => {
-      return `${label} (${subject}) ${level}: ${timestamp} - ${message} - ${JSON.stringify(
-        args,
-      )}`;
-    },
-  );
+const logFormat = printf(
+  ({ subject, label, level, message, timestamp, ...args }) => {
+    return `${label} (${subject}) ${level}: ${timestamp} - ${message} - ${JSON.stringify(
+      args,
+    )}`;
+  },
+);
 
+export const localLogger = (): Logger => {
   addColors({
     error: 'bold red',
     warn: 'bold yellow',
