@@ -10,10 +10,10 @@ import { localLogger } from './local-logger';
 import { cloudLogger } from './cloud-logger';
 
 export enum LogLevels {
-  Error = 'error',
-  Warn = 'warn',
-  Info = 'info',
-  Debug = 'debug',
+  Error = 'ERROR',
+  Warn = 'WARN',
+  Info = 'INFO',
+  Debug = 'DEBUG',
 }
 
 export const logLevels = {
