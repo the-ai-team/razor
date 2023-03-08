@@ -7,7 +7,7 @@ import {
 } from '@razor/models';
 import { tokenPlayerMap } from '../../stores';
 import { localLogger } from './local-logger';
-import { cloudLogger } from './prod-logger';
+import { cloudLogger } from './cloud-logger';
 
 export enum LogLevels {
   Error = 'error',
@@ -23,6 +23,7 @@ export const logLevels = {
   [LogLevels.Debug]: 3,
 };
 
+console.log(process.env.NODE_ENV);
 let wlogger = null;
 if (process.env.NODE_ENV === 'development') {
   wlogger = localLogger();
