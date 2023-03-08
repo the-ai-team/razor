@@ -71,3 +71,5 @@ export class TokenPlayerMap {
     this.map.delete(authToken);
   }
 }
+
+export const tokenPlayerMap = new TokenPlayerMap();
