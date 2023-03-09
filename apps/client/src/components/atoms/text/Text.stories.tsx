@@ -1,3 +1,4 @@
+import { TextSize, TextType } from '../../../models';
 import { Meta, Story } from '@storybook/react';
 import { Text, TextProps } from './Text.component';
 
@@ -6,8 +7,8 @@ export default {
   component: Text,
   args: {
     children: 'Hello Razor!',
-    size: 'Medium',
-    type: 'Display',
+    size: TextSize.Medium,
+    type: TextType.Display,
   },
 } as Meta<TextProps>;
 
@@ -15,88 +16,88 @@ const Template: Story<TextProps> = args => <Text {...args} />;
 
 export const DisplaySmall = Template.bind({});
 DisplaySmall.args = {
-  type: 'Display',
-  size: 'Small',
+  type: TextType.Display,
+  size: TextSize.Small,
 };
 
 export const DisplayMedium = Template.bind({});
 DisplayMedium.args = {
-  type: 'Display',
-  size: 'Medium',
+  type: TextType.Display,
+  size: TextSize.Medium,
 };
 
 export const DisplayLarge = Template.bind({});
 DisplayLarge.args = {
-  type: 'Display',
-  size: 'Large',
+  type: TextType.Display,
+  size: TextSize.Large,
 };
 
 export const TitleSmall = Template.bind({});
 TitleSmall.args = {
-  type: 'Title',
-  size: 'Small',
+  type: TextType.Title,
+  size: TextSize.Small,
 };
 
 export const TitleMedium = Template.bind({});
 TitleMedium.args = {
-  type: 'Title',
-  size: 'Medium',
+  type: TextType.Title,
+  size: TextSize.Medium,
 };
 
 export const TitleLarge = Template.bind({});
 TitleLarge.args = {
-  type: 'Title',
-  size: 'Large',
+  type: TextType.Title,
+  size: TextSize.Large,
 };
 
 export const TitleXSmall = Template.bind({});
 TitleXSmall.args = {
-  type: 'Title',
-  size: 'XSmall',
+  type: TextType.Title,
+  size: TextSize.ExtraSmall,
 };
 
 export const Title2XSmall = Template.bind({});
 Title2XSmall.args = {
-  type: 'Title',
-  size: '2XSmall',
+  type: TextType.Title,
+  size: TextSize.DoubleExtraSmall,
 };
 
 export const LabelSmall = Template.bind({});
 LabelSmall.args = {
-  type: 'Label',
-  size: 'Small',
+  type: TextType.Label,
+  size: TextSize.Small,
 };
 
 export const LabelMedium = Template.bind({});
 LabelMedium.args = {
-  type: 'Label',
-  size: 'Medium',
+  type: TextType.Label,
+  size: TextSize.Medium,
 };
 
 export const HeadingMedium = Template.bind({});
 HeadingMedium.args = {
-  type: 'Heading',
-  size: 'Medium',
+  type: TextType.Heading,
+  size: TextSize.Medium,
 };
 
 export const HeadingLarge = Template.bind({});
 HeadingLarge.args = {
-  type: 'Heading',
-  size: 'Large',
+  type: TextType.Heading,
+  size: TextSize.Large,
 };
 
 export const ParagraphSmall = Template.bind({});
 ParagraphSmall.args = {
-  type: 'Paragraph',
-  size: 'Small',
+  type: TextType.Paragraph,
+  size: TextSize.Small,
   children:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel aliquam aliquam, nunc nisl aliquam nisl, vel aliquam nisl nisl vel nisl. Sed euismod, nisl vel aliquam aliquam, nunc nisl aliquam nisl, vel aliquam nisl nisl vel nisl.',
 };
 
 export const ParagraphMedium = Template.bind({});
 ParagraphMedium.args = {
-  type: 'Paragraph',
-  size: 'Medium',
+  type: TextType.Paragraph,
+  size: TextSize.Medium,
   children:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nisl vel aliquam aliquam, nunc nisl aliquam nisl, vel aliquam nisl nisl vel nisl. Sed euismod, nisl vel aliquam aliquam, nunc nisl aliquam nisl, vel aliquam nisl nisl vel nisl.',
 };

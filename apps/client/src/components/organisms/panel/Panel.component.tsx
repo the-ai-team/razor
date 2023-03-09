@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Description, Text } from '../..';
 import { ReactComponent as ArrowHeadTopIcon } from 'pixelarticons/svg/chevron-up.svg';
 import cs from 'classnames';
+import { TextSize, TextTag, TextType } from '../../../models';
 
 export interface PanelProps {
   title: string;
@@ -47,9 +48,10 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         )}
         id='scrollPanel'>
         <Text
-          type='Heading'
+          type={TextType.Heading}
           isAnimatable={true}
-          size={isCollapse ? 'Medium' : 'Large'}>
+          as={TextTag.HeadingMedium}
+          size={isCollapse ? TextSize.Medium : TextSize.Large}>
           {title}
         </Text>
         <div
@@ -69,11 +71,11 @@ export function Panel({ title, children }: PanelProps): ReactElement {
             })}
           />
           {isCollapse ? (
-            <Text type='Title' size='Small'>
+            <Text type={TextType.Title} size={TextSize.Small}>
               Show Panel
             </Text>
           ) : (
-            <Text type='Title' size='Small'>
+            <Text type={TextType.Title} size={TextSize.Small}>
               Hide Panel
             </Text>
           )}

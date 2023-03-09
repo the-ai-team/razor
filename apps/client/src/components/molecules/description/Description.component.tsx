@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { Trans } from 'react-i18next';
 import { Text } from '../../';
+import { TextSize, TextType } from '../../../models';
 
 export interface DescriptionProps {
   title: string;
@@ -15,7 +16,7 @@ export function Description({
 }: DescriptionProps): ReactElement {
   return (
     <div className='w-full'>
-      <Text type='Title' size='Medium'>
+      <Text type={TextType.Title} size={TextSize.Medium}>
         {title}
       </Text>
       {image ? (
@@ -23,7 +24,7 @@ export function Description({
       ) : (
         <div className='bg-neutral-90 my-4 h-60 rounded-md w-full' />
       )}
-      <Text type='Paragraph' size='Small'>
+      <Text type={TextType.Paragraph} size={TextSize.Small}>
         {children}
       </Text>
     </div>

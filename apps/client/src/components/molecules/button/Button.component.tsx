@@ -1,3 +1,4 @@
+import { TextSize, TextType } from '../../../models';
 import cs from 'classnames';
 import { ReactElement } from 'react';
 import { Text } from '../../';
@@ -75,7 +76,7 @@ export function Button({
       ) : null}
       <div className='flex items-center flex-grow justify-center gap-10'>
         {input ? input : null}
-        <Text type='Label' size='Medium' className='truncate'>
+        <Text type={TextType.Label} size={TextSize.Medium} className='truncate'>
           {children}
         </Text>
         {icon ? icon : null}
