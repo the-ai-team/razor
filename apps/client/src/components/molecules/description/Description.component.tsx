@@ -9,6 +9,12 @@ export interface DescriptionProps {
   children: string | ReactElement<typeof Trans>;
 }
 
+/**
+ *
+ * @param title - Title of the description
+ * @param children - Text content
+ * @param [image] - Image to display (optional)
+ */
 export function Description({
   title,
   image,

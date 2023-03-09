@@ -9,25 +9,35 @@ export enum InputState {
 
 export interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
+  value: string;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   state?: InputState;
-  isDisable?: boolean;
+  isDisabled?: boolean;
 }
 
+/**
+ *
+ * @param onChange - Input change handler; (e: React.ChangeEvent<HTMLInputElement>) => void;
+ * @param value - Input value
+ * @param [placeholder] - Input placeholder (optional)
+ * @param [props] - Additional props to pass to input element (optional)
+ * @param [isValid] - Whether input text is valid (optional)
+ * @param [isInvalid] - Whether input text is invalid (optional)
+ * @param [isDisabled] - Whether input is disabled (optional)
+ */
 export function Input({
   onChange,
   value,
   placeholder = '',
   props,
   state = InputState.Neutral,
-  isDisable = false,
+  isDisabled = false,
 }: InputProps): ReactElement {
   return (
     <span
       className={
-        isDisable
+        isDisabled
           ? cs(
               'opacity-40',
               'cursor-not-allowed',
@@ -56,7 +66,7 @@ export function Input({
       }>
       <input
         className={
-          isDisable
+          isDisabled
             ? cs(
                 'text-neutral-90 bg-[transparent]',
                 'placeholder-neutral-40 font-sora tracking-[.5px] text-[1.63rem] text-center',
@@ -75,7 +85,7 @@ export function Input({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        disabled={isDisable}
+        disabled={isDisabled}
         {...props}
       />
     </span>
