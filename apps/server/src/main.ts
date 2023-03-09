@@ -5,9 +5,9 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 import { PubSubEvents } from './models';
-import { TokenPlayerMap } from './stores';
-import { pubsub } from './services/pubsub';
 import { Logger } from './services';
+import { pubsub } from './services/pubsub';
+import { tokenPlayerMap } from './stores';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 const allowedOrigin =
-  process.env.NX_ALLOWED_ORIGINS.split(', ') || 'http://localhost:4200';
+  process.env.NX_ALLOWED_ORIGINS?.split(', ') || 'http://localhost:4200';
 
 const io = new Server(server, {
   cors: {
@@ -28,8 +28,7 @@ const io = new Server(server, {
   },
 });
 
-const tokenPlayerMap = new TokenPlayerMap();
-const primaryLogs = new Logger('Primary Connections');
+const logger = new Logger('main');
 
 const reconnect = (authToken: AuthToken): void => {
   setTimeout(() => {
@@ -38,38 +37,31 @@ const reconnect = (authToken: AuthToken): void => {
     }
     // Get socket id from current player data. If player connected again socket id should be already updated.
     const { socketId, playerId } = tokenPlayerMap.getPlayer(authToken);
+    const context = logger.createContext({ identifier: playerId });
 
     // If player still not connected then delete the player from map.
     const isSocketConnected = io.sockets.sockets.get(socketId)?.connected;
     if (!isSocketConnected) {
       tokenPlayerMap.clearPlayer(authToken);
-      primaryLogs.message({
-        message: 'User deleted from map after waiting.',
-        identifier: playerId,
-      });
+      logger.debug('User deleted from the map after waiting.', context);
     } else {
-      primaryLogs.message({
-        message: 'User already connected from a new socket.',
-        identifier: playerId,
-      });
+      logger.debug('User already connected from a new socket.', context);
     }
   }, 5000);
 };
 
 io.on('connection', socket => {
-  primaryLogs.message({
-    message: 'User connected.',
-    identifier: socket.id,
-  });
+  const context = logger.createContext({ identifier: socket.id });
+  logger.info('User connected', context);
 
   // Take the token from the handshake.
   const token = socket.handshake.auth.token;
   // Looking for the player in the map.
   const playerData = tokenPlayerMap.getPlayer(token);
-  primaryLogs.message({
-    message: `User is ${playerData ? 'found' : 'not found'} in map.`,
-    identifier: socket.id,
-  });
+  logger.debug(
+    `User is ${playerData ? 'found' : 'not found'} in map.`,
+    context,
+  );
 
   let newToken = '';
   if (!playerData) {
@@ -77,28 +69,22 @@ io.on('connection', socket => {
     socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
     // TODO: Add player to map should need plyaer id which needs to be generated in the join player controller
     // So, following method should be called in the join player controller later.
-    const playerId = 'P:123456';
+    const playerId = 'P:12345678';
     tokenPlayerMap.addPlayer(newToken, playerId, socket.id);
-    primaryLogs.message({
-      message: 'User added to map.',
-      identifier: playerId,
-    });
+    const context = logger.createContext({ identifier: playerId });
+    logger.debug('New user added to map.', context);
   } else {
     tokenPlayerMap.updatePlayerSocketId(token, socket.id);
     const { playerId } = playerData;
-    primaryLogs.message({
-      message: 'User updated in map.',
-      identifier: playerId,
-    });
+    const context = logger.createContext({ identifier: playerId });
+    logger.debug('User updated with a new socket in map.', context);
   }
 
   // On any socket event publish the event with playerId and data.
   socket.onAny((event, ...data) => {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
-    primaryLogs.message({
-      message: `Protocol: ${event} | Message received.`,
-      identifier: playerId,
-    });
+    const context = logger.createContext({ identifier: playerId });
+    logger.info(`Protocol: ${event} | Message received.`, context);
     pubsub.publish(event, { playerId, data });
   });
 
@@ -109,10 +95,8 @@ io.on('connection', socket => {
     if (authToken) {
       reconnect(authToken);
     }
-    primaryLogs.message({
-      message: 'User disconnected.',
-      identifier: playerId,
-    });
+    const context = logger.createContext({ identifier: playerId });
+    logger.info('User disconnected.', context);
   });
 });
 
