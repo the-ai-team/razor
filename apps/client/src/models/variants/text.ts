@@ -1,3 +1,3 @@
-import { TextSizeTag, TextTypeTag } from '../tags';
+import { TextSize, TextType } from '../tags';
 
-export type TextVariant = `${TextTypeTag}.${TextSizeTag}`;
+export type TextVariant = `${TextType}.${TextSize}`;

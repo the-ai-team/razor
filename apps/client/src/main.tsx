@@ -6,6 +6,7 @@ import './services/initialize-socket';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
 import { NotFound } from './pages/NotFound';
+import './i18n';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
