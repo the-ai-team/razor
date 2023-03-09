@@ -56,6 +56,7 @@ export interface Player {
 export interface InitialClientData {
   playerName: string;
   roomId?: string;
+  onTokenReceived: () => void;
 }
 
 // Data sent from the server to the client after socket establishment

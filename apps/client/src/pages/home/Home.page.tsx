@@ -25,13 +25,19 @@ export function Home(): ReactElement {
   };
   const routeToRoom = (): void => {
     if (roomId) {
-      initializeSocket({ playerName, roomId });
-      navigate(`/${roomId}/room`);
+      initializeSocket({
+        playerName,
+        roomId,
+        onTokenReceived: () => navigate(`/${roomId}/room`),
+      });
     } else {
       // TODO: Create tournament in redux store
       const tournamentId = getTournamentId();
-      initializeSocket({ playerName, roomId });
-      navigate(`/${tournamentId}/room`);
+      initializeSocket({
+        playerName,
+        roomId,
+        onTokenReceived: () => navigate(`/${tournamentId}/room`),
+      });
     }
   };
 
