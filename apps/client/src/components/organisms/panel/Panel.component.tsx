@@ -5,7 +5,9 @@ import cs from 'classnames';
 
 export interface PanelProps {
   title: string;
-  children: ReactElement<typeof Description>[];
+  children:
+    | ReactElement<typeof Description>
+    | ReactElement<typeof Description>[];
 }
 
 export function Panel({ title, children }: PanelProps): ReactElement {
@@ -29,21 +31,25 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         'flex flex-col',
         'absolute top-5 right-5',
         'px-10',
-        'w-1/3 max-w-xl max-h-[1200px] min-w-[600px] rounded-md bg-bg-brown',
-        'border-4 border-bg-brown-100',
+        'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-bg-brown',
+        'border border-bg-brown-100',
+        'hover:ring-4 hover:ring-bg-brown-100',
         'transition-all duration-300',
       )}
       onClick={(): void => setCollapse(preValue => !preValue)}>
       <div
         className={cs(
           { 'gap-20 overflow-y-hidden': isCollapse },
-          { 'overflow-y-scroll scrollbar': !isCollapse },
+          { 'overflow-y-auto scrollbar': !isCollapse },
           'flex flex-col pr-5',
           'transition-all duration-300',
           'gap-5',
         )}
         id='scrollPanel'>
-        <Text type='Heading' size={isCollapse ? 'Medium' : 'Large'}>
+        <Text
+          type='Heading'
+          isAnimatable={true}
+          size={isCollapse ? 'Medium' : 'Large'}>
           {title}
         </Text>
         <div

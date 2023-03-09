@@ -6,13 +6,22 @@ import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
 import { TextStyles } from '../../../constants';
 // Styles
 import './text.css';
+import { Trans } from 'react-i18next';
+
+// Link
+import React from 'react';
+
+type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export interface TextProps {
   type: TextTypeTag;
   size: TextSizeTag;
   colorClass?: string;
   className?: string;
-  children: string;
+  isAnimatable?: boolean;
+  asHeading?: allowedTags;
+  // children can be either string or i18next TransComponent
+  children: string | ReactElement<typeof Trans>;
 }
 
 export function Text({
@@ -20,6 +29,8 @@ export function Text({
   size,
   colorClass,
   className,
+  isAnimatable,
+  asHeading,
   children,
 }: TextProps): ReactElement {
   const textVariant: TextVariant = `${type}.${size}`;
@@ -28,7 +39,8 @@ export function Text({
     size: TextSizeTag;
     style: React.CSSProperties;
     className: string;
-    children: string;
+    // children can be either string or i18next TransComponent
+    children: string | ReactElement<typeof Trans>;
   }
 
   // === Heading ===
@@ -37,7 +49,7 @@ export function Text({
     style,
     className,
     children,
-  }: SubTextProps): React.ReactElement => {
+  }: SubTextProps): ReactElement => {
     if (size === 'Large') {
       return (
         <h1 style={style} className={className + ' font-medium'}>
@@ -65,7 +77,7 @@ export function Text({
     style,
     className,
     children,
-  }: SubTextProps): React.ReactElement => {
+  }: SubTextProps): ReactElement => {
     if (size === 'Medium') {
       return (
         <p style={style} className={`${className} font-medium text-indent`}>
@@ -83,7 +95,12 @@ export function Text({
 
   /** Related text size to the text variant */
   const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
-  const classNames = (colorClass || 'text-neutral-90') + ' ' + className;
+  const classNames =
+    (colorClass || 'text-neutral-90') +
+    ' ' +
+    className +
+    ' ' +
+    (isAnimatable ? 'transition-all duration-300' : '');
 
   if (!textSizeValue) {
     return <span>{children}</span>;
@@ -114,6 +131,17 @@ export function Text({
           </div>
         );
       case 'Heading':
+        // If the text is animatable, then we use custom Heading component to avoid rerendering of element.
+        if (isAnimatable) {
+          const Tag = asHeading || 'h1';
+          return (
+            <Tag
+              style={{ fontSize: textSizeValue }}
+              className={cs('font-roboto tracking-[.15px]', classNames)}>
+              {children}
+            </Tag>
+          );
+        }
         return (
           <Heading
             size={size}
@@ -136,4 +164,22 @@ export function Text({
         throw new Error('Unexpected object: ' + type);
     }
   }
+}
+
+export interface LinkProps {
+  url: string;
+  children: string;
+}
+
+// Link component (This is a child of Text component)
+export function Link({ url, children }: LinkProps): ReactElement {
+  return (
+    <a
+      target='_blank'
+      rel='noopener noreferrer'
+      href={url}
+      className='text-neutral-40 underline hover:no-underline'>
+      {children}
+    </a>
+  );
 }

@@ -1,10 +1,11 @@
 import { ReactElement } from 'react';
+import { Trans } from 'react-i18next';
 import { Text } from '../../';
 
 export interface DescriptionProps {
   title: string;
   image?: string;
-  children: string;
+  children: string | ReactElement<typeof Trans>;
 }
 
 export function Description({
@@ -13,7 +14,7 @@ export function Description({
   children,
 }: DescriptionProps): ReactElement {
   return (
-    <div>
+    <div className='w-full'>
       <Text type='Title' size='Medium'>
         {title}
       </Text>
