@@ -2,12 +2,20 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Description, Text } from '../..';
 import { ReactComponent as ArrowHeadTopIcon } from 'pixelarticons/svg/chevron-up.svg';
 import cs from 'classnames';
+import { TextSize, TextTag, TextType } from '../../../models';
 
-interface PanelProps {
+export interface PanelProps {
   title: string;
-  children: ReactElement<typeof Description>[];
+  children:
+    | ReactElement<typeof Description>
+    | ReactElement<typeof Description>[];
 }
 
+/**
+ *
+ * @param title - Title of the panel
+ * @param children - Content of the panel (Description components)
+ */
 export function Panel({ title, children }: PanelProps): ReactElement {
   const [isCollapse, setCollapse] = useState(true);
   useEffect(() => {
@@ -29,21 +37,26 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         'flex flex-col',
         'absolute top-5 right-5',
         'px-10',
-        'w-1/3 max-w-xl max-h-[1200px] rounded-md bg-bg-brown',
-        'border-4 border-bg-brown-100',
+        'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-bg-brown',
+        'border border-bg-brown-100',
+        'hover:ring-4 hover:ring-bg-brown-100',
         'transition-all duration-300',
       )}
       onClick={(): void => setCollapse(preValue => !preValue)}>
       <div
         className={cs(
           { 'gap-20 overflow-y-hidden': isCollapse },
-          { 'overflow-y-scroll scrollbar': !isCollapse },
+          { 'overflow-y-auto scrollbar': !isCollapse },
           'flex flex-col pr-5',
           'transition-all duration-300',
           'gap-5',
         )}
         id='scrollPanel'>
-        <Text type='Heading' size={isCollapse ? 'Medium' : 'Large'}>
+        <Text
+          type={TextType.Heading}
+          isAnimatable={true}
+          as={TextTag.HeadingMedium}
+          size={isCollapse ? TextSize.Medium : TextSize.Large}>
           {title}
         </Text>
         <div
@@ -56,18 +69,18 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         </div>
       </div>
       <div>
-        <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-text-light'>
+        <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-neutral-90'>
           <ArrowHeadTopIcon
             className={cs('w-10 h-10 transition-all duration-300', {
               'rotate-180': isCollapse,
             })}
           />
           {isCollapse ? (
-            <Text type='Title' size='Small'>
+            <Text type={TextType.Title} size={TextSize.Small}>
               Show Panel
             </Text>
           ) : (
-            <Text type='Title' size='Small'>
+            <Text type={TextType.Title} size={TextSize.Small}>
               Hide Panel
             </Text>
           )}

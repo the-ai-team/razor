@@ -2,12 +2,13 @@ import { ReactElement } from 'react';
 import { useNavigate } from 'react-router';
 // Components
 import { Text } from '../../components/atoms/text/Text.component';
+import { TextSize, TextType } from '../../models';
 
 export function Room(): ReactElement {
   const navigate = useNavigate();
   return (
     <div>
-      <Text type='Heading' size='Large'>
+      <Text type={TextType.Heading} size={TextSize.Large}>
         Room
       </Text>
       <button
