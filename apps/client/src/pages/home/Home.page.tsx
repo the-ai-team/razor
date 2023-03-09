@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import cs from 'classnames';
 import logo from '../../assets/images/logo.png';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
-import { initializeSocket } from '../../services/initialize-socket';
+import { endSocket, initializeSocket } from '../../services/initialize-socket';
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import {
   Button,
@@ -17,6 +17,8 @@ import {
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
+  // disconnect any socket connection if user navigates to home page.
+  endSocket();
 
   const navigate = useNavigate();
 
