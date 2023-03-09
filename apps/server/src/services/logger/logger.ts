@@ -10,7 +10,7 @@ import { localLogger } from './local-logger';
 import { cloudLogger } from './cloud-logger';
 
 let wlogger = null;
-if (process.env.NODE_ENV === 'ss') {
+if (process.env.NODE_ENV === 'development') {
   wlogger = localLogger();
 } else {
   wlogger = cloudLogger();
