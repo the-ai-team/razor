@@ -22,6 +22,7 @@ export interface ButtonWithInputProps {
  * @param [inputSize=12] - Size of the input element (optional)
  * @param [maxInputLength=12] - Max length of the input element (optional)
  * @param [isDisabled=false] - Disables the button (optional)
+ * @param [inputState=neutral] - State of the input element (neutral, valid, invalid) (optional)
  */
 export function ButtonWithInput({
   onClick,
