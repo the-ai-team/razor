@@ -52,7 +52,7 @@ export const PLAYER_ID_LENGTH = 8;
  * Use by,
  * - player name validation in sockets data models
  */
-export const PLAYER_NAME_RANGE = [2, 16] as const;
+export const PLAYER_NAME_RANGE = [3, 12] as const;
 
 /** Number of digits to be included in the index part of race ID.
  *

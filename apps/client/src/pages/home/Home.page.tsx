@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { PLAYER_NAME_RANGE, TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { playerNameSchema } from '@razor/models';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
@@ -13,6 +14,7 @@ import {
   ButtonWithInput,
   Description,
   Input,
+  InputState,
   Link,
   Panel,
 } from '../../components';
@@ -47,14 +49,24 @@ export function Home(): ReactElement {
   };
 
   const [playerName, setPlayerName] = useState<string>('');
+  const [isValidPlayerName, toggleIsValidPlayerName] = useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
 
   useEffect(() => {
+    if (playerNameSchema.safeParse(playerName).success) {
+      toggleIsValidPlayerName(true);
+    } else {
+      toggleIsValidPlayerName(false);
+      setAvtarURL('');
+      return;
+    }
+
     if (playerName === '') {
       setAvtarURL('');
     } else {
       setAvtarURL(generateAvatarLink(playerName));
     }
+
     return () => {
       setAvtarURL('');
     };
@@ -89,12 +101,25 @@ export function Home(): ReactElement {
           )}
         </div>
         {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
+        {/* Player handle(username) input and join/create button */}
         <Input
           value={playerName}
           onChange={(e): void => setPlayerName(e.target.value)}
+          state={
+            !playerName
+              ? InputState.Neutral
+              : isValidPlayerName
+              ? InputState.Valid
+              : InputState.Invalid
+          }
           placeholder={t('inputs.handle') as string}
+          props={{ maxLength: PLAYER_NAME_RANGE[1] }}
         />
-        <Button onClick={routeToRoom} isFullWidth={true} isCarVisible={true}>
+        <Button
+          onClick={routeToRoom}
+          isFullWidth={true}
+          isDisabled={isValidPlayerName ? false : true}
+          isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
       </div>
