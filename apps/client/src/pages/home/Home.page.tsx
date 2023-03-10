@@ -25,8 +25,8 @@ export function Home(): ReactElement {
 
   const navigate = useNavigate();
 
-  const getTournamentId = (): string => {
-    return '123';
+  const getRoomId = (): string => {
+    return '12345678';
   };
   const routeToRoom = (): void => {
     if (roomId) {
@@ -36,12 +36,12 @@ export function Home(): ReactElement {
         onTokenReceived: () => navigate(`/${roomId}/room`),
       });
     } else {
-      // TODO: Create tournament in redux store
-      const tournamentId = getTournamentId();
+      // TODO: should receive tournament id(room id) from server
+      const roomId = getRoomId();
       initializeSocket({
         playerName,
         roomId,
-        onTokenReceived: () => navigate(`/${tournamentId}/room`),
+        onTokenReceived: () => navigate(`/${roomId}/room`),
       });
     }
   };
