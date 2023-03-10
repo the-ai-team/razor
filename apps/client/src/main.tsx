@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { store } from '@razor/store';
 
+import './services/initialize-socket';
 import './i18n';
 
 import { NotFound } from './pages/NotFound';
@@ -20,7 +21,7 @@ root.render(
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path=':id'>
+            <Route path=':roomId'>
               <Route index element={<Home />} />
               <Route path='room' element={<Room />} />
               <Route path='race' element={<Race />} />

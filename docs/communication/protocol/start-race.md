@@ -24,7 +24,7 @@ sequenceDiagram
 "data": {}
 ```
 
-// Race started player id will not send to the server. But the server will get it using session and socket id.
+_Race started player's id will not send to the server. But the server will get it using token and socket id._
 
 ## Sock02 (Start countdown) | From server (To all) | Command
 
