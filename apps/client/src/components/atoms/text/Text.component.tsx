@@ -1,181 +1,106 @@
-import { ReactElement } from 'react';
-import Linkify from 'react-linkify';
+import { createElement, ReactElement } from 'react';
+import { Trans } from 'react-i18next';
 import cs from 'classnames';
 
 import { TextStyles } from '../../../constants';
-import { TextSizeTag, TextTypeTag, TextVariant } from '../../../models';
+import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
 
-import './text.css';
+interface TextContainerProps {
+  style: React.CSSProperties;
+  className: string;
+  tag: TextTag;
+  children: string | ReactElement<typeof Trans>;
+}
 
-type allowedTags = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+export function TextContainer({
+  style,
+  className,
+  tag,
+  children,
+}: TextContainerProps): ReactElement {
+  const Element = tag;
+  return (
+    <Element style={style} className={className}>
+      {children}
+    </Element>
+  );
+}
 
 export interface TextProps {
-  type: TextTypeTag;
-  size: TextSizeTag;
+  type: TextType;
+  size: TextSize;
   colorClass?: string;
   className?: string;
   isAnimatable?: boolean;
-  asHeading?: allowedTags;
-  children: string;
+  as?: TextTag;
+  // children can be either string or i18next TransComponent
+  children: string | ReactElement<typeof Trans>;
 }
 
+/**
+ *
+ * @param type Text type - Display, Title, Paragraph, etc.
+ * @param size Text size - Small, Medium, Large, etc.
+ * @param children - Inner content (Text or text with links)
+ * @param [colorClass=text-neutral-90] Text color text-neutral-90, text-white, etc. (optional)
+ * @param [className] - Additional class names (optional)
+ * @param [isAnimatable] - Whether the text should be animatable (optional)
+ * @param [as] - HTML tag to render the text as, this is tag will be use explicity if component is animatable.  (optional)
+ */
 export function Text({
   type,
   size,
-  colorClass,
-  className,
-  isAnimatable,
-  asHeading,
   children,
+  colorClass = 'text-neutral-90',
+  className = '',
+  isAnimatable = false,
+  as,
 }: TextProps): ReactElement {
   const textVariant: TextVariant = `${type}.${size}`;
+  const textData = TextStyles.TEXT_MAP.get(textVariant);
+  // predefined tag by styles
+  const textTag = as || textData?.tag || TextTag.Span;
+  const textClasses = cs(
+    colorClass,
+    { className: className },
+    { 'transition-all duration-300': isAnimatable },
+    textData?.definedClasses,
+  );
 
-  interface SubTextProps {
-    size: TextSizeTag;
-    style: React.CSSProperties;
-    className: string;
-    children: string;
+  if (!textData) {
+    throw new Error(`Text variant ${textVariant} not found`);
   }
 
-  // === Heading ===
-  const Heading = ({
-    size,
-    style,
-    className,
+  const textContainerProps = {
+    style: {
+      fontSize: textData.size,
+    },
+    className: textClasses,
     children,
-  }: SubTextProps): React.ReactElement => {
-    if (size === 'Large') {
-      return (
-        <h1 style={style} className={className + ' font-medium'}>
-          {children}
-        </h1>
-      );
-    } else if (size === 'Medium') {
-      return (
-        <h2 style={style} className={className}>
-          {children}
-        </h2>
-      );
-    } else {
-      return (
-        <h3 style={style} className={className}>
-          {children}
-        </h3>
-      );
-    }
   };
 
-  // === Paragraph ===
-  const Paragraph = ({
-    size,
-    style,
-    className,
-    children,
-  }: SubTextProps): React.ReactElement => {
-    const content = (
-      <Linkify
-        componentDecorator={(
-          decoratedHref,
-          decoratedText,
-          key,
-        ): ReactElement => (
-          <a
-            target='_blank'
-            rel='noopener noreferrer'
-            href={decoratedHref}
-            key={key}
-            className='text-neutral-40 underline hover:no-underline'>
-            {decoratedText}
-          </a>
-        )}>
-        {children}
-      </Linkify>
-    );
-
-    if (size === 'Medium') {
-      return (
-        <p style={style} className={`${className} font-medium text-indent`}>
-          {content}
-        </p>
-      );
-    } else {
-      return (
-        <p style={style} className={className}>
-          {content}
-        </p>
-      );
-    }
-  };
-
-  /** Related text size to the text variant */
-  const textSizeValue = TextStyles.TEXT_MAP.get(textVariant);
-  const classNames =
-    (colorClass || 'text-neutral-90') +
-    ' ' +
-    className +
-    ' ' +
-    (isAnimatable ? 'transition-all duration-300' : '');
-
-  if (!textSizeValue) {
-    return <span>{children}</span>;
-  } else {
-    switch (type) {
-      case 'Display':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-sora tracking-[-.25px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Title':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-sora tracking-[.15px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Label':
-        return (
-          <div
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-major tracking-[.5px]', classNames)}>
-            {children}
-          </div>
-        );
-      case 'Heading':
-        // If the text is animatable, then we use custom Heading component to avoid rerendering of element.
-        if (isAnimatable) {
-          const Tag = asHeading || 'h1';
-          return (
-            <Tag
-              style={{ fontSize: textSizeValue }}
-              className={cs('font-roboto tracking-[.15px]', classNames)}>
-              {children}
-            </Tag>
-          );
-        }
-        return (
-          <Heading
-            size={size}
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-roboto tracking-[.15px]', classNames)}>
-            {children}
-          </Heading>
-        );
-      case 'Paragraph':
-        return (
-          <Paragraph
-            size={size}
-            style={{ fontSize: textSizeValue }}
-            className={cs('font-roboto', classNames)}>
-            {children}
-          </Paragraph>
-        );
-      // This function never reaches the default case.
-      default:
-        throw new Error('Unexpected object: ' + type);
-    }
+  if (isAnimatable) {
+    const textTag = as || TextTag.Span;
+    return createElement(textTag, textContainerProps);
   }
+
+  return <TextContainer {...textContainerProps} tag={textTag} />;
+}
+
+export interface LinkProps {
+  url: string;
+  children: string;
+}
+
+// Link component (This is a child of Text component)
+export function Link({ url, children }: LinkProps): ReactElement {
+  return (
+    <a
+      target='_blank'
+      rel='noopener noreferrer'
+      href={url}
+      className='text-neutral-40 underline hover:no-underline'>
+      {children}
+    </a>
+  );
 }

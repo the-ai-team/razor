@@ -2,12 +2,13 @@ import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Text } from '../../components/atoms/text/Text.component';
+import { TextSize, TextType } from '../../models';
 
 export function Race(): ReactElement {
   const navigate = useNavigate();
   return (
     <div>
-      <Text type='Heading' size='Large'>
+      <Text type={TextType.Heading} size={TextSize.Large}>
         Race
       </Text>
       <button
