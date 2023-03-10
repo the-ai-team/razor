@@ -22,19 +22,25 @@ const socket = io(SOCKET_ENDPOINT, {
 socket.on('connect', () => {
   console.log('connected');
 });
+
 export const initializeSocket = ({
   playerName,
   roomId,
+  onTokenReceived,
 }: InitialClientData): void => {
   socket.auth.token = authToken;
-  console.log('socket.auth.token', socket.auth.token);
   socket.connect();
+  socket.on('connect_error', () => {
+    alert('Connection error');
+    endSocket();
+  });
   socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
+  socket.on(PROTO_AUTH_TOKEN_TRANSFER, (token: string) => {
+    authToken = token;
+    // TODO: should wait navigation function until `PROTO_JOIN_LOBBY_ACCEPT` protocol receive (server should accept the join lobby request)
+    onTokenReceived();
+  });
 };
-
-socket.on(PROTO_AUTH_TOKEN_TRANSFER, (token: string) => {
-  authToken = token;
-});
 
 export const endSocket = (): void => {
   socket.disconnect();

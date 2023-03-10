@@ -1,4 +1,7 @@
-import { PROTO_AUTH_TOKEN_TRANSFER } from '@razor/constants';
+import {
+  PROTO_AUTH_TOKEN_TRANSFER,
+  RECONNECT_WAITING_TIME,
+} from '@razor/constants';
 import { AuthToken } from '@razor/models';
 import express from 'express';
 import http from 'http';
@@ -47,7 +50,7 @@ const reconnect = (authToken: AuthToken): void => {
     } else {
       logger.debug('User already connected from a new socket.', context);
     }
-  }, 5000);
+  }, RECONNECT_WAITING_TIME);
 };
 
 io.on('connection', socket => {

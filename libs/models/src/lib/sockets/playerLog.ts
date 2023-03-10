@@ -3,20 +3,6 @@ import { z } from 'zod';
 import { Player } from './player';
 import { timestampSchema } from './tournament';
 
-// ==== Primary Schemas ==== //
-export const playerLogIdSchema =
-  z.custom<`T:${string}-R:${string}-P:${string}`>(id =>
-    /^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}-P:[a-zA-Z0-9]{8}$/.test(id as string),
-  );
-
-// ==== Compound Schemas ==== //
-export const playerLogSchema = z.object({
-  /** Correctly typed length by player */
-  textLength: z.number().min(0).max(MAX_ALLOWED_TEXT_LENGTH),
-  /** Timestamp when player typed the last character */
-  timestamp: timestampSchema,
-});
-
 // ==== Types ==== //
 /** Type for time-logs when players are typing */
 export type PlayerLog = z.input<typeof playerLogSchema>;
@@ -40,3 +26,17 @@ export interface PlayerLogsPacket extends PlayerLogsCollection {
    */
   lastTimestamp: number;
 }
+
+// ==== Primary Schemas ==== //
+export const playerLogIdSchema =
+  z.custom<`T:${string}-R:${string}-P:${string}`>(id =>
+    /^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}-P:[a-zA-Z0-9]{8}$/.test(id as string),
+  );
+
+// ==== Compound Schemas ==== //
+export const playerLogSchema = z.object({
+  /** Correctly typed length by player */
+  textLength: z.number().min(0).max(MAX_ALLOWED_TEXT_LENGTH),
+  /** Timestamp when player typed the last character */
+  timestamp: timestampSchema,
+});
