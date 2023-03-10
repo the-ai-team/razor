@@ -44,10 +44,9 @@ export function Home(): ReactElement {
     } else {
       setAvtarURL(generateAvatarLink(userName));
     }
-
-    // return () => {
-    //   second
-    // }
+    return () => {
+      setAvtarURL('');
+    };
   }, [userName]);
 
   const { t } = useTranslation('home');
