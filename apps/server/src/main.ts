@@ -46,7 +46,10 @@ const reconnect = (authToken: AuthToken): void => {
     const isSocketConnected = io.sockets.sockets.get(socketId)?.connected;
     if (!isSocketConnected) {
       tokenPlayerMap.clearPlayer(authToken);
-      logger.debug('User deleted from the map after waiting.', context);
+      logger.debug(
+        `User deleted from the map after waiting for ${RECONNECT_WAITING_TIME}ms.`,
+        context,
+      );
     } else {
       logger.debug('User already connected from a new socket.', context);
     }
