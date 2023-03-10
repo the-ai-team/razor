@@ -1,4 +1,4 @@
-type FuncType<T extends object> = (data: T) => void;
+type FuncType<T extends object> = (data: T) => void | Promise<void>;
 interface Events {
   [key: string]: FuncType<object>[];
 }
