@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { PLAYER_NAME_RANGE, TOURNAMENT_ID_LENGTH } from '@razor/constants';
-import { playerNameSchema } from '@razor/models';
+import { playerNameSchema, tournamentIdSchema } from '@razor/models';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
@@ -22,7 +22,7 @@ import { endSocket, initializeSocket } from '../../services/initialize-socket';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
-  // disconnect any socket connection if user navigates to home page.
+  // disconnect any socket connection if user navigates back to home page.
   endSocket();
 
   const navigate = useNavigate();
@@ -50,6 +50,10 @@ export function Home(): ReactElement {
 
   const [playerName, setPlayerName] = useState<string>('');
   const [isValidPlayerName, toggleIsValidPlayerName] = useState<boolean>(false);
+  // value of join room button. this value will be a room id
+  const [joinRoomButtonValue, setJoinRoomButtonValue] = useState<string>('');
+  const [isValidJoinRoomButtonValue, toggleIsValidRoomButtonValue] =
+    useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
 
   useEffect(() => {
@@ -71,6 +75,27 @@ export function Home(): ReactElement {
       setAvtarURL('');
     };
   }, [playerName]);
+
+  const roomIdChangeHandler = (value: string): void => {
+    setJoinRoomButtonValue(value);
+    // Room id is also tournament id without 'T:' prefix. Room id what players share.
+    const tournamentId = `T:${value}`;
+    if (tournamentIdSchema.safeParse(tournamentId).success) {
+      toggleIsValidRoomButtonValue(true);
+    } else {
+      toggleIsValidRoomButtonValue(false);
+    }
+  };
+
+  const joinRoomButtonHandler = (value: string): void => {
+    // Room id is also tournament id without 'T:' prefix. Room id what players share.
+    const tournamentId = `T:${value}`;
+    if (tournamentIdSchema.safeParse(tournamentId).success) {
+      navigate(`/${value}`);
+    } else {
+      alert('Invalid tournament id');
+    }
+  };
 
   const { t } = useTranslation('home');
   const panelImages: Array<string> = [
@@ -157,8 +182,16 @@ export function Home(): ReactElement {
           </Button>
         ) : (
           <ButtonWithInput
-            // TODO: implement id validation
-            onClick={(id: string): void => navigate(`/${id}`)}
+            onClick={(id: string): void => joinRoomButtonHandler(id)}
+            onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
+            inputState={
+              !joinRoomButtonValue
+                ? InputState.Neutral
+                : isValidJoinRoomButtonValue
+                ? InputState.Valid
+                : InputState.Invalid
+            }
+            inputValue={joinRoomButtonValue}
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>

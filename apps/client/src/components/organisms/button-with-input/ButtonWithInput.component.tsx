@@ -1,9 +1,11 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 
 import { Button, Input, InputState } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputValue: string;
   children: string;
   inputPlaceholder?: string;
   icon?: ReactElement;
@@ -16,6 +18,8 @@ export interface ButtonWithInputProps {
 /**
  *
  * @param onClick - Button click handler, input value and button event will be passed; (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
+ * @param onInputChange - Input change handler, input event will be passed
+ * @param inputValue - Input value
  * @param children - Text content of button
  * @param [inputPlaceholder] - Placeholder text for input element (optional)
  * @param [icon] - Icon to be displayed on the left side of the button (optional)
@@ -26,6 +30,8 @@ export interface ButtonWithInputProps {
  */
 export function ButtonWithInput({
   onClick,
+  onInputChange,
+  inputValue,
   children,
   inputPlaceholder,
   icon,
@@ -34,12 +40,6 @@ export function ButtonWithInput({
   isDisabled = false,
   inputState = InputState.Neutral,
 }: ButtonWithInputProps): ReactElement {
-  const [inputValue, setInputValue] = useState<string>('');
-
-  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInputValue(e.target.value);
-  };
-
   const buttonClickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
     // Prevents onClick from firing when input element is clicked
     if (!(e.target instanceof HTMLInputElement)) {
@@ -56,9 +56,9 @@ export function ButtonWithInput({
         <div>
           <Input
             value={inputValue}
-            onChange={inputChangeHandler}
+            onChange={onInputChange}
             placeholder={inputPlaceholder}
-            props={{ size: inputSize, maxLength: maxInputLength }}
+            props={{ size: inputSize + 2, maxLength: maxInputLength }}
             isDisabled={isDisabled}
             state={inputState}
           />
