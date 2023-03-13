@@ -17,7 +17,9 @@ import {
   InputState,
   Link,
   Panel,
+  Text,
 } from '../../components';
+import { TextSize, TextType } from '../../models';
 import { endSocket, initializeSocket } from '../../services/initialize-socket';
 
 export function Home(): ReactElement {
@@ -147,6 +149,14 @@ export function Home(): ReactElement {
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
+        {roomId ? (
+          <Text
+            type={TextType.Title}
+            size={TextSize.Small}
+            className='-mt-5 text-opacity-70'>
+            {t('room_id', { id: roomId }) as string}
+          </Text>
+        ) : null}
       </div>
       <Panel title={t('panel.title')}>
         <Description
