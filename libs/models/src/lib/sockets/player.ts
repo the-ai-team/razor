@@ -1,7 +1,9 @@
 import { PLAYER_NAME_RANGE } from '@razor/constants';
 import { z } from 'zod';
 
-import { Tournament, TournamentId } from './tournament';
+import { AppStateModel } from '../state';
+
+import { TournamentId } from './tournament';
 
 // ==== Types ==== //
 /** Player id template literal */
@@ -57,13 +59,14 @@ export interface Player {
 export interface InitialClientData {
   playerName: string;
   roomId?: string;
-  onTokenReceived: () => void;
 }
 
-// Data sent from the server to the client after socket establishment
+export type Snapshot = Omit<AppStateModel, 'errorLogsModel'>; // This interface is used to sync the client with the server.
+
+// Data sent from the server to the client after socket establishment to sync
 export interface InitialServerData {
   playerId: PlayerId;
   tournamentId: TournamentId;
-  /** Tournament snapshot */
-  snapshot: Tournament;
+  /** Game snapshot */
+  snapshot: Snapshot;
 }
