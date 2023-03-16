@@ -1,19 +1,25 @@
 import { AuthToken, PlayerId, socketId } from '@razor/models';
 
 interface MapData {
-  playerId: PlayerId;
+  playerId?: PlayerId;
   socketId: socketId;
 }
 
 class TokenPlayerMap {
   private map: Map<AuthToken, MapData> = new Map<PlayerId, MapData>();
 
-  addPlayer(
-    authToken: AuthToken,
-    playerId: PlayerId,
-    socketId: socketId,
-  ): void {
-    this.map.set(authToken, { playerId, socketId });
+  // add socket id when connection established
+  addSocketId(authToken: AuthToken, socketId: socketId): void {
+    this.map.set(authToken, { socketId });
+  }
+
+  // add player id using socket id
+  addPlayerId(socketId: socketId, playerId: PlayerId): void {
+    for (const [key, value] of this.map.entries()) {
+      if (value.socketId === socketId) {
+        this.map.set(key, { ...value, playerId });
+      }
+    }
   }
 
   getPlayer(authToken: AuthToken): MapData | null {
@@ -62,8 +68,8 @@ class TokenPlayerMap {
     return null;
   }
 
-  viewMap(): void {
-    console.log(this.map);
+  viewMap(): string {
+    return JSON.stringify(Array.from(this.map.entries()));
   }
 
   // clear player after retries
