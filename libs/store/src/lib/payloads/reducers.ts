@@ -10,6 +10,7 @@ import {
   AppPlayerLogId,
   AppRace,
   AppRaceId,
+  AppSnapshot,
   AppTournament,
   AppTournamentId,
 } from '@razor/models';
@@ -67,4 +68,8 @@ export type RemoveTournamentReducerPayload = {
 export type LogErrorReducerPayload = {
   errorLog: AppErrorLog;
   errorTimestamp: AppErrorTimestamp;
+};
+
+export type ReplaceFullStateReducerPayload = {
+  parentState: AppSnapshot;
 };

@@ -16,3 +16,5 @@ export interface AppStateModel {
   playerLogsModel: AppPlayerLogs;
   errorLogsModel: AppErrorLogs;
 }
+
+export type AppSnapshot = Omit<AppStateModel, 'errorLogsModel'>;
