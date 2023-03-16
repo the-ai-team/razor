@@ -11,26 +11,33 @@ import {
 import { store } from '@razor/store';
 
 import { PubSubEvents } from '../models';
-import { pubsub } from '../services';
+import { ContextOutput, Logger, pubsub } from '../services';
 import { tokenPlayerMap } from '../stores';
 
 interface JoinLobbyRequestArgs {
   socketId: socketId;
   data: InitialClientData;
+  context: ContextOutput;
 }
+
+const logger = new Logger('create-tournament.controller');
 
 pubsub.subscribe(
   PROTO_CREATE_LOBBY_REQUEST,
-  ({ socketId, data }: JoinLobbyRequestArgs) => {
+  ({ socketId, data, context }: JoinLobbyRequestArgs) => {
     const { playerName } = data;
     const playerId = store.dispatch.game.joinPlayer({
       receivedTournamentId: '',
       playerName,
     });
     if (!playerId) {
+      logger.error("Store didn't send a playerId", context);
       return;
     }
+    logger.debug('Player added to the store', context);
+
     tokenPlayerMap.addPlayerId(socketId, playerId);
+    logger.debug('Player added to tokenPlayerMap', context);
 
     const state = store.getState().game;
     const player = state.playersModel[playerId];
