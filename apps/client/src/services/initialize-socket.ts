@@ -24,11 +24,11 @@ socket.on('connect', () => {
   console.log('connected');
 });
 
-export const initializeSocket = ({
-  playerName,
-  roomId,
-  onTokenReceived,
-}: InitialClientData): void => {
+export const initializeSocket = (
+  { playerName, roomId }: InitialClientData,
+  // TODO: should change this function to return Promise on upcoming PR
+  onTokenReceived: () => void,
+): void => {
   socket.auth.token = authToken;
   socket.connect();
   socket.on('connect_error', () => {
