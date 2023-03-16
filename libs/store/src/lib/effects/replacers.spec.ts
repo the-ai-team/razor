@@ -6,7 +6,7 @@ import {
   M_TOURNAMENT1,
   mockPlayersModel,
 } from '@razor/mocks';
-import { AppStateModel, Snapshot } from '@razor/models';
+import { AppSnapshot, AppStateModel } from '@razor/models';
 
 import { initializeStore } from '../store';
 
@@ -36,7 +36,7 @@ describe('[Effects] Replacers', () => {
     const store = initializeStore(initialValues);
     const initialStoreState = store.getState();
 
-    const snapshot: Snapshot = {
+    const snapshot: AppSnapshot = {
       tournamentsModel: {
         [M_TOURNAMENT_ID1]: M_TOURNAMENT1,
       },
