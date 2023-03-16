@@ -5,6 +5,7 @@ import {
   RECONNECT_WAITING_TIME,
 } from '@razor/constants';
 import { AuthToken } from '@razor/models';
+import { store } from '@razor/store';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -23,7 +24,13 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  const storeState = store.getState();
+  res.send(storeState);
+});
+
+app.get('/token-player-map', (req, res) => {
+  const data = tokenPlayerMap.viewMap();
+  res.send(data);
 });
 
 const allowedOrigin =

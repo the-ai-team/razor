@@ -5,6 +5,10 @@ interface MapData {
   socketId: socketId;
 }
 
+interface mapAsObject {
+  [key: string]: MapData;
+}
+
 class TokenPlayerMap {
   private map: Map<AuthToken, MapData> = new Map<PlayerId, MapData>();
 
@@ -68,8 +72,8 @@ class TokenPlayerMap {
     return null;
   }
 
-  viewMap(): string {
-    return JSON.stringify(Array.from(this.map.entries()));
+  viewMap(): mapAsObject {
+    return Object.fromEntries(this.map);
   }
 
   // clear player after retries
