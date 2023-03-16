@@ -23,7 +23,7 @@ interface ContextInput {
   identifier: PlayerId | socketId;
 }
 
-interface ContextOutput {
+export interface ContextOutput {
   subject: string;
   playerId: PlayerId;
   socketId: socketId;
@@ -54,19 +54,23 @@ export class Logger {
     };
   }
 
-  public error(message: string, context: ContextOutput): void {
-    wlogger.error(message, context);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public error(message: string, context: ContextOutput, data?: any): void {
+    wlogger.error(message, { context, data });
   }
 
-  public warn(message: string, context: ContextOutput): void {
-    wlogger.warn(message, context);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public warn(message: string, context: ContextOutput, data?: any): void {
+    wlogger.warn(message, { context, data });
   }
 
-  public info(message: string, context: ContextOutput): void {
-    wlogger.info(message, context);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public info(message: string, context: ContextOutput, data?: any): void {
+    wlogger.info(message, { context, data });
   }
 
-  public debug(message: string, context: ContextOutput): void {
-    wlogger.debug(message, context);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public debug(message: string, context: ContextOutput, data?: any): void {
+    wlogger.debug(message, { context, ...data });
   }
 }

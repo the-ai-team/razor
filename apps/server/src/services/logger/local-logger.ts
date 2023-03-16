@@ -2,12 +2,17 @@ import { addColors, createLogger, format, Logger, transports } from 'winston';
 
 import { logLevels } from './levels';
 
-const { printf, timestamp, combine, colorize, errors, label } = format;
+const { printf, timestamp, combine, colorize, errors } = format;
 
 const logFormat = printf(
-  ({ subject, label, level, message, timestamp, ...args }) => {
-    return `${label} (${subject}) ${level}: ${timestamp} - ${message} - ${JSON.stringify(
-      args,
+  ({ service, level, message, timestamp, context, ...args }) => {
+    const { subject, ...contextData } = context;
+    const additionalData = {
+      contextData,
+      args: Object.keys(args).length ? args : undefined,
+    };
+    return `[${service}] (${subject}) ${level}: ${timestamp} - ${message} - ${JSON.stringify(
+      additionalData,
     )}`;
   },
 );
@@ -25,11 +30,11 @@ export const localLogger = (): Logger => {
     levels: logLevels,
     format: combine(
       colorize({ all: true }),
-      label({ label: '[LOGGER]' }),
       errors({ stack: true }),
       timestamp({ format: 'YYYY-MM-DD hh:mm:ss A' }),
       logFormat,
     ),
+    defaultMeta: { service: 'LOGGER' },
     transports: [
       new transports.Console(),
       new transports.File({ filename: 'error.log', level: 'error' }),

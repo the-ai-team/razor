@@ -12,17 +12,16 @@ const severityMap: Map<string, string> = new Map([
   [LogLevels.Debug, 'DEBUG'],
 ]);
 
-const logFormat = printf(({ service, subject, level, message, ...args }) => {
+const logFormat = printf(({ service, context, level, message, ...args }) => {
+  const { subject, ...contextData } = context;
   const log = {
     service,
     subject,
     severity: severityMap.get(level),
     message,
-    context: {},
+    context: { ...contextData },
+    args: Object.keys(args).length ? args : undefined,
   };
-  if (Object.keys(args).length) {
-    log.context = args;
-  }
   return JSON.stringify(log);
 });
 
@@ -31,7 +30,7 @@ export const cloudLogger = (): Logger => {
     level: 'debug',
     levels: logLevels,
     format: combine(errors({ stack: true }), logFormat),
-    defaultMeta: { service: 'server-logs' },
+    defaultMeta: { service: 'LOGGER' },
     transports: [new transports.Console()],
   });
 };
