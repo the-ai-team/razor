@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { store } from '@razor/store';
 
-import './services/initialize-socket';
+import './services/socket-communication';
 import './i18n';
+import './controllers';
 
 import { NotFound } from './pages/NotFound';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';

@@ -20,7 +20,11 @@ import {
   Text,
 } from '../../components';
 import { TextSize, TextType } from '../../models';
-import { endSocket, initializeSocket } from '../../services/initialize-socket';
+import {
+  endSocket,
+  requestToCreateRoom,
+  requestToJoinRoom,
+} from '../../services';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
@@ -28,31 +32,6 @@ export function Home(): ReactElement {
   endSocket();
 
   const navigate = useNavigate();
-
-  const getRoomId = (): string => {
-    return '12345678';
-  };
-  const routeToRoom = (): void => {
-    if (roomId) {
-      initializeSocket(
-        {
-          playerName,
-          roomId,
-        },
-        () => navigate(`/${roomId}/room`),
-      );
-    } else {
-      // TODO: should receive tournament id(room id) from server
-      const roomId = getRoomId();
-      initializeSocket(
-        {
-          playerName,
-          roomId,
-        },
-        () => navigate(`/${roomId}/room`),
-      );
-    }
-  };
 
   const [playerName, setPlayerName] = useState<string>('');
   const [isValidPlayerName, toggleIsValidPlayerName] = useState<boolean>(false);
@@ -103,6 +82,30 @@ export function Home(): ReactElement {
     }
   };
 
+  const routeToRoom = (): void => {
+    if (roomId) {
+      requestToJoinRoom({ playerName, roomId })
+        .then(roomId => {
+          if (roomId) {
+            navigate(`/${roomId}/room`);
+          }
+        })
+        .catch(err => {
+          alert(err);
+        });
+    } else {
+      requestToCreateRoom({ playerName })
+        .then(roomId => {
+          if (roomId) {
+            navigate(`/${roomId}/room`);
+          }
+        })
+        .catch(err => {
+          alert(err);
+        });
+    }
+  };
+
   const { t } = useTranslation('home');
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -131,7 +134,6 @@ export function Home(): ReactElement {
             <Logo className='-mb-16' />
           )}
         </div>
-        {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         {/* Player handle(username) input and join/create button */}
         <Input
           value={playerName}
