@@ -49,7 +49,7 @@ export const joinPlayer = (
   dispatch: Dispatch,
   payload: JoinPlayerPayload,
   state: RootState,
-): PlayerId | void => {
+): PlayerId | null => {
   const { receivedTournamentId, playerName } = payload;
   // Tournament id with correct format.
   let tournamentId;
@@ -57,17 +57,17 @@ export const joinPlayer = (
   // If the player name is not provided, call the raiser.
   if (!playerName) {
     payloadNotProvided(joinPlayer.name, dispatch, 'playerName');
-    return;
+    return null;
   }
   // If the player name has an invalid length, call the raiser.
   if (playerName.length < 2 || playerName.length > 16) {
     invalidPlayerNameLength(dispatch);
-    return;
+    return null;
   }
   // If the player name has invalid characters, call the raiser.
   if (!playerName.match(/^[a-zA-Z0-9]+$/)) {
     invalidPlayerName(dispatch);
-    return;
+    return null;
   }
 
   // If the tournament id is provided,
@@ -75,7 +75,7 @@ export const joinPlayer = (
     // If the tournament is not found, call the raiser.
     if (!state.game.tournamentsModel[receivedTournamentId]) {
       tournamentNotFound(dispatch, receivedTournamentId);
-      return;
+      return null;
     }
     // If the tournament is found, set the tournament id.
     tournamentId = receivedTournamentId;
