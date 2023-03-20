@@ -29,7 +29,9 @@ import {
 export function Home(): ReactElement {
   const { roomId } = useParams();
   // disconnect any socket connection if user navigates back to home page.
-  endSocket();
+  useEffect(() => {
+    endSocket();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -82,27 +84,17 @@ export function Home(): ReactElement {
     }
   };
 
-  const routeToRoom = (): void => {
+  const routeToRoom = async (): Promise<void> => {
     if (roomId) {
-      requestToJoinRoom({ playerName, roomId })
-        .then(roomId => {
-          if (roomId) {
-            navigate(`/${roomId}/room`);
-          }
-        })
-        .catch(err => {
-          alert(err);
-        });
+      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
     } else {
-      requestToCreateRoom({ playerName })
-        .then(roomId => {
-          if (roomId) {
-            navigate(`/${roomId}/room`);
-          }
-        })
-        .catch(err => {
-          alert(err);
-        });
+      const roomIdFromServer = await requestToCreateRoom({ playerName });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
     }
   };
 
