@@ -4,6 +4,7 @@ import {
   PROTO_CREATE_LOBBY_REQUEST,
   PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
+  REQUEST_WAITING_TIME,
 } from '@razor/constants';
 import { AuthToken, InitialClientData, InitialServerData } from '@razor/models';
 import { io, Socket } from 'socket.io-client';
@@ -29,6 +30,7 @@ socket.on('connect', () => {
 
 export const endSocket = (): void => {
   socket.disconnect();
+  socket.removeAllListeners();
 };
 
 const initializeSocket = (): void => {
@@ -50,7 +52,7 @@ export const requestToJoinRoom = ({
   initializeSocket();
   socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
   return new Promise((resolve, reject) => {
-    socket.on(PROTO_JOIN_LOBBY_ACCEPT, (data: InitialServerData) => {
+    const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
       const roomId = data.tournamentId.slice(2);
       if (roomId) {
@@ -59,7 +61,13 @@ export const requestToJoinRoom = ({
       } else {
         reject('Request failed');
       }
-    });
+    };
+    socket.once(PROTO_JOIN_LOBBY_ACCEPT, receiver);
+
+    setTimeout(() => {
+      socket.off(PROTO_JOIN_LOBBY_ACCEPT, receiver);
+      reject('Request timed out');
+    }, REQUEST_WAITING_TIME);
   });
 };
 
@@ -69,18 +77,22 @@ export const requestToCreateRoom = ({
   initializeSocket();
   socket.emit(PROTO_CREATE_LOBBY_REQUEST, { playerName });
   return new Promise((resolve, reject) => {
-    socket.on(PROTO_CREATE_LOBBY_ACCEPT, (data: InitialServerData) => {
-      console.log(data);
+    const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
       const roomId = data.tournamentId.slice(2);
       if (roomId) {
-        console.log('roomId', roomId);
         pubsub.publish(PROTO_CREATE_LOBBY_ACCEPT, data);
         resolve(roomId);
       } else {
         reject('Request failed');
       }
-    });
+    };
+    socket.once(PROTO_CREATE_LOBBY_ACCEPT, receiver);
+
+    setTimeout(() => {
+      socket.off(PROTO_CREATE_LOBBY_ACCEPT, receiver);
+      reject('Request timed out');
+    }, REQUEST_WAITING_TIME);
   });
 };
 
