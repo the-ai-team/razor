@@ -108,14 +108,13 @@ io.on('connection', socket => {
     ) {
       // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
       // Player id will be created in the controller.
-      // TODO: If player has a playerId what should we do?
       const socketId = socket.id;
       context = logger.createContext({ identifier: socketId });
-      pubsub.publish(event, { socketId, data, context });
+      pubsub.publish(event, { data, context });
     } else {
       const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
       context = logger.createContext({ identifier: playerId });
-      pubsub.publish(event, { playerId, data, context });
+      pubsub.publish(event, { data, context });
     }
     logger.info(`Protocol: ${event} | Message received.`, context, data);
   });

@@ -2,12 +2,7 @@ import {
   PROTO_CREATE_LOBBY_ACCEPT,
   PROTO_CREATE_LOBBY_REQUEST,
 } from '@razor/constants';
-import {
-  InitialClientData,
-  InitialServerData,
-  Snapshot,
-  socketId,
-} from '@razor/models';
+import { InitialClientData, InitialServerData, Snapshot } from '@razor/models';
 import { store } from '@razor/store';
 
 import { PubSubEvents } from '../models';
@@ -15,7 +10,6 @@ import { ContextOutput, Logger, pubsub } from '../services';
 import { tokenPlayerMap } from '../stores';
 
 interface JoinLobbyRequestArgs {
-  socketId: socketId;
   data: InitialClientData;
   context: ContextOutput;
 }
@@ -24,7 +18,8 @@ const logger = new Logger('create-tournament.controller');
 
 pubsub.subscribe(
   PROTO_CREATE_LOBBY_REQUEST,
-  ({ socketId, data, context }: JoinLobbyRequestArgs) => {
+  ({ data, context }: JoinLobbyRequestArgs) => {
+    const { socketId } = context;
     const { playerName } = data;
     const playerId = store.dispatch.game.joinPlayer({
       receivedTournamentId: '',

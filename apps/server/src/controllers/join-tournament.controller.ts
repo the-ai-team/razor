@@ -7,7 +7,6 @@ import {
   InitialClientData,
   InitialServerData,
   Snapshot,
-  socketId,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -18,7 +17,6 @@ import { ContextOutput, Logger, pubsub } from '../services';
 import { tokenPlayerMap } from '../stores';
 
 interface JoinLobbyRequestArgs {
-  socketId: socketId;
   data: InitialClientData;
   context: ContextOutput;
 }
@@ -27,7 +25,8 @@ const logger = new Logger('create-tournament.controller');
 
 pubsub.subscribe(
   PROTO_JOIN_LOBBY_REQUEST,
-  ({ socketId, data, context }: JoinLobbyRequestArgs) => {
+  ({ data, context }: JoinLobbyRequestArgs) => {
+    const { socketId } = context;
     // Checking whether player already has playerId.
     let playerId = tokenPlayerMap.getPlayerIdBySocketId(socketId);
     let player: AppPlayer;
