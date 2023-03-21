@@ -26,13 +26,19 @@ let authToken = '';
 let savedPlayerName = '';
 let savedRoomId = '';
 
+interface SocketFormat extends Socket {
+  auth: {
+    token: AuthToken;
+  };
+}
+
 const socket = io(SOCKET_ENDPOINT, {
   auth: {
     token: authToken,
   },
   autoConnect: false,
   withCredentials: true,
-}) as Socket & { auth: { token: AuthToken } };
+}) as SocketFormat;
 
 export const endSocket = (): void => {
   socket.disconnect();
