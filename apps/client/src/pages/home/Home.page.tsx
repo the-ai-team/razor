@@ -86,6 +86,7 @@ export function Home(): ReactElement {
 
   const routeToRoom = async (): Promise<void> => {
     if (roomId) {
+      // TODO: Add try catch and make a error info ui popups.
       const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
       if (roomIdFromServer) {
         navigate(`/${roomIdFromServer}/room`);

@@ -4,6 +4,7 @@ import {
   PROTO_CREATE_LOBBY_REQUEST,
   PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
+  RECONNECT_WAITING_TIME,
   REQUEST_WAITING_TIME,
 } from '@razor/constants';
 import { AuthToken, InitialClientData, InitialServerData } from '@razor/models';
@@ -15,6 +16,8 @@ import { pubsub } from '../utils/pubsub';
 const SOCKET_ENDPOINT =
   process.env['NX_SOCKET_ENDPOINT'] || 'http://localhost:3000';
 let authToken = '';
+let savedPlayerName = '';
+let savedRoomId = '';
 
 const socket = io(SOCKET_ENDPOINT, {
   auth: {
@@ -24,13 +27,8 @@ const socket = io(SOCKET_ENDPOINT, {
   withCredentials: true,
 }) as Socket & { auth: { token: AuthToken } };
 
-socket.on('connect', () => {
-  console.log('connected');
-});
-
 export const endSocket = (): void => {
   socket.disconnect();
-  socket.removeAllListeners();
 };
 
 const initializeSocket = (): void => {
@@ -40,10 +38,47 @@ const initializeSocket = (): void => {
     alert('Connection error');
     endSocket();
   });
+  socket.on('connect', () => {
+    console.log('connected');
+  });
   socket.on(PROTO_AUTH_TOKEN_TRANSFER, (token: string) => {
     authToken = token;
   });
 };
+
+socket.on('disconnect', reason => {
+  console.log('disconnected', reason, savedRoomId, savedPlayerName);
+  // Reconnect only if not user disconnected intentionally (from a client trigger or server side trigger).
+  // Connection issue is considered as a unintentional disconnect.
+  // https://socket.io/docs/v3/client-socket-instance/#disconnect
+  if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
+    if (savedRoomId && savedPlayerName) {
+      const reconnector = setInterval(async () => {
+        try {
+          console.log('Reconnecting...');
+          await requestToJoinRoom({
+            playerName: savedPlayerName,
+            roomId: savedRoomId,
+          });
+          clearInterval(reconnector);
+        } catch (error) {
+          console.error(error);
+        }
+      }, REQUEST_WAITING_TIME);
+
+      // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
+      const waitingTimeout = setTimeout(() => {
+        clearInterval(reconnector);
+      }, RECONNECT_WAITING_TIME);
+
+      socket.once('connect', () => {
+        console.log('Reconnected');
+        clearInterval(reconnector);
+        clearTimeout(waitingTimeout);
+      });
+    }
+  }
+});
 
 export const requestToJoinRoom = ({
   playerName,
@@ -52,19 +87,23 @@ export const requestToJoinRoom = ({
   initializeSocket();
   socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
   return new Promise((resolve, reject) => {
+    // TODO: schema validation for data.
     const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
-      const roomId = data.tournamentId.slice(2);
-      if (roomId) {
+      const roomIdFromServer = data.tournamentId.slice(2);
+      if (roomIdFromServer) {
+        savedRoomId = roomIdFromServer;
+        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
         pubsub.publish(PROTO_JOIN_LOBBY_ACCEPT, data);
-        resolve(roomId);
+        clearTimeout(waitingTimeout);
+        resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
     socket.once(PROTO_JOIN_LOBBY_ACCEPT, receiver);
 
-    setTimeout(() => {
+    const waitingTimeout = setTimeout(() => {
       socket.off(PROTO_JOIN_LOBBY_ACCEPT, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
@@ -79,17 +118,20 @@ export const requestToCreateRoom = ({
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
-      const roomId = data.tournamentId.slice(2);
-      if (roomId) {
+      const roomIdFromServer = data.tournamentId.slice(2);
+      if (roomIdFromServer) {
+        savedRoomId = roomIdFromServer;
+        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
         pubsub.publish(PROTO_CREATE_LOBBY_ACCEPT, data);
-        resolve(roomId);
+        clearTimeout(waitingTimeout);
+        resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
     socket.once(PROTO_CREATE_LOBBY_ACCEPT, receiver);
 
-    setTimeout(() => {
+    const waitingTimeout = setTimeout(() => {
       socket.off(PROTO_CREATE_LOBBY_ACCEPT, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
