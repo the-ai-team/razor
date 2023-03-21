@@ -7,7 +7,14 @@ import {
   RECONNECT_WAITING_TIME,
   REQUEST_WAITING_TIME,
 } from '@razor/constants';
-import { AuthToken, InitialClientData, InitialServerData } from '@razor/models';
+import {
+  AuthToken,
+  InitialClientData,
+  InitialServerData,
+  playerIdSchema,
+  stateModelSchema,
+  tournamentIdSchema,
+} from '@razor/models';
 import { io, Socket } from 'socket.io-client';
 
 import { PubSubEvents } from '../models';
@@ -87,8 +94,17 @@ export const requestToJoinRoom = ({
   initializeSocket();
   socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
   return new Promise((resolve, reject) => {
-    // TODO: schema validation for data.
     const receiver = (data: InitialServerData): void => {
+      // Data validation
+      const validation =
+        !stateModelSchema.safeParse(data.snapshot).success ||
+        !tournamentIdSchema.safeParse(data.tournamentId).success ||
+        !playerIdSchema.safeParse(data.playerId).success;
+      if (validation) {
+        reject('Invalid data');
+        return;
+      }
+
       // remove `T:` part from the tournament id.
       const roomIdFromServer = data.tournamentId.slice(2);
       if (roomIdFromServer) {
@@ -117,6 +133,16 @@ export const requestToCreateRoom = ({
   socket.emit(PROTO_CREATE_LOBBY_REQUEST, { playerName });
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
+      // Data validation
+      const validation =
+        !stateModelSchema.safeParse(data.snapshot).success ||
+        !tournamentIdSchema.safeParse(data.tournamentId).success ||
+        !playerIdSchema.safeParse(data.playerId).success;
+      if (validation) {
+        reject('Invalid data');
+        return;
+      }
+
       // remove `T:` part from the tournament id.
       const roomIdFromServer = data.tournamentId.slice(2);
       if (roomIdFromServer) {
