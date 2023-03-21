@@ -11,8 +11,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 
-import './controllers/join-tournament.controller';
-import './controllers/create-tournament.controller';
+import './controllers';
 
 import { pubsub } from './services/pubsub';
 import { PubSubEvents } from './models';
@@ -127,6 +126,7 @@ io.on('connection', socket => {
       reconnect(authToken);
     }
     const context = logger.createContext({ identifier: playerId });
+    pubsub.publish(PubSubEvents.PlayerDisconnect, { context });
     logger.info('User disconnected.', context);
   });
 });
