@@ -1,10 +1,11 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { PLAYER_NAME_RANGE, TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { playerNameSchema, tournamentIdSchema } from '@razor/models';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
+import { debounce } from 'lodash';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
@@ -43,6 +44,13 @@ export function Home(): ReactElement {
     useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
 
+  const debouncedGenerateAvatarLink = useCallback(
+    debounce((value: string) => {
+      setAvtarURL(generateAvatarLink(value));
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     if (playerNameSchema.safeParse(playerName).success) {
       toggleIsValidPlayerName(true);
@@ -55,11 +63,12 @@ export function Home(): ReactElement {
     if (playerName === '') {
       setAvtarURL('');
     } else {
-      setAvtarURL(generateAvatarLink(playerName));
+      debouncedGenerateAvatarLink(playerName);
     }
 
     return () => {
       setAvtarURL('');
+      debouncedGenerateAvatarLink.cancel();
     };
   }, [playerName]);
 
