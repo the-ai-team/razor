@@ -3,6 +3,7 @@ import {
   PROTO_JOIN_LOBBY_REQUEST,
 } from '@razor/constants';
 import {
+  AppPlayer,
   InitialClientData,
   InitialServerData,
   Snapshot,
@@ -27,23 +28,42 @@ const logger = new Logger('create-tournament.controller');
 pubsub.subscribe(
   PROTO_JOIN_LOBBY_REQUEST,
   ({ socketId, data, context }: JoinLobbyRequestArgs) => {
-    const { playerName, roomId } = data;
-    const receivedTournamentId: TournamentId = `T:${roomId}`;
-    const playerId = store.dispatch.game.joinPlayer({
-      receivedTournamentId,
-      playerName,
-    });
-    if (!playerId) {
-      logger.error("Store didn't send a playerId", context);
-      return;
+    // Checking whether player already has playerId.
+    let playerId = tokenPlayerMap.getPlayerIdBySocketId(socketId);
+    let player: AppPlayer;
+    if (playerId) {
+      logger.info(
+        'Player already has playerId, checking whether player is available on the store.',
+        context,
+      );
+      player =
+        store.getState().game.playersModel[
+          tokenPlayerMap.getPlayerIdBySocketId(socketId)
+        ];
     }
-    logger.debug('Player added to the store', context);
 
-    tokenPlayerMap.addPlayerId(socketId, playerId);
-    logger.debug('Player added to tokenPlayerMap', context);
+    // If player data is not available on the store let new player join to the store.
+    if (!player) {
+      const { playerName, roomId } = data;
+      const receivedTournamentId: TournamentId = `T:${roomId}`;
+      playerId ||= store.dispatch.game.joinPlayer({
+        receivedTournamentId,
+        playerName,
+      });
+      if (!playerId) {
+        logger.error("Store didn't send a playerId", context);
+        return;
+      }
+      logger.debug('Player added to the store', context);
 
+      // Adding player to the tokenPlayerMap.
+      tokenPlayerMap.addPlayerId(socketId, playerId);
+      logger.debug('Player added to tokenPlayerMap', context);
+    }
+
+    // Collecting required data from the store.
     const state = store.getState().game;
-    const player = state.playersModel[playerId];
+    player ||= state.playersModel[playerId];
     const tournamentId = player.tournamentId;
     const tournament = state.tournamentsModel[tournamentId];
     const playerIds = tournament.playerIds;
