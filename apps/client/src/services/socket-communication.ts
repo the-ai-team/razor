@@ -15,6 +15,7 @@ import {
   stateModelSchema,
   tournamentIdSchema,
 } from '@razor/models';
+import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
 import { PubSubEvents } from '../models';
@@ -24,6 +25,7 @@ const SOCKET_ENDPOINT =
   process.env['NX_SOCKET_ENDPOINT'] || 'http://localhost:3000';
 let authToken = '';
 let savedPlayerName = '';
+let savedPlayerId = '';
 let savedRoomId = '';
 
 interface SocketFormat extends Socket {
@@ -115,6 +117,7 @@ export const requestToJoinRoom = ({
       const roomIdFromServer = data.tournamentId.slice(2);
       if (roomIdFromServer) {
         savedRoomId = roomIdFromServer;
+        savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
         pubsub.publish(PROTO_JOIN_LOBBY_ACCEPT, data);
         clearTimeout(waitingTimeout);
@@ -153,6 +156,7 @@ export const requestToCreateRoom = ({
       const roomIdFromServer = data.tournamentId.slice(2);
       if (roomIdFromServer) {
         savedRoomId = roomIdFromServer;
+        savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
         pubsub.publish(PROTO_CREATE_LOBBY_ACCEPT, data);
         clearTimeout(waitingTimeout);
@@ -170,12 +174,14 @@ export const requestToCreateRoom = ({
   });
 };
 
-socket.onAny((event, ...args) => {
+socket.onAny((event, data) => {
   if (
     event !== PROTO_CREATE_LOBBY_ACCEPT &&
     event !== PROTO_JOIN_LOBBY_ACCEPT
   ) {
-    pubsub.publish(event, { args });
+    const tournamentId = roomIdToTournamentId(savedRoomId);
+    pubsub.publish(event, { tournamentId, savedPlayerId, data });
+    console.log(event, data);
   }
 });
 

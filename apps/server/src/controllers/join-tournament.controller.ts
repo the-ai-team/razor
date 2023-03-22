@@ -1,11 +1,14 @@
 import {
   PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
+  PROTO_PLAYER_JOINED,
 } from '@razor/constants';
 import {
   AppPlayer,
   InitialClientData,
   InitialServerData,
+  PlayerJoined,
+  PlayerState,
   Snapshot,
   TournamentId,
 } from '@razor/models';
@@ -97,6 +100,22 @@ pubsub.subscribe(
       playerId,
       protocol: PROTO_JOIN_LOBBY_ACCEPT,
       data: initialServerData,
+    });
+
+    // Sending player joined event to all players.
+    const joinedPlayerData: PlayerJoined = {
+      player: {
+        id: playerId,
+        name: player.name,
+        avatarLink: player.avatarLink,
+        state: player.state as unknown as PlayerState,
+      },
+    };
+
+    pubsub.publish(PubSubEvents.SendDataToAll, {
+      tournamentId,
+      protocol: PROTO_PLAYER_JOINED,
+      data: joinedPlayerData,
     });
   },
 );

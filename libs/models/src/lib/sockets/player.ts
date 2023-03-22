@@ -70,3 +70,8 @@ export interface InitialServerData {
   /** Game snapshot */
   snapshot: Snapshot;
 }
+
+// Object to send player data when a player joins the tournament to all in a room.
+export interface PlayerJoined {
+  player: Player;
+}
