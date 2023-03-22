@@ -4,6 +4,7 @@ import {
   M_PLAYER_AVATAR0,
   M_PLAYER_ID0,
   M_PLAYER_NAME0,
+  M_PLAYER0,
   M_TOURNAMENT_ID0,
   M_TOURNAMENT0,
   M_TR0_RACE_ID0,
@@ -208,6 +209,49 @@ describe('[Effects] Player', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       store.dispatch.game.joinPlayer({} as any);
       expect(payloadNotProvided).toHaveBeenCalled();
+    });
+  });
+
+  describe('Player Add', () => {
+    it('(tournament id, player details => Add player, Join player to existing tournamentsModel', () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 2]),
+        },
+        playersModel: mockPlayersModel([1, 2], M_TOURNAMENT_ID0),
+        racesModel: {
+          [M_TR0_RACE_ID0]: mockRace([1, 3]),
+        },
+      };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: M_PLAYER0,
+      });
+      const storeState = store.getState();
+
+      const expectedResult: AppStateModel = {
+        ...initialValues,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
+            playerIds: [
+              ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].playerIds,
+              M_PLAYER_ID0,
+            ],
+            state: AppTournamentState.Ready,
+          },
+        },
+        playersModel: mockPlayersModel([0, 2], M_TOURNAMENT_ID0),
+      };
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
     });
   });
 

@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'development') {
   wlogger = cloudLogger();
 }
 
-// TODO: Add RoomTournamentMap
 interface ContextInput {
   identifier: PlayerId | socketId;
 }
@@ -34,7 +33,7 @@ export class Logger {
   constructor(protected subject: string) {}
 
   public createContext({ identifier }: ContextInput): ContextOutput {
-    // TODO: Add RoomTournamentMap to get domainId
+    // TODO: update to get tournamentId
     const domainId = 'T:123456';
 
     let socketId = '';

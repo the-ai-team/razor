@@ -1,6 +1,7 @@
 // ### [Payloads] Data models for the effect payloads ### //
 
 import {
+  AppPlayer,
   AppPlayerId,
   AppPlayerLog,
   AppRaceId,
@@ -12,6 +13,12 @@ import {
 export type JoinPlayerPayload = {
   receivedTournamentId: AppTournamentId | '';
   playerName: string;
+};
+
+export type AddPlayerPayload = {
+  tournamentState: AppTournamentState;
+  playerId: AppPlayerId;
+  player: AppPlayer;
 };
 
 export type ClearPlayerPayload = {
