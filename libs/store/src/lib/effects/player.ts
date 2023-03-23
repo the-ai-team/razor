@@ -83,7 +83,7 @@ export const joinPlayer = (
 
     // Converting tournament state to "Lobby" from "Empty" if it had no players.
     if (
-      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length == 0
+      state.game.tournamentsModel[receivedTournamentId].playerIds.length == 0
     ) {
       dispatch.game.setTournamentState({
         tournamentId,
@@ -93,7 +93,7 @@ export const joinPlayer = (
 
     // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
     if (
-      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length >= 1
+      state.game.tournamentsModel[receivedTournamentId].playerIds.length >= 1
     ) {
       dispatch.game.setTournamentState({
         tournamentId,

@@ -213,7 +213,7 @@ describe('[Effects] Player', () => {
   });
 
   describe('Player Add', () => {
-    it('(tournament id, player details => Add player, Join player to existing tournamentsModel', () => {
+    it('(tournament id, player details) => Add player, Join player to existing tournamentsModel', () => {
       const initialValues: AppStateModel = {
         ...initialState,
         tournamentsModel: {
@@ -252,6 +252,70 @@ describe('[Effects] Player', () => {
         ...initialStoreState,
         game: expectedResult,
       });
+    });
+    it('(invalid player name) => Raise error', () => {
+      const initialValues = initialState;
+      const store = initializeStore(initialValues);
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: {
+          ...M_PLAYER0,
+          name: 'N@m3IsN0tV@lid',
+        },
+      });
+      expect(invalidPlayerName).toHaveBeenCalled();
+    });
+    it('(invalid player name length) => Raise error', () => {
+      const initialValues = initialState;
+      const store = initializeStore(initialValues);
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: {
+          ...M_PLAYER0,
+          name: 'thisPlayerNameIsTooLong',
+        },
+      });
+      expect(invalidPlayerNameLength).toHaveBeenCalled();
+    });
+    it('(empty playerName) => Raise error', () => {
+      const initialValues = initialState;
+      const store = initializeStore(initialValues);
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: {
+          ...M_PLAYER0,
+          name: '',
+        },
+      });
+      expect(payloadNotProvided).toHaveBeenCalled();
+    });
+    it('(empty tournament id) => Raise error', () => {
+      const initialValues = initialState;
+      const store = initializeStore(initialValues);
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: { ...M_PLAYER0, tournamentId: '' as AppTournamentId },
+      });
+      expect(payloadNotProvided).toHaveBeenCalled();
+    });
+    it('(tournament not found)=> Raise error', () => {
+      const initialValues = initialState;
+      const store = initializeStore(initialValues);
+
+      store.dispatch.game.addPlayer({
+        tournamentState: AppTournamentState.Ready,
+        playerId: M_PLAYER_ID0,
+        player: { ...M_PLAYER0, tournamentId: 'T:notExist' },
+      });
+      expect(tournamentNotFound).toHaveBeenCalled();
     });
   });
 
