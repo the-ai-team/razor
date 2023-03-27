@@ -12,12 +12,18 @@ interface mapAsObject {
 class TokenPlayerMap {
   private map: Map<AuthToken, MapData> = new Map<PlayerId, MapData>();
 
-  // add socket id when connection established
+  /** Create new map entry with auth token and socket Id.
+   * @param authToken - auth token of the player
+   * @param socketId - socket id of the player
+   */
   addSocketId(authToken: AuthToken, socketId: socketId): void {
     this.map.set(authToken, { socketId });
   }
 
-  // add player id using socket id
+  /** Add player id to the existing map entry.
+   * @param socketId - socket id of the player
+   * @param playerId - player id of the player
+   */
   addPlayerId(socketId: socketId, playerId: PlayerId): void {
     for (const [key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
@@ -72,6 +78,9 @@ class TokenPlayerMap {
     return null;
   }
 
+  /** Get all entries
+   * @returns - map as a object
+   */
   viewMap(): mapAsObject {
     return Object.fromEntries(this.map);
   }
