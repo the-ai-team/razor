@@ -16,6 +16,10 @@ export class TokenPlayerMap {
     this.map.set(authToken, { playerId, socketId });
   }
 
+  /** Get player data using auth token .
+   * @param authToken - auth token of the player
+   * @returns player data if player exists, null otherwise
+   */
   getPlayer(authToken: AuthToken): MapData | null {
     const data = this.map.get(authToken);
     if (data) {
@@ -24,15 +28,23 @@ export class TokenPlayerMap {
     return null;
   }
 
-  // update player's socket id when player reconnects
+  /** Update existing player socket id. If player does not exist, throw error.
+   * @param authToken - auth token of the player
+   * @param socketId - socket id of the player
+   */
   updatePlayerSocketId(authToken: AuthToken, socketId: socketId): void {
     const data = this.map.get(authToken);
     if (data) {
       this.map.set(authToken, { ...data, socketId });
+    } else {
+      throw new Error('Player does not exist');
     }
   }
 
-  //get player id by socket id
+  /** Get player id using socket id.
+   * @param socketId - socket id of the player
+   * @returns player id if player exists, null otherwise
+   */
   getPlayerIdBySocketId(socketId: socketId): PlayerId | null {
     for (const [_key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
@@ -42,7 +54,10 @@ export class TokenPlayerMap {
     return null;
   }
 
-  // get socket id by player id
+  /** Get socket id using player id.
+   * @param playerId - player id of the player
+   * @returns socket id if player exists, null otherwise
+   */
   getSocketIdByPlayerId(playerId: PlayerId): socketId | null {
     for (const [_key, value] of this.map.entries()) {
       if (value.playerId === playerId) {
@@ -52,7 +67,10 @@ export class TokenPlayerMap {
     return null;
   }
 
-  //get auth token by socket id
+  /** Get auth token using socket id.
+   * @param socketId - socket id of the player
+   * @returns auth token if player exists, null otherwise
+   */
   getAuthTokenBySocketId(socketId: socketId): AuthToken | null {
     for (const [key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
@@ -66,7 +84,9 @@ export class TokenPlayerMap {
     console.log(this.map);
   }
 
-  // clear player after retries
+  /** Clear a player from the map.
+   * @param authToken - auth token of the player
+   */
   clearPlayer(authToken: AuthToken): void {
     this.map.delete(authToken);
   }
