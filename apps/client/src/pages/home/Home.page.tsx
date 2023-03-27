@@ -58,6 +58,25 @@ export function Home(): ReactElement {
     }
   };
 
+  /** Get input component state using its value and validity.
+   * If value is empty, input state is neutral.
+   * If value is not empty and valid, input state is valid.
+   * If value is not empty and invalid, input state is invalid.
+   *
+   * @param value value of input
+   * @param isValid is input value valid
+   * @returns InputState
+   */
+  const getInputState = <T,>(value: T, isValid: boolean): InputState => {
+    if (!value) {
+      return InputState.Neutral;
+    } else if (isValid) {
+      return InputState.Valid;
+    } else {
+      return InputState.Invalid;
+    }
+  };
+
   useEffect(() => {
     const isNameValid = playerNameSchema.safeParse(playerName).success;
     if (isNameValid) {
@@ -135,13 +154,7 @@ export function Home(): ReactElement {
         <Input
           value={playerName}
           onChange={(e): void => setPlayerName(e.target.value)}
-          state={
-            !playerName
-              ? InputState.Neutral
-              : isPlayerNameValid
-              ? InputState.Valid
-              : InputState.Invalid
-          }
+          state={getInputState(playerName, isPlayerNameValid)}
           placeholder={t('inputs.handle') as string}
           props={{ maxLength: PLAYER_NAME_RANGE[1] }}
         />
@@ -197,13 +210,10 @@ export function Home(): ReactElement {
           <ButtonWithInput
             onClick={(id: string): void => joinRoomButtonHandler(id)}
             onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
-            inputState={
-              !joinRoomButtonValue
-                ? InputState.Neutral
-                : isJoinRoomButtonValueValid
-                ? InputState.Valid
-                : InputState.Invalid
-            }
+            inputState={getInputState(
+              joinRoomButtonValue,
+              isJoinRoomButtonValueValid,
+            )}
             inputValue={joinRoomButtonValue}
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
