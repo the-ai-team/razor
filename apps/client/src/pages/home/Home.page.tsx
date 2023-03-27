@@ -28,6 +28,14 @@ export function Home(): ReactElement {
   endSocket();
 
   const navigate = useNavigate();
+  const [playerName, setPlayerName] = useState<string>('');
+  const [isPlayerNameValid, toggleIsPlayerNameValid] = useState<boolean>(false);
+  // value of join room button. this value will be a room id
+  const [joinRoomButtonValue, setJoinRoomButtonValue] = useState<string>('');
+  const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
+    useState<boolean>(false);
+  const [avtarURL, setAvtarURL] = useState<string>('');
+  const { t } = useTranslation('home');
 
   const getRoomId = (): string => {
     return '12345678';
@@ -50,19 +58,12 @@ export function Home(): ReactElement {
     }
   };
 
-  const [playerName, setPlayerName] = useState<string>('');
-  const [isValidPlayerName, toggleIsValidPlayerName] = useState<boolean>(false);
-  // value of join room button. this value will be a room id
-  const [joinRoomButtonValue, setJoinRoomButtonValue] = useState<string>('');
-  const [isValidJoinRoomButtonValue, toggleIsValidRoomButtonValue] =
-    useState<boolean>(false);
-  const [avtarURL, setAvtarURL] = useState<string>('');
-
   useEffect(() => {
-    if (playerNameSchema.safeParse(playerName).success) {
-      toggleIsValidPlayerName(true);
+    const isNameValid = playerNameSchema.safeParse(playerName).success;
+    if (isNameValid) {
+      toggleIsPlayerNameValid(true);
     } else {
-      toggleIsValidPlayerName(false);
+      toggleIsPlayerNameValid(false);
       setAvtarURL('');
       return;
     }
@@ -82,24 +83,26 @@ export function Home(): ReactElement {
     setJoinRoomButtonValue(value);
     // Room id is also tournament id without 'T:' prefix. Room id what players share.
     const tournamentId = `T:${value}`;
-    if (tournamentIdSchema.safeParse(tournamentId).success) {
-      toggleIsValidRoomButtonValue(true);
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
+      toggleIsRoomButtonValueValid(true);
     } else {
-      toggleIsValidRoomButtonValue(false);
+      toggleIsRoomButtonValueValid(false);
     }
   };
 
   const joinRoomButtonHandler = (value: string): void => {
     // Room id is also tournament id without 'T:' prefix. Room id what players share.
     const tournamentId = `T:${value}`;
-    if (tournamentIdSchema.safeParse(tournamentId).success) {
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
       navigate(`/${value}`);
     } else {
+      // TODO: Implement proper component
       alert('Invalid tournament id');
     }
   };
 
-  const { t } = useTranslation('home');
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
     'https://via.placeholder.com/300x150',
@@ -135,7 +138,7 @@ export function Home(): ReactElement {
           state={
             !playerName
               ? InputState.Neutral
-              : isValidPlayerName
+              : isPlayerNameValid
               ? InputState.Valid
               : InputState.Invalid
           }
@@ -145,7 +148,7 @@ export function Home(): ReactElement {
         <Button
           onClick={routeToRoom}
           isFullWidth={true}
-          isDisabled={isValidPlayerName ? false : true}
+          isDisabled={isPlayerNameValid ? false : true}
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
@@ -197,7 +200,7 @@ export function Home(): ReactElement {
             inputState={
               !joinRoomButtonValue
                 ? InputState.Neutral
-                : isValidJoinRoomButtonValue
+                : isJoinRoomButtonValueValid
                 ? InputState.Valid
                 : InputState.Invalid
             }
