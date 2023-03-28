@@ -37,3 +37,7 @@ body {
   scrollbar-width: 50px;
   scrollbar-color: #f4dddb #201a1a;
 }
+
+canvas{
+  image-rendering: pixelated;
+}
