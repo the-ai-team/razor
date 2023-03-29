@@ -5,7 +5,7 @@ import { AppPlayerId, AppRaceId } from '@razor/models';
 import { Dispatch, RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 
-import { RaceBackground } from './RaceBackground.template';
+import { RaceBackground } from './race-background';
 import { RaceLine } from './RaceLine.template';
 
 import cs from 'classnames';

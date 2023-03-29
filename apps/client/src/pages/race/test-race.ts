@@ -27,11 +27,6 @@ store.dispatch.game.joinPlayer({
   playerName: 'Player2',
 });
 
-store.dispatch.game.joinPlayer({
-  receivedTournamentId: tournamentId,
-  playerName: 'Player3',
-});
-
 (async (): Promise<void> => {
   store.dispatch.game.startCountdown({
     tournamentId: tournamentId,
@@ -55,3 +50,24 @@ store.dispatch.game.joinPlayer({
 
   game = store.getState().game;
 })();
+
+export const addPlayer = (count: number): void => {
+  console.log('addPlayer', count);
+  store.dispatch.game.joinPlayer({
+    receivedTournamentId: tournamentId,
+    playerName: `Player${count}`,
+  });
+  game = store.getState().game;
+  const playerIds = game.tournamentsModel[tournamentId].playerIds;
+  console.log('playerIds', playerIds);
+  const playerId = playerIds[playerIds.length - 1];
+
+  store.dispatch.game.sendTypeLog({
+    raceId: `${tournamentId}-R:000`,
+    playerId: playerId,
+    playerLog: {
+      timestamp: Date.now(),
+      textLength: 0,
+    },
+  });
+};
