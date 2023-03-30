@@ -74,8 +74,8 @@ export class SpriteDraw {
     this.ctx.strokeStyle = '#ff5959';
     this.ctx.lineWidth = 1;
     this.ctx.rect(
-      rowColumnSize * i,
       rowColumnSize * j,
+      rowColumnSize * i,
       rowColumnSize,
       rowColumnSize,
     );
