@@ -7,7 +7,7 @@ import {
   getRaceTrackPavementRows,
   raceTrackCols,
   raceTrackWidth,
-} from '../race-data';
+} from '../data/race-data';
 import { SpriteDraw } from './draw-blocks';
 import { drawLayers } from './draw-layers';
 import { RoadBlocks, roadBlocksGeneration } from './road-block-generation';

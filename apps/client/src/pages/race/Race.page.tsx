@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Text } from '../../components/atoms/text/Text.component';
 import { TextSize, TextType } from '../../models';
 import { RaceTrack } from './templates/RaceTrack.template';
-import './test-race';
+import './templates/data/test-race';
 
 export function Race(): ReactElement {
   const navigate = useNavigate();

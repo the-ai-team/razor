@@ -1,4 +1,4 @@
-import { tileMap } from '../race-data';
+import { tileMap } from '../data/race-data';
 import { SpriteDraw } from './draw-blocks';
 
 interface DrawLayerArgs {

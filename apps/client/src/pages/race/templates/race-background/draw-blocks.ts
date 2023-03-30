@@ -1,4 +1,4 @@
-import { getRaceTrackRowColumnSizes, raceTileSize } from '../race-data';
+import { getRaceTrackRowColumnSizes, raceTileSize } from '../data/race-data';
 
 /** Render size of a side of a race track block */
 const rowColumnSize = getRaceTrackRowColumnSizes();
