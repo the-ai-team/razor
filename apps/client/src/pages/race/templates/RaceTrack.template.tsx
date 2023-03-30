@@ -84,11 +84,12 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
         Click met to add
       </button>
       <div className={cs('relative w-full')}>
-        <div className='mx-auto'>
-          <RaceBackground count={playerIds.length} className={cs('my-10')} />
-        </div>
+        <RaceBackground
+          count={playerIds.length}
+          className={cs('my-10 mx-auto')}
+        />
         <div
-          className={cs('absolute mx-auto')}
+          className={cs('w-full absolute mx-auto')}
           style={{ top: `${pavementHeight}px` }}>
           <div className='mx-auto'>
             {playerIds.map((playerId: AppPlayerId) => {
@@ -108,18 +109,20 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
                 </div>
               );
             })}
-            {playerIds.map((playerId: AppPlayerId) => {
-              return (
-                <button
-                  key={playerId}
-                  type='button'
-                  className='bg-neutral-40 p-4 mr-2'
-                  onClick={(): void => updateHandler(playerId)}>
-                  +
-                </button>
-              );
-            })}
           </div>
+        </div>
+        <div className='mb-5'>
+          {playerIds.map((playerId: AppPlayerId) => {
+            return (
+              <button
+                key={playerId}
+                type='button'
+                className='bg-neutral-40 p-4 mr-2'
+                onClick={(): void => updateHandler(playerId)}>
+                +
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
