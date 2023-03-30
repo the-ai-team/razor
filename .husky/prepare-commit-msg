@@ -11,7 +11,7 @@ then
     echo "${green}✔${clear} Terminal found.."
     # This will run commitzen when using git commit command, `|| true` will use commit message defined if command aborts.
     exec < /dev/tty && npx cz --hook || true
-    return 0
+    exit 0
 else
     echo "[MESSAGE] Please, use git commit command on the terminal to activate commitzen"
     exit 1
