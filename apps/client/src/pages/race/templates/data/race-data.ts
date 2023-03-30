@@ -20,6 +20,9 @@ export const raceFreeParkingWidth =
  * @returns Number of rows
  */
 export const getRaceTrackNRows = (count: number): number => {
+  if (count === 1) {
+    return 3;
+  }
   return count * 2 - 1;
 };
 /** Number of pavement rows in race track
