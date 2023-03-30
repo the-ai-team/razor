@@ -60,8 +60,8 @@ export function RaceBackground({
         roadBlocks,
         pavementRows,
         draw,
-        totalRows,
         cols,
+        totalRows,
         isDebug,
       });
     };

@@ -2,12 +2,14 @@ import { AppPlayerId, AppPlayerLogId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
 import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
-import { CarComponent } from './CarComponent';
 import {
   getCarComponentSize,
   getRaceTrackRowColumnSizes,
+  raceFreeParkingWidth,
+  raceLineWidth,
   raceTrackWidth,
 } from '../data/race-data';
+import { CarComponent } from './CarComponent';
 
 interface RaceLineProps {
   raceId: AppRaceId;
@@ -22,25 +24,29 @@ export function RaceLine({
   raceTextLength,
   carColor,
 }: RaceLineProps): ReactElement | null {
-  console.log('RaceLine', raceId, playerId, raceTextLength, carColor);
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
   const game = useSelector((store: RootState) => store.game);
 
   const playerLogs = game.playerLogsModel[playerLogId];
-  console.log('playerLogs', playerLogs);
   if (!playerLogs) {
     return null;
   }
   const playerTypedLength = playerLogs[playerLogs.length - 1].textLength;
   const lineHeight = getRaceTrackRowColumnSizes();
   const { carSizeFactor, carWidth } = getCarComponentSize();
-  // console.log('carWidth', carWidth);
+
   let playerPos;
   if (playerTypedLength < raceTextLength) {
+    // total distance to travel = racing line width + car width
+    // player position = parking width + race progression ratio * total distance to travel - car width;
+    // * reducing car width to take car to the left of the starting line
     playerPos =
-      (playerTypedLength / raceTextLength) * (raceTrackWidth - carWidth);
+      raceFreeParkingWidth +
+      (playerTypedLength / raceTextLength) * (raceLineWidth + carWidth) -
+      carWidth;
   } else {
-    playerPos = raceTrackWidth - carWidth;
+    // after player finish the race stop the car at the end of the line
+    playerPos = raceFreeParkingWidth + raceLineWidth;
   }
 
   return (
@@ -48,7 +54,6 @@ export function RaceLine({
       key={playerId}
       className='relative mx-auto'
       style={{ width: `${raceTrackWidth}px`, height: `${lineHeight}px` }}>
-      <img src='' alt='' />
       <div
         className='absolute transition-all duration-300'
         style={{

@@ -1,10 +1,18 @@
-export const raceTrackCols = 42;
+export const raceTrackCols = 40;
 export const raceTrackFreeCols = 3;
-export const raceTrackTotalCols = raceTrackCols + raceTrackFreeCols;
+// Add free parking columns to both sides
+export const raceTrackTotalCols = raceTrackCols + 2 * raceTrackFreeCols;
+export const treePadding = 4;
 export const raceTileSize = 16;
 export const raceTrackRowColumnMultiplier = 2;
+// Full width of race track
 export const raceTrackWidth =
   raceTrackTotalCols * raceTileSize * raceTrackRowColumnMultiplier;
+// Playing area width
+export const raceLineWidth =
+  raceTrackCols * raceTileSize * raceTrackRowColumnMultiplier;
+export const raceFreeParkingWidth =
+  raceTrackFreeCols * raceTileSize * raceTrackRowColumnMultiplier;
 
 /** Number of rows in race track.
  * Based on player count
