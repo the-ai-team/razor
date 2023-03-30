@@ -9,6 +9,7 @@ import { RaceLine } from './race-line';
 
 import cs from 'classnames';
 import {
+  carColors,
   getRaceTrackPavementRows,
   getRaceTrackRowColumnSizes,
 } from './data/race-data';
@@ -25,21 +26,6 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
     ExtractIdType.Tournament,
   );
   const playerIds = game.tournamentsModel[tournamentId]?.playerIds;
-
-  const colors = [
-    '#C03E41',
-    '#4AA0F0',
-    '#5AE179',
-    '#FFBB3D',
-    '#CF5CF5',
-    '#8C5CF5',
-    '#5CF5D9',
-    '#D6F55C',
-    '#F49F4F',
-    '#5F5CF5',
-    '#F5DD5C',
-    '#F55CDC',
-  ];
 
   const textLength = game.racesModel[raceId].text.length;
   const lineHeight = getRaceTrackRowColumnSizes();
@@ -58,7 +44,8 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
           style={{ top: `${pavementHeight}px` }}>
           <div className='mx-auto'>
             {playerIds.map((playerId: AppPlayerId) => {
-              const color = colors[playerIds.indexOf(playerId) % colors.length];
+              const color =
+                carColors[playerIds.indexOf(playerId) % carColors.length];
               return (
                 <div
                   key={playerId}
