@@ -13,7 +13,7 @@ import {
   getRaceTrackRowColumnSizes,
 } from './data/race-data';
 
-interface RaceTrackProps {
+export interface RaceTrackProps {
   raceId: AppRaceId;
 }
 
@@ -24,7 +24,7 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
     ExtractIdType.Race,
     ExtractIdType.Tournament,
   );
-  const playerIds = game.tournamentsModel[tournamentId].playerIds;
+  const playerIds = game.tournamentsModel[tournamentId]?.playerIds;
 
   const colors = [
     '#C03E41',
@@ -58,7 +58,7 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
           style={{ top: `${pavementHeight}px` }}>
           <div className='mx-auto'>
             {playerIds.map((playerId: AppPlayerId) => {
-              const color = colors[playerIds.indexOf(playerId)];
+              const color = colors[playerIds.indexOf(playerId) % colors.length];
               return (
                 <div
                   key={playerId}

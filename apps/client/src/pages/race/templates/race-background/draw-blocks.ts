@@ -16,6 +16,11 @@ interface DrawDebugProps {
 
 export class SpriteDraw {
   public ctx: CanvasRenderingContext2D | null;
+  private canvas: HTMLCanvasElement;
+  private image: HTMLImageElement;
+  private width: number;
+  private height: number;
+
   /** SpriteDraw constructor
    * @param canvas canvas element in DOM
    * @param image sprite sheet image as a HTMLImageElement
@@ -23,11 +28,16 @@ export class SpriteDraw {
    * @param height height of canvas
    */
   constructor(
-    private canvas: HTMLCanvasElement,
-    private image: HTMLImageElement,
-    private width: number,
-    private height: number,
+    canvas: HTMLCanvasElement,
+    image: HTMLImageElement,
+    width: number,
+    height: number,
   ) {
+    this.canvas = canvas;
+    this.image = image;
+    this.width = width;
+    this.height = height;
+
     this.canvas.width = this.width;
     canvas.height = this.height;
     this.ctx = canvas.getContext('2d');
