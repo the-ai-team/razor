@@ -1,8 +1,8 @@
 import { AppPlayerId, AppRaceId } from '@razor/models';
-import { Dispatch, RootState } from '@razor/store';
+import { RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
-import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 
 import { RaceBackground } from './race-background';
 import { RaceLine } from './race-line';
@@ -12,7 +12,6 @@ import {
   getRaceTrackPavementRows,
   getRaceTrackRowColumnSizes,
 } from './data/race-data';
-import { addPlayer } from './data/test-race';
 
 interface RaceTrackProps {
   raceId: AppRaceId;
@@ -20,14 +19,12 @@ interface RaceTrackProps {
 
 export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const dispatch: Dispatch = useDispatch();
   const tournamentId = extractId(
     raceId,
     ExtractIdType.Race,
     ExtractIdType.Tournament,
   );
   const playerIds = game.tournamentsModel[tournamentId].playerIds;
-  const [count, setCount] = useState(playerIds.length);
 
   const colors = [
     '#C03E41',
@@ -44,31 +41,6 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
     '#F55CDC',
   ];
 
-  const updateHandler = useCallback(
-    (playerId: AppPlayerId): void => {
-      const playerLog = game.playerLogsModel[`${raceId}-${playerId}`];
-      const lastPlayerLog = playerLog[playerLog.length - 1];
-      dispatch.game.sendTypeLog({
-        raceId,
-        playerId,
-        playerLog: {
-          timestamp: Date.now(),
-          textLength: lastPlayerLog.textLength + 10,
-        },
-      });
-    },
-    [dispatch.game, game.playerLogsModel, raceId],
-  );
-
-  const countHandler = (): void => {
-    setCount(count => count + 1);
-    addPlayer(count + 1);
-  };
-
-  useEffect(() => {
-    console.log(count);
-  }, [count]);
-
   const textLength = game.racesModel[raceId].text.length;
   const lineHeight = getRaceTrackRowColumnSizes();
   const pavementHeight =
@@ -76,13 +48,6 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
 
   return (
     <div className=''>
-      <button
-        type='button'
-        className='btn bg-neutral-40'
-        onClick={countHandler}>
-        {' '}
-        Click met to add
-      </button>
       <div className={cs('relative w-full')}>
         <RaceBackground
           count={playerIds.length}
@@ -110,19 +75,6 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
               );
             })}
           </div>
-        </div>
-        <div className='mb-5'>
-          {playerIds.map((playerId: AppPlayerId) => {
-            return (
-              <button
-                key={playerId}
-                type='button'
-                className='bg-neutral-40 p-4 mr-2'
-                onClick={(): void => updateHandler(playerId)}>
-                +
-              </button>
-            );
-          })}
         </div>
       </div>
     </div>
