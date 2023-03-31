@@ -2,6 +2,7 @@ import { store } from '@razor/store';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import './services/initialize-socket';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
 import { NotFound } from './pages/NotFound';
