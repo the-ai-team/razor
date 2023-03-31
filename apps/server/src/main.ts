@@ -1,6 +1,9 @@
+import { PROTO_AUTH_TOKEN_TRANSFER } from '@razor/constants';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
+import { v4 as uuidv4 } from 'uuid';
+import { TokenPlayerMap } from './stores';
 const app = express();
 const port = process.env.PORT || 3000;
 const server = http.createServer(app);
@@ -20,11 +23,28 @@ const io = new Server(server, {
   },
 });
 
-io.on('connection', socket => {
-  console.log('a user connected');
+const tokenPlayerMap = new TokenPlayerMap();
 
+io.on('connection', socket => {
+  console.log(`👤🟢 User connected: ${socket.id}`);
+
+  const token = socket.handshake.auth.token;
+  const playerData = tokenPlayerMap.getPlayer(token);
+  console.log('playerData', playerData);
+
+  if (!playerData) {
+    const newToken = uuidv4();
+    socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
+    // TODO: Add player to map should need plyaer id which needs to be generated in the join player controller
+    // So, following method should be called in the join player controller later.
+    tokenPlayerMap.addPlayer(newToken, 'P:123456', socket.id);
+  } else {
+    tokenPlayerMap.updatePlayerSocketId(token, socket.id);
+  }
+
+  // TODO: function needs to implement to clear player from map when player disconnects and after several retries.
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log(`👤🔴 User disconnected: ${socket.id}`);
   });
 });
 
