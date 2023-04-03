@@ -64,14 +64,12 @@ playerIds.forEach(playerId => {
 game = store.getState().game;
 
 export const addPlayer = (count: number): void => {
-  console.log('addPlayer', count);
   store.dispatch.game.joinPlayer({
     receivedTournamentId: testTournamentId,
     playerName: `Player${count}`,
   });
   game = store.getState().game;
   const playerIds = game.tournamentsModel[testTournamentId].playerIds;
-  console.log('playerIds', playerIds);
   const playerId = playerIds[playerIds.length - 1];
 
   store.dispatch.game.sendTypeLog({

@@ -41,7 +41,6 @@ export function RaceTrackUpdaters(): ReactElement | null {
 
   const updateHandler = (playerId: AppPlayerId, value: string): void => {
     const recivedValue = parseInt(value, 10);
-    console.log('recivedValue', recivedValue);
     if (!recivedValue) {
       return;
     }

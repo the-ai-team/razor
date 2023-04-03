@@ -19,8 +19,8 @@ interface MockstoreProps {
 
 const Mockstore = ({ children }: MockstoreProps): ReactElement => (
   <Provider store={store}>
-    <RaceTrackUpdaters />
     {children}
+    <RaceTrackUpdaters />
   </Provider>
 );
 
