@@ -5,11 +5,9 @@ import { Server } from 'socket.io';
 import { tokenPlayerMap } from '../../stores';
 import { Logger } from '../logger';
 
-export const reconnector = (
-  authToken: AuthToken,
-  io: Server,
-  logger: Logger,
-): void => {
+export function checkReconnected(authToken: AuthToken, io: Server): void {
+  const logger = new Logger('reconnector');
+
   setTimeout(() => {
     if (!tokenPlayerMap.getPlayer(authToken)) {
       return;
@@ -31,4 +29,4 @@ export const reconnector = (
       logger.debug('User already connected from a new socket.', context);
     }
   }, RECONNECT_WAITING_TIME);
-};
+}

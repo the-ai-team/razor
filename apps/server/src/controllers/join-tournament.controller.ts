@@ -55,6 +55,7 @@ const joinTournamentController = ({
     });
     if (!playerId) {
       logger.error("Store didn't send a playerId", context);
+      // TODO: send error response
       return;
     }
     logger.debug('Player added to the store', context);

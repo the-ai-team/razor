@@ -5,7 +5,7 @@ interface MapData {
   socketId: socketId;
 }
 
-interface mapAsObject {
+interface MapAsObject {
   [key: string]: MapData;
 }
 
@@ -72,7 +72,7 @@ class TokenPlayerMap {
     return null;
   }
 
-  viewMap(): mapAsObject {
+  viewMap(): MapAsObject {
     return Object.fromEntries(this.map);
   }
 
