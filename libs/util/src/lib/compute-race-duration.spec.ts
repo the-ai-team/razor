@@ -9,6 +9,6 @@ describe('[Utils] computeRaceDuration', () => {
     [M_RACE_TEXT1, 162],
   ])('Calculate timeout timer', (text, time) => {
     const timeoutDuration = computeRaceDuration(text);
-    expect(timeoutDuration).toBeGreaterThanOrEqual(time);
+    expect(timeoutDuration).toEqual(time);
   });
 });

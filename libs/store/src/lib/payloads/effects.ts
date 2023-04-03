@@ -4,6 +4,7 @@ import {
   AppPlayerId,
   AppPlayerLog,
   AppRaceId,
+  AppSnapshot,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
@@ -42,4 +43,8 @@ export type SendTypeLogPlayload = {
   playerId: AppPlayerId;
   /** Timestamp, and text length from players machine */
   playerLog: AppPlayerLog;
+};
+
+export type ReplaceFullStatePayload = {
+  parentState: AppSnapshot;
 };

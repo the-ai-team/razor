@@ -6,6 +6,7 @@ import {
   EndCountdownPayload,
   EndRacePayload,
   JoinPlayerPayload,
+  ReplaceFullStatePayload,
   SendTypeLogPlayload,
   SetTournamentStatePayload,
   StartCountdownPayload,
@@ -15,6 +16,7 @@ import { Dispatch, RootState } from '../store';
 import { sendLogMessage } from './logger';
 import { clearPlayer, joinPlayer, sendTypeLog } from './player';
 import { endCoundown, endRace, startCountdown } from './race';
+import { replaceFullState } from './replacers';
 import { setTournamentState } from './tournament';
 
 /** Effects functions of the store
@@ -37,4 +39,6 @@ export const effects = (dispatch: Dispatch) => ({
   sendTypeLog: (payload: SendTypeLogPlayload, state: RootState) =>
     sendTypeLog(dispatch, payload, state),
   sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
+  replaceFullState: (payload: ReplaceFullStatePayload) =>
+    replaceFullState(dispatch, payload),
 });
