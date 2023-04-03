@@ -1,10 +1,8 @@
-import { TextEncoder } from 'util';
-
 export const generateAvatarLink = (playerName: string): string => {
   /** Convert player name text to hex value to use as a seed. */
   const seed = bytesToHex(stringToUTF8Bytes(playerName));
 
-  const image = `https://avatars.dicebear.com/api/open-peeps/${seed}.svg`;
+  const image = `https://avatars.dicebear.com/api/open-peeps/${seed}.svg?scale=80`;
   return image;
 };
 

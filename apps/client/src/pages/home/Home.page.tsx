@@ -1,8 +1,9 @@
-import { ReactElement, useState } from 'react';
+import cs from 'classnames';
+import { ReactElement, useEffect, useState } from 'react';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
 import { useNavigate, useParams } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
-import cs from 'classnames';
-import logo from '../../assets/images/logo.png';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 import { endSocket, initializeSocket } from '../../services/initialize-socket';
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
@@ -14,6 +15,7 @@ import {
   Link,
   Panel,
 } from '../../components';
+import { generateAvatarLink } from '@razor/util';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
@@ -44,6 +46,19 @@ export function Home(): ReactElement {
   };
 
   const [playerName, setPlayerName] = useState<string>('');
+  const [avtarURL, setAvtarURL] = useState<string>('');
+
+  useEffect(() => {
+    if (playerName === '') {
+      setAvtarURL('');
+    } else {
+      setAvtarURL(generateAvatarLink(playerName));
+    }
+    return () => {
+      setAvtarURL('');
+    };
+  }, [playerName]);
+
   const { t } = useTranslation('home');
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -58,7 +73,21 @@ export function Home(): ReactElement {
           'flex flex-col justify-center items-center',
           'w-[500px] gap-8',
         )}>
-        <img src={logo} className='-mb-16' alt='' />
+        {/* <img src={logo} className='-mb-16' alt='' /> */}
+        <div className='relative'>
+          {avtarURL ? (
+            <>
+              <LogoFill className='-mb-16' />
+              <img
+                src={avtarURL}
+                alt=''
+                className='w-14 h-14 absolute top-[56%] right-[18%] rounded-2xl overflow-hidden'
+              />
+            </>
+          ) : (
+            <Logo className='-mb-16' />
+          )}
+        </div>
         {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         <Input
           value={playerName}
