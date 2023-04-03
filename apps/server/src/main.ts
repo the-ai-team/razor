@@ -4,9 +4,8 @@ import {
   PROTO_CREATE_LOBBY_REQUEST,
   PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
-  RECONNECT_WAITING_TIME,
 } from '@razor/constants';
-import { AuthToken, InitialServerData } from '@razor/models';
+import { InitialServerData } from '@razor/models';
 import { store } from '@razor/store';
 import express from 'express';
 import http from 'http';
@@ -17,7 +16,7 @@ import './controllers';
 
 import { pubsub } from './services/pubsub';
 import { PubSubEvents } from './models';
-import { ContextOutput, Logger } from './services';
+import { ContextOutput, Logger, reconnector } from './services';
 import { tokenPlayerMap } from './stores';
 
 const app = express();
@@ -46,29 +45,6 @@ const io = new Server(server, {
 });
 
 const logger = new Logger('main');
-
-const reconnect = (authToken: AuthToken): void => {
-  setTimeout(() => {
-    if (!tokenPlayerMap.getPlayer(authToken)) {
-      return;
-    }
-    // Get socket id from current player data. If player connected again socket id should be already updated.
-    const { socketId, playerId } = tokenPlayerMap.getPlayer(authToken);
-    const context = logger.createContext({ identifier: playerId });
-
-    const isSocketConnected = io.sockets.sockets.get(socketId)?.connected;
-    if (!isSocketConnected) {
-      // If player still not connected then delete the player from map.
-      tokenPlayerMap.clearPlayer(authToken);
-      logger.debug(
-        `User deleted from the map after waiting for ${RECONNECT_WAITING_TIME}ms.`,
-        context,
-      );
-    } else {
-      logger.debug('User already connected from a new socket.', context);
-    }
-  }, RECONNECT_WAITING_TIME);
-};
 
 io.on('connection', socket => {
   const context = logger.createContext({ identifier: socket.id });
@@ -102,6 +78,7 @@ io.on('connection', socket => {
 
   // On any socket event publish the event with playerId and data.
   socket.onAny((event, data) => {
+    // TODO: should listen to reconnect protocol and send the player data to the client.
     let context: ContextOutput;
     if (
       event === PROTO_JOIN_LOBBY_REQUEST ||
@@ -124,12 +101,11 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
     const authToken = tokenPlayerMap.getAuthTokenBySocketId(socket.id);
-    if (authToken) {
-      reconnect(authToken);
-    }
     const context = logger.createContext({ identifier: playerId });
-    pubsub.publish(PubSubEvents.PlayerDisconnect, { context });
     logger.info('User disconnected.', context);
+    if (authToken) {
+      reconnector(authToken, io, logger);
+    }
   });
 });
 
