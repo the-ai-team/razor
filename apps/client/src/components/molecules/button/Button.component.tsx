@@ -60,6 +60,7 @@ export function Button({
               { 'bg-transparent hover:bg-neutral-20': !isButtonDanger },
               'border hover:ring-[4px] border-neutral-40 ring-neutral-40',
               'relative py-2 px-10 min-w-min rounded',
+              'transition-all duration-300',
               { 'w-full': isFullWidth },
             )
       }

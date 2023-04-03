@@ -1,7 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { PLAYER_NAME_RANGE, TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { playerNameSchema, tournamentIdSchema } from '@razor/models';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
@@ -13,20 +14,31 @@ import {
   ButtonWithInput,
   Description,
   Input,
+  InputState,
   Link,
   Panel,
+  Text,
 } from '../../components';
+import { TextSize, TextType } from '../../models';
 import { endSocket, initializeSocket } from '../../services/initialize-socket';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
-  // disconnect any socket connection if user navigates to home page.
+  // disconnect any socket connection if user navigates back to home page.
   endSocket();
 
   const navigate = useNavigate();
+  const [playerName, setPlayerName] = useState<string>('');
+  const [isPlayerNameValid, toggleIsPlayerNameValid] = useState<boolean>(false);
+  // value of join room button. this value will be a room id
+  const [joinRoomButtonValue, setJoinRoomButtonValue] = useState<string>('');
+  const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
+    useState<boolean>(false);
+  const [avtarURL, setAvtarURL] = useState<string>('');
+  const { t } = useTranslation('home');
 
-  const getTournamentId = (): string => {
-    return '123';
+  const getRoomId = (): string => {
+    return '12345678';
   };
   const routeToRoom = (): void => {
     if (roomId) {
@@ -36,31 +48,80 @@ export function Home(): ReactElement {
         onTokenReceived: () => navigate(`/${roomId}/room`),
       });
     } else {
-      // TODO: Create tournament in redux store
-      const tournamentId = getTournamentId();
+      // TODO: should receive tournament id(room id) from server
+      const roomId = getRoomId();
       initializeSocket({
         playerName,
         roomId,
-        onTokenReceived: () => navigate(`/${tournamentId}/room`),
+        onTokenReceived: () => navigate(`/${roomId}/room`),
       });
     }
   };
 
-  const [playerName, setPlayerName] = useState<string>('');
-  const [avtarURL, setAvtarURL] = useState<string>('');
+  /** Get input component state using its value and validity.
+   * If value is empty, input state is neutral.
+   * If value is not empty and valid, input state is valid.
+   * If value is not empty and invalid, input state is invalid.
+   *
+   * @param value value of input
+   * @param isValid is input value valid
+   * @returns InputState
+   */
+  const getInputState = <T,>(value: T, isValid: boolean): InputState => {
+    if (!value) {
+      return InputState.Neutral;
+    } else if (isValid) {
+      return InputState.Valid;
+    } else {
+      return InputState.Invalid;
+    }
+  };
 
   useEffect(() => {
+    const isNameValid = playerNameSchema.safeParse(playerName).success;
+    if (isNameValid) {
+      toggleIsPlayerNameValid(true);
+    } else {
+      toggleIsPlayerNameValid(false);
+      setAvtarURL('');
+      return;
+    }
+
     if (playerName === '') {
       setAvtarURL('');
     } else {
       setAvtarURL(generateAvatarLink(playerName));
     }
+
     return () => {
       setAvtarURL('');
     };
   }, [playerName]);
 
-  const { t } = useTranslation('home');
+  const roomIdChangeHandler = (value: string): void => {
+    setJoinRoomButtonValue(value);
+    // Room id is also tournament id without 'T:' prefix. Room id what players share.
+    const tournamentId = `T:${value}`;
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
+      toggleIsRoomButtonValueValid(true);
+    } else {
+      toggleIsRoomButtonValueValid(false);
+    }
+  };
+
+  const joinRoomButtonHandler = (value: string): void => {
+    // Room id is also tournament id without 'T:' prefix. Room id what players share.
+    const tournamentId = `T:${value}`;
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
+      navigate(`/${value}`);
+    } else {
+      // TODO: Implement proper component
+      alert('Invalid tournament id');
+    }
+  };
+
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
     'https://via.placeholder.com/300x150',
@@ -89,14 +150,29 @@ export function Home(): ReactElement {
           )}
         </div>
         {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
+        {/* Player handle(username) input and join/create button */}
         <Input
           value={playerName}
           onChange={(e): void => setPlayerName(e.target.value)}
+          state={getInputState(playerName, isPlayerNameValid)}
           placeholder={t('inputs.handle') as string}
+          props={{ maxLength: PLAYER_NAME_RANGE[1] }}
         />
-        <Button onClick={routeToRoom} isFullWidth={true} isCarVisible={true}>
+        <Button
+          onClick={routeToRoom}
+          isFullWidth={true}
+          isDisabled={isPlayerNameValid ? false : true}
+          isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
+        {roomId ? (
+          <Text
+            type={TextType.Title}
+            size={TextSize.Small}
+            className='-mt-5 text-opacity-70'>
+            {t('room_id', { id: roomId }) as string}
+          </Text>
+        ) : null}
       </div>
       <Panel title={t('panel.title')}>
         <Description
@@ -132,8 +208,13 @@ export function Home(): ReactElement {
           </Button>
         ) : (
           <ButtonWithInput
-            // TODO: implement id validation
-            onClick={(id: string): void => navigate(`/${id}`)}
+            onClick={(id: string): void => joinRoomButtonHandler(id)}
+            onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
+            inputState={getInputState(
+              joinRoomButtonValue,
+              isJoinRoomButtonValueValid,
+            )}
+            inputValue={joinRoomButtonValue}
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>

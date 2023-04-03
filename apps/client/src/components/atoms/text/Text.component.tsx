@@ -62,7 +62,7 @@ export function Text({
   const textTag = as || textData?.tag || TextTag.Span;
   const textClasses = cs(
     colorClass,
-    { className: className },
+    className,
     { 'transition-all duration-300': isAnimatable },
     textData?.definedClasses,
   );

@@ -35,6 +35,7 @@ export const initializeSocket = ({
     alert('Connection error');
     endSocket();
   });
+  // TODO: emit create room request if roomId is provided
   socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
   socket.on(PROTO_AUTH_TOKEN_TRANSFER, (token: string) => {
     authToken = token;
