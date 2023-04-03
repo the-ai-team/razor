@@ -1,13 +1,12 @@
 import cs from 'classnames';
 import { ReactElement, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-// Assets
-import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
-// Components
-import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { useNavigate, useParams } from 'react-router';
 import { Trans, useTranslation } from 'react-i18next';
+import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
+import { endSocket, initializeSocket } from '../../services/initialize-socket';
+import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import {
   Button,
   ButtonWithInput,
@@ -19,7 +18,9 @@ import {
 import { generateAvatarLink } from '@razor/util';
 
 export function Home(): ReactElement {
-  const { id } = useParams();
+  const { roomId } = useParams();
+  // disconnect any socket connection if user navigates to home page.
+  endSocket();
 
   const navigate = useNavigate();
 
@@ -27,27 +28,36 @@ export function Home(): ReactElement {
     return '123';
   };
   const routeToRoom = (): void => {
-    if (id) {
-      navigate(`/${id}/room`);
+    if (roomId) {
+      initializeSocket({
+        playerName,
+        roomId,
+        onTokenReceived: () => navigate(`/${roomId}/room`),
+      });
     } else {
+      // TODO: Create tournament in redux store
       const tournamentId = getTournamentId();
-      navigate(`/${tournamentId}/room`);
+      initializeSocket({
+        playerName,
+        roomId,
+        onTokenReceived: () => navigate(`/${tournamentId}/room`),
+      });
     }
   };
 
-  const [userName, setUserName] = useState<string>('');
+  const [playerName, setPlayerName] = useState<string>('');
   const [avtarURL, setAvtarURL] = useState<string>('');
 
   useEffect(() => {
-    if (userName === '') {
+    if (playerName === '') {
       setAvtarURL('');
     } else {
-      setAvtarURL(generateAvatarLink(userName));
+      setAvtarURL(generateAvatarLink(playerName));
     }
     return () => {
       setAvtarURL('');
     };
-  }, [userName]);
+  }, [playerName]);
 
   const { t } = useTranslation('home');
   const panelImages: Array<string> = [
@@ -80,12 +90,12 @@ export function Home(): ReactElement {
         </div>
         {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         <Input
-          value={userName}
-          onChange={(e): void => setUserName(e.target.value)}
+          value={playerName}
+          onChange={(e): void => setPlayerName(e.target.value)}
           placeholder={t('inputs.handle') as string}
         />
         <Button onClick={routeToRoom} isFullWidth={true} isCarVisible={true}>
-          {id ? t('actions.join') : t('actions.create')}
+          {roomId ? t('actions.join') : t('actions.create')}
         </Button>
       </div>
       <Panel title={t('panel.title')}>
@@ -114,7 +124,7 @@ export function Home(): ReactElement {
       </Panel>
 
       <div className='absolute bottom-4 left-4'>
-        {id ? (
+        {roomId ? (
           <Button
             onClick={(): void => navigate('../')}
             icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
