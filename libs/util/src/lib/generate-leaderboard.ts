@@ -10,6 +10,7 @@ import {
   AppTimeoutLeaderboardEntry,
   AppTimeoutPlayerValues,
 } from '@razor/models';
+
 import { extractId, ExtractIdType } from './extract-ids';
 
 /** Generate leaderboard for given player logs.

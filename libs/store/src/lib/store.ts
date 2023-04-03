@@ -6,6 +6,7 @@ import {
   RematchDispatch,
   RematchRootState,
 } from '@rematch/core';
+
 import { effects } from './effects';
 import { initialState } from './initialState';
 import * as reducers from './reducers';

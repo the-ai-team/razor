@@ -1,4 +1,5 @@
 import { AppIdNumberType } from '@razor/models';
+
 import { generateUid } from './generate-uid';
 
 describe('[Utils] generateUid', () => {

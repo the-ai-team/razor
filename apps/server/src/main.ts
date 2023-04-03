@@ -7,9 +7,10 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
+
+import { pubsub } from './services/pubsub';
 import { PubSubEvents } from './models';
 import { Logger } from './services';
-import { pubsub } from './services/pubsub';
 import { tokenPlayerMap } from './stores';
 
 const app = express();

@@ -1,8 +1,10 @@
 import { Meta, Story } from '@storybook/react';
+
 import { InputState } from '../../molecules';
+
 import {
-  ButtonWithInputProps,
   ButtonWithInput,
+  ButtonWithInputProps,
 } from './ButtonWithInput.component';
 
 export default {

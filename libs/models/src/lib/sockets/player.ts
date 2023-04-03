@@ -1,5 +1,6 @@
 import { PLAYER_NAME_RANGE } from '@razor/constants';
 import { z } from 'zod';
+
 import { Tournament, TournamentId } from './tournament';
 
 // ==== Types ==== //

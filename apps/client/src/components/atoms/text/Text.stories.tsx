@@ -1,5 +1,7 @@
-import { TextSize, TextType } from '../../../models';
 import { Meta, Story } from '@storybook/react';
+
+import { TextSize, TextType } from '../../../models';
+
 import { Text, TextProps } from './Text.component';
 
 export default {

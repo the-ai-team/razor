@@ -1,10 +1,11 @@
-import { AppStateModel, AppTournamentState } from '@razor/models';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
+  M_TOURNAMENT_ID0,
   mockPlayersModel,
   mockTournament,
-  M_TOURNAMENT_ID0,
 } from '@razor/mocks';
+import { AppStateModel, AppTournamentState } from '@razor/models';
+
 import { tournamentNotFound } from '../raisers';
 import { initializeStore } from '../store';
 

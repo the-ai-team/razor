@@ -5,9 +5,11 @@ import {
   socketId,
   TournamentId,
 } from '@razor/models';
+
 import { tokenPlayerMap } from '../../stores';
-import { localLogger } from './local-logger';
+
 import { cloudLogger } from './cloud-logger';
+import { localLogger } from './local-logger';
 
 let wlogger = null;
 if (process.env.NODE_ENV === 'development') {

@@ -1,5 +1,6 @@
+import { Meta, Story } from '@storybook/react';
+
 import { Input, InputProps, InputState } from './Input.component';
-import { Story, Meta } from '@storybook/react';
 
 export default {
   title: 'Molecules/Input',

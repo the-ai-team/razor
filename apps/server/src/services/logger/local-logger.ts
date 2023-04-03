@@ -1,4 +1,5 @@
-import { createLogger, format, Logger, transports, addColors } from 'winston';
+import { addColors, createLogger, format, Logger, transports } from 'winston';
+
 import { logLevels } from './levels';
 
 const { printf, timestamp, combine, colorize, errors, label } = format;

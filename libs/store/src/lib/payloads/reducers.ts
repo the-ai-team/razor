@@ -1,17 +1,17 @@
 // ### [Payloads] Data models for the reducer payloads ### //
 
 import {
-  AppTournamentId,
-  AppTournament,
-  AppRaceId,
-  AppRace,
-  AppPlayerId,
-  AppPlayer,
-  AppLeaderboard,
-  AppPlayerLogId,
-  AppPlayerLog,
   AppErrorLog,
   AppErrorTimestamp,
+  AppLeaderboard,
+  AppPlayer,
+  AppPlayerId,
+  AppPlayerLog,
+  AppPlayerLogId,
+  AppRace,
+  AppRaceId,
+  AppTournament,
+  AppTournamentId,
 } from '@razor/models';
 
 export type AddTournamentReducerPayload = {

@@ -1,5 +1,6 @@
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { M_RACE_TEXT0, M_RACE_TEXT1 } from '@razor/mocks';
+
 import { computeRaceDuration } from './compute-race-duration';
 
 describe('[Utils] computeRaceDuration', () => {

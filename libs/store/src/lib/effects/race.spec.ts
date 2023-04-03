@@ -1,3 +1,29 @@
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import {
+  M_PLAYER_AVATAR0,
+  M_PLAYER_AVATAR1,
+  M_PLAYER_AVATAR2,
+  M_PLAYER_ID0,
+  M_PLAYER_ID1,
+  M_PLAYER_ID2,
+  M_PLAYER_ID3,
+  M_PLAYER_NAME0,
+  M_PLAYER_NAME1,
+  M_PLAYER_NAME2,
+  M_RACE_TEXT0,
+  M_RACE0,
+  M_TOURNAMENT_ID0,
+  M_TOURNAMENT0,
+  M_TR0_RACE_ID0,
+  M_TR0_RACE_ID1,
+  mockPlayerId,
+  mockPlayerLogId,
+  mockPlayerLogs,
+  mockPlayersModel,
+  mockRace,
+  mockTimeoutPlayerLogs,
+  mockTournament,
+} from '@razor/mocks';
 import {
   AppLeaderboard,
   AppPlayerLogs,
@@ -10,32 +36,7 @@ import {
 } from '@razor/models';
 import { generateLeaderboard } from '@razor/util';
 import { range } from 'lodash';
-// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import {
-  mockPlayerId,
-  mockPlayerLogId,
-  mockPlayerLogs,
-  mockPlayersModel,
-  mockRace,
-  mockTimeoutPlayerLogs,
-  mockTournament,
-  M_PLAYER_AVATAR0,
-  M_PLAYER_AVATAR1,
-  M_PLAYER_AVATAR2,
-  M_PLAYER_ID0,
-  M_PLAYER_ID1,
-  M_PLAYER_ID2,
-  M_PLAYER_ID3,
-  M_PLAYER_NAME0,
-  M_PLAYER_NAME1,
-  M_PLAYER_NAME2,
-  M_RACE0,
-  M_RACE_TEXT0,
-  M_TOURNAMENT0,
-  M_TOURNAMENT_ID0,
-  M_TR0_RACE_ID0,
-  M_TR0_RACE_ID1,
-} from '@razor/mocks';
+
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { initializeStore } from '../store';
 

@@ -1,8 +1,9 @@
-import React, { ReactElement } from 'react';
-import cs from 'classnames';
-import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
-import { TextStyles } from '../../../constants';
+import { createElement, ReactElement } from 'react';
 import { Trans } from 'react-i18next';
+import cs from 'classnames';
+
+import { TextStyles } from '../../../constants';
+import { TextSize, TextTag, TextType, TextVariant } from '../../../models';
 
 interface TextContainerProps {
   style: React.CSSProperties;
@@ -80,7 +81,7 @@ export function Text({
 
   if (isAnimatable) {
     const textTag = as || TextTag.Span;
-    return React.createElement(textTag, textContainerProps);
+    return createElement(textTag, textContainerProps);
   }
 
   return <TextContainer {...textContainerProps} tag={textTag} />;

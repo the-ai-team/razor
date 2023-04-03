@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { Leaderboard } from './leaderboard';
 import { Player } from './player';
 import { Race } from './race';

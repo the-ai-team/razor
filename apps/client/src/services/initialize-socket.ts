@@ -4,6 +4,7 @@ import {
 } from '@razor/constants';
 import { AuthToken, InitialClientData } from '@razor/models';
 import { io, Socket } from 'socket.io-client';
+
 import { PubSubEvents } from '../models';
 import { pubsub } from '../utils/pubsub';
 

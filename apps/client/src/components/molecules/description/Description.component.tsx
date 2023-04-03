@@ -1,7 +1,8 @@
 import { ReactElement } from 'react';
 import { Trans } from 'react-i18next';
-import { Text } from '../../';
+
 import { TextSize, TextType } from '../../../models';
+import { Text } from '../../';
 
 export interface DescriptionProps {
   title: string;

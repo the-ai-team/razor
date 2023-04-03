@@ -1,12 +1,13 @@
-import cs from 'classnames';
 import { ReactElement, useEffect, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
+import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
+import { generateAvatarLink } from '@razor/util';
+import cs from 'classnames';
+import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
+
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
-import { useNavigate, useParams } from 'react-router';
-import { Trans, useTranslation } from 'react-i18next';
-import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
-import { endSocket, initializeSocket } from '../../services/initialize-socket';
-import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import {
   Button,
   ButtonWithInput,
@@ -15,7 +16,7 @@ import {
   Link,
   Panel,
 } from '../../components';
-import { generateAvatarLink } from '@razor/util';
+import { endSocket, initializeSocket } from '../../services/initialize-socket';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
@@ -73,7 +74,6 @@ export function Home(): ReactElement {
           'flex flex-col justify-center items-center',
           'w-[500px] gap-8',
         )}>
-        {/* <img src={logo} className='-mb-16' alt='' /> */}
         <div className='relative'>
           {avtarURL ? (
             <>
