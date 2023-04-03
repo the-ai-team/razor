@@ -5,7 +5,7 @@ interface MapData {
   socketId: socketId;
 }
 
-export class TokenPlayerMap {
+class TokenPlayerMap {
   private map: Map<AuthToken, MapData> = new Map<PlayerId, MapData>();
 
   addPlayer(
@@ -91,3 +91,5 @@ export class TokenPlayerMap {
     this.map.delete(authToken);
   }
 }
+
+export const tokenPlayerMap = new TokenPlayerMap();

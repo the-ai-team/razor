@@ -14,8 +14,8 @@
     "coverage:summary": "npx istanbul report --include ./coverage/coverage-final.json --dir ./coverage json-summary clover",
     "test:store": "nx test store --watchAll",
     "test:util": "nx test util --watchAll",
-    "build:client": "nx build client",
-    "build:server": "nx build server",
+    "build:client": "nx run client:build:production",
+    "build:server": "nx run server:build:production",
     "serve": "node dist/apps/server/main.js",
     "pretty": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md,html}\"",
     "lint": "nx run-many --all --target=lint",
@@ -48,6 +48,7 @@
     "socket.io-client": "^4.6.0",
     "tslib": "^2.3.0",
     "util": "^0.12.5",
+    "winston": "^3.8.2",
     "zod": "^3.20.2"
   },
   "devDependencies": {
