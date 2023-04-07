@@ -1,8 +1,9 @@
 import {
-  PROTO_CREATE_LOBBY_ACCEPT,
-  PROTO_CREATE_LOBBY_REQUEST,
-} from '@razor/constants';
-import { InitialClientData, InitialServerData, Snapshot } from '@razor/models';
+  InitialClientData,
+  InitialServerData,
+  Snapshot,
+  socketProtocols,
+} from '@razor/models';
 import { store } from '@razor/store';
 
 import { PubSubEvents } from '../models';
@@ -60,9 +61,12 @@ const createTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToClient, {
     playerId,
-    protocol: PROTO_CREATE_LOBBY_ACCEPT,
+    protocol: socketProtocols.CreateLobbyAccept,
     data: initialServerData,
   });
 };
 
-pubsub.subscribe(PROTO_CREATE_LOBBY_REQUEST, createTournamentController);
+pubsub.subscribe(
+  socketProtocols.CreateLobbyRequest,
+  createTournamentController,
+);
