@@ -1,4 +1,4 @@
-import { PROTO_AUTH_TOKEN_TRANSFER } from '@razor/constants';
+import { socketProtocols } from '@razor/models';
 import { Server, Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -30,7 +30,7 @@ export function socketManager(socket: Socket, io: Server): void {
   if (!playerData) {
     // If player is new token will be generated and sent to the client.
     newToken = uuidv4();
-    socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
+    socket.emit(socketProtocols.AuthTokenTransfer, newToken);
     // New player will be added with related socket id to the map.
     tokenPlayerMap.addSocketId(newToken, socket.id);
     const context = logger.createContext({ identifier: socket.id });

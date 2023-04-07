@@ -1,15 +1,11 @@
 import {
-  PROTO_JOIN_LOBBY_ACCEPT,
-  PROTO_JOIN_LOBBY_REQUEST,
-  PROTO_PLAYER_JOINED,
-} from '@razor/constants';
-import {
   AppPlayer,
   InitialClientData,
   InitialServerData,
   PlayerJoined,
   PlayerState,
   Snapshot,
+  socketProtocols,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -100,7 +96,7 @@ const joinTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToClient, {
     playerId,
-    protocol: PROTO_JOIN_LOBBY_ACCEPT,
+    protocol: socketProtocols.JoinLobbyAccept,
     data: initialServerData,
   });
 
@@ -116,9 +112,9 @@ const joinTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToAll, {
     tournamentId,
-    protocol: PROTO_PLAYER_JOINED,
+    protocol: socketProtocols.PlayerJoin,
     data: joinedPlayerData,
   });
 };
 
-pubsub.subscribe(PROTO_JOIN_LOBBY_REQUEST, joinTournamentController);
+pubsub.subscribe(socketProtocols.JoinLobbyRequest, joinTournamentController);

@@ -2,6 +2,7 @@ type FuncType<T extends object> = (data: T) => void;
 interface Events {
   [key: string]: FuncType<object>[];
 }
+
 export class PubSub {
   private events: Events = {};
 

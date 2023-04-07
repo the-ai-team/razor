@@ -1,12 +1,8 @@
-import {
-  PROTO_CREATE_LOBBY_REQUEST,
-  PROTO_JOIN_LOBBY_REQUEST,
-} from '@razor/constants';
+import { socketProtocols } from '@razor/models';
 import { Socket } from 'socket.io';
 
 import { tokenPlayerMap } from '../../stores';
 import { ContextOutput, Logger } from '../logger';
-import {} from '../logger';
 import { pubsub } from '../pubsub';
 
 interface receiverArgs<T> {
@@ -24,8 +20,8 @@ export function publishOnReceive<T>({
 }: receiverArgs<T>): void {
   let context: ContextOutput;
   if (
-    event === PROTO_JOIN_LOBBY_REQUEST ||
-    event === PROTO_CREATE_LOBBY_REQUEST
+    event === socketProtocols.JoinLobbyRequest ||
+    event === socketProtocols.CreateLobbyRequest
   ) {
     // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
     // Player id will be created in the controller.
