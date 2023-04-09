@@ -1,10 +1,6 @@
 import { PLAYER_NAME_RANGE } from '@razor/constants';
 import { z } from 'zod';
 
-import { AppStateModel } from '../state';
-
-import { TournamentId } from './tournament';
-
 // ==== Types ==== //
 /** Player id template literal */
 export type PlayerId = z.input<typeof playerIdSchema>;
@@ -42,34 +38,16 @@ export const playerNameSchema = z
   .max(PLAYER_NAME_RANGE[1])
   .regex(/^[a-zA-Z0-9_]+$/);
 
+// ==== Compound Schemas ==== //
+export const playerSchema = z.object({
+  id: playerIdSchema,
+  name: playerNameSchema,
+  avatarLink: z.string().url(),
+  state: z.nativeEnum(PlayerState),
+});
+
 // ==== Interfaces ==== //
-// Note: `Player` does not need to be a schema; because it's only bound to the server-to-client communication.
-export interface Player {
-  /** Unique player id */
-  id: PlayerId;
-  /** Player name */
-  name: string;
-  /** Player avatar icon URL */
-  avatarLink: string;
-  /** Player state */
-  state: PlayerState;
-}
-
-// Data sent from the client to the server with socket establishment
-export interface InitialClientData {
-  playerName: string;
-  roomId?: string;
-}
-
-export type Snapshot = Omit<AppStateModel, 'errorLogsModel'>; // This interface is used to sync the client with the server.
-
-// Data sent from the server to the client after socket establishment to sync
-export interface InitialServerData {
-  playerId: PlayerId;
-  tournamentId: TournamentId;
-  /** Game snapshot */
-  snapshot: Snapshot;
-}
+export type Player = z.infer<typeof playerSchema>;
 
 // Object to send player data when a player joins the tournament to all in a room.
 export interface PlayerJoined {
