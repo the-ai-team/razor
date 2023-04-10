@@ -2,7 +2,7 @@ import { InitialServerData, socketProtocols } from '@razor/models';
 import { Server } from 'socket.io';
 
 import { PubSubEvents } from '../../models';
-import { tokenPlayerMap } from '../../stores/token-player-map';
+import { tokenPlayerMap } from '../../stores';
 import { pubsub } from '..';
 
 /**

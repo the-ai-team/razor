@@ -39,3 +39,5 @@ export const playerJoinSchema = z.object({
 export const startRaceRequestSchema = z.object({
   playerId: playerIdSchema,
 });
+
+export type ProtocolSchemaTypes = typeof initialClientDataSchema | typeof initialServerDataSchema | typeof playerJoinSchema | typeof startRaceRequestSchema;
