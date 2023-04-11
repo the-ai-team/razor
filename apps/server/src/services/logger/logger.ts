@@ -1,10 +1,12 @@
 import {
+  AppTournamentState,
   PlayerId,
   playerIdSchema,
   RaceId,
   socketId,
   TournamentId,
 } from '@razor/models';
+import { store } from '@razor/store';
 
 import { tokenPlayerMap } from '../../stores';
 
@@ -18,7 +20,6 @@ if (process.env.NODE_ENV === 'development') {
   wlogger = cloudLogger();
 }
 
-// TODO: Add RoomTournamentMap
 interface ContextInput {
   identifier: PlayerId | socketId;
 }
@@ -27,21 +28,33 @@ export interface ContextOutput {
   subject: string;
   playerId: PlayerId;
   socketId: socketId;
-  domainId?: TournamentId | RaceId;
+  domainId?: TournamentId | RaceId | null;
 }
 
 export class Logger {
   constructor(protected subject: string) {}
 
   public createContext({ identifier }: ContextInput): ContextOutput {
-    // TODO: Add RoomTournamentMap to get domainId
-    const domainId = 'T:123456';
+    let domainId: TournamentId | RaceId;
 
     let socketId = '';
     let playerId: PlayerId;
     if (playerIdSchema.safeParse(identifier).success) {
       playerId = identifier as PlayerId;
       socketId = tokenPlayerMap.getSocketIdByPlayerId(identifier as PlayerId);
+
+      // Update domain id as race id if tournament is in race state. else update as tournament id.
+      const game = store.getState().game;
+      const tournamentId = game.playersModel[identifier]?.tournamentId || null;
+      if (
+        game.tournamentsModel[tournamentId]?.state === AppTournamentState.Race
+      ) {
+        const raceIds = game.tournamentsModel[tournamentId].raceIds;
+        const raceId = raceIds[raceIds.length - 1];
+        domainId = raceId;
+      } else {
+        domainId = tournamentId;
+      }
     } else {
       socketId = identifier;
     }
