@@ -272,7 +272,7 @@ describe('[Effects] Race', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      store.dispatch.game.endCoundown({
+      store.dispatch.game.endCountdown({
         tournamentId: M_TOURNAMENT_ID0,
       });
       const storeState = store.getState();
@@ -299,7 +299,7 @@ describe('[Effects] Race', () => {
 
       const store = initializeStore(initialValues);
 
-      store.dispatch.game.endCoundown({
+      store.dispatch.game.endCountdown({
         tournamentId: 'T:notExist',
       });
 
