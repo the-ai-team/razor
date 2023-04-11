@@ -27,17 +27,6 @@ import {
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
-//TODO: should move this to server later
-// const loadRacingText = async (): Promise<string> => {
-//   const url = 'http://www.metaphorpsum.com/paragraphs/1/8';
-
-//   return fetch(url)
-//     .then(response => response.text())
-//     .then(data => {
-//       return data;
-//     });
-// };
-
 /** Effect function for starting the countdown of the race.
  * Run the validation for the received payload.
  * If the player who pressed the start button and the relevant tournament are found, then the countdown will be started.

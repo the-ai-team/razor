@@ -1,10 +1,11 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { PLAYER_NAME_RANGE, TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { playerNameSchema, tournamentIdSchema } from '@razor/models';
 import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
+import { debounce } from 'lodash';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
@@ -20,12 +21,18 @@ import {
   Text,
 } from '../../components';
 import { TextSize, TextType } from '../../models';
-import { endSocket, initializeSocket } from '../../services/initialize-socket';
+import {
+  endSocket,
+  requestToCreateRoom,
+  requestToJoinRoom,
+} from '../../services';
 
 export function Home(): ReactElement {
   const { roomId } = useParams();
   // disconnect any socket connection if user navigates back to home page.
-  endSocket();
+  useEffect(() => {
+    endSocket();
+  }, []);
 
   const navigate = useNavigate();
   const [playerName, setPlayerName] = useState<string>('');
@@ -37,28 +44,18 @@ export function Home(): ReactElement {
   const [avtarURL, setAvtarURL] = useState<string>('');
   const { t } = useTranslation('home');
 
-  const getRoomId = (): string => {
-    return '12345678';
-  };
-  const routeToRoom = (): void => {
+  const routeToRoom = async (): Promise<void> => {
     if (roomId) {
-      initializeSocket(
-        {
-          playerName,
-          roomId,
-        },
-        () => navigate(`/${roomId}/room`),
-      );
+      // TODO: Add try catch and make a error info ui popups.
+      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
     } else {
-      // TODO: should receive tournament id(room id) from server
-      const roomId = getRoomId();
-      initializeSocket(
-        {
-          playerName,
-          roomId,
-        },
-        () => navigate(`/${roomId}/room`),
-      );
+      const roomIdFromServer = await requestToCreateRoom({ playerName });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
     }
   };
 
@@ -81,6 +78,13 @@ export function Home(): ReactElement {
     }
   };
 
+  const debouncedGenerateAvatarLink = useCallback(
+    debounce((value: string) => {
+      setAvtarURL(generateAvatarLink(value));
+    }, 500),
+    [],
+  );
+
   useEffect(() => {
     const isNameValid = playerNameSchema.safeParse(playerName).success;
     if (isNameValid) {
@@ -94,11 +98,12 @@ export function Home(): ReactElement {
     if (playerName === '') {
       setAvtarURL('');
     } else {
-      setAvtarURL(generateAvatarLink(playerName));
+      debouncedGenerateAvatarLink(playerName);
     }
 
     return () => {
       setAvtarURL('');
+      debouncedGenerateAvatarLink.cancel();
     };
   }, [playerName]);
 
@@ -165,7 +170,7 @@ export function Home(): ReactElement {
         <Button
           onClick={routeToRoom}
           isFullWidth={true}
-          isDisabled={isPlayerNameValid ? false : true}
+          isDisabled={!isPlayerNameValid}
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
