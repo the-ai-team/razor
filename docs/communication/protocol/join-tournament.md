@@ -93,12 +93,11 @@ Socket message
     "playerId": PLAYER_ID,
     "tournamentId": TOURNAMENT_ID,
     "snapshot": {
-        "stateModelSegment": {
-            "playersModel": <Player>[],
-            "tournamentsModel": <Tournament>[],
-            "racesModel": <Race>[],
-            "leaderboardsModel": <Leaderboard>[]
-        }
+        "tournamentsModel": <Tournament>[],
+        "playersModel": <Player>[],
+        "racesModel": <Race>[],
+        "leaderboardsModel": <Leaderboard>[],
+        "playerLogsModel": <PlayerLogs>[], // Only if player joins while race is ongoing.
     }
 }
 ```

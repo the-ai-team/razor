@@ -102,7 +102,14 @@ Socket message
 "data": {
     "playerId": PLAYER_ID,
     "tournamentId": TOURNAMENT_ID,
-    "snapshot": {} // Empty Snapshot
+    "snapshot": {
+        "tournamentsModel": <Tournament>[],
+        "playersModel": <Player>[],
+        // Empty objects (because tournament is new)
+        "racesModel": {},
+        "leaderboardsModel": {},
+        "playerLogsModel": {},
+    }
 }
 ```
 

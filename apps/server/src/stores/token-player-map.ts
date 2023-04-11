@@ -1,19 +1,35 @@
 import { AuthToken, PlayerId, socketId } from '@razor/models';
 
 interface MapData {
-  playerId: PlayerId;
+  playerId?: PlayerId;
   socketId: socketId;
+}
+
+interface mapAsObject {
+  [key: string]: MapData;
 }
 
 class TokenPlayerMap {
   private map: Map<AuthToken, MapData> = new Map<PlayerId, MapData>();
 
-  addPlayer(
-    authToken: AuthToken,
-    playerId: PlayerId,
-    socketId: socketId,
-  ): void {
-    this.map.set(authToken, { playerId, socketId });
+  /** Create new map entry with auth token and socket Id.
+   * @param authToken - auth token of the player
+   * @param socketId - socket id of the player
+   */
+  addSocketId(authToken: AuthToken, socketId: socketId): void {
+    this.map.set(authToken, { socketId });
+  }
+
+  /** Add player id to the existing map entry.
+   * @param socketId - socket id of the player
+   * @param playerId - player id of the player
+   */
+  addPlayerId(socketId: socketId, playerId: PlayerId): void {
+    for (const [key, value] of this.map.entries()) {
+      if (value.socketId === socketId) {
+        this.map.set(key, { ...value, playerId });
+      }
+    }
   }
 
   /** Get player data using auth token .
@@ -80,8 +96,11 @@ class TokenPlayerMap {
     return null;
   }
 
-  viewMap(): void {
-    console.log(this.map);
+  /** Get all entries
+   * @returns - map as a object
+   */
+  viewMap(): mapAsObject {
+    return Object.fromEntries(this.map);
   }
 
   /** Clear a player from the map.

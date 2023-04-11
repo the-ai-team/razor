@@ -1,16 +1,22 @@
 import {
   PROTO_AUTH_TOKEN_TRANSFER,
+  PROTO_CREATE_LOBBY_REQUEST,
+  PROTO_JOIN_LOBBY_REQUEST,
   RECONNECT_WAITING_TIME,
 } from '@razor/constants';
 import { AuthToken } from '@razor/models';
+import { store } from '@razor/store';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 
+import './controllers/join-tournament.controller';
+import './controllers/create-tournament.controller';
+
 import { pubsub } from './services/pubsub';
 import { PubSubEvents } from './models';
-import { Logger } from './services';
+import { ContextOutput, Logger } from './services';
 import { tokenPlayerMap } from './stores';
 
 const app = express();
@@ -18,7 +24,13 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  const storeState = store.getState();
+  res.send(storeState);
+});
+
+app.get('/token-player-map', (req, res) => {
+  const data = tokenPlayerMap.viewMap();
+  res.send(data);
 });
 
 const allowedOrigin =
@@ -43,9 +55,9 @@ const reconnect = (authToken: AuthToken): void => {
     const { socketId, playerId } = tokenPlayerMap.getPlayer(authToken);
     const context = logger.createContext({ identifier: playerId });
 
-    // If player still not connected then delete the player from map.
     const isSocketConnected = io.sockets.sockets.get(socketId)?.connected;
     if (!isSocketConnected) {
+      // If player still not connected then delete the player from map.
       tokenPlayerMap.clearPlayer(authToken);
       logger.debug(
         `User deleted from the map after waiting for ${RECONNECT_WAITING_TIME}ms.`,
@@ -72,15 +84,15 @@ io.on('connection', socket => {
 
   let newToken = '';
   if (!playerData) {
+    // If player is new token will be generated and sent to the client.
     newToken = uuidv4();
     socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
-    // TODO: Add player to map should need plyaer id which needs to be generated in the join player controller
-    // So, following method should be called in the join player controller later.
-    const playerId = 'P:12345678';
-    tokenPlayerMap.addPlayer(newToken, playerId, socket.id);
-    const context = logger.createContext({ identifier: playerId });
+    // New player will be added with related socket id to the map.
+    tokenPlayerMap.addSocketId(newToken, socket.id);
+    const context = logger.createContext({ identifier: socket.id });
     logger.debug('New user added to map.', context);
   } else {
+    // If player is already in the map then update the socket id.
     tokenPlayerMap.updatePlayerSocketId(token, socket.id);
     const { playerId } = playerData;
     const context = logger.createContext({ identifier: playerId });
@@ -88,14 +100,27 @@ io.on('connection', socket => {
   }
 
   // On any socket event publish the event with playerId and data.
-  socket.onAny((event, ...data) => {
-    const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
-    const context = logger.createContext({ identifier: playerId });
-    logger.info(`Protocol: ${event} | Message received.`, context);
-    pubsub.publish(event, { playerId, data });
+  socket.onAny((event, data) => {
+    let context: ContextOutput;
+    if (
+      event === PROTO_JOIN_LOBBY_REQUEST ||
+      event === PROTO_CREATE_LOBBY_REQUEST
+    ) {
+      // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
+      // Player id will be created in the controller.
+      // TODO: If player has a playerId what should we do?
+      const socketId = socket.id;
+      context = logger.createContext({ identifier: socketId });
+      pubsub.publish(event, { socketId, data, context });
+    } else {
+      const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
+      context = logger.createContext({ identifier: playerId });
+      pubsub.publish(event, { playerId, data, context });
+    }
+    logger.info(`Protocol: ${event} | Message received.`, context, data);
   });
 
-  // If a user disconnects call the reconnect function.
+  // If a user disconnected call the reconnect function.
   socket.on('disconnect', () => {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
     const authToken = tokenPlayerMap.getAuthTokenBySocketId(socket.id);

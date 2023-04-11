@@ -6,6 +6,7 @@ import {
   AppPlayerLogId,
   AppPlayerState,
   AppTournamentState,
+  PlayerId,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
 
@@ -48,7 +49,7 @@ export const joinPlayer = (
   dispatch: Dispatch,
   payload: JoinPlayerPayload,
   state: RootState,
-): void => {
+): PlayerId | void => {
   const { receivedTournamentId, playerName } = payload;
   // Tournament id with correct format.
   let tournamentId;
@@ -127,6 +128,8 @@ export const joinPlayer = (
       tournamentId,
     },
   });
+
+  return playerId;
 };
 
 /** Effect function for clearing player.
