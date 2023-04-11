@@ -1,18 +1,19 @@
 import {
   PROTO_AUTH_TOKEN_TRANSFER,
+  PROTO_CREATE_LOBBY_ACCEPT,
   PROTO_CREATE_LOBBY_REQUEST,
+  PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
   RECONNECT_WAITING_TIME,
 } from '@razor/constants';
-import { AuthToken } from '@razor/models';
+import { AuthToken, InitialServerData } from '@razor/models';
 import { store } from '@razor/store';
 import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 
-import './controllers/join-tournament.controller';
-import './controllers/create-tournament.controller';
+import './controllers';
 
 import { pubsub } from './services/pubsub';
 import { PubSubEvents } from './models';
@@ -108,14 +109,13 @@ io.on('connection', socket => {
     ) {
       // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
       // Player id will be created in the controller.
-      // TODO: If player has a playerId what should we do?
       const socketId = socket.id;
       context = logger.createContext({ identifier: socketId });
-      pubsub.publish(event, { socketId, data, context });
+      pubsub.publish(event, { data, context });
     } else {
       const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
       context = logger.createContext({ identifier: playerId });
-      pubsub.publish(event, { playerId, data, context });
+      pubsub.publish(event, { data, context });
     }
     logger.info(`Protocol: ${event} | Message received.`, context, data);
   });
@@ -128,6 +128,7 @@ io.on('connection', socket => {
       reconnect(authToken);
     }
     const context = logger.createContext({ identifier: playerId });
+    pubsub.publish(PubSubEvents.PlayerDisconnect, { context });
     logger.info('User disconnected.', context);
   });
 });
@@ -139,6 +140,20 @@ server.listen(port, () => {
 // If `Send Data To Client` event is published, then this function will send data to the client.
 const sendData = ({ playerId, protocol, data }): void => {
   const socketId = tokenPlayerMap.getSocketIdByPlayerId(playerId);
+  // Add player to specific socket room when player joining or creating room.
+  // Socket room has the tournament id. So we can send data to specific lobby(All players in a specific tournament).
+  if (
+    protocol === PROTO_CREATE_LOBBY_ACCEPT ||
+    protocol === PROTO_JOIN_LOBBY_ACCEPT
+  ) {
+    const { tournamentId }: InitialServerData = data;
+    io.sockets.sockets.get(socketId).join(tournamentId);
+  }
   io.to(socketId).emit(protocol, data);
 };
 pubsub.subscribe(PubSubEvents.SendDataToClient, sendData);
+
+const SendDataToAll = ({ tournamentId, protocol, data }): void => {
+  io.to(tournamentId).emit(protocol, data);
+};
+pubsub.subscribe(PubSubEvents.SendDataToAll, SendDataToAll);

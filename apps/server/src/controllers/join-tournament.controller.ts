@@ -1,13 +1,15 @@
 import {
   PROTO_JOIN_LOBBY_ACCEPT,
   PROTO_JOIN_LOBBY_REQUEST,
+  PROTO_PLAYER_JOINED,
 } from '@razor/constants';
 import {
   AppPlayer,
   InitialClientData,
   InitialServerData,
+  PlayerJoined,
+  PlayerState,
   Snapshot,
-  socketId,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -18,7 +20,6 @@ import { ContextOutput, Logger, pubsub } from '../services';
 import { tokenPlayerMap } from '../stores';
 
 interface JoinLobbyRequestArgs {
-  socketId: socketId;
   data: InitialClientData;
   context: ContextOutput;
 }
@@ -27,7 +28,8 @@ const logger = new Logger('create-tournament.controller');
 
 pubsub.subscribe(
   PROTO_JOIN_LOBBY_REQUEST,
-  ({ socketId, data, context }: JoinLobbyRequestArgs) => {
+  ({ data, context }: JoinLobbyRequestArgs) => {
+    const { socketId } = context;
     // Checking whether player already has playerId.
     let playerId = tokenPlayerMap.getPlayerIdBySocketId(socketId);
     let player: AppPlayer;
@@ -98,6 +100,22 @@ pubsub.subscribe(
       playerId,
       protocol: PROTO_JOIN_LOBBY_ACCEPT,
       data: initialServerData,
+    });
+
+    // Sending player joined event to all players.
+    const joinedPlayerData: PlayerJoined = {
+      player: {
+        id: playerId,
+        name: player.name,
+        avatarLink: player.avatarLink,
+        state: player.state as unknown as PlayerState,
+      },
+    };
+
+    pubsub.publish(PubSubEvents.SendDataToAll, {
+      tournamentId,
+      protocol: PROTO_PLAYER_JOINED,
+      data: joinedPlayerData,
     });
   },
 );
