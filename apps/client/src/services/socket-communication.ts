@@ -27,7 +27,7 @@ interface SocketFormat extends Socket {
   };
 }
 
-const socket = io(SOCKET_ENDPOINT, {
+export const socket = io(SOCKET_ENDPOINT, {
   auth: {
     token: authToken,
   },
