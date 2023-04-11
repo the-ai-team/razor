@@ -8,7 +8,7 @@ import { Race } from './race';
 // Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
 export interface Tournament {
   /** Unique tournament id (/lobby ID) */
-  id: string;
+  id: TournamentId;
   /** Tournament state */
   state: TournamentState;
   /** Races history and current race

@@ -42,19 +42,23 @@ export function Home(): ReactElement {
   };
   const routeToRoom = (): void => {
     if (roomId) {
-      initializeSocket({
-        playerName,
-        roomId,
-        onTokenReceived: () => navigate(`/${roomId}/room`),
-      });
+      initializeSocket(
+        {
+          playerName,
+          roomId,
+        },
+        () => navigate(`/${roomId}/room`),
+      );
     } else {
       // TODO: should receive tournament id(room id) from server
       const roomId = getRoomId();
-      initializeSocket({
-        playerName,
-        roomId,
-        onTokenReceived: () => navigate(`/${roomId}/room`),
-      });
+      initializeSocket(
+        {
+          playerName,
+          roomId,
+        },
+        () => navigate(`/${roomId}/room`),
+      );
     }
   };
 
