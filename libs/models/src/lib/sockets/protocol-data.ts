@@ -3,7 +3,11 @@ import { z } from 'zod';
 import { AppStateModel } from '../state';
 
 import { PlayerId } from './player';
-import { initialClientDataSchema } from './protocol-schemas';
+import {
+  initialClientDataSchema,
+  playerJoinSchema,
+  startRaceAcceptSchema,
+} from './protocol-schemas';
 import { TournamentId } from './tournament';
 
 // Data sent from the client to the server with socket establishment
@@ -20,3 +24,7 @@ export interface InitialServerData {
   /** Game snapshot */
   snapshot: Snapshot;
 }
+
+export type PlayerJoin = z.infer<typeof playerJoinSchema>;
+
+export type StartRaceAccept = z.infer<typeof startRaceAcceptSchema>;

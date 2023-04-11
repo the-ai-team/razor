@@ -93,5 +93,5 @@ export const tournamentIdSchema = z.custom<`T:${string}`>(id =>
  */
 export const roomIdSchema = z
   .string()
-  .length(TOURNAMENT_ID_LENGTH - 2)
+  .length(TOURNAMENT_ID_LENGTH)
   .regex(/^[a-zA-Z0-9_]+$/);
