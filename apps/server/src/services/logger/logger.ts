@@ -68,22 +68,38 @@ export class Logger {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public error(message: string, context: ContextOutput, data?: any): void {
-    wlogger.error(message, { context, data });
+  public error<T extends object>(
+    message: string,
+    context: ContextOutput,
+    additionalData?: T,
+  ): void {
+    wlogger.error(message, { context, ...additionalData });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public warn(message: string, context: ContextOutput, data?: any): void {
-    wlogger.warn(message, { context, data });
+  public warn<T extends object>(
+    message: string,
+    context: ContextOutput,
+    additionalData?: T,
+  ): void {
+    wlogger.warn(message, { context, ...additionalData });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public info(message: string, context: ContextOutput, data?: any): void {
-    wlogger.info(message, { context, data });
+  public info<T extends object>(
+    message: string,
+    context: ContextOutput,
+    additionalData?: T,
+  ): void {
+    wlogger.info(message, { context, ...additionalData });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public debug(message: string, context: ContextOutput, data?: any): void {
-    wlogger.debug(message, { context, ...data });
+  public debug<T extends object>(
+    message: string,
+    context: ContextOutput,
+    additionalData?: T,
+  ): void {
+    wlogger.debug(message, { context, ...additionalData });
   }
 }
