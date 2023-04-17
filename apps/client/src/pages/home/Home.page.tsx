@@ -35,14 +35,48 @@ export function Home(): ReactElement {
   }, []);
 
   const navigate = useNavigate();
-
   const [playerName, setPlayerName] = useState<string>('');
-  const [isValidPlayerName, toggleIsValidPlayerName] = useState<boolean>(false);
+  const [isPlayerNameValid, toggleIsPlayerNameValid] = useState<boolean>(false);
   // value of join room button. this value will be a room id
   const [joinRoomButtonValue, setJoinRoomButtonValue] = useState<string>('');
-  const [isValidJoinRoomButtonValue, toggleIsValidRoomButtonValue] =
+  const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
     useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
+  const { t } = useTranslation('home');
+
+  const routeToRoom = async (): Promise<void> => {
+    if (roomId) {
+      // TODO: Add try catch and make a error info ui popups.
+      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
+    } else {
+      const roomIdFromServer = await requestToCreateRoom({ playerName });
+      if (roomIdFromServer) {
+        navigate(`/${roomIdFromServer}/room`);
+      }
+    }
+  };
+
+  /** Get input component state using its value and validity.
+   * If value is empty, input state is neutral.
+   * If value is not empty and valid, input state is valid.
+   * If value is not empty and invalid, input state is invalid.
+   *
+   * @param value value of input
+   * @param isValid is input value valid
+   * @returns InputState
+   */
+  const getInputState = <T,>(value: T, isValid: boolean): InputState => {
+    if (!value) {
+      return InputState.Neutral;
+    } else if (isValid) {
+      return InputState.Valid;
+    } else {
+      return InputState.Invalid;
+    }
+  };
 
   const debouncedGenerateAvatarLink = useCallback(
     debounce((value: string) => {
@@ -52,10 +86,11 @@ export function Home(): ReactElement {
   );
 
   useEffect(() => {
-    if (playerNameSchema.safeParse(playerName).success) {
-      toggleIsValidPlayerName(true);
+    const isNameValid = playerNameSchema.safeParse(playerName).success;
+    if (isNameValid) {
+      toggleIsPlayerNameValid(true);
     } else {
-      toggleIsValidPlayerName(false);
+      toggleIsPlayerNameValid(false);
       setAvtarURL('');
       return;
     }
@@ -76,39 +111,26 @@ export function Home(): ReactElement {
     setJoinRoomButtonValue(value);
     // Room id is also tournament id without 'T:' prefix. Room id what players share.
     const tournamentId = `T:${value}`;
-    if (tournamentIdSchema.safeParse(tournamentId).success) {
-      toggleIsValidRoomButtonValue(true);
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
+      toggleIsRoomButtonValueValid(true);
     } else {
-      toggleIsValidRoomButtonValue(false);
+      toggleIsRoomButtonValueValid(false);
     }
   };
 
   const joinRoomButtonHandler = (value: string): void => {
     // Room id is also tournament id without 'T:' prefix. Room id what players share.
     const tournamentId = `T:${value}`;
-    if (tournamentIdSchema.safeParse(tournamentId).success) {
+    const isIdValid = tournamentIdSchema.safeParse(tournamentId).success;
+    if (isIdValid) {
       navigate(`/${value}`);
     } else {
+      // TODO: Implement proper component
       alert('Invalid tournament id');
     }
   };
 
-  const routeToRoom = async (): Promise<void> => {
-    if (roomId) {
-      // TODO: Add try catch and make a error info ui popups.
-      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
-      }
-    } else {
-      const roomIdFromServer = await requestToCreateRoom({ playerName });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
-      }
-    }
-  };
-
-  const { t } = useTranslation('home');
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
     'https://via.placeholder.com/300x150',
@@ -136,24 +158,19 @@ export function Home(): ReactElement {
             <Logo className='-mb-16' />
           )}
         </div>
+        {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         {/* Player handle(username) input and join/create button */}
         <Input
           value={playerName}
           onChange={(e): void => setPlayerName(e.target.value)}
-          state={
-            !playerName
-              ? InputState.Neutral
-              : isValidPlayerName
-              ? InputState.Valid
-              : InputState.Invalid
-          }
+          state={getInputState(playerName, isPlayerNameValid)}
           placeholder={t('inputs.handle') as string}
           props={{ maxLength: PLAYER_NAME_RANGE[1] }}
         />
         <Button
           onClick={routeToRoom}
           isFullWidth={true}
-          isDisabled={isValidPlayerName ? false : true}
+          isDisabled={!isPlayerNameValid}
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
@@ -202,13 +219,10 @@ export function Home(): ReactElement {
           <ButtonWithInput
             onClick={(id: string): void => joinRoomButtonHandler(id)}
             onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
-            inputState={
-              !joinRoomButtonValue
-                ? InputState.Neutral
-                : isValidJoinRoomButtonValue
-                ? InputState.Valid
-                : InputState.Invalid
-            }
+            inputState={getInputState(
+              joinRoomButtonValue,
+              isJoinRoomButtonValueValid,
+            )}
             inputValue={joinRoomButtonValue}
             inputSize={TOURNAMENT_ID_LENGTH}
             maxInputLength={TOURNAMENT_ID_LENGTH}
