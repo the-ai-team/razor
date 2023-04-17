@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import cs from 'classnames';
 
 import { ReactComponent as CarIcon } from '../../../assets/cars/pixelCar.svg';
