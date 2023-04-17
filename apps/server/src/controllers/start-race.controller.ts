@@ -70,7 +70,7 @@ export const startRaceController = async ({
     data: startedRaceData,
   });
 
-  const raceEndTime = race.timeoutDuration + RACE_END_WAIT_TIME;
+  const raceEndTime = (race.timeoutDuration + RACE_END_WAIT_TIME) * 1000;
 
   const raceTimeout = setTimeout(() => {
     pubsub.publish(PubSubEvents.RaceTimout, {
