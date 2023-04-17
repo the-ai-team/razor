@@ -30,26 +30,25 @@ export function IconButton({
 
   return (
     <div
-      className='group flex'
+      className='group flex relative w-fit'
       onMouseEnter={(): void => setIsHovered(true)}
       onMouseLeave={(): void => setIsHovered(false)}
       onClick={onClick}
       ref={elementRef}>
+      {/* Pseudo element for avoid flickering */}
+      <div
+        className={cs('absolute top-0 left-0 h-full w-0')}
+        style={{ width: elementWidth }}></div>
       <div
         className={cs(
           'w-20 h-20 border border-neutral-40 rounded-full p-4',
           'group-hover:bg-neutral-20',
           'group-hover:ring-[4px] ring-neutral-40',
-          'relative',
           'z-20',
           'transition-all duration-300',
         )}>
         {icon}
       </div>
-      {/* Pseudo element for avoid flickering */}
-      <div
-        className={cs('absolute top-0 left-0 h-full')}
-        style={{ width: elementWidth }}></div>
       <div
         className={cs(
           'flex items-center gap-2',
