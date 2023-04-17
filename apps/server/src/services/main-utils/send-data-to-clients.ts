@@ -9,7 +9,7 @@ import { pubsub } from '..';
  * Listening to related pubsub events and send data to the client.
  * @param io Socket.io server instance
  */
-export function sendDataToClients(io: Server): void {
+export function emitSocketMessages(io: Server): void {
   // If `Send Data To Client` event is published, then this function will send data to the client.
   const sendData = ({ playerId, protocol, data }): void => {
     const socketId = tokenPlayerMap.getSocketIdByPlayerId(playerId);
