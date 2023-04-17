@@ -72,3 +72,9 @@ export const RACE_ID_LENGTH = 3;
  * - generate uid util function (which will pass to nanoid)
  */
 export const TOURNAMENT_ID_LENGTH = 8;
+
+/** After server race timer ends, the server waits for a short time to receive race ending (either complete or timeout) logs from all players.
+ * This waiting period accounts for players who may have started the race with a delay.
+ * If logs are not received from all players by the end of the waiting period, the server will forcibly end the race.
+ */
+export const RACE_END_WAIT_TIME = 6000;

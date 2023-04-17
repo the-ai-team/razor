@@ -1,3 +1,4 @@
+import { RACE_END_WAIT_TIME } from '@razor/constants';
 import {
   AppPlayerId,
   AppTournamentId,
@@ -55,6 +56,7 @@ export const startRaceController = async ({
   const raceIds = tournamentModel.raceIds;
   // Active race id
   const raceId = raceIds[raceIds.length - 1];
+  const race = game.racesModel[raceId];
 
   const startedRaceData: StartRaceAccept = {
     raceId,
@@ -67,6 +69,15 @@ export const startRaceController = async ({
     protocol: socketProtocols.StartRaceAccept,
     data: startedRaceData,
   });
+
+  const raceEndTime = race.timeoutDuration + RACE_END_WAIT_TIME;
+
+  const raceTimeout = setTimeout(() => {
+    pubsub.publish(PubSubEvents.RaceTimout, {
+      raceId,
+    });
+    clearTimeout(raceTimeout);
+  }, raceEndTime);
 };
 
 pubsub.subscribe(socketProtocols.StartRaceRequest, startRaceController);
