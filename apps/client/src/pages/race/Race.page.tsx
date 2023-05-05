@@ -20,10 +20,6 @@ export function Race(): ReactElement {
     // TODO: Race id should return from the url
     const raceId = Object.keys(racesModel)[0] as AppRaceId;
     setRaceId(raceId);
-
-    return () => {
-      setRaceId(null);
-    };
   }, [game]);
 
   return (
