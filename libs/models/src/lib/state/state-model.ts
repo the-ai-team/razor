@@ -1,5 +1,5 @@
-import { AppErrorLogs } from './log-message';
 import { AppLeaderboards } from './leaderboard';
+import { AppErrorLogs } from './log-message';
 import { AppPlayerLogs, AppPlayers } from './player';
 import { AppRaces } from './race';
 import { AppTournaments } from './tournament';
@@ -16,3 +16,5 @@ export interface AppStateModel {
   playerLogsModel: AppPlayerLogs;
   errorLogsModel: AppErrorLogs;
 }
+
+export type AppSnapshot = Omit<AppStateModel, 'errorLogsModel'>;

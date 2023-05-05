@@ -9,6 +9,7 @@ import {
   AppStateModel,
 } from '@razor/models';
 import { omit } from 'lodash';
+
 import { initializeStore } from '../store';
 
 const initialState: AppStateModel = {

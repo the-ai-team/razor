@@ -3,6 +3,7 @@
 import { MAX_ERR_LOGS_COUNT } from '@razor/constants';
 import { AppErrorTimestamp, AppStateModel } from '@razor/models';
 import { omit } from 'lodash';
+
 import { LogErrorReducerPayload } from '../payloads';
 
 /** Reducer function for logging an error to state model.

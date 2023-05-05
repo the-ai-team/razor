@@ -1,12 +1,15 @@
-import { AppRaceId } from '@razor/models';
-import { RootState } from '@razor/store';
 import { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { AppRaceId } from '@razor/models';
+import { RootState } from '@razor/store';
+
+import './test-race';
+
 import { Text } from '../../components/atoms/text/Text.component';
 import { TextSize, TextType } from '../../models';
+
 import { RaceTrack } from './templates/RaceTrack.template';
-import './test-race';
 
 export function Race(): ReactElement {
   const navigate = useNavigate();

@@ -1,11 +1,12 @@
 // ### [Reducers] Basic update operations for store ### //
 
 import { AppStateModel } from '@razor/models';
+
 import {
-  UpdateTournamentReducerPayload,
-  UpdateRaceReducerPayload,
   UpdatePlayerLogReducerPayload,
   UpdatePlayerReducerPayload,
+  UpdateRaceReducerPayload,
+  UpdateTournamentReducerPayload,
 } from '../payloads';
 
 /** Reducer function for updating a tournament in the state model.

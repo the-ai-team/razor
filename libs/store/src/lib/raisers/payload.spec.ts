@@ -1,5 +1,7 @@
 import { AppStateModel } from '@razor/models';
+
 import { Dispatch, initializeStore } from '../store';
+
 import { payloadNotProvided } from './payload';
 
 const initialState: AppStateModel = {

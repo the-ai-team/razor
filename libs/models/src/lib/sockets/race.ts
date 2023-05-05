@@ -1,8 +1,9 @@
 import { z } from 'zod';
+
 import { PlayerLogsCollection } from './playerLog';
 
 // ==== Primary Schemas ==== //
-const raceIdSchema = z.custom<`T:${string}-R:${string}`>(id =>
+export const raceIdSchema = z.custom<`T:${string}-R:${string}`>(id =>
   /^T:[a-zA-Z0-9]{8}-R:[a-zA-Z0-9]{3}$/.test(id as string),
 );
 

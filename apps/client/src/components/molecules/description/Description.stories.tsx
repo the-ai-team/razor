@@ -1,5 +1,6 @@
+import { Meta, Story } from '@storybook/react';
+
 import { Description, DescriptionProps } from './Description.component';
-import { Story, Meta } from '@storybook/react';
 
 export default {
   title: 'Molecules/Description',

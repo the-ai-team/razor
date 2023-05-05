@@ -21,7 +21,7 @@ sequenceDiagram
 
 ## Sock01 (Send type logs) | To server | Message
 
-This socket protocol will use to send the race start type log (`textLength` will be 0) and race end type log (`textLength` will be the length of the race text).
+_This socket protocol will use to send the race start type log (`textLength` will be 0) and race end type log (`textLength` will be the length of the race text)._
 
 ```json
 "type": "TS/INF/SEND_TYPE_LOG"

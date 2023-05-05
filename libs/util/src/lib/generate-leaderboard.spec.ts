@@ -1,6 +1,5 @@
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
-  mockPlayerLogId,
   M_COMPLETE_PLAYER_LOGS0,
   M_COMPLETE_PLAYER_LOGS1,
   M_PLAYER_ID0,
@@ -10,7 +9,9 @@ import {
   M_TIMEOUT_PLAYER_LOGS1,
   M_TIMEOUT_PLAYER_LOGS2,
   M_TR0_RACE_ID0,
+  mockPlayerLogId,
 } from '@razor/mocks';
+
 import { generateLeaderboard } from './generate-leaderboard';
 
 describe('(Utils) generateLeaderboard', () => {

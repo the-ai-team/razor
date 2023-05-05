@@ -1,11 +1,15 @@
-import { store } from '@razor/store';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home, Layout, Leaderboard, Race, Room } from './pages';
-import { NotFound } from './pages/NotFound';
+import { store } from '@razor/store';
+
+import './services/socket-communication';
 import './i18n';
+import './controllers';
+
+import { NotFound } from './pages/NotFound';
+import { Home, Layout, Leaderboard, Race, Room } from './pages';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -18,7 +22,7 @@ root.render(
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path=':id'>
+            <Route path=':roomId'>
               <Route index element={<Home />} />
               <Route path='room' element={<Room />} />
               <Route path='race' element={<Race />} />
