@@ -1,17 +1,18 @@
 // ### [Payloads] Data models for the reducer payloads ### //
 
 import {
-  AppTournamentId,
-  AppTournament,
-  AppRaceId,
-  AppRace,
-  AppPlayerId,
-  AppPlayer,
-  AppLeaderboard,
-  AppPlayerLogId,
-  AppPlayerLog,
   AppErrorLog,
   AppErrorTimestamp,
+  AppLeaderboard,
+  AppPlayer,
+  AppPlayerId,
+  AppPlayerLog,
+  AppPlayerLogId,
+  AppRace,
+  AppRaceId,
+  AppSnapshot,
+  AppTournament,
+  AppTournamentId,
 } from '@razor/models';
 
 export type AddTournamentReducerPayload = {
@@ -67,4 +68,8 @@ export type RemoveTournamentReducerPayload = {
 export type LogErrorReducerPayload = {
   errorLog: AppErrorLog;
   errorTimestamp: AppErrorTimestamp;
+};
+
+export type ReplaceFullStateReducerPayload = {
+  parentState: AppSnapshot;
 };

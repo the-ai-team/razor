@@ -6,9 +6,12 @@ import {
   AppPlayerLogId,
   AppPlayerState,
   AppTournamentState,
+  PlayerId,
 } from '@razor/models';
 import { generateAvatarLink, generateUid } from '@razor/util';
+
 import {
+  AddPlayerPayload,
   ClearPlayerPayload,
   JoinPlayerPayload,
   SendTypeLogPlayload,
@@ -47,7 +50,7 @@ export const joinPlayer = (
   dispatch: Dispatch,
   payload: JoinPlayerPayload,
   state: RootState,
-): void => {
+): PlayerId | null => {
   const { receivedTournamentId, playerName } = payload;
   // Tournament id with correct format.
   let tournamentId;
@@ -55,17 +58,17 @@ export const joinPlayer = (
   // If the player name is not provided, call the raiser.
   if (!playerName) {
     payloadNotProvided(joinPlayer.name, dispatch, 'playerName');
-    return;
+    return null;
   }
   // If the player name has an invalid length, call the raiser.
   if (playerName.length < 2 || playerName.length > 16) {
     invalidPlayerNameLength(dispatch);
-    return;
+    return null;
   }
   // If the player name has invalid characters, call the raiser.
   if (!playerName.match(/^[a-zA-Z0-9]+$/)) {
     invalidPlayerName(dispatch);
-    return;
+    return null;
   }
 
   // If the tournament id is provided,
@@ -73,14 +76,14 @@ export const joinPlayer = (
     // If the tournament is not found, call the raiser.
     if (!state.game.tournamentsModel[receivedTournamentId]) {
       tournamentNotFound(dispatch, receivedTournamentId);
-      return;
+      return null;
     }
     // If the tournament is found, set the tournament id.
     tournamentId = receivedTournamentId;
 
     // Converting tournament state to "Lobby" from "Empty" if it had no players.
     if (
-      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length == 0
+      state.game.tournamentsModel[receivedTournamentId].playerIds.length == 0
     ) {
       dispatch.game.setTournamentState({
         tournamentId,
@@ -90,7 +93,7 @@ export const joinPlayer = (
 
     // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
     if (
-      state.game.tournamentsModel[receivedTournamentId]?.playerIds.length >= 1
+      state.game.tournamentsModel[receivedTournamentId].playerIds.length >= 1
     ) {
       dispatch.game.setTournamentState({
         tournamentId,
@@ -123,6 +126,81 @@ export const joinPlayer = (
       name: playerName,
       avatarLink: generateAvatarLink(playerName),
       state: AppPlayerState.Idle,
+      tournamentId,
+    },
+  });
+
+  return playerId;
+};
+
+/** Effect function for adding player.
+ * Run the validation for the received payload.
+ * Player will be added to the tournament.
+ * Tournament state will update with the given state.
+ *
+ * @param dispatch - Dispatch function from the store.
+ * @param payload - Payload for adding player.
+ * @param state - Current state model.
+ *
+ * ### Related reducers and effects
+ * - setTournamentState (effect)
+ * - addPlayerReducer
+ *
+ * ### Related raisers
+ * - payloadNotProvided
+ * - invalidPlayerName
+ * - invalidPlayerNameLength
+ * - tournamentNotFound
+ */
+export const addPlayer = (
+  dispatch: Dispatch,
+  payload: AddPlayerPayload,
+  state: RootState,
+): void => {
+  const { tournamentState, playerId, player } = payload;
+  const {
+    name: playerName,
+    avatarLink,
+    state: playerState,
+    tournamentId,
+  } = player;
+
+  // Validate the payload.
+  if (!playerName) {
+    payloadNotProvided(addPlayer.name, dispatch, 'playerName');
+    return;
+  }
+  if (!tournamentId) {
+    payloadNotProvided(addPlayer.name, dispatch, 'tournamentId');
+    return;
+  }
+  if (playerName.length < 2 || playerName.length > 16) {
+    invalidPlayerNameLength(dispatch);
+    return;
+  }
+  if (!playerName.match(/^[a-zA-Z0-9]+$/)) {
+    invalidPlayerName(dispatch);
+    return;
+  }
+  // If the tournament is not found, call the raiser.
+  if (!state.game.tournamentsModel[tournamentId]) {
+    tournamentNotFound(dispatch, tournamentId);
+    return;
+  }
+
+  dispatch.game.setTournamentState({
+    tournamentId,
+    tournamentState,
+  });
+
+  // Add the new player.
+  dispatch.game.addPlayerReducer({
+    tournamentId,
+    playerId: playerId,
+    player: {
+      name: playerName,
+      avatarLink: avatarLink,
+      state: playerState,
       tournamentId,
     },
   });

@@ -1,9 +1,11 @@
 // ### [Payloads] Data models for the effect payloads ### //
 
 import {
+  AppPlayer,
   AppPlayerId,
   AppPlayerLog,
   AppRaceId,
+  AppSnapshot,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
@@ -11,6 +13,12 @@ import {
 export type JoinPlayerPayload = {
   receivedTournamentId: AppTournamentId | '';
   playerName: string;
+};
+
+export type AddPlayerPayload = {
+  tournamentState: AppTournamentState;
+  playerId: AppPlayerId;
+  player: AppPlayer;
 };
 
 export type ClearPlayerPayload = {
@@ -42,4 +50,8 @@ export type SendTypeLogPlayload = {
   playerId: AppPlayerId;
   /** Timestamp, and text length from players machine */
   playerLog: AppPlayerLog;
+};
+
+export type ReplaceFullStatePayload = {
+  parentState: AppSnapshot;
 };

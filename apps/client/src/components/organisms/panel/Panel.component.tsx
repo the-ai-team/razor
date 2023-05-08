@@ -1,8 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { Description, Text } from '../..';
-import { ReactComponent as ArrowHeadTopIcon } from 'pixelarticons/svg/chevron-up.svg';
 import cs from 'classnames';
+import { ReactComponent as ArrowHeadTopIcon } from 'pixelarticons/svg/chevron-up.svg';
+
 import { TextSize, TextTag, TextType } from '../../../models';
+import { Description, Text } from '../..';
 
 export interface PanelProps {
   title: string;

@@ -1,3 +1,4 @@
+import { PlayerId } from './player';
 import { RaceId } from './race';
 
 export interface Leaderboard {
@@ -9,29 +10,31 @@ export interface Leaderboard {
 
 // ==== Interfaces ==== //
 // Note: Interfaces of the leaderboard does not need to be a schema; because they're only bound to the server-to-client communication.
-interface FinishedPlayerValues {
+export interface FinishedPlayerValues {
   /** Player words per minute count */
   wpm: number;
   /** Time taken by the player to finish the race */
   elapsedTime: number;
+  // TODO: for future use
   /** Number of typos done by the player  */
-  typos: number;
+  // typos: number;
   /** Score of the player */
-  score: number;
+  // score: number;
 }
 
-interface TimeoutPlayerValues {
+export interface TimeoutPlayerValues {
   /** total distance travelled (/text length typed) by the player */
   distance: number;
+  // TODO: for future use
   /** Number of typos done by the player  */
-  typos: number;
+  // typos: number;
   /** Score of the player */
-  score: number;
+  // score: number;
 }
 
 export interface LeaderboardEntry {
   /** Player id */
-  playerId: string;
+  playerId: PlayerId;
   /** Player name */
   playerName: string;
   /** Player avatar icon URL */

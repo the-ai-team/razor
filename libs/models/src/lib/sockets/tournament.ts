@@ -1,4 +1,6 @@
+import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { z } from 'zod';
+
 import { Leaderboard } from './leaderboard';
 import { Player } from './player';
 import { Race } from './race';
@@ -7,7 +9,7 @@ import { Race } from './race';
 // Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
 export interface Tournament {
   /** Unique tournament id (/lobby ID) */
-  id: string;
+  id: TournamentId;
   /** Tournament state */
   state: TournamentState;
   /** Races history and current race
@@ -30,6 +32,9 @@ export interface Tournament {
 // ==== Types ==== //
 /** Tournament id template literal */
 export type TournamentId = z.input<typeof tournamentIdSchema>;
+
+/** Room id */
+export type RoomId = z.input<typeof roomIdSchema>;
 
 // ==== Enums ==== //
 export enum TournamentState {
@@ -80,3 +85,13 @@ export const timestampSchema = z
 export const tournamentIdSchema = z.custom<`T:${string}`>(id =>
   /^T:[a-zA-Z0-9]{8}$/.test(id as string),
 );
+
+/** Room id
+ * Room id is the last 8 characters of the tournament id.
+ * Tournament id - T:abcdef12
+ * Room id - abcdef12
+ */
+export const roomIdSchema = z
+  .string()
+  .length(TOURNAMENT_ID_LENGTH - 2)
+  .regex(/^[a-zA-Z0-9_]+$/);

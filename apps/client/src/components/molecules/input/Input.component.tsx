@@ -1,5 +1,5 @@
-import cs from 'classnames';
 import React, { ReactElement } from 'react';
+import cs from 'classnames';
 
 export enum InputState {
   Valid = 'valid',
@@ -22,8 +22,7 @@ export interface InputProps {
  * @param value - Input value
  * @param [placeholder] - Input placeholder (optional)
  * @param [props] - Additional props to pass to input element (optional)
- * @param [isValid] - Whether input text is valid (optional)
- * @param [isInvalid] - Whether input text is invalid (optional)
+ * @param [state] - Whether input text is valid/invalid/neutral (optional)
  * @param [isDisabled] - Whether input is disabled (optional)
  */
 export function Input({

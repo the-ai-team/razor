@@ -1,10 +1,12 @@
-import { AppRaceId, AppTournamentId } from '@razor/models';
-import { RootState } from '@razor/store';
 import { ReactElement, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Text } from '../../components/atoms/text/Text.component';
+import { AppRaceId, AppTournamentId } from '@razor/models';
+import { RootState } from '@razor/store';
+
+import { Text } from '../../components';
 import { TextSize, TextType } from '../../models';
+
 import { RaceTrack } from './templates/RaceTrack.template';
 
 export function Race(): ReactElement {

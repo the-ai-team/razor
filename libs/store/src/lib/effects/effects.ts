@@ -1,18 +1,23 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { AppMessageLog } from '@razor/models';
+
 import {
+  AddPlayerPayload,
   ClearPlayerPayload,
   EndCountdownPayload,
   EndRacePayload,
   JoinPlayerPayload,
+  ReplaceFullStatePayload,
   SendTypeLogPlayload,
   SetTournamentStatePayload,
   StartCountdownPayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
+
 import { sendLogMessage } from './logger';
-import { clearPlayer, joinPlayer, sendTypeLog } from './player';
+import { addPlayer, clearPlayer, joinPlayer, sendTypeLog } from './player';
 import { endCoundown, endRace, startCountdown } from './race';
+import { replaceFullState } from './replacers';
 import { setTournamentState } from './tournament';
 
 /** Effects functions of the store
@@ -22,6 +27,8 @@ import { setTournamentState } from './tournament';
 export const effects = (dispatch: Dispatch) => ({
   joinPlayer: (payload: JoinPlayerPayload, state: RootState) =>
     joinPlayer(dispatch, payload, state),
+  addPlayer: (payload: AddPlayerPayload, state: RootState) =>
+    addPlayer(dispatch, payload, state),
   clearPlayer: (payload: ClearPlayerPayload, state: RootState) =>
     clearPlayer(dispatch, payload, state),
   setTournamentState: (payload: SetTournamentStatePayload, state: RootState) =>
@@ -35,4 +42,6 @@ export const effects = (dispatch: Dispatch) => ({
   sendTypeLog: (payload: SendTypeLogPlayload, state: RootState) =>
     sendTypeLog(dispatch, payload, state),
   sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
+  replaceFullState: (payload: ReplaceFullStatePayload) =>
+    replaceFullState(dispatch, payload),
 });

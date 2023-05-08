@@ -6,6 +6,7 @@ import {
   AppMessageLogType,
 } from '@razor/models';
 import { generateUid } from '@razor/util';
+
 import { Dispatch } from '../store';
 
 /** Effect function for sending a log message.

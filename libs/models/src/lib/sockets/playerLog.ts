@@ -1,5 +1,6 @@
 import { MAX_ALLOWED_TEXT_LENGTH } from '@razor/constants';
 import { z } from 'zod';
+
 import { Player } from './player';
 import { timestampSchema } from './tournament';
 

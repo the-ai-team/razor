@@ -22,6 +22,7 @@ export const raceFreeParkingWidth =
 export const getRaceTrackNRows = (count: number): number => {
   return count * 2 - 1;
 };
+
 /** Number of pavement rows in race track
  * Based on player count
  * @param count Number of players
@@ -30,12 +31,20 @@ export const getRaceTrackNRows = (count: number): number => {
 export const getRaceTrackPavementRows = (count: number): number => {
   return count <= 2 ? 4 : count <= 4 ? 3 : count <= 6 ? 2 : 0;
 };
+
+/** Calculate race track height.
+ * Based on number of rows and tile size
+ * @param totalRows Number of rows
+ */
 export const getRaceTrackHeight = (totalRows: number): number => {
   return totalRows * raceTileSize * raceTrackRowColumnMultiplier;
 };
+
+/** Calculate size of single block. */
 export const getRaceTrackRowColumnSizes = (): number => {
   return raceTileSize * raceTrackRowColumnMultiplier;
 };
+
 export const carComponentActualWidth = 55;
 export const carComponentActualHeight = 15;
 
