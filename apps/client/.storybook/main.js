@@ -7,8 +7,13 @@ const config = {
     ...rootMain.stories,
     '../src/components/**/*.stories.mdx',
     '../src/components/**/*.stories.@(js|jsx|ts|tsx)',
+    '../src/pages/**/templates/**/*.stories.@(js|jsx|ts|tsx)',
   ],
-  addons: [...rootMain.addons, '@nrwl/react/plugins/storybook', 'storybook-addon-paddings'],
+  addons: [
+    ...rootMain.addons,
+    '@nrwl/react/plugins/storybook',
+    'storybook-addon-paddings',
+  ],
   webpackFinal: async (config, { configType }) => {
     // apply any global webpack configs that might have been specified in .storybook/main.ts
     if (rootMain.webpackFinal) {
