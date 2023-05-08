@@ -1,6 +1,6 @@
 import { M_RACE_TEXT0 } from '@razor/mocks';
-import { AppPlayerId } from '@razor/models';
-import { store } from '@razor/store';
+import { AppPlayerId, AppStateModel } from '@razor/models';
+import { initializeStore } from '@razor/store';
 
 // TODO: Should be moved to server
 // const loadRacingText = async (): Promise<string> => {
@@ -13,6 +13,18 @@ import { store } from '@razor/store';
 //     });
 // };
 
+const initialState: AppStateModel = {
+  tournamentsModel: {},
+  playersModel: {},
+  racesModel: {},
+  leaderboardsModel: {},
+  playerLogsModel: {},
+  errorLogsModel: {},
+};
+
+// Mock store
+export const store = initializeStore(initialState);
+
 store.dispatch.game.joinPlayer({
   receivedTournamentId: '',
   playerName: 'Player1',
@@ -22,25 +34,25 @@ let game = store.getState().game;
 const playersModel = game.playersModel;
 const players = Object.keys(playersModel);
 const player1Id = players[0] as AppPlayerId;
-const tournamentId = playersModel[player1Id].tournamentId;
+export const testTournamentId = playersModel[player1Id].tournamentId;
 
 store.dispatch.game.joinPlayer({
-  receivedTournamentId: tournamentId,
+  receivedTournamentId: testTournamentId,
   playerName: 'Player2',
 });
 
 store.dispatch.game.startCountdown({
-  tournamentId: tournamentId,
+  tournamentId: testTournamentId,
   playerId: player1Id,
   raceText: M_RACE_TEXT0,
 });
 
 game = store.getState().game;
-const playerIds = game.tournamentsModel[tournamentId].playerIds;
+const playerIds = game.tournamentsModel[testTournamentId].playerIds;
 
 playerIds.forEach(playerId => {
   store.dispatch.game.sendTypeLog({
-    raceId: `${tournamentId}-R:000`,
+    raceId: `${testTournamentId}-R:000`,
     playerId: playerId,
     playerLog: {
       timestamp: Date.now(),
@@ -52,22 +64,28 @@ playerIds.forEach(playerId => {
 game = store.getState().game;
 
 export const addPlayer = (count: number): void => {
-  console.log('addPlayer', count);
   store.dispatch.game.joinPlayer({
-    receivedTournamentId: tournamentId,
+    receivedTournamentId: testTournamentId,
     playerName: `Player${count}`,
   });
   game = store.getState().game;
-  const playerIds = game.tournamentsModel[tournamentId].playerIds;
-  console.log('playerIds', playerIds);
+  const playerIds = game.tournamentsModel[testTournamentId].playerIds;
   const playerId = playerIds[playerIds.length - 1];
 
   store.dispatch.game.sendTypeLog({
-    raceId: `${tournamentId}-R:000`,
+    raceId: `${testTournamentId}-R:000`,
     playerId: playerId,
     playerLog: {
       timestamp: Date.now(),
       textLength: 0,
     },
+  });
+};
+
+export const clearLastPlayer = (): void => {
+  game = store.getState().game;
+  const playerIds = game.tournamentsModel[testTournamentId].playerIds;
+  store.dispatch.game.clearPlayer({
+    playerId: playerIds[playerIds.length - 1],
   });
 };

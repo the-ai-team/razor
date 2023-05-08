@@ -14,12 +14,30 @@ export const raceLineWidth =
 export const raceFreeParkingWidth =
   raceTrackFreeCols * raceTileSize * raceTrackRowColumnMultiplier;
 
+export const carColors = [
+  '#C03E41',
+  '#4AA0F0',
+  '#5AE179',
+  '#FFBB3D',
+  '#CF5CF5',
+  '#8C5CF5',
+  '#5CF5D9',
+  '#D6F55C',
+  '#F49F4F',
+  '#5F5CF5',
+  '#F5DD5C',
+  '#F55CDC',
+];
+
 /** Number of rows in race track.
  * Based on player count
  * @param count Number of players
  * @returns Number of rows
  */
 export const getRaceTrackNRows = (count: number): number => {
+  if (count === 1) {
+    return 3;
+  }
   return count * 2 - 1;
 };
 
