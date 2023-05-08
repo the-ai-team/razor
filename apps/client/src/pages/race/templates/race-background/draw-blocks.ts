@@ -1,4 +1,4 @@
-import { getRaceTrackRowColumnSizes, raceTileSize } from '../race-data';
+import { getRaceTrackRowColumnSizes, raceTileSize } from '../data/race-data';
 
 /** Render size of a side of a race track block */
 const rowColumnSize = getRaceTrackRowColumnSizes();
@@ -74,8 +74,8 @@ export class SpriteDraw {
     this.ctx.strokeStyle = '#ff5959';
     this.ctx.lineWidth = 1;
     this.ctx.rect(
-      rowColumnSize * i,
       rowColumnSize * j,
+      rowColumnSize * i,
       rowColumnSize,
       rowColumnSize,
     );

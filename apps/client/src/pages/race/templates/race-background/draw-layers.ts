@@ -1,12 +1,17 @@
-import { tileMap } from '../race-data';
+import {
+  raceTrackFreeCols,
+  raceTrackTotalCols,
+  tileMap,
+  treePadding,
+} from '../data/race-data';
 import { SpriteDraw } from './draw-blocks';
 
 interface DrawLayerArgs {
   roadBlocks: React.MutableRefObject<string[][]>;
   pavementRows: number;
   draw: SpriteDraw;
-  totalRows: number;
   cols: number;
+  totalRows: number;
   isDebug?: boolean;
 }
 
@@ -14,8 +19,8 @@ export const drawLayers = ({
   roadBlocks,
   pavementRows,
   draw,
-  totalRows,
   cols,
+  totalRows,
   isDebug = true,
 }: DrawLayerArgs): void => {
   // Draw road blocks
@@ -24,7 +29,9 @@ export const drawLayers = ({
       const roadBlockPos = tileMap.get(roadBlock) || { x: 11, y: 19 };
       // Skipping pavement rows
       const rowsBefore = i + pavementRows;
-      draw.drawBlock({ tile: roadBlockPos, i: rowsBefore, j });
+      // Skipping free road blocks
+      const colsBefore = j + raceTrackFreeCols;
+      draw.drawBlock({ tile: roadBlockPos, i: rowsBefore, j: colsBefore });
     });
   });
 
@@ -35,14 +42,19 @@ export const drawLayers = ({
     // if number of pavement rows is 3, then road cones are placed on 5,7,9...
     // Adding pavementRows to i will make value 2n + i; where i will be the factor to determine if it is odd or even.
     if ((pavementRows + i) % 2 === 1) {
-      const tirePilesPos = tileMap.get('road-cones') || { x: 0, y: 0 };
-      draw.drawBlock({ tile: tirePilesPos, i, j: cols - 2 });
+      const roadConesPos = tileMap.get('road-cones') || { x: 0, y: 0 };
+      const roadConesRightPadding = raceTrackFreeCols + 2;
+      draw.drawBlock({
+        tile: roadConesPos,
+        i,
+        j: raceTrackTotalCols - roadConesRightPadding,
+      });
     }
   }
 
   // Draw pavement
   for (let i = 0; i < pavementRows; i++) {
-    for (let j = 0; j < cols; j++) {
+    for (let j = 0; j < raceTrackTotalCols; j++) {
       if (i === pavementRows - 1) {
         const pavementBorderPos = tileMap.get('pavement-border') || {
           x: 0,
@@ -56,11 +68,10 @@ export const drawLayers = ({
     }
   }
 
-  //Draw trees
+  // Draw trees
   if (pavementRows > 2) {
-    const padding = 2;
-    let index = padding;
-    while (index < cols - padding) {
+    let index = treePadding;
+    while (index < raceTrackTotalCols - treePadding) {
       // Picking random tree
       const randomTree = Math.floor(Math.random() * 6) + 1;
       // Getting tree top and bottom sprite-sheet positions
@@ -82,10 +93,28 @@ export const drawLayers = ({
     }
   }
 
+  // Draw two sides (left & right) free parking road blocks
+  for (let i = pavementRows; i < totalRows; i++) {
+    for (let j = 0; j < raceTrackFreeCols; j++) {
+      const roadPos = tileMap.get('empty-road') || { x: 0, y: 0 };
+      draw.drawBlock({ tile: roadPos, i, j });
+    }
+  }
+  for (let i = pavementRows; i < totalRows; i++) {
+    for (
+      let j = raceTrackTotalCols - raceTrackFreeCols;
+      j < raceTrackTotalCols;
+      j++
+    ) {
+      const roadPos = tileMap.get('empty-road') || { x: 0, y: 0 };
+      draw.drawBlock({ tile: roadPos, i, j });
+    }
+  }
+
   // Draw Debug
   if (isDebug) {
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < totalRows; j++) {
+    for (let i = 0; i < totalRows; i++) {
+      for (let j = 0; j < cols; j++) {
         draw.drawDebugBlock({ i, j });
       }
     }
