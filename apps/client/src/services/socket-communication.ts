@@ -44,6 +44,10 @@ const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
+  authToken = '';
+  savedPlayerName = '';
+  savedPlayerId = '';
+  savedRoomId = '';
 };
 
 const initializeSocket = (): void => {
@@ -61,8 +65,7 @@ const initializeSocket = (): void => {
   });
 };
 
-socket.on('disconnect', reason => {
-  console.log('disconnected', reason, savedRoomId, savedPlayerName);
+const tryReconnect = (reason: Socket.DisconnectReason): void => {
   // Reconnect only if not user disconnected intentionally (from a client trigger or server side trigger).
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
@@ -84,6 +87,11 @@ socket.on('disconnect', reason => {
       // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
       const waitingTimeout = setTimeout(() => {
         clearInterval(reconnector);
+        authToken = '';
+        savedPlayerName = '';
+        savedPlayerId = '';
+        savedRoomId = '';
+        // TODO: navigate to home page
       }, RECONNECT_WAITING_TIME);
 
       socket.once('connect', () => {
@@ -93,7 +101,9 @@ socket.on('disconnect', reason => {
       });
     }
   }
-});
+};
+
+socket.on('disconnect', reason => tryReconnect(reason));
 
 export const requestToJoinRoom = ({
   playerName,
