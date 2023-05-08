@@ -4,9 +4,9 @@ import { Button, Input, InputState } from '../../molecules';
 
 export interface ButtonWithInputProps {
   onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  inputValue: string;
   children: string;
+  onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputValue?: string;
   inputPlaceholder?: string;
   icon?: ReactElement;
   inputSize?: number;
@@ -18,9 +18,9 @@ export interface ButtonWithInputProps {
 /**
  *
  * @param onClick - Button click handler, input value and button event will be passed; (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
- * @param onInputChange - Input change handler, input event will be passed
- * @param inputValue - Input value
  * @param children - Text content of button
+ * @param [onInputChange] - Input change handler, input event will be passed
+ * @param [inputValue] - Input value
  * @param [inputPlaceholder] - Placeholder text for input element (optional)
  * @param [icon] - Icon to be displayed on the left side of the button (optional)
  * @param [inputSize=12] - Size of the input element (optional)
@@ -30,9 +30,10 @@ export interface ButtonWithInputProps {
  */
 export function ButtonWithInput({
   onClick,
-  onInputChange,
-  inputValue,
   children,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onInputChange = (): void => {},
+  inputValue,
   inputPlaceholder,
   icon,
   inputSize = 12,
@@ -40,10 +41,11 @@ export function ButtonWithInput({
   isDisabled = false,
   inputState = InputState.Neutral,
 }: ButtonWithInputProps): ReactElement {
+  inputValue ||= '';
   const buttonClickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
     // Prevents onClick from firing when input element is clicked
     if (!(e.target instanceof HTMLInputElement)) {
-      onClick(inputValue, e);
+      onClick(inputValue || '', e);
     }
   };
 
