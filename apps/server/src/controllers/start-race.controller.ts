@@ -1,7 +1,7 @@
 import {
   AppPlayerId,
   AppTournamentId,
-  socketProtocols,
+  SocketProtocols,
   StartRaceAccept,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -64,9 +64,9 @@ export const startRaceController = async ({
 
   pubsub.publish(PubSubEvents.SendDataToAll, {
     tournamentId,
-    protocol: socketProtocols.StartRaceAccept,
+    protocol: SocketProtocols.StartRaceAccept,
     data: startedRaceData,
   });
 };
 
-pubsub.subscribe(socketProtocols.StartRaceRequest, startRaceController);
+pubsub.subscribe(SocketProtocols.StartRaceRequest, startRaceController);
