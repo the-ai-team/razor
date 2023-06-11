@@ -1,10 +1,10 @@
-import { InitialServerData, socketProtocols } from '@razor/models';
+import { InitialServerData, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
 import { pubsub } from '../utils/pubsub';
 
 pubsub.subscribe(
-  socketProtocols.CreateLobbyAccept,
+  SocketProtocols.CreateLobbyAccept,
   (data: InitialServerData) => {
     store.dispatch.game.replaceFullState({ parentState: data.snapshot });
   },

@@ -1,13 +1,14 @@
+import { ReactElement, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
 import { Dispatch, RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
-import { ButtonWithInput, Button, Text } from '../../../components';
 
-import { ReactElement, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addPlayer, clearLastPlayer } from './data/test-race';
+import { Button, ButtonWithInput, Text } from '../../../components';
 import { TextSize, TextType } from '../../../models';
+
+import { addPlayer, clearLastPlayer } from './data/test-race';
 
 export function RaceTrackUpdaters(): ReactElement | null {
   const game = useSelector((store: RootState) => store.game);

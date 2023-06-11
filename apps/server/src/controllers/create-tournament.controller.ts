@@ -2,7 +2,7 @@ import {
   InitialClientData,
   InitialServerData,
   Snapshot,
-  socketProtocols,
+  SocketProtocols,
 } from '@razor/models';
 import { store } from '@razor/store';
 
@@ -61,12 +61,12 @@ const createTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToClient, {
     playerId,
-    protocol: socketProtocols.CreateLobbyAccept,
+    protocol: SocketProtocols.CreateLobbyAccept,
     data: initialServerData,
   });
 };
 
 pubsub.subscribe(
-  socketProtocols.CreateLobbyRequest,
+  SocketProtocols.CreateLobbyRequest,
   createTournamentController,
 );

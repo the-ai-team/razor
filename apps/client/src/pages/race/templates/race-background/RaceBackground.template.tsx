@@ -1,6 +1,6 @@
-import spritesheet from '../../../../assets/spritesheets/city-tiles-map.png';
-
 import { ReactElement, useEffect, useRef } from 'react';
+
+import spritesheet from '../../../../assets/spritesheets/city-tiles-map.png';
 import {
   getRaceTrackHeight,
   getRaceTrackNRows,
@@ -8,6 +8,7 @@ import {
   raceTrackCols,
   raceTrackWidth,
 } from '../data/race-data';
+
 import { SpriteDraw } from './draw-blocks';
 import { drawLayers } from './draw-layers';
 import { RoadBlocks, roadBlocksGeneration } from './road-block-generation';
