@@ -48,8 +48,3 @@ export const playerSchema = z.object({
 
 // ==== Interfaces ==== //
 export type Player = z.infer<typeof playerSchema>;
-
-// Object to send player data when a player joins the tournament to all in a room.
-export interface PlayerJoined {
-  player: Player;
-}

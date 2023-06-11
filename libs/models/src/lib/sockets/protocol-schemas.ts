@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { SocketProtocols } from './protocols';
+import { raceIdSchema } from './race';
 import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';
 
@@ -36,8 +37,16 @@ export const playerJoinSchema = z.object({
 /**
  * Related protocol - {@link SocketProtocols.StartRaceRequest}
  */
-export const startRaceRequestSchema = z.object({
-  playerId: playerIdSchema,
+export const startRaceRequestSchema = z.object({});
+
+/**
+ * Related protocol - {@link SocketProtocols.StartRaceAccept}
+ */
+
+export const startRaceAcceptSchema = z.object({
+  raceId: raceIdSchema,
+  raceStartedBy: playerIdSchema,
+  raceText: z.string(),
 });
 
 export type ProtocolSchemaTypes =
