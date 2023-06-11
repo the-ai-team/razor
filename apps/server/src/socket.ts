@@ -1,9 +1,9 @@
-import { PROTO_AUTH_TOKEN_TRANSFER } from '@razor/constants';
+import { SocketProtocols } from '@razor/models';
 import { Server, Socket } from 'socket.io';
-import { v4 as uuidv4 } from 'uuid';
 
 import { checkReconnected, Logger, publishOnReceive } from './services';
 import { tokenPlayerMap } from './stores';
+import { generateAuthToken, validateAuthToken } from './utils';
 
 const logger = new Logger('socket-manger');
 
@@ -19,18 +19,28 @@ export function socketManager(socket: Socket, io: Server): void {
 
   // Take the token from the handshake.
   const token = socket.handshake.auth.token;
-  // Looking for the player in the map.
-  const playerData = tokenPlayerMap.getPlayer(token);
-  logger.debug(
-    `User is ${playerData ? 'found' : 'not found'} in map.`,
-    context,
-  );
+
+  let playerData;
+  if (token) {
+    if (validateAuthToken(token)) {
+      playerData = tokenPlayerMap.getPlayer(token);
+      logger.debug('Valid token received from client.', context);
+      logger.debug(
+        `User is ${playerData ? 'found' : 'not found'} in map.`,
+        context,
+      );
+    } else {
+      logger.debug('Invalid token received from client.', context);
+    }
+  } else {
+    logger.debug('No token received from client.', context);
+  }
 
   let newToken = '';
   if (!playerData) {
     // If player is new token will be generated and sent to the client.
-    newToken = uuidv4();
-    socket.emit(PROTO_AUTH_TOKEN_TRANSFER, newToken);
+    newToken = generateAuthToken();
+    socket.emit(SocketProtocols.AuthTokenTransfer, newToken);
     // New player will be added with related socket id to the map.
     tokenPlayerMap.addSocketId(newToken, socket.id);
     const context = logger.createContext({ identifier: socket.id });

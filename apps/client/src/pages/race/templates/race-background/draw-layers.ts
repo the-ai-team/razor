@@ -4,6 +4,7 @@ import {
   tileMap,
   treePadding,
 } from '../data/race-data';
+
 import { SpriteDraw } from './draw-blocks';
 
 interface DrawLayerArgs {

@@ -1,12 +1,8 @@
-import {
-  PROTO_CREATE_LOBBY_ACCEPT,
-  PROTO_JOIN_LOBBY_ACCEPT,
-} from '@razor/constants';
-import { InitialServerData } from '@razor/models';
+import { InitialServerData, SocketProtocols } from '@razor/models';
 import { Server } from 'socket.io';
 
 import { PubSubEvents } from '../../models';
-import { tokenPlayerMap } from '../../stores/token-player-map';
+import { tokenPlayerMap } from '../../stores';
 import { pubsub } from '..';
 
 /**
@@ -20,8 +16,8 @@ export function sendDataToClients(io: Server): void {
     // Add player to specific socket room when player joining or creating room.
     // Socket room has the tournament id. So we can send data to specific lobby(All players in a specific tournament).
     if (
-      protocol === PROTO_CREATE_LOBBY_ACCEPT ||
-      protocol === PROTO_JOIN_LOBBY_ACCEPT
+      protocol === SocketProtocols.CreateLobbyAccept ||
+      protocol === SocketProtocols.JoinLobbyAccept
     ) {
       const { tournamentId }: InitialServerData = data;
       io.sockets.sockets.get(socketId).join(tournamentId);

@@ -1,18 +1,17 @@
+import { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
-import { ReactElement } from 'react';
-import { useSelector } from 'react-redux';
-
-import { RaceBackground } from './race-background';
-import { RaceLine } from './race-line';
-
 import cs from 'classnames';
+
 import {
   carColors,
   getRaceTrackPavementRows,
   getRaceTrackRowColumnSizes,
 } from './data/race-data';
+import { RaceBackground } from './race-background';
+import { RaceLine } from './race-line';
 
 export interface RaceTrackProps {
   raceId: AppRaceId;

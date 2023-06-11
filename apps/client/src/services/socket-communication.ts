@@ -1,17 +1,10 @@
-import {
-  PROTO_AUTH_TOKEN_TRANSFER,
-  PROTO_CREATE_LOBBY_ACCEPT,
-  PROTO_CREATE_LOBBY_REQUEST,
-  PROTO_JOIN_LOBBY_ACCEPT,
-  PROTO_JOIN_LOBBY_REQUEST,
-  RECONNECT_WAITING_TIME,
-  REQUEST_WAITING_TIME,
-} from '@razor/constants';
+import { RECONNECT_WAITING_TIME, REQUEST_WAITING_TIME } from '@razor/constants';
 import {
   AuthToken,
   InitialClientData,
   InitialServerData,
   playerIdSchema,
+  SocketProtocols,
   stateModelSchema,
   tournamentIdSchema,
 } from '@razor/models';
@@ -60,7 +53,7 @@ const initializeSocket = (): void => {
   socket.on('connect', () => {
     console.log('connected');
   });
-  socket.on(PROTO_AUTH_TOKEN_TRANSFER, (token: string) => {
+  socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     authToken = token;
   });
 };
@@ -110,7 +103,7 @@ export const requestToJoinRoom = ({
   roomId,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
-  socket.emit(PROTO_JOIN_LOBBY_REQUEST, { playerName, roomId });
+  socket.emit(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // Data validation
@@ -129,17 +122,17 @@ export const requestToJoinRoom = ({
         savedRoomId = roomIdFromServer;
         savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
-        pubsub.publish(PROTO_JOIN_LOBBY_ACCEPT, data);
+        pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(PROTO_JOIN_LOBBY_ACCEPT, receiver);
+    socket.once(SocketProtocols.JoinLobbyAccept, receiver);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(PROTO_JOIN_LOBBY_ACCEPT, receiver);
+      socket.off(SocketProtocols.JoinLobbyAccept, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
   });
@@ -149,7 +142,7 @@ export const requestToCreateRoom = ({
   playerName,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
-  socket.emit(PROTO_CREATE_LOBBY_REQUEST, { playerName });
+  socket.emit(SocketProtocols.CreateLobbyRequest, { playerName });
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // Data validation
@@ -168,17 +161,17 @@ export const requestToCreateRoom = ({
         savedRoomId = roomIdFromServer;
         savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
-        pubsub.publish(PROTO_CREATE_LOBBY_ACCEPT, data);
+        pubsub.publish(SocketProtocols.CreateLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(PROTO_CREATE_LOBBY_ACCEPT, receiver);
+    socket.once(SocketProtocols.CreateLobbyAccept, receiver);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(PROTO_CREATE_LOBBY_ACCEPT, receiver);
+      socket.off(SocketProtocols.CreateLobbyAccept, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
   });
@@ -186,8 +179,8 @@ export const requestToCreateRoom = ({
 
 socket.onAny((event, data) => {
   if (
-    event !== PROTO_CREATE_LOBBY_ACCEPT &&
-    event !== PROTO_JOIN_LOBBY_ACCEPT
+    event !== SocketProtocols.CreateLobbyAccept &&
+    event !== SocketProtocols.JoinLobbyAccept
   ) {
     const tournamentId = roomIdToTournamentId(savedRoomId);
     pubsub.publish(event, { tournamentId, savedPlayerId, data });

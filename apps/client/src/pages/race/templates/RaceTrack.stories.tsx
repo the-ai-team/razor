@@ -1,9 +1,10 @@
-import { Meta, Story } from '@storybook/react';
 import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
+import { Meta, Story } from '@storybook/react';
+
 import { store, testTournamentId } from './data/test-race';
-import { RaceTrackUpdaters } from './RaceTrackUpdaters';
 import { RaceTrack, RaceTrackProps } from './RaceTrack.template';
+import { RaceTrackUpdaters } from './RaceTrackUpdaters';
 
 export default {
   title: 'Templates/RaceTrack',

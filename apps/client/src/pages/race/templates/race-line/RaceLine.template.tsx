@@ -1,7 +1,8 @@
-import { AppPlayerId, AppPlayerLogId, AppRaceId } from '@razor/models';
-import { RootState } from '@razor/store';
 import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
+import { AppPlayerId, AppPlayerLogId, AppRaceId } from '@razor/models';
+import { RootState } from '@razor/store';
+
 import {
   getCarComponentSize,
   getRaceTrackRowColumnSizes,
@@ -9,6 +10,7 @@ import {
   raceLineWidth,
   raceTrackWidth,
 } from '../data/race-data';
+
 import { CarComponent } from './CarComponent';
 
 interface RaceLineProps {
