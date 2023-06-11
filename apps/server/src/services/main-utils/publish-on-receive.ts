@@ -1,4 +1,4 @@
-import { socketProtocols, SocketProtocolsTypes } from '@razor/models';
+import { SocketProtocols, SocketProtocolsTypes } from '@razor/models';
 import { Socket } from 'socket.io';
 
 import { protocolSchemaMap } from '../../models';
@@ -48,8 +48,8 @@ export function publishOnReceive<T>({
   let context: ContextOutput;
 
   if (
-    event === socketProtocols.JoinLobbyRequest ||
-    event === socketProtocols.CreateLobbyRequest
+    event === SocketProtocols.JoinLobbyRequest ||
+    event === SocketProtocols.CreateLobbyRequest
   ) {
     // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
     // Player id will be created in the controller.

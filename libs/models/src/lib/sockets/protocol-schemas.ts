@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { socketProtocols } from './protocols';
+import { SocketProtocols } from './protocols';
 import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';
 
@@ -10,7 +10,7 @@ import { roomIdSchema, tournamentIdSchema } from './tournament';
 // Each schema is related to a protocol defined in {@link socketProtocols}
 
 /**
- * Related protocol - {@link socketProtocols.JoinLobbyRequest} and {@link socketProtocols.CreateLobbyRequest}
+ * Related protocol - {@link SocketProtocols.JoinLobbyRequest} and {@link SocketProtocols.CreateLobbyRequest}
  */
 export const initialClientDataSchema = z.object({
   playerName: playerNameSchema,
@@ -18,7 +18,7 @@ export const initialClientDataSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.CreateLobbyAccept} and {@link socketProtocols.JoinLobbyAccept}
+ * Related protocol - {@link SocketProtocols.CreateLobbyAccept} and {@link SocketProtocols.JoinLobbyAccept}
  */
 export const initialServerDataSchema = z.object({
   playerId: playerIdSchema,
@@ -27,17 +27,21 @@ export const initialServerDataSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.PlayerJoin}
+ * Related protocol - {@link SocketProtocols.PlayerJoin}
  */
 export const playerJoinSchema = z.object({
   player: playerSchema,
 });
 
 /**
- * Related protocol - {@link socketProtocols.StartRaceRequest}
+ * Related protocol - {@link SocketProtocols.StartRaceRequest}
  */
 export const startRaceRequestSchema = z.object({
   playerId: playerIdSchema,
 });
 
-export type ProtocolSchemaTypes = typeof initialClientDataSchema | typeof initialServerDataSchema | typeof playerJoinSchema | typeof startRaceRequestSchema;
+export type ProtocolSchemaTypes =
+  | typeof initialClientDataSchema
+  | typeof initialServerDataSchema
+  | typeof playerJoinSchema
+  | typeof startRaceRequestSchema;

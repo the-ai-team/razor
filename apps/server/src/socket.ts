@@ -1,4 +1,4 @@
-import { socketProtocols } from '@razor/models';
+import { SocketProtocols } from '@razor/models';
 import { Server, Socket } from 'socket.io';
 
 import { checkReconnected, Logger, publishOnReceive } from './services';
@@ -40,7 +40,7 @@ export function socketManager(socket: Socket, io: Server): void {
   if (!playerData) {
     // If player is new token will be generated and sent to the client.
     newToken = generateAuthToken();
-    socket.emit(socketProtocols.AuthTokenTransfer, newToken);
+    socket.emit(SocketProtocols.AuthTokenTransfer, newToken);
     // New player will be added with related socket id to the map.
     tokenPlayerMap.addSocketId(newToken, socket.id);
     const context = logger.createContext({ identifier: socket.id });

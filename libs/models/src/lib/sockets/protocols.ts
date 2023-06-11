@@ -31,7 +31,7 @@ enum ProtocolName {
   ResetLobby = 'RESET_LOBBY',
 }
 
-export const socketProtocols = {
+export const SocketProtocols = {
   // Auth
   AuthTokenTransfer: `${TransferDirection.FromServer}/${CommunicationType.Initial}/${ProtocolName.AuthToken}`,
 
@@ -65,4 +65,4 @@ export const socketProtocols = {
 } as const;
 
 export type SocketProtocolsTypes =
-  (typeof socketProtocols)[keyof typeof socketProtocols];
+  (typeof SocketProtocols)[keyof typeof SocketProtocols];
