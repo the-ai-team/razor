@@ -53,4 +53,5 @@ export type ProtocolSchemaTypes =
   | typeof initialClientDataSchema
   | typeof initialServerDataSchema
   | typeof playerJoinSchema
-  | typeof startRaceRequestSchema;
+  | typeof startRaceRequestSchema
+  | typeof startRaceAcceptSchema;
