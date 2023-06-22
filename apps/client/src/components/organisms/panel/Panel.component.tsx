@@ -38,9 +38,9 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         'flex flex-col',
         'absolute top-5 right-5',
         'px-10',
-        'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-bg-brown',
-        'border border-bg-brown-100',
-        'hover:ring-4 hover:ring-bg-brown-100',
+        'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-neutral-20',
+        'border border-neutral-40',
+        'hover:ring-4 hover:ring-neutral-40',
         'transition-all duration-300',
       )}
       onClick={(): void => setCollapse(preValue => !preValue)}>
