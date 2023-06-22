@@ -5,14 +5,14 @@ import { checkReconnected, Logger, publishOnReceive } from './services';
 import { tokenPlayerMap } from './stores';
 import { generateAuthToken, validateAuthToken } from './utils';
 
-const logger = new Logger('socket-manger');
+const logger = new Logger('manage-socket-connections');
 
 /**
  * Handling received socket events.
  * @param socket Socket instance
  * @param io Socket.io server instance
  */
-export function socketManager(socket: Socket, io: Server): void {
+export function manageSocketConnections(socket: Socket, io: Server): void {
   const context = logger.createContext({ identifier: socket.id });
 
   logger.info('User connected', context);

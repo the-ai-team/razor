@@ -5,8 +5,8 @@ import { Server } from 'socket.io';
 
 import './controllers';
 
-import { sendDataToClients } from './services';
-import { socketManager } from './socket';
+import { emitSocketMessages } from './services';
+import { manageSocketConnections } from './socket';
 import { tokenPlayerMap } from './stores';
 
 const app = express();
@@ -34,10 +34,12 @@ const socketServer = new Server(server, {
   },
 });
 
-socketServer.on('connection', socket => socketManager(socket, socketServer));
+socketServer.on('connection', socket =>
+  manageSocketConnections(socket, socketServer),
+);
 
 server.listen(port, () => {
   console.log(`App listening on port http://localhost:${port}`);
 });
 
-sendDataToClients(socketServer);
+emitSocketMessages(socketServer);
