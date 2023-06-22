@@ -151,7 +151,7 @@ export const startCountdown = (
  * ### Related raisers
  * - tournamentNotFound
  */
-export const endCoundown = (
+export const endCountdown = (
   dispatch: Dispatch,
   payload: EndCountdownPayload,
   state: RootState,
@@ -221,7 +221,7 @@ export const endRace = (
     tournamentState: AppTournamentState.Leaderboard,
   });
 
-  // Get recived race text length.
+  // Get received race text length.
   const raceTextLength = state.game.racesModel[raceId].text.length;
 
   // Get leaderboard from player logs and add leaderboard.

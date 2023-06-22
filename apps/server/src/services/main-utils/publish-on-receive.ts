@@ -1,4 +1,5 @@
 import { SocketProtocols, SocketProtocolsTypes } from '@razor/models';
+import { store } from '@razor/store';
 import { Socket } from 'socket.io';
 
 import { protocolSchemaMap } from '../../models';
@@ -30,12 +31,10 @@ function validateSchema<T>({
     schema.parse(data);
     return true;
   } catch (error) {
-    const logData = {
+    logger.warn(`Received data invalid. (zod-error) ${error}`, context, {
       protocolName: event,
       protocolData: data,
-      zodMessage: error,
-    };
-    logger.warn('Received data invalid.', context, logData);
+    });
     return false;
   }
 }
@@ -63,13 +62,54 @@ export function publishOnReceive<T>({
     pubsub.publish(event, { data, context });
   } else {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
+
+    if (!playerId) {
+      logger.warn('Player not found.', context);
+      return;
+    }
+
+    // Creating logger context
     context = logger.createContext({ identifier: playerId });
 
     const isValid = validateSchema({ event, data, context });
     if (!isValid) {
       return;
     }
-    pubsub.publish(event, { data, context });
+
+    // Get allocated socket room id/s (In socket io first id is always individual socket id)
+    const socketRoomIds = [...socket.rooms]?.slice(1);
+    if (!socketRoomIds) {
+      logger.warn('Player not belongs to any rooms.', context);
+      return;
+    }
+
+    // If player assigned to multiple rooms, we will use the last room id.
+    const socketRoomId = socketRoomIds[socketRoomIds.length - 1];
+
+    const game = store.getState().game;
+
+    // Verify room id with tournament id in store.
+    const tournament = game.tournamentsModel[socketRoomId];
+    if (!tournament) {
+      logger.warn(
+        'The tournament which related to socket room is not available in the store.',
+        context,
+      );
+      return;
+    }
+
+    // Verify whether player belongs to the tournament.
+    if (tournament.playerIds.includes(playerId) === false) {
+      logger.warn('Player not belongs to the tournament.', context);
+      return;
+    }
+
+    pubsub.publish(event, {
+      data,
+      context,
+      playerId,
+      tournamentId: socketRoomId,
+    });
   }
-  logger.info(`Protocol: ${event} | Message received.`, context, data);
+  logger.info(`Protocol: ${event} | Message received.`, context, { data });
 }

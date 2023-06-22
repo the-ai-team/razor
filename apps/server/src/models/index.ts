@@ -1,2 +1,3 @@
+export * from './protcol-schema-map';
+export * from './protcol-schema-map';
 export * from './pubsub-events';
-export * from './protcol-schema-map'

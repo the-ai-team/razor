@@ -16,7 +16,7 @@ import { Dispatch, RootState } from '../store';
 
 import { sendLogMessage } from './logger';
 import { addPlayer, clearPlayer, joinPlayer, sendTypeLog } from './player';
-import { endCoundown, endRace, startCountdown } from './race';
+import { endCountdown, endRace, startCountdown } from './race';
 import { replaceFullState } from './replacers';
 import { setTournamentState } from './tournament';
 
@@ -35,8 +35,8 @@ export const effects = (dispatch: Dispatch) => ({
     setTournamentState(dispatch, payload, state),
   startCountdown: (payload: StartCountdownPayload, state: RootState) =>
     startCountdown(dispatch, payload, state),
-  endCoundown: (payload: EndCountdownPayload, state: RootState) =>
-    endCoundown(dispatch, payload, state),
+  endCountdown: (payload: EndCountdownPayload, state: RootState) =>
+    endCountdown(dispatch, payload, state),
   endRace: (payload: EndRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
   sendTypeLog: (payload: SendTypeLogPlayload, state: RootState) =>

@@ -2,7 +2,7 @@ import {
   AppPlayer,
   InitialClientData,
   InitialServerData,
-  PlayerJoined,
+  PlayerJoin,
   PlayerState,
   Snapshot,
   SocketProtocols,
@@ -101,7 +101,7 @@ const joinTournamentController = ({
   });
 
   // Sending player joined event to all players.
-  const joinedPlayerData: PlayerJoined = {
+  const joinedPlayerData: PlayerJoin = {
     player: {
       id: playerId,
       name: player.name,

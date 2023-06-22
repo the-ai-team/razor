@@ -20,7 +20,7 @@ sequenceDiagram
 ## Sock01 (Press start button) | To server | Command
 
 ```json
-"type": "TS/CMD/START_RACE"
+"type": "TS/CMD/START_RACE",
 "data": {}
 ```
 
@@ -29,15 +29,11 @@ _Race started player's id will not send to the server. But the server will get i
 ## Sock02 (Start countdown) | From server (To all) | Command
 
 ```json
-"type": "FS_ALL/CMD/START_COUNTDOWN"
+"type": "FS_ALL/CMD/START_COUNTDOWN",
 "data": {
-    "race": {
-        "id": "",
-        "text": "",
-        "timeoutDuration": 0,
-        "startedTimestamp": 0,
-        "playerLogs": <PlayerLogsCollection>[],
-        "raceStartedBy": ""
+    "raceId": "",
+    "raceStartedBy": "",
+    "raceText": "",
 }
 ```
 
