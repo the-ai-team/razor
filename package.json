@@ -108,6 +108,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-sort-exports": "^0.8.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
     "istanbul": "^0.4.5",
