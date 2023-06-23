@@ -1,0 +1,26 @@
+{
+  "page": "Room",
+  "panel": {
+    "title": "Room",
+    "descriptions": [
+      {
+        "title": "Waiting Room",
+        "content": "Gather in this virtual room and await your friends. Share the room link to invite others. A minimum of {{min}} players is required to start the race, and the room can accommodate up to {{max}} players."
+      },
+      {
+        "title": "Start the Race!",
+        "content": "No waiting for admins or hosts. Anyone can kickstart by clicking the 'Start Race' button when they feel ready. Countdown begins to build anticipation. Stay focused, take deep breaths, and type your way to triumph. Good luck!"
+      },
+      {
+        "title": "Race Time!",
+        "content": "Once the race begins, you'll have a limited time to type as accurately as possible. If you make a mistake, quickly backspace to correct it before moving forward. Once you finish, you'll need to wait patiently for all players to complete the race or for the time to run out."
+      }
+    ]
+  },
+  "alone_message": "You can't start the race alone.",
+  "player_count": "<Count><0>{{current_count}}</0><1>/{{max_count}} Players</1></Count>",
+  "actions": {
+    "copy_url": "Copy room URL",
+    "start": "Start Race"
+  }
+}
