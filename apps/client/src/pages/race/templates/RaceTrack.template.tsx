@@ -24,6 +24,8 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
     ExtractIdType.Race,
     ExtractIdType.Tournament,
   );
+
+  // FIXME: should take player ids from the race not the tournament
   const playerIds = game.tournamentsModel[tournamentId]?.playerIds;
 
   const textLength = game.racesModel[raceId].text.length;

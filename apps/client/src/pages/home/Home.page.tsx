@@ -28,7 +28,9 @@ import {
 } from '../../services';
 
 export function Home(): ReactElement {
+  const { t } = useTranslation('home');
   const { roomId } = useParams();
+
   // disconnect any socket connection if user navigates back to home page.
   useEffect(() => {
     endSocket();
@@ -42,7 +44,6 @@ export function Home(): ReactElement {
   const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
     useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
-  const { t } = useTranslation('home');
 
   const routeToRoom = async (): Promise<void> => {
     if (roomId) {
@@ -158,7 +159,6 @@ export function Home(): ReactElement {
             <Logo className='-mb-16' />
           )}
         </div>
-        {/* TODO: implement input validation. add max length from constants (some commits needed from previous branches) */}
         {/* Player handle(username) input and join/create button */}
         <Input
           value={playerName}
