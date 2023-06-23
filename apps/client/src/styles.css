@@ -38,10 +38,18 @@ body {
   scrollbar-color: #f4dddb #201a1a;
 }
 
-canvas{
+.scrollbar-full::-webkit-scrollbar-track-piece:end {
+  margin-bottom: 0;
+}
+
+.scrollbar-full::-webkit-scrollbar-track-piece:start {
+  margin-top: 0;
+}
+
+canvas {
   image-rendering: pixelated;
 }
 
-svg#car{
- shape-rendering: crispEdges;
+svg#car {
+  shape-rendering: crispEdges;
 }
