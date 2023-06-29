@@ -1,5 +1,6 @@
 import { cloneElement, ReactElement, useEffect, useState } from 'react';
 import cs from 'classnames';
+import { ReactComponent as CloseIcon } from 'pixelarticons/svg/close.svg';
 
 import { Time } from '../../../constants';
 import { TextSize, TextType } from '../../../models';
@@ -83,6 +84,17 @@ export function Toast({
     };
   }, [toastHideDelay, isImmortal, onClose, id]);
 
+  // Force close toast when clicked
+  const forceClose = (): void => {
+    toggleToast(false);
+
+    // Remove toast from context after closing animation
+    const timeout = setTimeout(() => {
+      onClose(id);
+      clearTimeout(timeout);
+    }, Time.TOAST_ANIMATION_DURATION);
+  };
+
   const Icon = ({ ...props }): ReactElement => {
     if (!icon) {
       // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -121,13 +133,34 @@ export function Toast({
       <div className='p-8 flex flex-col items-start justify-between'>
         <div
           className={cs(
-            'flex items-center justify-center gap-4',
+            'flex items-center justify-between gap-4  w-full',
             'text-neutral-90',
           )}>
-          {icon}
-          <Text type={TextType.Label} size={TextSize.Small}>
-            {title}
-          </Text>
+          <div className='flex items-center gap-4'>
+            {icon ? <Icon className='w-12 h-12 flex-none' /> : null}
+            <Text
+              type={TextType.Label}
+              size={TextSize.Small}
+              className='flex-none'>
+              {title}
+            </Text>
+          </div>
+          <CloseIcon
+            className={cs(
+              'w-8 h-8 text-neutral-90 p-2',
+              {
+                'bg-neutral-40 bg-opacity-40': type === ToastType.Info,
+              },
+              {
+                'bg-primary-70 bg-opacity-40': type === ToastType.Error,
+              },
+              {
+                'bg-secondary-70 bg-opacity-40': type === ToastType.Warning,
+              },
+              ' rounded-full cursor-pointer',
+            )}
+            onClick={(): void => forceClose()}
+          />
         </div>
         <div
           className={cs(
