@@ -19,6 +19,16 @@
   },
   "alone_message": "You can't start the race alone.",
   "player_count": "<Count><0>{{current_count}}</0><1>/{{max_count}} Players</1></Count>",
+  "toasts": {
+    "link_copy": {
+      "title": "Link Copied",
+      "message": "Share this link with your friends to invite them to the room."
+    },
+    "link_copy_failed": {
+      "title": "Link Copy Failed",
+      "message": "Please check clipboard access permissions or copy the link manually from URL box."
+    }
+  },
   "actions": {
     "copy_url": "Copy room URL",
     "start": "Start Race"
