@@ -30,7 +30,7 @@ export function IconButton({
 
   return (
     <div
-      className='group flex relative w-fit'
+      className='group flex relative w-fit cursor-pointer'
       onMouseEnter={(): void => setIsHovered(true)}
       onMouseLeave={(): void => setIsHovered(false)}
       onClick={onClick}
