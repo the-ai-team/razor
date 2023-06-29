@@ -11,6 +11,8 @@ import './controllers';
 import { NotFound } from './pages/NotFound';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
 
+import './styles.css';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );

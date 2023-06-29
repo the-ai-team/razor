@@ -15,7 +15,7 @@ import { PubSubEvents } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 const SOCKET_ENDPOINT =
-  process.env['NX_SOCKET_ENDPOINT'] || 'http://localhost:3000';
+  import.meta.env.NX_SOCKET_ENDPOINT || 'http://localhost:3000';
 let authToken = '';
 let savedPlayerName = '';
 let savedPlayerId = '';
