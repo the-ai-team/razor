@@ -1,6 +1,6 @@
 import { AuthToken, PlayerId, socketId } from '@razor/models';
 
-interface MapData {
+export interface MapData {
   playerId?: PlayerId;
   socketId: socketId;
 }
