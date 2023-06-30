@@ -157,7 +157,7 @@ export const addPlayer = (
   payload: AddPlayerPayload,
   state: RootState,
 ): void => {
-  const { tournamentState, playerId, player } = payload;
+  const { playerId, player } = payload;
   const {
     name: playerName,
     avatarLink,
@@ -188,10 +188,21 @@ export const addPlayer = (
     return;
   }
 
-  dispatch.game.setTournamentState({
-    tournamentId,
-    tournamentState,
-  });
+  // Converting tournament state to "Lobby" from "Empty" if it had no players.
+  if (state.game.tournamentsModel[tournamentId].playerIds.length == 0) {
+    dispatch.game.setTournamentState({
+      tournamentId,
+      tournamentState: AppTournamentState.Lobby,
+    });
+  }
+
+  // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
+  if (state.game.tournamentsModel[tournamentId].playerIds.length >= 1) {
+    dispatch.game.setTournamentState({
+      tournamentId,
+      tournamentState: AppTournamentState.Ready,
+    });
+  }
 
   // Add the new player.
   dispatch.game.addPlayerReducer({

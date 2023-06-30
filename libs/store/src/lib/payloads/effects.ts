@@ -16,7 +16,6 @@ export type JoinPlayerPayload = {
 };
 
 export type AddPlayerPayload = {
-  tournamentState: AppTournamentState;
   playerId: AppPlayerId;
   player: AppPlayer;
 };
