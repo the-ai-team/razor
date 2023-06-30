@@ -3,7 +3,7 @@ import {
   AppPlayerId,
   AppTournamentId,
   socketProtocols,
-  StartRaceAccept,
+  StartRaceAcceptData,
 } from '@razor/models';
 import { store } from '@razor/store';
 
@@ -58,7 +58,7 @@ export const startRaceController = async ({
   const raceId = raceIds[raceIds.length - 1];
   const race = game.racesModel[raceId];
 
-  const startedRaceData: StartRaceAccept = {
+  const startedRaceData: StartRaceAcceptData = {
     raceId,
     raceStartedBy: playerId,
     raceText,

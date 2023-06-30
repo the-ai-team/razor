@@ -25,6 +25,6 @@ export interface InitialServerData {
   snapshot: Snapshot;
 }
 
-export type PlayerJoin = z.infer<typeof playerJoinSchema>;
+export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
 
-export type StartRaceAccept = z.infer<typeof startRaceAcceptSchema>;
+export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;
