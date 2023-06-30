@@ -10,6 +10,20 @@ import {
 } from './protocol-schemas';
 import { TournamentId } from './tournament';
 
+// This model is use when client subscribe and listen to socket events
+// This contains self player data to do client side operations on store, when a new socket event is received
+export interface ClientStoredPlayerData<T> {
+  /** Player's tournament id */
+  tournamentId: TournamentId;
+  /** Player's id which saved on memory which is used to identify the player who received the event. */
+  savedPlayerId: PlayerId;
+  /** Data related to event.
+   * In most of the events, this field contains another player's data.
+   * Therefore savedPlayerId is not relaxant to player details in this field.
+   */
+  data: T;
+}
+
 // Data sent from the client to the server with socket establishment
 export type InitialClientData = z.infer<typeof initialClientDataSchema>;
 
