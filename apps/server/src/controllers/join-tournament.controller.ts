@@ -1,9 +1,9 @@
 import {
   AppPlayer,
+  appPlayerStateToPlayerState,
   InitialClientData,
   InitialServerData,
   PlayerJoinData,
-  PlayerState,
   Snapshot,
   socketProtocols,
   TournamentId,
@@ -106,7 +106,7 @@ const joinTournamentController = ({
       id: playerId,
       name: player.name,
       avatarLink: player.avatarLink,
-      state: player.state as unknown as PlayerState,
+      state: appPlayerStateToPlayerState(player.state),
     },
   };
 
