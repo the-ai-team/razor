@@ -44,7 +44,7 @@ export type EndRacePayload = {
   raceId: AppRaceId;
 };
 
-export type SendTypeLogPlayload = {
+export type SendTypeLogPayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
   /** Timestamp, and text length from players machine */

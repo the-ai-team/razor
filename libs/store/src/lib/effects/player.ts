@@ -14,7 +14,7 @@ import {
   AddPlayerPayload,
   ClearPlayerPayload,
   JoinPlayerPayload,
-  SendTypeLogPlayload,
+  SendTypeLogPayload,
 } from '../payloads';
 import {
   invalidPlayerName,
@@ -291,7 +291,7 @@ export const clearPlayer = (
  */
 export const sendTypeLog = (
   dispatch: Dispatch,
-  payload: SendTypeLogPlayload,
+  payload: SendTypeLogPayload,
   state: RootState,
 ): void => {
   const { raceId, playerId, playerLog } = payload;
