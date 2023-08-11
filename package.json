@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
+    "start:network": "nx serve --host=0.0.0.0",
     "start:server": "nx serve server",
+    "start:server-network": "nx serve server --host=0.0.0.0",
     "storybook": "nx run client:storybook",
     "build-storybook": "nx run client:build-storybook",
     "build": "nx build client && nx build server",
