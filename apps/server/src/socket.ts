@@ -10,9 +10,12 @@ const logger = new Logger('manage-socket-connections');
 /**
  * Handling received socket events.
  * @param socket Socket instance
- * @param io Socket.io server instance
+ * @param socketServer Socket.io server instance
  */
-export function manageSocketConnections(socket: Socket, io: Server): void {
+export function manageSocketConnections(
+  socket: Socket,
+  socketServer: Server,
+): void {
   const context = logger.createContext({ identifier: socket.id });
 
   logger.info('User connected', context);
@@ -63,7 +66,7 @@ export function manageSocketConnections(socket: Socket, io: Server): void {
     const context = logger.createContext({ identifier: playerId });
     logger.info('User disconnected.', context);
     if (authToken) {
-      checkReconnected(authToken, io);
+      checkReconnected(authToken, socketServer);
     }
   });
 }
