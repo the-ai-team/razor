@@ -5,7 +5,7 @@ import { z } from 'zod';
 /** Player id template literal */
 export type PlayerId = z.input<typeof playerIdSchema>;
 export type AuthToken = string;
-export type socketId = string;
+export type SocketId = string;
 
 // ==== Enums ==== //
 export enum PlayerState {
