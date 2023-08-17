@@ -3,6 +3,7 @@ export * from './player';
 export * from './playerLog';
 export * from './protocol-data';
 export * from './protocol-schemas';
+export * from './protocol-to-schema-map';
 export * from './protocols';
 export * from './race';
 export * from './state-model';

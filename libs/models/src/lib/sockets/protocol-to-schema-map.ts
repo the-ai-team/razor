@@ -2,19 +2,18 @@ import {
   initialClientDataSchema,
   initialServerDataSchema,
   ProtocolSchemaTypes,
-  socketProtocols,
-  SocketProtocolsTypes,
   startRaceRequestSchema,
-} from '@razor/models';
+} from './protocol-schemas';
+import { socketProtocols, SocketProtocolsTypes } from './protocols';
 
-// This map contains schemas for each protocol sent from client to server.
-export const protocolSchemaMap = new Map<
+// This map contains schemas for each protocols defined in {@link socketProtocols}
+export const protocolToSchemaMap = new Map<
   SocketProtocolsTypes,
   ProtocolSchemaTypes
 >([
   [socketProtocols.JoinLobbyRequest, initialClientDataSchema],
   [socketProtocols.JoinLobbyAccept, initialServerDataSchema],
   [socketProtocols.CreateLobbyRequest, initialClientDataSchema],
-  [socketProtocols.CreateLobbyAccept, initialClientDataSchema],
+  [socketProtocols.CreateLobbyAccept, initialServerDataSchema],
   [socketProtocols.StartRaceRequest, startRaceRequestSchema],
 ]);
