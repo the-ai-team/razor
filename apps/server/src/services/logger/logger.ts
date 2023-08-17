@@ -3,7 +3,7 @@ import {
   PlayerId,
   playerIdSchema,
   RaceId,
-  socketId,
+  SocketId,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -21,13 +21,15 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 interface ContextInput {
-  identifier: PlayerId | socketId;
+  identifier: PlayerId | SocketId;
 }
 
 export interface ContextOutput {
   subject: string;
-  playerId: PlayerId;
-  socketId: socketId;
+  // both playerId and socketId won't be available at the same time.
+  playerId?: PlayerId;
+  // socket Id will be available only for initial events.
+  socketId?: SocketId;
   domainId?: TournamentId | RaceId | null;
 }
 
@@ -39,6 +41,9 @@ export class Logger {
 
     let socketId = '';
     let playerId: PlayerId;
+
+    // When creating context both playerId and socketId can be used as identifier.
+    // here we are checking whether identifier is playerId or socketId.
     if (playerIdSchema.safeParse(identifier).success) {
       playerId = identifier as PlayerId;
       socketId = tokenPlayerMap.getSocketIdByPlayerId(identifier as PlayerId);
