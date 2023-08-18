@@ -3,16 +3,22 @@ interface Events {
   [key: string]: FuncType<object>[];
 }
 
-export class PubSub {
+export class PubSub<EventMap extends Record<string, object>> {
   private events: Events = {};
 
-  subscribe<T extends object>(eventName: string, fn: FuncType<T>): void {
+  subscribe<Event extends string>(
+    eventName: Event,
+    fn: FuncType<EventMap[Event]>,
+  ): void {
     this.events[eventName] = this.events[eventName] || [];
     this.events[eventName].push(fn as FuncType<object>);
     console.log(`Subscribed to ${eventName}`);
   }
 
-  unsubscribe<T extends object>(eventName: string, fn: FuncType<T>): void {
+  unsubscribe<Event extends string>(
+    eventName: Event,
+    fn: FuncType<EventMap[Event]>,
+  ): void {
     if (this.events[eventName]) {
       this.events[eventName] = this.events[eventName].filter(
         eventFn => fn !== eventFn,
@@ -21,7 +27,7 @@ export class PubSub {
     }
   }
 
-  publish<T extends object>(eventName: string, data: T): void {
+  publish<Event extends string>(eventName: Event, data: EventMap[Event]): void {
     if (this.events[eventName]) {
       this.events[eventName].forEach(fn => {
         fn(data);
