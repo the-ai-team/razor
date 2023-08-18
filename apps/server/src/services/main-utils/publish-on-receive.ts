@@ -1,8 +1,12 @@
-import { socketProtocols, SocketProtocolsTypes } from '@razor/models';
+import {
+  protocolToSchemaMap,
+  socketProtocols,
+  SocketProtocolsTypes,
+  TournamentId,
+} from '@razor/models';
 import { store } from '@razor/store';
 import { Socket } from 'socket.io';
 
-import { protocolSchemaMap } from '../../models';
 import { tokenPlayerMap } from '../../stores';
 import { ContextOutput, Logger } from '../logger';
 import { pubsub } from '../pubsub';
@@ -27,7 +31,7 @@ function validateSchema<T>({
   context,
 }: validateSchemaArgs<T>): boolean {
   try {
-    const schema = protocolSchemaMap.get(event);
+    const schema = protocolToSchemaMap.get(event);
     schema.parse(data);
     return true;
   } catch (error) {
@@ -59,7 +63,7 @@ export function publishOnReceive<T>({
     if (!isValid) {
       return;
     }
-    pubsub.publish(event, { data, context });
+    pubsub.publish(event, { data, context, socketId });
   } else {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
 
@@ -84,7 +88,9 @@ export function publishOnReceive<T>({
     }
 
     // If player assigned to multiple rooms, we will use the last room id.
-    const socketRoomId = socketRoomIds[socketRoomIds.length - 1];
+    const socketRoomId = socketRoomIds[
+      socketRoomIds.length - 1
+    ] as TournamentId;
 
     const game = store.getState().game;
 
