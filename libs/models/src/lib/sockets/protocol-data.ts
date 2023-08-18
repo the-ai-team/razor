@@ -4,9 +4,11 @@ import { AppStateModel } from '../state';
 
 import { PlayerId } from './player';
 import {
+  clearPlayerSchema,
   initialClientDataSchema,
   playerJoinSchema,
   startRaceAcceptSchema,
+  startRaceRequestSchema,
 } from './protocol-schemas';
 import { TournamentId } from './tournament';
 
@@ -40,5 +42,7 @@ export interface InitialServerData {
 }
 
 export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
+export type ClearPlayerData = z.infer<typeof clearPlayerSchema>;
 
+export type StartRaceRequestData = z.infer<typeof startRaceRequestSchema>;
 export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;

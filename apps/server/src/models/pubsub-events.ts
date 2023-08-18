@@ -45,13 +45,13 @@ export interface SendDataToAllModel {
 }
 
 export interface PlayerDisconnectModel {
-  playerId: PlayerId;
   context: ContextOutput;
+  data: { playerId: PlayerId };
 }
 
 export interface RaceTimeoutModel {
-  raceId: RaceId;
   context: ContextOutput;
+  data: { raceId: RaceId };
 }
 
 export interface ServerUniqueEventsToTypeMap extends Record<string, object> {

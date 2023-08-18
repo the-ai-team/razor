@@ -35,6 +35,13 @@ export const playerJoinSchema = z.object({
 });
 
 /**
+ * Related protocol - {@link socketProtocols.ClearPlayer}
+ */
+export const clearPlayerSchema = z.object({
+  playerId: playerIdSchema,
+});
+
+/**
  * Related protocol - {@link socketProtocols.StartRaceRequest}
  */
 export const startRaceRequestSchema = z.object({});
@@ -42,7 +49,6 @@ export const startRaceRequestSchema = z.object({});
 /**
  * Related protocol - {@link socketProtocols.StartRaceAccept}
  */
-
 export const startRaceAcceptSchema = z.object({
   raceId: raceIdSchema,
   raceStartedBy: playerIdSchema,
