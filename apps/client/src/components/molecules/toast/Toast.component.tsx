@@ -77,9 +77,9 @@ export function Toast({
         {
           'bg-neutral-20 border-neutral-40 ring-neutral-40':
             type === ToastType.Info,
-          'bg-primary-50 border-primary-70 ring-primary-70':
+          'bg-primary-20 border-primary-40 ring-primary-40':
             type === ToastType.Error,
-          'bg-secondary-50 border-secondary-70 ring-secondary-70':
+          'bg-secondary-20 border-secondary-40 ring-secondary-40':
             type === ToastType.Warning,
         },
         'rounded-md overflow-hidden',
@@ -104,8 +104,8 @@ export function Toast({
         <div
           className={cs('h-[2px] w-full opacity-40', 'my-5', {
             'bg-neutral-40': type === ToastType.Info,
-            'bg-primary-70 opacity-40': type === ToastType.Error,
-            'bg-secondary-70 opacity-40': type === ToastType.Warning,
+            'bg-primary-40 ': type === ToastType.Error,
+            'bg-secondary-40': type === ToastType.Warning,
           })}
         />
         <Text type={TextType.Paragraph} size={TextSize.Small}>
@@ -116,7 +116,7 @@ export function Toast({
         className={cs(
           'h-2',
           'absolute left-0 bottom-0',
-          'bg-neutral-90 opacity-40',
+          'bg-neutral-90 opacity-30',
         )}
         style={{
           width: `${timerPercentage}%`,
