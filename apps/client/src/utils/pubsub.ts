@@ -1,3 +1,5 @@
 import { PubSub } from '@razor/util';
 
-export const pubsub = new PubSub();
+import { AllServerPubSubEventsToTypeMap } from '../models';
+
+export const pubsub = new PubSub<AllServerPubSubEventsToTypeMap>();
