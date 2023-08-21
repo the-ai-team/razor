@@ -188,14 +188,7 @@ export const addPlayer = (
     return;
   }
 
-  // Converting tournament state to "Lobby" from "Empty" if it had no players.
-  if (state.game.tournamentsModel[tournamentId].playerIds.length == 0) {
-    dispatch.game.setTournamentState({
-      tournamentId,
-      tournamentState: AppTournamentState.Lobby,
-    });
-  }
-
+  // When adding a player lobby cannot be Empty
   // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
   if (state.game.tournamentsModel[tournamentId].playerIds.length >= 1) {
     dispatch.game.setTournamentState({
