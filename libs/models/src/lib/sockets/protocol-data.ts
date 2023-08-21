@@ -7,6 +7,7 @@ import {
   initialClientDataSchema,
   playerJoinSchema,
   startRaceAcceptSchema,
+  startRaceRequestSchema,
 } from './protocol-schemas';
 import { TournamentId } from './tournament';
 
@@ -41,4 +42,5 @@ export interface InitialServerData {
 
 export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
 
+export type StartRaceRequestData = z.infer<typeof startRaceRequestSchema>;
 export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;

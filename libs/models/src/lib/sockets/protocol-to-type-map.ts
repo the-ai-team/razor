@@ -1,6 +1,7 @@
 import {
   InitialClientData,
   InitialServerData,
+  PlayerJoinData,
   StartRaceRequestData,
 } from './protocol-data';
 import { socketProtocols } from './protocols';
@@ -9,10 +10,14 @@ import { socketProtocols } from './protocols';
 export interface InitialProtocolToTypeMap extends Record<string, object> {
   [socketProtocols.JoinLobbyRequest]: InitialClientData;
   [socketProtocols.JoinLobbyAccept]: InitialServerData;
+  [socketProtocols.CreateLobbyRequest]: InitialClientData;
+  [socketProtocols.CreateLobbyAccept]: InitialServerData;
 }
 
 export interface OtherProtocolToTypeMap extends Record<string, object> {
-  [socketProtocols.CreateLobbyRequest]: InitialClientData;
-  [socketProtocols.CreateLobbyAccept]: InitialServerData;
   [socketProtocols.StartRaceRequest]: StartRaceRequestData;
+  [socketProtocols.PlayerJoin]: PlayerJoinData;
 }
+
+export type AllProtocolToTypeMap = InitialProtocolToTypeMap &
+  OtherProtocolToTypeMap;

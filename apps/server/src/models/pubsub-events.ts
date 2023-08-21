@@ -13,14 +13,14 @@ import { ContextOutput } from '../services';
 // TODO: change to ServerUniqueEvents
 /** Pubsub events exceptional to server */
 export enum PubSubEvents {
-  // Events use by services
+  // Events publish by controllers
 
   /** This will usually trigger by controllers when an event need to send to a specific client.  */
   SendDataToClient = 'send-data-to-client',
   /** This will usually trigger by controllers when an event need to send to all clients. */
   SendDataToAll = 'send-data-to-all',
 
-  // Events use by controllers
+  // Events publish by services
 
   /** Notify the player-disconnect event to controllers. */
   PlayerDisconnect = 'player-disconnect',
@@ -45,12 +45,12 @@ export interface SendDataToAllModel {
 }
 
 export interface PlayerDisconnectModel {
-  playerId: PlayerId;
+  data: { playerId: PlayerId };
   context: ContextOutput;
 }
 
 export interface RaceTimeoutModel {
-  raceId: RaceId;
+  data: { raceId: RaceId };
   context: ContextOutput;
 }
 
