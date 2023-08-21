@@ -77,12 +77,8 @@ export function Toast({
         {
           'bg-neutral-20 border-neutral-40 ring-neutral-40':
             type === ToastType.Info,
-        },
-        {
           'bg-primary-50 border-primary-70 ring-primary-70':
             type === ToastType.Error,
-        },
-        {
           'bg-secondary-50 border-secondary-70 ring-secondary-70':
             type === ToastType.Warning,
         },
@@ -90,8 +86,6 @@ export function Toast({
         'border',
         {
           'right-5': isOpen,
-        },
-        {
           '-right-full': !isOpen,
         },
         'transition-all duration-1000',
@@ -108,19 +102,11 @@ export function Toast({
           </Text>
         </div>
         <div
-          className={cs(
-            'h-[2px] w-full',
-            'my-5',
-            {
-              'bg-neutral-40 opacity-40': type === ToastType.Info,
-            },
-            {
-              'bg-primary-70 opacity-40': type === ToastType.Error,
-            },
-            {
-              'bg-secondary-70 opacity-40': type === ToastType.Warning,
-            },
-          )}
+          className={cs('h-[2px] w-full opacity-40', 'my-5', {
+            'bg-neutral-40': type === ToastType.Info,
+            'bg-primary-70 opacity-40': type === ToastType.Error,
+            'bg-secondary-70 opacity-40': type === ToastType.Warning,
+          })}
         />
         <Text type={TextType.Paragraph} size={TextSize.Small}>
           {children}
