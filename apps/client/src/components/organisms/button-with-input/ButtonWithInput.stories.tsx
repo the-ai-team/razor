@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
 import { InputState } from '../../molecules';
 
@@ -23,13 +23,10 @@ export default {
   },
 } as Meta<ButtonWithInputProps>;
 
-const Template: Story<ButtonWithInputProps> = args => (
-  <ButtonWithInput {...args} />
-);
+export const Default = {};
 
-export const Default = Template.bind({});
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  isDisabled: true,
+export const Disabled = {
+  args: {
+    isDisabled: true,
+  },
 };

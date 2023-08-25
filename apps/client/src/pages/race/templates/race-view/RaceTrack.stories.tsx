@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
 import { store, testTournamentId } from './data/test-race';
 import { RaceTrack, RaceTrackProps } from './RaceTrack.template';
@@ -25,9 +25,7 @@ const Mockstore = ({ children }: MockstoreProps): ReactElement => (
   </Provider>
 );
 
-const Template: Story<RaceTrackProps> = args => <RaceTrack {...args} />;
-
-export const Default = Template.bind({});
-Default.decorators = [
-  (story): ReactElement => <Mockstore>{story()}</Mockstore>,
-];
+export const Default = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  decorators: [(story: any): ReactElement => <Mockstore>{story()}</Mockstore>],
+};

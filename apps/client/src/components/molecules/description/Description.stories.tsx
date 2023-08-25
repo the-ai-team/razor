@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
 import { Description, DescriptionProps } from './Description.component';
 
@@ -13,6 +13,4 @@ export default {
   },
 } as Meta<DescriptionProps>;
 
-const Template: Story<DescriptionProps> = args => <Description {...args} />;
-
-export const Default = Template.bind({});
+export const Default = {};
