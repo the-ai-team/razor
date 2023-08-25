@@ -5,8 +5,8 @@ import { Dispatch, RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
-import { Button, ButtonWithInput, Text } from '../../../components';
-import { TextSize, TextType } from '../../../models';
+import { Button, ButtonWithInput, Text } from '../../../../components';
+import { TextSize, TextType } from '../../../../models';
 
 import { addPlayer, clearLastPlayer } from './data/test-race';
 

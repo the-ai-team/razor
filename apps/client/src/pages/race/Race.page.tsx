@@ -7,7 +7,7 @@ import { RootState } from '@razor/store';
 import { Text } from '../../components';
 import { TextSize, TextType } from '../../models';
 
-import { RaceTrack } from './templates/RaceTrack.template';
+import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
   // FIXME: convert id to roomId
