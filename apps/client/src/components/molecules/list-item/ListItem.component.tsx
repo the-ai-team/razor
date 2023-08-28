@@ -34,7 +34,7 @@ export function ListItem({
         'px-10 py-3',
         'bg-neutral-20',
         'rounded-md',
-        'border-[3px] border-neutral-40 ring-neutral-40',
+        'border-[3px] border-neutral-40',
         { 'opacity-60': isTranslucent },
       )}>
       <div className='flex items-center justify-center gap-4'>
