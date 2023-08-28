@@ -17,7 +17,6 @@ const config = {
     'storybook-addon-paddings',
   ],
   
-
   async viteFinal(config, { configType }) {
     return mergeConfig(config, {
       plugins: [

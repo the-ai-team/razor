@@ -30,6 +30,14 @@
         "curly": "error",
         "no-lonely-if": "error",
         "require-await": "error",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+          }
+        ],
         "simple-import-sort/imports": [
           "error",
           {
@@ -68,15 +76,8 @@
         ],
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/await-thenable": "error",
-        "@typescript-eslint/no-unused-vars": "off",
-        "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
-          "warn",
-          {
-            "varsIgnorePattern": "^_",
-            "argsIgnorePattern": "^_"
-          }
-        ]
+        // disabled `unused-imports/no-unused-vars` doing the same thing
+        "@typescript-eslint/no-unused-vars": "off"
       }
     },
     {
