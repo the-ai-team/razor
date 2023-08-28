@@ -15,7 +15,8 @@ export function Cursor({
       className={cs(
         'absolute h-full w-[20px] top-[0.5px]',
         {
-          'left-[-0.025em]': !isAtSpace,
+          'left-[-0.5px]': !isAtSpace,
+          'left-[0.5px]': isAtSpace,
           'bg-primary-30 bg-opacity-60': isDebug,
         },
         'animate-cursor-blink',

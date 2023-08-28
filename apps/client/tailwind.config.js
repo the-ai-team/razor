@@ -27,6 +27,7 @@ module.exports = {
         70: '#F09647',
       },
       error: {
+        50: '#DE3730',
         60: '#FF5449',
       },
       white: colors.white,
