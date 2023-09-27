@@ -7,8 +7,8 @@ interface GetCharIndexProps {
 export class RaceTextIndexConverter {
   readonly raceText: string;
   readonly spaceSeparatedText: string[];
-  /** Array containing length of every word. */
-  readonly wordLengthsArray: number[] = [];
+  /** Array containing cumulative length of words. */
+  readonly cumulativeWordLengthsArray: number[] = [];
 
   constructor(raceText: string) {
     this.raceText = raceText;
@@ -18,9 +18,12 @@ export class RaceTextIndexConverter {
   }
 
   private computeWordLengthsArray(): void {
-    this.spaceSeparatedText.forEach(word => {
-      this.wordLengthsArray.push(word.length);
-    });
+    let cumulativeLength = 0;
+
+    for (const word of this.spaceSeparatedText) {
+      cumulativeLength += word.length;
+      this.cumulativeWordLengthsArray.push(cumulativeLength);
+    }
   }
 
   getCharIndex({
@@ -29,18 +32,14 @@ export class RaceTextIndexConverter {
     isSpace = false,
   }: GetCharIndexProps): number {
     let index = 0;
-
-    for (let i = 0; i < wordIndex; i++) {
-      index += this.wordLengthsArray[i];
-      // Add 1 for space
-      index++;
-    }
-
     if (isSpace) {
       // index of space is considered as the length of the word
       // ex: "hello world" -> index of space is 5
-      index += this.wordLengthsArray[wordIndex];
+      index = this.cumulativeWordLengthsArray[wordIndex];
+      index += wordIndex; // Add spaces count
     } else {
+      index = this.cumulativeWordLengthsArray[wordIndex - 1] || 0;
+      index += wordIndex; // Add spaces count
       index += letterIndex;
     }
 
