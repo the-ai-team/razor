@@ -14,6 +14,7 @@ module.exports = {
         20: '#3B2D2C',
         30: '#534342',
         40: '#6B5A59',
+        50: '#857372',
         90: '#F4DDDB',
       },
       primary: {
@@ -41,11 +42,16 @@ module.exports = {
     extend: {
       animation: {
         'cursor-blink': 'expand 1s linear infinite',
+        'underline-cursor-blink': 'expandVertical 2s linear infinite',
       },
       keyframes: {
         expand: {
           '0%, 100%': { paddingBlock: '0.075em' },
           '50%': { paddingBlock: '0.75em' },
+        },
+        expandVertical: {
+          '0%, 100%': { paddingInline: '0.005em' },
+          '50%': { paddingInline: '0.2em' },
         },
       },
     },
