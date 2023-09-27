@@ -28,7 +28,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
 
   const raceText = game.racesModel[raceId]?.text;
   const indexConverter = new RaceTextIndexConverter(raceText);
-  const spaceSeparatedText = indexConverter.spaceSeparatedText;
+  const splittedWordsArray = indexConverter.splittedWordsIncludingSpaces;
   const playerCursorAt = 2; // Explanation: Player cursor at i means player cursor is placed before ith letter
   const invalidCursorAt = 10;
   const otherPlayerCursors = [12, 25, 26, 49, 80, 526];
@@ -46,24 +46,8 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
           'font-roboto text-[1.63rem] font-medium text-neutral-90',
           'flex flex-wrap justify-space-between',
         )}>
-        {spaceSeparatedText.map((word, wordIndex) => {
+        {splittedWordsArray.map((word, wordIndex) => {
           const letters = word.split('');
-          const spaceIndex = indexConverter.getCharIndex({
-            wordIndex,
-            isSpace: true,
-          });
-          const isCursorAtSpace = indexConverter.isCursorAtChar(spaceIndex, {
-            cursorAt: playerCursorAt,
-          });
-          const isSpaceBetweenCursors = indexConverter.isCharBetweenCursors(
-            spaceIndex,
-            playerCursorAt,
-            invalidCursorAt,
-          );
-          const isOtherPlayerCursorOnSpace = indexConverter.isCursorAtChar(
-            spaceIndex,
-            { cursorsAt: otherPlayerCursors },
-          );
 
           return (
             <Fragment key={nanoid()}>
@@ -74,6 +58,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                   'bg-surface bg-opacity-60',
                 )}>
                 {letters.map((letter, letterIndex) => {
+                  const isSpace = letter === '\u00A0';
                   const charIndex = indexConverter.getCharIndex({
                     wordIndex,
                     letterIndex,
@@ -93,7 +78,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                       playerCursorAt,
                       invalidCursorAt,
                     );
-                  const isOtherPlayerCursorOnLetter =
+                  const isOtherPlayerCursorsOnLetter =
                     indexConverter.isCursorAtChar(charIndex, {
                       cursorsAt: otherPlayerCursors,
                     });
@@ -106,59 +91,31 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                         'text-error-50 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isCursorAtLetter ? <Cursor /> : null}
-                      {isOtherPlayerCursorOnLetter ? <UnderlineCursor /> : null}
+                      {isCursorAtLetter ? <Cursor isAtSpace={isSpace} /> : null}
+                      {isOtherPlayerCursorsOnLetter ? (
+                        <UnderlineCursor />
+                      ) : null}
                       <span className='relative'>
                         {letter}
-                        {debug.enableLetterCount && (
-                          <span
-                            className={cs(
-                              'absolute text-[0.45rem] top-[-0.5px] left-0 right-0 indent-0',
-                              'text-neutral-90',
-                            )}>
-                            {indexConverter.getCharIndex({
-                              wordIndex,
-                              letterIndex,
-                            })}
-                          </span>
-                        )}
+                        <span
+                          className={cs(
+                            'absolute text-[0.45rem] top-[-0.5px] inset-x-0 indent-0 text-center',
+                            'text-neutral-90',
+                            {
+                              'bg-neutral-40 text-[0.55rem] inset-0 m-auto h-1/2 w-full flex content-center items-center':
+                                isSpace && debug.enableSpaceCount,
+                              hidden:
+                                (isSpace && !debug.enableSpaceCount) ||
+                                (!isSpace && !debug.enableLetterCount),
+                            },
+                          )}>
+                          {charIndex}
+                        </span>
                       </span>
                     </span>
                   );
                 })}
               </span>
-
-              {/* Word space */}
-              {wordIndex !== spaceSeparatedText.length - 1 && (
-                <span className={cs('bg-surface bg-opacity-60')}>
-                  <span
-                    className={cs(
-                      {
-                        'text-error-50 bg-error-50 bg-opacity-20':
-                          isSpaceBetweenCursors,
-                      },
-                      'relative',
-                    )}>
-                    &nbsp;
-                    {isCursorAtSpace ? <Cursor isAtSpace /> : null}
-                    {isOtherPlayerCursorOnSpace ? (
-                      <UnderlineCursor isAtSpace />
-                    ) : null}
-                    {debug.enableSpaceCount && (
-                      <span
-                        className={cs(
-                          'absolute text-[0.55rem] h-1/2 m-auto inset-0 w-full text-center',
-                          'text-neutral-90 bg-neutral-40',
-                        )}>
-                        {indexConverter.getCharIndex({
-                          wordIndex: wordIndex,
-                          isSpace: true,
-                        })}
-                      </span>
-                    )}
-                  </span>
-                </span>
-              )}
             </Fragment>
           );
         })}

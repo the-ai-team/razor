@@ -3,12 +3,10 @@ import cs from 'classnames';
 
 export interface UnderlineCursorProps {
   isDebug?: boolean;
-  isAtSpace?: boolean;
 }
 
 export function UnderlineCursor({
   isDebug = false,
-  isAtSpace = false,
 }: UnderlineCursorProps): ReactElement {
   return (
     <span

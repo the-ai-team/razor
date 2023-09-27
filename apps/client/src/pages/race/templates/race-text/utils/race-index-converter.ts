@@ -1,18 +1,25 @@
+import { flatMap } from 'lodash';
+
 interface GetCharIndexProps {
   wordIndex: number;
   letterIndex?: number;
-  isSpace?: boolean;
 }
 
 export class RaceTextIndexConverter {
   readonly raceText: string;
-  readonly spaceSeparatedText: string[];
+  readonly splittedWordsIncludingSpaces: string[];
   /** Array containing cumulative length of words. */
   readonly cumulativeWordLengthsArray: number[] = [];
 
   constructor(raceText: string) {
     this.raceText = raceText;
-    this.spaceSeparatedText = raceText.split(' ');
+    this.splittedWordsIncludingSpaces = flatMap(
+      raceText.split(' '),
+      (value, index, array) => {
+        // Add non-breaking space between each words
+        return index < array.length - 1 ? [value, '\u00A0'] : [value];
+      },
+    );
 
     this.computeWordLengthsArray();
   }
@@ -20,28 +27,16 @@ export class RaceTextIndexConverter {
   private computeWordLengthsArray(): void {
     let cumulativeLength = 0;
 
-    for (const word of this.spaceSeparatedText) {
+    for (const word of this.splittedWordsIncludingSpaces) {
       cumulativeLength += word.length;
       this.cumulativeWordLengthsArray.push(cumulativeLength);
     }
   }
 
-  getCharIndex({
-    wordIndex,
-    letterIndex = 0,
-    isSpace = false,
-  }: GetCharIndexProps): number {
+  getCharIndex({ wordIndex, letterIndex = 0 }: GetCharIndexProps): number {
     let index = 0;
-    if (isSpace) {
-      // index of space is considered as the length of the word
-      // ex: "hello world" -> index of space is 5
-      index = this.cumulativeWordLengthsArray[wordIndex];
-      index += wordIndex; // Add spaces count
-    } else {
-      index = this.cumulativeWordLengthsArray[wordIndex - 1] || 0;
-      index += wordIndex; // Add spaces count
-      index += letterIndex;
-    }
+    index = this.cumulativeWordLengthsArray[wordIndex - 1] || 0;
+    index += letterIndex;
 
     return index;
   }
