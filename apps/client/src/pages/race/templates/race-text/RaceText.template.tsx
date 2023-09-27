@@ -29,9 +29,9 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const raceText = game.racesModel[raceId]?.text;
   const indexConverter = new RaceTextIndexConverter(raceText);
   const spaceSeparatedText = indexConverter.spaceSeparatedText;
-  const playerCursorAt = 1; // Explanation: Player cursor at i means player cursor is placed before ith letter
-  const invalidCursorAt = 52;
-  const otherPlayerCursors = [12, 25, 26, 49, 80];
+  const playerCursorAt = 2; // Explanation: Player cursor at i means player cursor is placed before ith letter
+  const invalidCursorAt = 10;
+  const otherPlayerCursors = [12, 25, 26, 49, 80, 526];
 
   return (
     <div
@@ -48,27 +48,22 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
         )}>
         {spaceSeparatedText.map((word, wordIndex) => {
           const letters = word.split('');
-          const isCursorAtSpace = indexConverter.isCursorAtSpace(
-            wordIndex,
-            playerCursorAt,
-          );
-          const isSpaceBehindCursor = indexConverter.isSpaceBehindCursor(
-            wordIndex,
-            playerCursorAt,
-          );
-          const isSpaceBehindInvalidCursor = indexConverter.isSpaceBehindCursor(
-            wordIndex,
-            invalidCursorAt,
-          );
-          const isSpaceBetweenCursors =
-            !isSpaceBehindCursor && isSpaceBehindInvalidCursor;
-
           const spaceIndex = indexConverter.getCharIndex({
             wordIndex,
             isSpace: true,
           });
-          const isOtherPlayerCursorOnSpace =
-            otherPlayerCursors.includes(spaceIndex);
+          const isCursorAtSpace = indexConverter.isCursorAtChar(spaceIndex, {
+            cursorAt: playerCursorAt,
+          });
+          const isSpaceBetweenCursors = indexConverter.isCharBetweenCursors(
+            spaceIndex,
+            playerCursorAt,
+            invalidCursorAt,
+          );
+          const isOtherPlayerCursorOnSpace = indexConverter.isCursorAtChar(
+            spaceIndex,
+            { cursorsAt: otherPlayerCursors },
+          );
 
           return (
             <Fragment key={nanoid()}>
@@ -79,32 +74,29 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                   'bg-surface bg-opacity-60',
                 )}>
                 {letters.map((letter, letterIndex) => {
-                  const isCursorAt = indexConverter.isCursorAtLetter(
-                    wordIndex,
-                    letterIndex,
-                    playerCursorAt,
-                  );
-                  const isLetterBehindCursor =
-                    indexConverter.isLetterBehindCursor(
-                      wordIndex,
-                      letterIndex,
-                      playerCursorAt,
-                    );
-                  const isLetterBehindInvalidCursor =
-                    indexConverter.isLetterBehindCursor(
-                      wordIndex,
-                      letterIndex,
-                      invalidCursorAt,
-                    );
-                  const isLetterBetweenCursors =
-                    !isLetterBehindCursor && isLetterBehindInvalidCursor;
-
                   const charIndex = indexConverter.getCharIndex({
                     wordIndex,
                     letterIndex,
                   });
+                  const isCursorAtLetter = indexConverter.isCursorAtChar(
+                    charIndex,
+                    { cursorAt: playerCursorAt },
+                  );
+                  const isLetterBehindCursor =
+                    indexConverter.isCharBehindCursor(
+                      charIndex,
+                      playerCursorAt,
+                    );
+                  const isLetterBetweenCursors =
+                    indexConverter.isCharBetweenCursors(
+                      charIndex,
+                      playerCursorAt,
+                      invalidCursorAt,
+                    );
                   const isOtherPlayerCursorOnLetter =
-                    otherPlayerCursors.includes(charIndex);
+                    indexConverter.isCursorAtChar(charIndex, {
+                      cursorsAt: otherPlayerCursors,
+                    });
 
                   return (
                     <span
@@ -114,7 +106,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                         'text-error-50 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isCursorAt ? <Cursor /> : null}
+                      {isCursorAtLetter ? <Cursor /> : null}
                       {isOtherPlayerCursorOnLetter ? <UnderlineCursor /> : null}
                       <span className='relative'>
                         {letter}

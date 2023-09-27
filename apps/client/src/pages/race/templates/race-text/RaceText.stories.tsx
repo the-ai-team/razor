@@ -11,7 +11,7 @@ export default {
   args: {
     raceId: `${testTournamentId}-R:000`,
     debug: {
-      enableLetterCount: true,
+      enableLetterCount: false,
       enableSpaceCount: false,
     },
   },

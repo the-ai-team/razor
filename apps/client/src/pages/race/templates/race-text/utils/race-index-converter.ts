@@ -46,31 +46,27 @@ export class RaceTextIndexConverter {
     return index;
   }
 
-  isCursorAtSpace(wordIndex: number, cursorAt: number): boolean {
-    const index = this.getCharIndex({ wordIndex, isSpace: true });
-    return cursorAt === index;
-  }
-
-  isCursorAtLetter(
-    wordIndex: number,
-    letterIndex: number,
-    cursorAt: number,
+  isCursorAtChar(
+    charIndex: number,
+    {
+      cursorAt = -1,
+      cursorsAt = [],
+    }: { cursorAt?: number; cursorsAt?: number[] } = {},
   ): boolean {
-    const index = this.getCharIndex({ wordIndex, letterIndex });
-    return cursorAt === index;
+    return cursorsAt.length > 0
+      ? cursorsAt.includes(charIndex)
+      : charIndex === cursorAt;
   }
 
-  isSpaceBehindCursor(wordIndex: number, cursorAt: number): boolean {
-    const index = this.getCharIndex({ wordIndex, isSpace: true });
-    return cursorAt > index;
+  isCharBehindCursor(charIndex: number, cursorAt: number): boolean {
+    return charIndex < cursorAt;
   }
 
-  isLetterBehindCursor(
-    wordIndex: number,
-    letterIndex: number,
-    cursorAt: number,
+  isCharBetweenCursors(
+    charIndex: number,
+    leftCursor: number,
+    rightCursor: number,
   ): boolean {
-    const index = this.getCharIndex({ wordIndex, letterIndex });
-    return cursorAt > index;
+    return charIndex >= leftCursor && charIndex < rightCursor;
   }
 }
