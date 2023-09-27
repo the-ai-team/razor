@@ -10,6 +10,10 @@ export default {
   component: RaceText,
   args: {
     raceId: `${testTournamentId}-R:000`,
+    debug: {
+      enableLetterCount: true,
+      enableSpaceCount: false,
+    },
   },
 } as Meta<RaceTextProps>;
 
