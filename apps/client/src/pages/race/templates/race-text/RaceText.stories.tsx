@@ -13,6 +13,8 @@ export default {
     debug: {
       enableLetterCount: false,
       enableSpaceCount: false,
+      highlightRightMostWords: false,
+      highlightLeftMostWords: false,
     },
   },
 } as Meta<RaceTextProps>;
