@@ -16,7 +16,7 @@ const config = {
     '@nrwl/react/plugins/storybook',
     'storybook-addon-paddings',
   ],
-  
+
   async viteFinal(config, { configType }) {
     return mergeConfig(config, {
       plugins: [
