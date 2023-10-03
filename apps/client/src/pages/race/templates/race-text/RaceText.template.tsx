@@ -19,6 +19,8 @@ import {
   getCursorPosition,
   getCursorPositionsWithPlayerAvatars,
 } from './utils/get-cursor-position';
+import { inputHandler } from './utils/input-handler';
+import { useKeyPress } from './utils/key-press-listener';
 import { RaceTextIndexConverter } from './utils';
 
 export interface RaceTextProps {
@@ -108,6 +110,10 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     }
   }, []);
 
+  useKeyPress((char: string) => {
+    inputHandler(char);
+  });
+
   if (!raceData || !selfPlayerId.current || !playerIds) {
     return <div>Race data not found</div>;
   }
@@ -126,7 +132,6 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     otherPlayerLogs,
     players,
   );
-  console.log(playerCursorsWithAvatars);
 
   const indexConverter = new RaceTextIndexConverter(raceText);
   const splittedWordsArray = indexConverter.splittedWordsIncludingSpaces;
