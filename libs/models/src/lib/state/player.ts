@@ -43,3 +43,10 @@ export interface AppPlayerLog {
 
 /** Player logs model */
 export type AppPlayerLogs = Record<AppPlayerLogId, AppPlayerLog[]>;
+
+/** Race text cursor position */
+export interface AppRacePlayerCursor {
+  playerId: AppPlayerId;
+  position: number;
+  avatarLink: string;
+}

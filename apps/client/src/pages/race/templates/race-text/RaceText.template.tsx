@@ -1,11 +1,24 @@
 import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { AppRaceId } from '@razor/models';
+import {
+  AppPlayerId,
+  AppPlayerLogId,
+  AppPlayerLogs,
+  AppRaceId,
+} from '@razor/models';
 import { RootState } from '@razor/store';
-import { Cursor, UnderlineCursor } from 'apps/client/src/components';
+import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
+import { useToastContext } from 'apps/client/src/hooks/useToastContext';
+import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { nanoid } from 'nanoid';
+import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
+import {
+  getCursorPosition,
+  getCursorPositionsWithPlayerAvatars,
+} from './utils/get-cursor-position';
 import { RaceTextIndexConverter } from './utils';
 
 export interface RaceTextProps {
@@ -20,7 +33,12 @@ export interface RaceTextProps {
 
 export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const players = game.racesModel[raceId]?.players;
+  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const { t } = useTranslation(['room', 'common']);
+  const addToast = useToastContext();
+
+  const raceData = game.racesModel[raceId];
+  const players = raceData.players;
   let playerIds;
   if (players) {
     playerIds = Object.keys(players);
@@ -28,7 +46,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     console.error('no players');
   }
 
-  const raceText = game.racesModel[raceId]?.text;
+  const raceText = raceData.text;
   const paragraphRef = useRef<HTMLDivElement>(null);
   // Indexes of most right words from words list including spaces
   const [mostLeftWordIndexes, setMostLeftWordIndexes] = useState<number[]>([]);
@@ -78,11 +96,45 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     };
   }, [raceText]);
 
+  useEffect((): void => {
+    if (!raceData || !selfPlayerId.current) {
+      addToast({
+        title: t('toasts.game_error.title', { ns: 'common' }),
+        type: ToastType.Error,
+        message: t('toasts.game_error.message', { ns: 'common' }) as string,
+        icon: <GamePad />,
+        isImmortal: true,
+      });
+    }
+  }, []);
+
+  if (!raceData || !selfPlayerId.current || !playerIds) {
+    return <div>Race data not found</div>;
+  }
+
+  const selfPlayerLogId: AppPlayerLogId = `${raceId}-${selfPlayerId.current}`;
+  const selfPlayerLogs = game.playerLogsModel[selfPlayerLogId];
+  const otherPlayerLogs: AppPlayerLogs = {};
+  for (const id of playerIds) {
+    if (id !== selfPlayerId.current) {
+      const appPlayerLogId: AppPlayerLogId = `${raceId}-${id as AppPlayerId}`;
+
+      otherPlayerLogs[appPlayerLogId] = game.playerLogsModel[appPlayerLogId];
+    }
+  }
+  const playerCursorsWithAvatars = getCursorPositionsWithPlayerAvatars(
+    otherPlayerLogs,
+    players,
+  );
+  console.log(playerCursorsWithAvatars);
+
   const indexConverter = new RaceTextIndexConverter(raceText);
   const splittedWordsArray = indexConverter.splittedWordsIncludingSpaces;
-  const playerCursorAt = 2; // Explanation: Player cursor at i means player cursor is placed before ith letter
+  const playerCursorAt = getCursorPosition(selfPlayerLogs); // Explanation: Player cursor at i means player cursor is placed before ith letter
   const invalidCursorAt = 10;
-  const otherPlayerCursors = [12, 25, 26, 49, 80, 526];
+  const otherPlayerCursors = playerCursorsWithAvatars.map(
+    cursor => cursor.position,
+  );
 
   return (
     <div
