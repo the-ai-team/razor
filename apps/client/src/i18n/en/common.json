@@ -1,0 +1,8 @@
+{
+  "toasts": {
+    "game_error": {
+      "title": "Game Error",
+      "message": "Game error occurred. Developers may fix this issue soon."
+    }
+  }
+}
