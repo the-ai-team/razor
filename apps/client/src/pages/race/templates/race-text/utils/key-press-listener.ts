@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 
 export function useKeyPress(inputHandler: (char: string) => void): void {
-  const simpleLetters = 'abcdefghijklmnopqrstuvwxyz'.split('');
-  const capitalLetters = simpleLetters.map(letter => letter.toUpperCase());
-  // Keycodes: KeyA, KeyB,...
-  const keyCodes = capitalLetters.map(letter => `Key${letter}`);
-
   useEffect(() => {
+    const simpleLetters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    const capitalLetters = simpleLetters.map(letter => letter.toUpperCase());
+    // Keycodes: KeyA, KeyB,...
+    const keyCodes = capitalLetters.map(letter => `Key${letter}`);
     const handleKeyPress = (e: KeyboardEvent): void => {
       e.preventDefault();
       if (e.code === 'Space') {
