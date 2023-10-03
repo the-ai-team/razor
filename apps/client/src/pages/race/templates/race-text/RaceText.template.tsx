@@ -1,25 +1,29 @@
-import { Fragment, ReactElement, useEffect, useRef, useState } from 'react';
+import {
+  Fragment,
+  ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   AppPlayerId,
   AppPlayerLogId,
   AppPlayerLogs,
   AppRaceId,
 } from '@razor/models';
-import { RootState } from '@razor/store';
+import { Dispatch, RootState } from '@razor/store';
 import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
+import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
 import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
-import { nanoid } from 'nanoid';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
-import {
-  getCursorPosition,
-  getCursorPositionsWithPlayerAvatars,
-} from './utils/get-cursor-position';
-import { inputHandler } from './utils/input-handler';
+import { getCursorPositionsWithPlayerAvatars } from './utils/get-cursor-position';
+import { inputHandler, InputStatus } from './utils/input-handler';
 import { useKeyPress } from './utils/key-press-listener';
 import { RaceTextIndexConverter } from './utils';
 
@@ -35,20 +39,30 @@ export interface RaceTextProps {
 
 export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const dispatch = useDispatch<Dispatch>();
   const { t } = useTranslation(['room', 'common']);
   const addToast = useToastContext();
 
+  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const [handleKeyPress, updateHandleKeyPress] = useState<
+    ((char: string) => void) | null
+  >(null);
+  // useKeyPress(handleKeyPress);
+
   const raceData = game.racesModel[raceId];
   const players = raceData.players;
-  let playerIds;
+  let playerIds: AppPlayerId[] = [];
   if (players) {
-    playerIds = Object.keys(players);
+    playerIds = Object.keys(players) as AppPlayerId[];
   } else {
     console.error('no players');
   }
 
   const raceText = raceData.text;
+  const indexConverter = useMemo(
+    () => new RaceTextIndexConverter(raceText),
+    [raceText],
+  );
   const paragraphRef = useRef<HTMLDivElement>(null);
   // Indexes of most right words from words list including spaces
   const [mostLeftWordIndexes, setMostLeftWordIndexes] = useState<number[]>([]);
@@ -98,9 +112,16 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     };
   }, [raceText]);
 
+  const splittedWordsArray = useRef<string[]>([]);
+  /** Explanation: Player cursor at i means player cursor is placed before ith letter */
+  const [playerCursorAt, updatePlayerCursorAt] = useState<number>(0);
+  const [noOfInvalidChars, updateNoOfInvalidChars] = useState<number>(0);
+  const invalidCursorAt = playerCursorAt + noOfInvalidChars;
+  const [otherPlayerCursors, updateOtherPlayerCursors] = useState<number[]>([]);
+
   useEffect((): void => {
-    if (!raceData || !selfPlayerId.current) {
-      addToast({
+    if (!raceData || !selfPlayerId.current || !playerIds) {
+      return addToast({
         title: t('toasts.game_error.title', { ns: 'common' }),
         type: ToastType.Error,
         message: t('toasts.game_error.message', { ns: 'common' }) as string,
@@ -108,38 +129,68 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
         isImmortal: true,
       });
     }
-  }, []);
 
-  useKeyPress((char: string) => {
-    inputHandler(char);
-  });
+    const selfPlayerLogId: AppPlayerLogId = `${raceId}-${selfPlayerId.current}`;
+    const otherPlayerLogs: AppPlayerLogs = {};
+    for (const id of playerIds) {
+      if (id !== selfPlayerId.current) {
+        const appPlayerLogId: AppPlayerLogId = `${raceId}-${id as AppPlayerId}`;
+
+        otherPlayerLogs[appPlayerLogId] = game.playerLogsModel[appPlayerLogId];
+      }
+    }
+    const playerCursorsWithAvatars = getCursorPositionsWithPlayerAvatars(
+      otherPlayerLogs,
+      players,
+    );
+
+    splittedWordsArray.current = indexConverter.splittedWordsIncludingSpaces;
+    updateOtherPlayerCursors(
+      playerCursorsWithAvatars.map(cursor => cursor.position),
+    );
+  }, [game.playerLogsModel, players, raceData, raceId]);
+
+  const handleKeyPressFunction = (char: string): void => {
+    const inputStatus = inputHandler(char, raceText[playerCursorAt]);
+    if (!selfPlayerId.current) {
+      return;
+    }
+
+    if (inputStatus === InputStatus.CORRECT) {
+      if (noOfInvalidChars > 0) {
+        return;
+      }
+      const playerLog = {
+        timestamp: Date.now(),
+        textLength: playerCursorAt + 1,
+      };
+      updatePlayerCursorAt(playerCursorAt + 1);
+      dispatch.game.sendTypeLog({
+        playerLog,
+        raceId,
+        playerId: selfPlayerId.current,
+      });
+    } else if (inputStatus === InputStatus.INCORRECT) {
+      updateNoOfInvalidChars(prev => {
+        if (prev === MAX_INVALID_CHARS_ALLOWED) {
+          return MAX_INVALID_CHARS_ALLOWED;
+        }
+        return prev + 1;
+      });
+    } else if (inputStatus === InputStatus.BACKSPACE) {
+      updateNoOfInvalidChars(prev => {
+        if (prev === 0) {
+          return 0;
+        }
+        return prev - 1;
+      });
+    }
+  };
+  useKeyPress(handleKeyPressFunction);
 
   if (!raceData || !selfPlayerId.current || !playerIds) {
     return <div>Race data not found</div>;
   }
-
-  const selfPlayerLogId: AppPlayerLogId = `${raceId}-${selfPlayerId.current}`;
-  const selfPlayerLogs = game.playerLogsModel[selfPlayerLogId];
-  const otherPlayerLogs: AppPlayerLogs = {};
-  for (const id of playerIds) {
-    if (id !== selfPlayerId.current) {
-      const appPlayerLogId: AppPlayerLogId = `${raceId}-${id as AppPlayerId}`;
-
-      otherPlayerLogs[appPlayerLogId] = game.playerLogsModel[appPlayerLogId];
-    }
-  }
-  const playerCursorsWithAvatars = getCursorPositionsWithPlayerAvatars(
-    otherPlayerLogs,
-    players,
-  );
-
-  const indexConverter = new RaceTextIndexConverter(raceText);
-  const splittedWordsArray = indexConverter.splittedWordsIncludingSpaces;
-  const playerCursorAt = getCursorPosition(selfPlayerLogs); // Explanation: Player cursor at i means player cursor is placed before ith letter
-  const invalidCursorAt = 10;
-  const otherPlayerCursors = playerCursorsWithAvatars.map(
-    cursor => cursor.position,
-  );
 
   return (
     <div
@@ -155,13 +206,14 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
           'font-roboto text-[1.63rem] font-medium text-neutral-90',
           'flex flex-wrap justify-space-between',
         )}>
-        {splittedWordsArray.map((word, wordIndex) => {
+        {splittedWordsArray.current?.map((word, wordIndex) => {
           const letters = word.split('');
           const isMostLeftWord = mostLeftWordIndexes.includes(wordIndex);
           const isMostRightWord = mostRightWordIndexes.includes(wordIndex);
 
           return (
-            <Fragment key={nanoid()}>
+            // eslint-disable-next-line react/no-array-index-key
+            <Fragment key={wordIndex}>
               {/* Utilizing separate spans to prevent text from wrapping in the middle of a word. */}
               <span
                 className={cs('bg-surface bg-opacity-60 relative', {
@@ -202,7 +254,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
 
                   return (
                     <span
-                      key={nanoid()}
+                      key={charIndex}
                       className={cs('relative pl-[0.5px]', {
                         'text-neutral-30': isLetterBehindCursor,
                         'text-error-50 bg-error-50 bg-opacity-20':
@@ -231,7 +283,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                       </span>
                     </span>
                   );
-                })}
+                }) ?? null}
               </span>
             </Fragment>
           );
