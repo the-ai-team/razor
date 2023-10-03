@@ -13,6 +13,7 @@ import { io, Socket } from 'socket.io-client';
 
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
+import { savePlayerId } from '../utils/save-player-id';
 
 const SOCKET_ENDPOINT =
   import.meta.env.NX_SOCKET_ENDPOINT || 'http://localhost:3000';
@@ -122,6 +123,8 @@ export const requestToJoinRoom = ({
         savedRoomId = roomIdFromServer;
         savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
+
+        savePlayerId(data.playerId);
         pubsub.publish(socketProtocols.JoinLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
@@ -161,6 +164,8 @@ export const requestToCreateRoom = ({
         savedRoomId = roomIdFromServer;
         savedPlayerId = data.playerId;
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
+
+        savePlayerId(data.playerId);
         pubsub.publish(socketProtocols.CreateLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);

@@ -1,6 +1,7 @@
 import { M_RACE_TEXT0 } from '@razor/mocks';
 import { AppPlayerId, AppStateModel } from '@razor/models';
 import { initializeStore } from '@razor/store';
+import { savePlayerId } from 'apps/client/src/utils/save-player-id';
 
 const initialState: AppStateModel = {
   tournamentsModel: {},
@@ -25,10 +26,11 @@ const players = Object.keys(playersModel);
 const player1Id = players[0] as AppPlayerId;
 export const testTournamentId = playersModel[player1Id].tournamentId;
 
-store.dispatch.game.joinPlayer({
+const selfPlayerId = store.dispatch.game.joinPlayer({
   receivedTournamentId: testTournamentId,
   playerName: 'Player2',
 });
+savePlayerId(selfPlayerId);
 
 store.dispatch.game.startCountdown({
   tournamentId: testTournamentId,
