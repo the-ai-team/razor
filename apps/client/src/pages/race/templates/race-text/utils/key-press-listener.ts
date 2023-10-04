@@ -14,7 +14,13 @@ export function useKeyPress(
     const keyCodes = capitalLetters.map(letter => `Key${letter}`);
 
     const handleKeyPress = (e: KeyboardEvent): void => {
+      // If event target on a input, don't do anything; else, prevent default
+      // This is to prevent continuing race text while debugging in Storybook
+      if (e.target instanceof HTMLInputElement) {
+        return;
+      }
       e.preventDefault();
+
       if (e.code === 'Space') {
         return inputHandler('SPACE');
       }

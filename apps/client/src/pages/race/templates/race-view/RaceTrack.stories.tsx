@@ -2,9 +2,15 @@ import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { Meta } from '@storybook/react';
 
-import { store, testTournamentId } from './data/test-race';
+import { RaceLogUpdaters } from '../../story-common-utils/RaceLogUpdaters';
+
+import {
+  addPlayer,
+  clearLastPlayer,
+  store,
+  testTournamentId,
+} from './data/test-race';
 import { RaceTrack, RaceTrackProps } from './RaceTrack.template';
-import { RaceTrackUpdaters } from './RaceTrackUpdaters';
 
 export default {
   title: 'Templates/RaceTrack',
@@ -21,7 +27,7 @@ interface MockstoreProps {
 const Mockstore = ({ children }: MockstoreProps): ReactElement => (
   <Provider store={store}>
     {children}
-    <RaceTrackUpdaters />
+    <RaceLogUpdaters addPlayer={addPlayer} clearLastPlayer={clearLastPlayer} />
   </Provider>
 );
 

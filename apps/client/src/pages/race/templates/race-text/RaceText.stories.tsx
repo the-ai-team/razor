@@ -3,7 +3,14 @@ import { Provider } from 'react-redux';
 import { Meta } from '@storybook/react';
 import { ToastContextProvider } from 'apps/client/src/providers';
 
-import { store, testTournamentId } from './data/test-race';
+import { RaceLogUpdaters } from '../../story-common-utils/RaceLogUpdaters';
+
+import {
+  addPlayer,
+  clearLastPlayer,
+  store,
+  testTournamentId,
+} from './data/test-race';
 import { RaceText, RaceTextProps } from './RaceText.template';
 
 export default {
@@ -25,12 +32,10 @@ interface MockstoreProps {
 }
 
 const Mockstore = ({ children }: MockstoreProps): ReactElement => (
-  <ToastContextProvider>
-    <Provider store={store}>
-      {children}
-      {/* <RaceTrackUpdaters /> */}
-    </Provider>
-  </ToastContextProvider>
+  <Provider store={store}>
+    <ToastContextProvider>{children}</ToastContextProvider>
+    <RaceLogUpdaters addPlayer={addPlayer} clearLastPlayer={clearLastPlayer} />
+  </Provider>
 );
 
 export const Default = {

@@ -5,12 +5,18 @@ import { Dispatch, RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
-import { Button, ButtonWithInput, Text } from '../../../../components';
-import { TextSize, TextType } from '../../../../models';
+import { Button, ButtonWithInput, Text } from '../../../components';
+import { TextSize, TextType } from '../../../models';
 
-import { addPlayer, clearLastPlayer } from './data/test-race';
+interface RaceTrackUpdatersProps {
+  addPlayer: (count: number) => void;
+  clearLastPlayer: () => void;
+}
 
-export function RaceTrackUpdaters(): ReactElement | null {
+export function RaceTrackUpdaters({
+  addPlayer,
+  clearLastPlayer,
+}: RaceTrackUpdatersProps): ReactElement | null {
   const game = useSelector((store: RootState) => store.game);
   const dispatch: Dispatch = useDispatch();
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
@@ -40,9 +46,8 @@ export function RaceTrackUpdaters(): ReactElement | null {
     return null;
   }
 
-  const updateHandler = (playerId: AppPlayerId, value: string): void => {
-    const recivedValue = parseInt(value, 10);
-    if (!recivedValue) {
+  const updateHandler = (playerId: AppPlayerId, value: number): void => {
+    if (!value) {
       return;
     }
     const playerLog = game.playerLogsModel[`${raceId}-${playerId}`];
@@ -52,7 +57,7 @@ export function RaceTrackUpdaters(): ReactElement | null {
       playerId,
       playerLog: {
         timestamp: Date.now(),
-        textLength: lastPlayerLog.textLength + recivedValue,
+        textLength: lastPlayerLog.textLength + value,
       },
     });
   };
@@ -90,20 +95,47 @@ export function RaceTrackUpdaters(): ReactElement | null {
       <div className='mb-5 flex gap-3 flex-wrap'>
         {playerIds.map((playerId: AppPlayerId, index: number) => {
           return (
-            <div>
-              <ButtonWithInput
-                onClick={(value: string): void =>
-                  updateHandler(playerId, value)
-                }
-                inputSize={3}
-                maxInputLength={3}
-                icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
-                {`${index}`}
-              </ButtonWithInput>
-            </div>
+            <PlayerPositionUpdater
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              playerId={playerId}
+              index={index + 1}
+              updateHandler={updateHandler}
+            />
           );
         })}
       </div>
     </div>
+  );
+}
+
+interface PlayerPositionUpdaterProps {
+  playerId: AppPlayerId;
+  index: number;
+  updateHandler: (playerId: AppPlayerId, value: number) => void;
+}
+
+function PlayerPositionUpdater({
+  playerId,
+  index,
+  updateHandler,
+}: PlayerPositionUpdaterProps): ReactElement {
+  const [position, updatePosition] = useState(0);
+  const updatePositionHandler = (value: string): void => {
+    updatePosition(Number(value));
+  };
+
+  return (
+    <ButtonWithInput
+      onClick={(value: number): void => updateHandler(playerId, value)}
+      inputSize={3}
+      maxInputLength={3}
+      inputValue={position}
+      onInputChange={(e): void => {
+        updatePositionHandler(e.target.value);
+      }}
+      icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
+      {`${index}`}
+    </ButtonWithInput>
   );
 }
