@@ -5,6 +5,7 @@ import { times } from 'lodash';
 export interface AvatarArrayProps {
   avatars: string[];
   maxAvatars?: number;
+  style?: React.CSSProperties;
 }
 
 /**
@@ -15,15 +16,17 @@ export interface AvatarArrayProps {
 export function AvatarArray({
   avatars,
   maxAvatars = 3,
+  style,
 }: AvatarArrayProps): ReactElement {
   const avatarsToDisplay = avatars.slice(0, maxAvatars);
 
   return (
     <div
       className={cs(
-        'absolute top-0 -left-28',
+        'absolute pt-1  -left-[7.5rem]',
         'flex items-center justify-end',
-      )}>
+      )}
+      style={style}>
       {times(maxAvatars + 1, index => {
         const reversedIndex = maxAvatars - index;
         const isMoreThanMaxAvatars = avatars.length > maxAvatars;
@@ -50,7 +53,7 @@ export function AvatarArray({
               backgroundPosition: 'center',
             }}>
             {isMoreThanMaxAvatars && index === 0 ? (
-              <span className={cs('text-md font-extralight text-neutral-90')}>
+              <span className={cs('text-lg font-extralight text-neutral-90')}>
                 +
               </span>
             ) : null}

@@ -13,19 +13,25 @@ import {
   AppPlayerLogId,
   AppPlayerLogs,
   AppRaceId,
+  AppRacePlayerCursor,
 } from '@razor/models';
 import { Dispatch, RootState } from '@razor/store';
 import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
+import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/AvatarArray.component';
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
 import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
-import { getCursorPositionsWithPlayerAvatars } from './utils/get-cursor-position';
-import { inputHandler, InputStatus } from './utils/input-handler';
-import { useKeyPress } from './utils/key-press-listener';
-import { RaceTextIndexConverter } from './utils';
+import {
+  computeCursorsPerLines,
+  getCursorPositionsWithPlayerAvatars,
+  inputHandler,
+  InputStatus,
+  RaceTextIndexConverter,
+  useKeyPress,
+} from './utils';
 
 export interface RaceTextProps {
   raceId: AppRaceId;
@@ -40,23 +46,17 @@ export interface RaceTextProps {
 export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
   const dispatch = useDispatch<Dispatch>();
-  const { t } = useTranslation(['room', 'common']);
+  const { t } = useTranslation(['race', 'common']);
   const addToast = useToastContext();
 
   const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
-  const [handleKeyPress, updateHandleKeyPress] = useState<
-    ((char: string) => void) | null
-  >(null);
-  // useKeyPress(handleKeyPress);
-
   const raceData = game.racesModel[raceId];
   const players = raceData.players;
-  let playerIds: AppPlayerId[] = [];
-  if (players) {
-    playerIds = Object.keys(players) as AppPlayerId[];
-  } else {
-    console.error('no players');
-  }
+  const [playerIds, setPlayerIds] = useState<AppPlayerId[]>([]);
+
+  useEffect((): void => {
+    setPlayerIds(Object.keys(players) as AppPlayerId[]);
+  }, [players]);
 
   const raceText = raceData.text;
   const indexConverter = useMemo(
@@ -69,48 +69,49 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const [mostRightWordIndexes, setMostRightWordIndexes] = useState<number[]>(
     [],
   );
+  const [lineHeight, setLineHeight] = useState<number>(1);
+
+  const computeParagraphProperties = (): void => {
+    const spans =
+      paragraphRef.current?.querySelectorAll<HTMLSpanElement>(':scope > span');
+
+    if (spans?.length) {
+      let mostRightElement: HTMLSpanElement | null = null;
+      let mostRightElementBoundary = 0;
+      const mostLeftWordIndexesArray: number[] = [0];
+      const mostRightWordIndexesArray: number[] = [];
+
+      for (const [index, span] of spans.entries()) {
+        const rightBoundary = span.getBoundingClientRect().right;
+        if (!mostRightElement) {
+          mostRightElement = span;
+          mostRightElementBoundary = rightBoundary;
+        } else if (rightBoundary > mostRightElementBoundary) {
+          mostRightElement = span;
+          mostRightElementBoundary = rightBoundary;
+        } else {
+          mostLeftWordIndexesArray.push(index);
+          mostRightWordIndexesArray.push(index - 1);
+          mostRightElement = null;
+          mostRightElementBoundary = 0;
+        }
+      }
+      mostRightWordIndexesArray.push(spans.length - 1);
+      setMostLeftWordIndexes(mostLeftWordIndexesArray);
+      setMostRightWordIndexes(mostRightWordIndexesArray);
+
+      setLineHeight(spans[0].getBoundingClientRect().height);
+    }
+  };
 
   useEffect(() => {
-    const calculateMostRightWords = (): void => {
-      const spans =
-        paragraphRef.current?.querySelectorAll<HTMLSpanElement>(
-          ':scope > span',
-        );
-
-      if (spans) {
-        let mostRightElement: HTMLSpanElement | null = null;
-        let mostRightElementBoundary = 0;
-        const mostLeftWordIndexesArray: number[] = [0];
-        const mostRightWordIndexesArray: number[] = [];
-
-        for (const [index, span] of spans.entries()) {
-          const rightBoundary = span.getBoundingClientRect().right;
-          if (!mostRightElement) {
-            mostRightElement = span;
-            mostRightElementBoundary = rightBoundary;
-          } else if (rightBoundary > mostRightElementBoundary) {
-            mostRightElement = span;
-            mostRightElementBoundary = rightBoundary;
-          } else {
-            mostLeftWordIndexesArray.push(index);
-            mostRightWordIndexesArray.push(index - 1);
-            mostRightElement = null;
-            mostRightElementBoundary = 0;
-          }
-        }
-        mostRightWordIndexesArray.push(spans.length - 1);
-        setMostLeftWordIndexes(mostLeftWordIndexesArray);
-        setMostRightWordIndexes(mostRightWordIndexesArray);
-      }
-    };
-
-    calculateMostRightWords();
-    window.addEventListener('resize', calculateMostRightWords);
+    computeParagraphProperties();
+    window.addEventListener('resize', computeParagraphProperties);
 
     return () => {
-      window.removeEventListener('resize', calculateMostRightWords);
+      window.removeEventListener('resize', computeParagraphProperties);
     };
-  }, [raceText]);
+  }, []);
 
   const splittedWordsArray = useRef<string[]>([]);
   /** Explanation: Player cursor at i means player cursor is placed before ith letter */
@@ -118,6 +119,8 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   const [noOfInvalidChars, updateNoOfInvalidChars] = useState<number>(0);
   const invalidCursorAt = playerCursorAt + noOfInvalidChars;
   const [otherPlayerCursors, updateOtherPlayerCursors] = useState<number[]>([]);
+  const [otherPlayerCursorsPerLines, updateOtherPlayerCursorsPerLines] =
+    useState<AppRacePlayerCursor[][]>([]);
 
   useEffect((): void => {
     if (!raceData || !selfPlayerId.current || !playerIds) {
@@ -126,11 +129,10 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
         type: ToastType.Error,
         message: t('toasts.game_error.message', { ns: 'common' }) as string,
         icon: <GamePad />,
-        isImmortal: true,
+        isImmortal: false,
       });
     }
 
-    const selfPlayerLogId: AppPlayerLogId = `${raceId}-${selfPlayerId.current}`;
     const otherPlayerLogs: AppPlayerLogs = {};
     for (const id of playerIds) {
       if (id !== selfPlayerId.current) {
@@ -139,6 +141,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
         otherPlayerLogs[appPlayerLogId] = game.playerLogsModel[appPlayerLogId];
       }
     }
+
     const playerCursorsWithAvatars = getCursorPositionsWithPlayerAvatars(
       otherPlayerLogs,
       players,
@@ -148,7 +151,38 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
     updateOtherPlayerCursors(
       playerCursorsWithAvatars.map(cursor => cursor.position),
     );
-  }, [game.playerLogsModel, players, raceData, raceId]);
+
+    if (mostLeftWordIndexes.length === 0 || mostRightWordIndexes.length === 0) {
+      computeParagraphProperties();
+      return;
+    }
+    const firstLetterIndexes = mostLeftWordIndexes.map(index =>
+      indexConverter.getCharIndex({ wordIndex: index, letterIndex: 0 }),
+    );
+    const lastLetterIndexes = mostRightWordIndexes.map(index =>
+      indexConverter.getCharIndex({
+        wordIndex: index,
+        letterIndex: -1,
+      }),
+    );
+    const cursorsPerLines = computeCursorsPerLines(
+      firstLetterIndexes,
+      lastLetterIndexes,
+      playerCursorsWithAvatars,
+    );
+    updateOtherPlayerCursorsPerLines(cursorsPerLines);
+  }, [
+    game,
+    players,
+    playerIds,
+    raceData,
+    raceId,
+    mostLeftWordIndexes,
+    mostRightWordIndexes,
+    indexConverter,
+    addToast,
+    t,
+  ]);
 
   const handleKeyPressFunction = (char: string): void => {
     const inputStatus = inputHandler(char, raceText[playerCursorAt]);
@@ -188,14 +222,14 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   };
   useKeyPress(handleKeyPressFunction);
 
-  if (!raceData || !selfPlayerId.current || !playerIds) {
+  if (!raceData || !selfPlayerId.current || !players) {
     return <div>Race data not found</div>;
   }
 
   return (
     <div
       className={cs(
-        'relative w-full py-6 pl-20 pr-10',
+        'relative w-full py-[1.5rem] pl-32 pr-10',
         'bg-neutral-20 border-[3px] border-neutral-40',
         'select-none',
         'rounded-md',
@@ -203,9 +237,21 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
       <div
         ref={paragraphRef}
         className={cs(
-          'font-roboto text-[1.63rem] font-medium text-neutral-90',
+          'font-roboto text-[1.6rem] font-medium text-neutral-90',
           'flex flex-wrap justify-space-between',
+          'relative',
         )}>
+        {otherPlayerCursorsPerLines.map((cursors, lineIndex) => {
+          const avatarLinks = cursors.map(cursor => cursor.avatarLink);
+          return (
+            <AvatarArray
+              avatars={avatarLinks}
+              style={{
+                top: `${lineIndex * lineHeight}px`,
+              }}
+            />
+          );
+        })}
         {splittedWordsArray.current?.map((word, wordIndex) => {
           const letters = word.split('');
           const isMostLeftWord = mostLeftWordIndexes.includes(wordIndex);
@@ -264,7 +310,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
                       {isOtherPlayerCursorsOnLetter ? (
                         <UnderlineCursor />
                       ) : null}
-                      <span className='relative'>
+                      <span className='relative h-full inline-block'>
                         {letter}
                         <span
                           className={cs(

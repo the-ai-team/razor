@@ -32,7 +32,7 @@ export function getCursorPositionsWithPlayerAvatars(
     return {
       playerId: playerLogId as AppPlayerId,
       position: getCursorPosition(playerLog),
-      avatarLink: playerProfile.avatarLink,
+      avatarLink: playerProfile?.avatarLink || '',
     };
   });
 

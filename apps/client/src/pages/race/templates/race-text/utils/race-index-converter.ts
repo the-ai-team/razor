@@ -33,9 +33,27 @@ export class RaceTextIndexConverter {
     }
   }
 
+  /** Get character index by word index & letter index.
+   * This conversion need because we are using char index to identify cursor position
+   *  of a player in the redux store.
+   * But when rendering the text using html and css, we are using a method
+   *  where we are splitting the text by words and again by letters.
+   *
+   * letterIndex = -1 will return the index of the last character of the word.
+   *
+   * @param wordIndex - The word index
+   * @param letterIndex - The letter index
+   * @returns The character index
+   */
   getCharIndex({ wordIndex, letterIndex = 0 }: GetCharIndexProps): number {
     let index = 0;
     index = this.cumulativeWordLengthsArray[wordIndex - 1] || 0;
+
+    if (letterIndex === -1) {
+      index += this.splittedWordsIncludingSpaces[wordIndex]?.length - 1 || 0;
+      return index;
+    }
+
     index += letterIndex;
 
     return index;
