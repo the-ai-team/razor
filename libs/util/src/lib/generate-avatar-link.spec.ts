@@ -11,7 +11,7 @@ describe('[Utils] generateAvatarLink', () => {
   ])('Generate avatar link for player "%s"', (name, seed) => {
     const image = generateAvatarLink(name);
     expect(image).toMatch(
-      `https://avatars.dicebear.com/api/open-peeps/${seed}.svg`,
+      `https://api.dicebear.com/7.x/open-peeps/svg?seed=${seed}&scale=80`,
     );
   });
 });
