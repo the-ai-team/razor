@@ -1,5 +1,5 @@
 import { M_RACE_TEXT0 } from '@razor/mocks';
-import { AppPlayerId, AppStateModel } from '@razor/models';
+import { AppPlayerId, AppRace, AppRaceId, AppStateModel } from '@razor/models';
 import { initializeStore } from '@razor/store';
 import { savePlayerId } from 'apps/client/src/utils/save-player-id';
 
@@ -71,6 +71,26 @@ export const addPlayer = (count: number): void => {
       textLength: 0,
     },
   });
+
+  // Adding player to the race manually.
+  // Store is not designed to add players after race started.
+  // But for testing purpose, we are directly updating the race.
+  const raceId: AppRaceId = `${testTournamentId}-R:000`;
+  const race = game.racesModel[raceId];
+  const updatedRace: AppRace = {
+    ...race,
+    players: {
+      ...race.players,
+      [playerId]: {
+        name: `Player${count}`,
+        avatarLink: '',
+      },
+    },
+  };
+  store.dispatch.game.updateRaceReducer({
+    raceId: `${testTournamentId}-R:000`,
+    race: updatedRace,
+  });
 };
 
 export const clearLastPlayer = (): void => {
@@ -78,5 +98,22 @@ export const clearLastPlayer = (): void => {
   const playerIds = game.tournamentsModel[testTournamentId].playerIds;
   store.dispatch.game.clearPlayer({
     playerId: playerIds[playerIds.length - 1],
+  });
+  // Removing last player from the race manually.
+  const raceId: AppRaceId = `${testTournamentId}-R:000`;
+  const race = game.racesModel[raceId];
+  const racePlayers = race.players;
+  // Remove player with last index
+  const lastPlayerId: AppPlayerId = Object.keys(racePlayers)[
+    Object.keys(racePlayers).length - 1
+  ] as AppPlayerId;
+  const { [lastPlayerId]: _, ...updatedRacePlayers } = racePlayers;
+  const updatedRace: AppRace = {
+    ...race,
+    players: updatedRacePlayers,
+  };
+  store.dispatch.game.updateRaceReducer({
+    raceId: `${testTournamentId}-R:000`,
+    race: updatedRace,
   });
 };
