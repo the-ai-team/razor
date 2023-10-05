@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
-import { Dispatch, RootState } from '@razor/store';
+import { RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
@@ -9,7 +9,7 @@ import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.
 import { Button, ButtonWithInput, Text } from '../../../components';
 import { TextSize, TextType } from '../../../models';
 
-import { addPlayer, clearLastPlayer } from './test-race';
+import { addPlayer, clearLastPlayer, updatePlayerLog } from './test-race';
 
 interface RaceTrackUpdatersProps {
   isEnableSelfPlayer?: boolean;
@@ -19,7 +19,6 @@ export function RaceLogUpdaters({
   isEnableSelfPlayer = true,
 }: RaceTrackUpdatersProps): ReactElement | null {
   const game = useSelector((store: RootState) => store.game);
-  const dispatch: Dispatch = useDispatch();
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
   const [count, setCount] = useState(0);
   const [playerIds, setPlayerIds] = useState<AppPlayerId[]>([]);
@@ -47,22 +46,6 @@ export function RaceLogUpdaters({
   if (!raceId) {
     return null;
   }
-
-  const updateHandler = (playerId: AppPlayerId, value: number): void => {
-    if (!value) {
-      return;
-    }
-    const playerLog = game.playerLogsModel[`${raceId}-${playerId}`];
-    const lastPlayerLog = playerLog[playerLog.length - 1];
-    dispatch.game.sendTypeLog({
-      raceId,
-      playerId,
-      playerLog: {
-        timestamp: Date.now(),
-        textLength: lastPlayerLog.textLength + value,
-      },
-    });
-  };
 
   enum CountOperation {
     Add = 'add',
@@ -102,7 +85,6 @@ export function RaceLogUpdaters({
               key={index}
               playerId={playerId}
               index={index + 1}
-              updateHandler={updateHandler}
               isDisabled={
                 !isEnableSelfPlayer && playerId === selfPlayerId.current
               }
@@ -117,29 +99,24 @@ export function RaceLogUpdaters({
 interface PlayerPositionUpdaterProps {
   playerId: AppPlayerId;
   index: number;
-  updateHandler: (playerId: AppPlayerId, value: number) => void;
   isDisabled?: boolean;
 }
 
 function PlayerPositionUpdater({
   playerId,
   index,
-  updateHandler,
   isDisabled = false,
 }: PlayerPositionUpdaterProps): ReactElement {
   const [position, updatePosition] = useState(0);
-  const updatePositionHandler = (value: string): void => {
-    updatePosition(Number(value));
-  };
 
   return (
     <ButtonWithInput
-      onClick={(value: number): void => updateHandler(playerId, value)}
+      onClick={(value: number): void => updatePlayerLog(playerId, value)}
       inputSize={3}
       maxInputLength={3}
       inputValue={position}
       onInputChange={(e): void => {
-        updatePositionHandler(e.target.value);
+        updatePosition(Number(e.target.value));
       }}
       isDisabled={isDisabled}
       icon={<ChevronRight className='w-10 h-10 text-neutral-90' />}>
