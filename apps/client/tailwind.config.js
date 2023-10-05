@@ -41,8 +41,8 @@ module.exports = {
     },
     extend: {
       animation: {
-        'cursor-blink': 'expand 1s linear infinite',
-        'underline-cursor-blink': 'expandVertical 2s linear infinite',
+        'cursor-blink': 'expand 1s ease infinite',
+        'underline-cursor-blink': 'expandVertical 1.25s ease infinite',
       },
       keyframes: {
         expand: {

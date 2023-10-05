@@ -20,7 +20,7 @@ export function UnderlineCursor({
       )}>
       <div
         className={cs(
-          'bg-neutral-50 opacity-60',
+          'bg-neutral-50 opacity-80',
           'h-[0.2rem] w-full rounded-full',
         )}
       />
