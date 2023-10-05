@@ -4,6 +4,7 @@ import { Meta } from '@storybook/react';
 import { ToastContextProvider } from 'apps/client/src/providers';
 
 import {
+  addSampleRaceLogs,
   RaceLogUpdaters,
   store,
   testTournamentId,
@@ -25,6 +26,8 @@ export default {
   },
 } as Meta<RaceTextProps>;
 
+addSampleRaceLogs();
+
 interface MockstoreProps {
   children: ReactElement;
 }
@@ -32,7 +35,9 @@ interface MockstoreProps {
 const Mockstore = ({ children }: MockstoreProps): ReactElement => (
   <Provider store={store}>
     <ToastContextProvider>{children}</ToastContextProvider>
-    <RaceLogUpdaters isEnableSelfPlayer={false} />
+    <div className='h-60 mt-5 z-50 relative overflow-y-scroll'>
+      <RaceLogUpdaters isEnableSelfPlayer={false} />
+    </div>
   </Provider>
 );
 
