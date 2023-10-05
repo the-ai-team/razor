@@ -9,15 +9,13 @@ import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.
 import { Button, ButtonWithInput, Text } from '../../../components';
 import { TextSize, TextType } from '../../../models';
 
+import { addPlayer, clearLastPlayer } from './test-race';
+
 interface RaceTrackUpdatersProps {
-  addPlayer: (count: number) => void;
-  clearLastPlayer: () => void;
   isEnableSelfPlayer?: boolean;
 }
 
 export function RaceLogUpdaters({
-  addPlayer,
-  clearLastPlayer,
   isEnableSelfPlayer = true,
 }: RaceTrackUpdatersProps): ReactElement | null {
   const game = useSelector((store: RootState) => store.game);
