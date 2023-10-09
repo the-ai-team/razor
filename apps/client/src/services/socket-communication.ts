@@ -1,26 +1,31 @@
 import { RECONNECT_WAITING_TIME, REQUEST_WAITING_TIME } from '@razor/constants';
-import {
-  AuthToken,
-  InitialClientData,
-  InitialServerData,
-  playerIdSchema,
-  socketProtocols,
-  stateModelSchema,
-  tournamentIdSchema,
-} from '@razor/models';
+import { AuthToken, socketProtocols } from '@razor/models';
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
-import { savePlayerId } from '../utils/save-player-id';
+
+import { requestToJoinRoom } from './handlers/join-room';
 
 const SOCKET_ENDPOINT =
   import.meta.env.NX_SOCKET_ENDPOINT || 'http://localhost:3000';
-let authToken = '';
-let savedPlayerName = '';
-let savedPlayerId = '';
-let savedRoomId = '';
+
+/** This class is used to save data for socket communication,
+ * which is used to reconnect to the server when the connection is lost.
+ */
+class SavedData {
+  public authToken = '';
+  public savedPlayerName = '';
+  public savedPlayerId = '';
+  public savedRoomId = '';
+
+  public setAuthToken(token: AuthToken): void {
+    this.authToken = token;
+  }
+}
+
+export const savedData = new SavedData();
 
 interface SocketFormat extends Socket {
   auth: {
@@ -30,7 +35,7 @@ interface SocketFormat extends Socket {
 
 export const socket = io(SOCKET_ENDPOINT, {
   auth: {
-    token: authToken,
+    token: savedData.authToken,
   },
   autoConnect: false,
   withCredentials: true,
@@ -38,14 +43,14 @@ export const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
-  authToken = '';
-  savedPlayerName = '';
-  savedPlayerId = '';
-  savedRoomId = '';
+  savedData.authToken = '';
+  savedData.savedPlayerName = '';
+  savedData.savedPlayerId = '';
+  savedData.savedRoomId = '';
 };
 
-const initializeSocket = (): void => {
-  socket.auth.token = authToken;
+export const initializeSocket = (): void => {
+  socket.auth.token = savedData.authToken;
   socket.connect();
   socket.on('connect_error', () => {
     alert('Connection error');
@@ -55,7 +60,7 @@ const initializeSocket = (): void => {
     console.log('connected');
   });
   socket.on(socketProtocols.AuthTokenTransfer, (token: string) => {
-    authToken = token;
+    savedData.authToken = token;
   });
 };
 
@@ -64,13 +69,13 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
-    if (savedRoomId && savedPlayerName) {
+    if (savedData.savedRoomId && savedData.savedPlayerName) {
       const reconnector = setInterval(async () => {
         try {
           console.log('Reconnecting...');
           await requestToJoinRoom({
-            playerName: savedPlayerName,
-            roomId: savedRoomId,
+            playerName: savedData.savedPlayerName,
+            roomId: savedData.savedRoomId,
           });
           clearInterval(reconnector);
         } catch (error) {
@@ -81,10 +86,10 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
       // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
       const waitingTimeout = setTimeout(() => {
         clearInterval(reconnector);
-        authToken = '';
-        savedPlayerName = '';
-        savedPlayerId = '';
-        savedRoomId = '';
+        savedData.authToken = '';
+        savedData.savedPlayerName = '';
+        savedData.savedPlayerId = '';
+        savedData.savedRoomId = '';
         // TODO: navigate to home page
       }, RECONNECT_WAITING_TIME);
 
@@ -99,96 +104,17 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
 socket.on('disconnect', reason => tryReconnect(reason));
 
-export const requestToJoinRoom = ({
-  playerName,
-  roomId,
-}: InitialClientData): Promise<string> => {
-  initializeSocket();
-  socket.emit(socketProtocols.JoinLobbyRequest, { playerName, roomId });
-  return new Promise((resolve, reject) => {
-    const receiver = (data: InitialServerData): void => {
-      // Data validation
-      const validation =
-        !stateModelSchema.safeParse(data.snapshot).success ||
-        !tournamentIdSchema.safeParse(data.tournamentId).success ||
-        !playerIdSchema.safeParse(data.playerId).success;
-      if (validation) {
-        reject('Invalid data');
-        return;
-      }
-
-      // remove `T:` part from the tournament id.
-      const roomIdFromServer = data.tournamentId.slice(2);
-      if (roomIdFromServer) {
-        savedRoomId = roomIdFromServer;
-        savedPlayerId = data.playerId;
-        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
-
-        savePlayerId(data.playerId);
-        pubsub.publish(socketProtocols.JoinLobbyAccept, data);
-        clearTimeout(waitingTimeout);
-        resolve(roomIdFromServer);
-      } else {
-        reject('Request failed');
-      }
-    };
-    socket.once(socketProtocols.JoinLobbyAccept, receiver);
-
-    const waitingTimeout = setTimeout(() => {
-      socket.off(socketProtocols.JoinLobbyAccept, receiver);
-      reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
-  });
-};
-
-export const requestToCreateRoom = ({
-  playerName,
-}: InitialClientData): Promise<string> => {
-  initializeSocket();
-  socket.emit(socketProtocols.CreateLobbyRequest, { playerName });
-  return new Promise((resolve, reject) => {
-    const receiver = (data: InitialServerData): void => {
-      // Data validation
-      const validation =
-        !stateModelSchema.safeParse(data.snapshot).success ||
-        !tournamentIdSchema.safeParse(data.tournamentId).success ||
-        !playerIdSchema.safeParse(data.playerId).success;
-      if (validation) {
-        reject('Invalid data');
-        return;
-      }
-
-      // remove `T:` part from the tournament id.
-      const roomIdFromServer = data.tournamentId.slice(2);
-      if (roomIdFromServer) {
-        savedRoomId = roomIdFromServer;
-        savedPlayerId = data.playerId;
-        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
-
-        savePlayerId(data.playerId);
-        pubsub.publish(socketProtocols.CreateLobbyAccept, data);
-        clearTimeout(waitingTimeout);
-        resolve(roomIdFromServer);
-      } else {
-        reject('Request failed');
-      }
-    };
-    socket.once(socketProtocols.CreateLobbyAccept, receiver);
-
-    const waitingTimeout = setTimeout(() => {
-      socket.off(socketProtocols.CreateLobbyAccept, receiver);
-      reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
-  });
-};
-
 socket.onAny((event, data) => {
   if (
     event !== socketProtocols.CreateLobbyAccept &&
     event !== socketProtocols.JoinLobbyAccept
   ) {
-    const tournamentId = roomIdToTournamentId(savedRoomId);
-    pubsub.publish(event, { tournamentId, savedPlayerId, data });
+    const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
+    pubsub.publish(event, {
+      tournamentId,
+      savedPlayerId: savedData.savedPlayerId,
+      data,
+    });
     console.log(event, data);
   }
 });

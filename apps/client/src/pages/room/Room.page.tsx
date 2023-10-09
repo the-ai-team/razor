@@ -15,7 +15,7 @@ import {
   ToastType,
 } from '../../components';
 import { useToastContext } from '../../hooks/useToastContext';
-import { startRace } from '../../services/socket/start-race';
+import { startRace } from '../../services/handlers';
 
 import { PlayerList } from './templates/player-list/PlayerList.template';
 
