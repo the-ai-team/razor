@@ -95,6 +95,14 @@ export const TEXT_MAP = new Map<
   ],
   // Heading
   [
+    `${TextType.Heading}.${TextSize.ExtraLarge}`,
+    {
+      size: '5.5rem',
+      tag: TextTag.HeadingLarge,
+      definedClasses: 'font-roboto tracking-[.15px] font-medium',
+    },
+  ],
+  [
     `${TextType.Heading}.${TextSize.Large}`,
     {
       size: '3rem',
