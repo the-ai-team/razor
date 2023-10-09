@@ -1,2 +1,2 @@
 // Waiting time for server response.
-export const REQUEST_WAITING_TIME = 4000;
+export const REQUEST_WAITING_TIME = 8000;

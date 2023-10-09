@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MAX_ALLOWED_PLAYERS, MIN_ALLOWED_PLAYERS } from '@razor/constants';
 import { AppTournamentId } from '@razor/models';
 import cs from 'classnames';
@@ -15,16 +15,23 @@ import {
   ToastType,
 } from '../../components';
 import { useToastContext } from '../../hooks/useToastContext';
-import { startRace } from '../../services/handlers';
+import { requestToStartRace } from '../../services/handlers';
 
 import { PlayerList } from './templates/player-list/PlayerList.template';
 
 export function Room(): ReactElement {
   const { t } = useTranslation(['room']);
   const { roomId } = useParams();
+  const navigate = useNavigate();
   const tournamentId: AppTournamentId = `T:${roomId}`;
   const [hostname, setHostname] = useState<string>('');
   const addToast = useToastContext();
+
+  const routeToRace = async (): Promise<void> => {
+    // TOOD: Add try catch and make a error info ui popups.
+    await requestToStartRace();
+    navigate(`/${roomId}/race`);
+  };
 
   // Setting hostname from window object
   useEffect(() => {
@@ -99,9 +106,7 @@ export function Room(): ReactElement {
           <PlayerList tournamentId={tournamentId} />
         </div>
         <div className={cs('relative top-20')}>
-          <Button onClick={(): void => startRace()}>
-            {t('actions.start') as string}
-          </Button>
+          <Button onClick={routeToRace}>{t('actions.start') as string}</Button>
         </div>
       </div>
       <div className='self-start'>
