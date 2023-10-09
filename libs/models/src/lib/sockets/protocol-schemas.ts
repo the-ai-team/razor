@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-imports
 import { socketProtocols } from './protocols';
 import { raceIdSchema } from './race';
 import { stateModelSchema } from './state-model';
@@ -9,6 +9,11 @@ import { roomIdSchema, tournamentIdSchema } from './tournament';
 
 // Following schemas to be used when data sent through socket.
 // Each schema is related to a protocol defined in {@link socketProtocols}
+
+/**
+ * Related protocol - {@link socketProtocols.AuthTokenTransfer}
+ */
+export const authTokenTransferSchema = z.string();
 
 /**
  * Related protocol - {@link socketProtocols.JoinLobbyRequest} and {@link socketProtocols.CreateLobbyRequest}
@@ -50,6 +55,7 @@ export const startRaceAcceptSchema = z.object({
 });
 
 export type ProtocolSchemaTypes =
+  | typeof authTokenTransferSchema
   | typeof initialClientDataSchema
   | typeof initialServerDataSchema
   | typeof playerJoinSchema

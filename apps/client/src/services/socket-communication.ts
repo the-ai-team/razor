@@ -1,5 +1,10 @@
 import { RECONNECT_WAITING_TIME, REQUEST_WAITING_TIME } from '@razor/constants';
-import { AuthToken, socketProtocols } from '@razor/models';
+import {
+  AuthToken,
+  protocolToSchemaMap,
+  socketProtocols,
+  SocketProtocolsTypes,
+} from '@razor/models';
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
@@ -104,7 +109,37 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
 socket.on('disconnect', reason => tryReconnect(reason));
 
+interface validateSchemaArgs<T> {
+  event: SocketProtocolsTypes;
+  data: T;
+}
+
+function validateSchema<T>({ event, data }: validateSchemaArgs<T>): boolean {
+  try {
+    const schema = protocolToSchemaMap.get(event);
+    if (!schema) {
+      console.log(`Unrecognized event: ${event}`);
+      return false;
+    }
+
+    schema.parse(data);
+    return true;
+  } catch (error) {
+    // TODO: implement logger service for client
+    console.log(`Received data invalid. (zod-error) ${error}`, {
+      protocolName: event,
+      protocolData: data,
+    });
+    return false;
+  }
+}
+
 socket.onAny((event, data) => {
+  const isValid = validateSchema({ event, data });
+  if (!isValid) {
+    return;
+  }
+
   if (
     event !== socketProtocols.CreateLobbyAccept &&
     event !== socketProtocols.JoinLobbyAccept
