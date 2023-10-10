@@ -10,6 +10,9 @@ import { extractId, ExtractIdType } from '@razor/util';
 
 /** Get cursor position base on player logs. */
 export function getCursorPosition(playerLogs: AppPlayerLog[]): number {
+  if (!playerLogs?.length) {
+    return 0;
+  }
   return playerLogs[playerLogs.length - 1].textLength;
 }
 

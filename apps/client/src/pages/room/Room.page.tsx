@@ -1,8 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAX_ALLOWED_PLAYERS, MIN_ALLOWED_PLAYERS } from '@razor/constants';
 import { AppTournamentId } from '@razor/models';
+import { RootState } from '@razor/store';
 import cs from 'classnames';
 import { ReactComponent as LinkIcon } from 'pixelarticons/svg/link.svg';
 
@@ -23,15 +25,21 @@ export function Room(): ReactElement {
   const { t } = useTranslation(['room']);
   const { roomId } = useParams();
   const navigate = useNavigate();
+  const game = useSelector((store: RootState) => store.game);
   const tournamentId: AppTournamentId = `T:${roomId}`;
   const [hostname, setHostname] = useState<string>('');
   const addToast = useToastContext();
 
-  const routeToRace = async (): Promise<void> => {
-    // TOOD: Add try catch and make a error info ui popups.
-    await requestToStartRace();
-    navigate(`/${roomId}/race`);
-  };
+  // If a race ongoing on store navigate to the race page.
+  useEffect((): void => {
+    const raceIds = game.tournamentsModel[tournamentId]?.raceIds;
+    const lastRaceId = raceIds[raceIds.length - 1] || null;
+    const race = lastRaceId ? game.racesModel[lastRaceId] : null;
+
+    if (race?.isOnGoing) {
+      navigate(`/${roomId}/race`);
+    }
+  }, [game, roomId]);
 
   // Setting hostname from window object
   useEffect(() => {
@@ -106,7 +114,10 @@ export function Room(): ReactElement {
           <PlayerList tournamentId={tournamentId} />
         </div>
         <div className={cs('relative top-20')}>
-          <Button onClick={routeToRace}>{t('actions.start') as string}</Button>
+          <Button
+            onClick={async (): Promise<void> => await requestToStartRace()}>
+            {t('actions.start') as string}
+          </Button>
         </div>
       </div>
       <div className='self-start'>
