@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { PlayerId, PlayerProfile } from './player';
 import { PlayerLogsCollection } from './playerLog';
 
 // ==== Primary Schemas ==== //
@@ -26,8 +27,10 @@ export interface Race {
    * It can be empty before players send the starting message to the server.
    */
   playerLogs: PlayerLogsCollection[];
+  /** Player profiles */
+  playerProfiles: PlayerProfile[];
   /** Player who pressed the start button */
-  raceStartedBy: string;
+  raceStartedBy: PlayerId;
 }
 
 // ==== Types ==== //

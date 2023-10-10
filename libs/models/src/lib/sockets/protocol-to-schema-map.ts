@@ -4,8 +4,10 @@ import {
   initialServerDataSchema,
   playerJoinSchema,
   ProtocolSchemaTypes,
+  sendTypeLogSchema,
   startRaceAcceptSchema,
   startRaceRequestSchema,
+  updateTypeLogsSchema,
 } from './protocol-schemas';
 import { socketProtocols, SocketProtocolsTypes } from './protocols';
 
@@ -22,4 +24,6 @@ export const protocolToSchemaMap = new Map<
   [socketProtocols.PlayerJoin, playerJoinSchema],
   [socketProtocols.StartRaceRequest, startRaceRequestSchema],
   [socketProtocols.StartRaceAccept, startRaceAcceptSchema],
+  [socketProtocols.SendTypeLog, sendTypeLogSchema],
+  [socketProtocols.UpdateTypeLogs, updateTypeLogsSchema],
 ]);

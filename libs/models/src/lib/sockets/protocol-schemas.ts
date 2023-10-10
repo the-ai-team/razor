@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
+import { playerLogSchema, playerLogsCollectionSchema } from './playerLog';
 // eslint-disable-next-line unused-imports/no-unused-imports
 import { socketProtocols } from './protocols';
 import { raceIdSchema } from './race';
@@ -47,11 +48,26 @@ export const startRaceRequestSchema = z.object({});
 /**
  * Related protocol - {@link socketProtocols.StartRaceAccept}
  */
-
 export const startRaceAcceptSchema = z.object({
   raceId: raceIdSchema,
   raceStartedBy: playerIdSchema,
   raceText: z.string(),
+});
+
+/**
+ * Related protocol - {@link socketProtocols.SendTypeLog}
+ */
+export const sendTypeLogSchema = z.object({
+  raceId: raceIdSchema,
+  playerLogs: z.array(playerLogSchema),
+});
+
+/**
+ * Related protocol - {@link socketProtocols.UpdateTypeLogs}
+ */
+export const updateTypeLogsSchema = z.object({
+  raceId: raceIdSchema,
+  playerLogs: playerLogsCollectionSchema,
 });
 
 export type ProtocolSchemaTypes =
@@ -60,4 +76,6 @@ export type ProtocolSchemaTypes =
   | typeof initialServerDataSchema
   | typeof playerJoinSchema
   | typeof startRaceRequestSchema
-  | typeof startRaceAcceptSchema;
+  | typeof startRaceAcceptSchema
+  | typeof sendTypeLogSchema
+  | typeof updateTypeLogsSchema;

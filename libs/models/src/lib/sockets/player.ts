@@ -48,3 +48,4 @@ export const playerSchema = z.object({
 
 // ==== Interfaces ==== //
 export type Player = z.infer<typeof playerSchema>;
+export type PlayerProfile = Omit<Player, 'state'>;

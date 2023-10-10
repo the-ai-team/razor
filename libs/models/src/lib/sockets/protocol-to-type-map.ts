@@ -2,6 +2,7 @@ import {
   InitialClientData,
   InitialServerData,
   PlayerJoinData,
+  SendTypeLogData,
   StartRaceAcceptData,
   StartRaceRequestData,
 } from './protocol-data';
@@ -16,9 +17,11 @@ export interface InitialProtocolToTypeMap extends Record<string, object> {
 }
 
 export interface OtherProtocolToTypeMap extends Record<string, object> {
+  [socketProtocols.PlayerJoin]: PlayerJoinData;
   [socketProtocols.StartRaceRequest]: StartRaceRequestData;
   [socketProtocols.StartRaceAccept]: StartRaceAcceptData;
-  [socketProtocols.PlayerJoin]: PlayerJoinData;
+  [socketProtocols.SendTypeLog]: SendTypeLogData;
+  [socketProtocols.UpdateTypeLogs]: SendTypeLogData;
 }
 
 export type AllProtocolToTypeMap = InitialProtocolToTypeMap &
