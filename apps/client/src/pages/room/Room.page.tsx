@@ -10,6 +10,15 @@ export function Room(): ReactElement {
       <Text type={TextType.Heading} size={TextSize.Large}>
         Room
       </Text>
+      {/*TODO: Implement PlayerList*/}
+      {/*<div className={cs('my-12')}>*/}
+      {/*  <ListItem*/}
+      {/*    title='JohnDoe'*/}
+      {/*    imgURL='https://avatars.dicebear.com/api/open-peeps/737373.svg'*/}
+      {/*    number={1}*/}
+      {/*    rightText='64 wpm'*/}
+      {/*  />*/}
+      {/*</div>*/}
       <Button onClick={(): void => startRace()}>Start Race</Button>
     </div>
   );
