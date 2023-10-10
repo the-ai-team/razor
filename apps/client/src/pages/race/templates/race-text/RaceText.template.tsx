@@ -229,7 +229,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   return (
     <div
       className={cs(
-        'relative w-full py-[1.5rem] pl-32 pr-10',
+        'relative w-full py-4 pl-28 pr-6',
         'bg-neutral-20 border-[3px] border-neutral-40',
         'select-none',
         'rounded-md',
@@ -237,7 +237,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
       <div
         ref={paragraphRef}
         className={cs(
-          'font-roboto text-[1.6rem] font-medium text-neutral-90',
+          'font-roboto text-[1.4rem] font-medium text-neutral-90',
           'flex flex-wrap justify-space-between',
           'relative',
         )}>

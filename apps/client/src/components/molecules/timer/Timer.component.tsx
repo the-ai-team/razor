@@ -6,7 +6,7 @@ import { Text } from '../../atoms';
 
 export interface TimerProps {
   time: number; // in seconds
-  onTimeEnd: () => void;
+  onTimeEnd?: () => void;
 }
 
 /**
@@ -87,6 +87,7 @@ export function Timer({
   return (
     <div
       className={cs(
+        'm-auto',
         'rounded-full bg-neutral-20 inline-block',
         'w-72 aspect-square',
         'flex justify-center items-center',

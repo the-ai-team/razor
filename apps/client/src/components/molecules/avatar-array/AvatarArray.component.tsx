@@ -23,7 +23,7 @@ export function AvatarArray({
   return (
     <div
       className={cs(
-        'absolute pt-1  -left-[7.5rem]',
+        'absolute pt-1  -left-[6.5rem]',
         'flex items-center justify-end',
       )}
       style={style}>
@@ -35,7 +35,7 @@ export function AvatarArray({
             key={reversedIndex}
             id={`avatar-${reversedIndex}`}
             className={cs(
-              'w-8 h-8 rounded-full  border-2 border-neutral-20',
+              'w-7 h-7 rounded-full  border-2 border-neutral-20',
               'flex items-center justify-center',
               {
                 '-ml-2': index !== 0,
