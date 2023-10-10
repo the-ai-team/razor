@@ -35,6 +35,7 @@ import {
 
 export interface RaceTextProps {
   raceId: AppRaceId;
+  onType?: (charIndex: number) => void;
   debug?: {
     enableLetterCount?: boolean;
     enableSpaceCount?: boolean;
@@ -43,7 +44,12 @@ export interface RaceTextProps {
   };
 }
 
-export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
+export function RaceText({
+  raceId,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onType = (): void => {},
+  debug = {},
+}: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
   const dispatch = useDispatch<Dispatch>();
   const { t } = useTranslation(['race', 'common']);
@@ -204,6 +210,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
         raceId,
         playerId: selfPlayerId.current,
       });
+      onType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
       updateNoOfInvalidChars(prev => {
         if (prev === MAX_INVALID_CHARS_ALLOWED) {

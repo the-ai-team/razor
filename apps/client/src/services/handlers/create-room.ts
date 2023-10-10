@@ -14,6 +14,7 @@ export const requestToCreateRoom = ({
 }: InitialClientData): Promise<string> => {
   initializeSocket();
   socket.emit(socketProtocols.CreateLobbyRequest, { playerName });
+
   const promise: Promise<string> = new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
