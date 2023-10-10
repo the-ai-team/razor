@@ -19,7 +19,6 @@ export interface ListItemProps {
  * @param rightText - Text to be displayed on the right side of the list item (optional)
  * @param [isTranslucent=false] - Changes the item to translucent (optional)
  * @param [number=-1] - Number to be displayed on the left side of the list item (optional)
- * @constructor
  */
 export function ListItem({
   title,

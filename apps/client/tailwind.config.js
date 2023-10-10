@@ -2,7 +2,7 @@ const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
 const colors = require('tailwindcss/colors');
 const { join } = require('path');
 
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 module.exports = {
   content: [
     join(__dirname, 'src/**/*!(*.stories|*.spec)(.tsx|.ts)'),
@@ -16,9 +16,17 @@ module.exports = {
         90: '#F4DDDB',
       },
       primary: {
+        20: '#68000E',
         30: '#8F0E1C',
         40: '#B12A30',
         50: '#D34446',
+        70: '#FF8985',
+      },
+      secondary: {
+        20: '#4E2600',
+        40: '#914C00',
+        50: '#B16317',
+        70: '#F09647',
       },
       error: {
         60: '#FF5449',

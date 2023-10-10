@@ -1,4 +1,5 @@
 const rootMain = require('../../../.storybook/main');
+const path = require('path');
 
 const config = {
   ...rootMain,
@@ -35,6 +36,12 @@ const config = {
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack', 'url-loader'],
+    });
+
+    config.module.rules.push({
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader'],
+      include: path.resolve(__dirname, './'),
     });
 
     return config;
