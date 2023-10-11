@@ -27,6 +27,17 @@ export function Timer({
   const timerEnded = useRef(false);
 
   useEffect(() => {
+    const circle = circleIndicator.current;
+    let circumference: number;
+
+    if (circle) {
+      const radius = circle.r.baseVal.value;
+      // C=2πr
+      circumference = 2 * Math.PI * radius;
+      // Fill circle dash
+      circle.setAttribute('stroke-dasharray', `${circumference}, 20000`);
+    }
+
     const updateTimer = (): void => {
       if (timerEnded.current) {
         return;
@@ -42,39 +53,33 @@ export function Timer({
       previousTimestamp.current = now;
       const delta = now - startTimestamp.current;
 
-      const remainingSeconds = Math.max(0, time - Math.floor(delta / 1000));
-      const remainingMilliseconds = Math.max(
-        0,
-        99 - Math.floor((delta % 1000) / 10),
+      const remainingTime = time * 1000 - delta;
+      const remainingSeconds = Math.max(0, Math.floor(remainingTime / 1000));
+      const remainingMilliseconds = Math.floor(
+        (remainingTime - remainingSeconds * 1000) / 10,
       );
       setSeconds(remainingSeconds);
       setMilliseconds(remainingMilliseconds);
 
-      const circle = circleIndicator.current;
-
       if (circle) {
-        const radius = circle.r.baseVal.value;
-        // C=2πr
-        const circumference = 2 * Math.PI * radius;
+        // Dash offset = Fraction of time elapsed * circumference
+        let dashOffset = (remainingTime / (time * 1000)) * circumference;
+        // Clamp dash offset to the circumference
+        dashOffset = Math.min(circumference, dashOffset);
 
-        let dashOffset = (delta / 1000 / time) * circumference;
-        dashOffset = Math.min(circumference, Math.max(0, dashOffset));
-
-        circle.setAttribute('stroke-dasharray', `${circumference}`);
         circle.setAttribute(
           'stroke-dashoffset',
           `${circumference - dashOffset}`,
         );
+      }
 
-        // When time is up setting seconds and milliseconds to 0
-        if (time <= delta / 1000) {
-          clearInterval(interval);
-          timerEnded.current = true;
-          console.log(Date.now() - startTimestamp.current);
-          setSeconds(0);
-          setMilliseconds(0);
-          onTimeEnd();
-        }
+      // When time is up setting seconds and milliseconds to 0
+      if (remainingTime <= 0) {
+        clearInterval(interval);
+        timerEnded.current = true;
+        setSeconds(0);
+        setMilliseconds(0);
+        onTimeEnd();
       }
 
       requestAnimationFrame(updateTimer);
@@ -127,7 +132,6 @@ export function Timer({
           r='40%'
           fill='none'
           strokeWidth='15'
-          strokeDasharray='0,20000'
           strokeLinecap='round'
           transform='rotate(-90,150,150)'
           className='stroke-neutral-90'
