@@ -2,27 +2,45 @@ import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { Meta } from '@storybook/react';
 import { ToastContextProvider } from 'apps/client/src/providers';
+import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 
 import {
   addSampleRaceLogs,
   RaceLogUpdaters,
   store,
-  testTournamentId,
+  testRaceId,
 } from '../../story-common-utils';
 
 import { RaceText, RaceTextProps } from './RaceText.template';
+
+function sendTypeLog(playerCursorAt: number): void {
+  const playerLog = {
+    timestamp: Date.now(),
+    textLength: playerCursorAt + 1,
+  };
+
+  const playerId = getSavedPlayerId();
+  if (playerId) {
+    store.dispatch.game.sendTypeLog({
+      playerLog,
+      raceId: testRaceId,
+      playerId,
+    });
+  }
+}
 
 export default {
   title: 'Templates/RaceText',
   component: RaceText,
   args: {
-    raceId: `${testTournamentId}-R:000`,
+    raceId: testRaceId,
     debug: {
       enableLetterCount: false,
       enableSpaceCount: false,
       highlightRightMostWords: false,
       highlightLeftMostWords: false,
     },
+    onValidType: sendTypeLog,
   },
 } as Meta<RaceTextProps>;
 

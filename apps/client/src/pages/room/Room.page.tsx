@@ -27,6 +27,9 @@ export function Room(): ReactElement {
   const navigate = useNavigate();
   const game = useSelector((store: RootState) => store.game);
   const tournamentId: AppTournamentId = `T:${roomId}`;
+  const [playerIds, setPlayerIds] = useState(
+    game.tournamentsModel[tournamentId]?.playerIds,
+  );
   const [hostname, setHostname] = useState<string>('');
   const addToast = useToastContext();
 
@@ -40,6 +43,11 @@ export function Room(): ReactElement {
       navigate(`/${roomId}/race`);
     }
   }, [game, roomId]);
+
+  // Update playerIds
+  useEffect(() => {
+    setPlayerIds(game.tournamentsModel[tournamentId]?.playerIds);
+  }, [game.playersModel, game.tournamentsModel, tournamentId]);
 
   // Setting hostname from window object
   useEffect(() => {
@@ -119,6 +127,7 @@ export function Room(): ReactElement {
         </div>
         <div className='mx-auto my-12'>
           <Button
+            isDisabled={playerIds.length < MIN_ALLOWED_PLAYERS}
             onClick={async (): Promise<void> => await requestToStartRace()}>
             {t('actions.start') as string}
           </Button>

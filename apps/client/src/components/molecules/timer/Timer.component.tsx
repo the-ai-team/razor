@@ -27,6 +27,14 @@ export function Timer({
   const timerEnded = useRef(false);
 
   useEffect(() => {
+    startTimestamp.current = Date.now();
+    previousTimestamp.current = Date.now();
+    setSeconds(time);
+    setMilliseconds(0);
+    timerEnded.current = false;
+  }, [time]);
+
+  useEffect(() => {
     const circle = circleIndicator.current;
     let circumference: number;
 

@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   AppPlayerId,
   AppPlayerLogId,
@@ -15,7 +15,7 @@ import {
   AppRaceId,
   AppRacePlayerCursor,
 } from '@razor/models';
-import { Dispatch, RootState } from '@razor/store';
+import { RootState } from '@razor/store';
 import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
 import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/AvatarArray.component';
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
@@ -35,7 +35,7 @@ import {
 
 export interface RaceTextProps {
   raceId: AppRaceId;
-  onType?: (charIndex: number) => void;
+  onValidType: (charIndex: number) => void;
   debug?: {
     enableLetterCount?: boolean;
     enableSpaceCount?: boolean;
@@ -47,11 +47,10 @@ export interface RaceTextProps {
 export function RaceText({
   raceId,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onType = (): void => {},
+  onValidType = (): void => {},
   debug = {},
 }: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const dispatch = useDispatch<Dispatch>();
   const { t } = useTranslation(['race', 'common']);
   const addToast = useToastContext();
 
@@ -200,17 +199,9 @@ export function RaceText({
       if (noOfInvalidChars > 0) {
         return;
       }
-      const playerLog = {
-        timestamp: Date.now(),
-        textLength: playerCursorAt + 1,
-      };
+
       updatePlayerCursorAt(playerCursorAt + 1);
-      dispatch.game.sendTypeLog({
-        playerLog,
-        raceId,
-        playerId: selfPlayerId.current,
-      });
-      onType(playerCursorAt);
+      onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
       updateNoOfInvalidChars(prev => {
         if (prev === MAX_INVALID_CHARS_ALLOWED) {

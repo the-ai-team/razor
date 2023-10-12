@@ -1,54 +1,38 @@
-import { ReactElement, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { ReactElement, useEffect, useRef, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppRaceId, AppTournamentId } from '@razor/models';
-import { RootState } from '@razor/store';
+import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
+import { Dispatch, RootState } from '@razor/store';
 import cs from 'classnames';
+import { ReactComponent as CarIcon } from 'pixelarticons/svg/car.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
-import { Text } from '../../components';
+import { Text, ToastType } from '../../components';
 import { Timer } from '../../components/molecules/timer';
+import { useToastContext } from '../../hooks/useToastContext';
 import { TextSize, TextType } from '../../models';
 import {
+  sendInitialTypeLog,
   sendTypeLog,
   typeLogPusher,
 } from '../../services/handlers/send-type-log';
+import { getSavedPlayerId } from '../../utils/save-player-id';
 
 import { RaceText } from './templates/race-text/RaceText.template';
 import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
   const { roomId } = useParams();
+  const { t } = useTranslation(['race']);
   const navigate = useNavigate();
+  const addToast = useToastContext();
+  const dispatch = useDispatch<Dispatch>();
   const game = useSelector((store: RootState) => store.game);
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
-  const [raceReadyTimer, setRaceReadyTimer] = useState<number>(5);
-
-  useEffect(() => {
-    // Race ready timer
-    const timer = setInterval(() => {
-      setRaceReadyTimer(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          prev = 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    // Type log pusher
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    let clearPusher = (): void => {};
-
-    if (raceId) {
-      clearPusher = typeLogPusher(raceId);
-    }
-
-    return () => {
-      clearInterval(timer);
-      clearPusher();
-    };
-  }, []);
+  const [raceReadyTime, setRaceReadyTime] = useState<number>(5);
+  const [raceTime, setRaceTime] = useState<number>(0);
+  const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
 
   useEffect(() => {
     const tournamentId: AppTournamentId = `T:${roomId}`;
@@ -63,10 +47,65 @@ export function Race(): ReactElement {
       setRaceId(null);
     }
 
+    // Race ready timer
+    const timer = setInterval(() => {
+      setRaceReadyTime(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          prev = 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    let gameStartedPlayerId: PlayerId | null = null;
+
+    // Type log pusher
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    let clearPusher = (): void => {};
+
+    if (raceId) {
+      clearPusher = typeLogPusher(raceId);
+      gameStartedPlayerId = game.racesModel[raceId]?.raceStartedBy;
+    }
+
+    // Get player who started the race
+    if (gameStartedPlayerId) {
+      const gameStartedPlayerName =
+        selfPlayerId.current !== gameStartedPlayerId
+          ? game.playersModel[gameStartedPlayerId]?.name
+          : 'You';
+
+      if (gameStartedPlayerName) {
+        addToast({
+          title: t('toasts.race_start.title'),
+          type: ToastType.Info,
+          message: (
+            <Trans
+              i18nKey='race:toasts.race_start.message'
+              playerName={gameStartedPlayerName}>
+              {{ player_name: gameStartedPlayerName }} has started the race.
+              Good luck!
+            </Trans>
+          ) as unknown as string,
+          icon: <CarIcon />,
+        });
+      }
+    }
+
     return () => {
-      setRaceId(null);
+      clearInterval(timer);
+      clearPusher();
     };
-  }, [game, roomId]);
+  }, []);
+
+  useEffect((): void => {
+    if (raceId && raceReadyTime <= 0) {
+      const raceTime = game.racesModel[raceId]?.timeoutDuration;
+      setRaceTime(raceTime);
+      sendInitialTypeLog(raceId);
+    }
+  }, [raceReadyTime, raceId]);
 
   return (
     <div
@@ -74,38 +113,47 @@ export function Race(): ReactElement {
         'flex flex-col justify-center items-center',
         'w-full h-full',
       )}>
-      <Logo className='absolute top-0 left-10 w-[250px] h-[250px]' />
+      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
       {raceId ? (
-        <div className='flex flex-col items-center justify-center'>
-          <div className='scale-75 relative'>
-            {raceReadyTimer > 0 ? (
+        <div className='flex flex-col items-center justify-center relative'>
+          {raceReadyTime > 0 ? (
+            <div
+              className={cs(
+                'absolute inset-0 m-auto w-40 h-40 bg-neutral-20 rounded-full z-40',
+                'flex items-center justify-center',
+              )}>
+              <Text type={TextType.Heading} size={TextSize.ExtraLarge}>
+                {raceReadyTime.toString()}
+              </Text>
+            </div>
+          ) : null}
+          <div
+            className={cs('relative', {
+              'opacity-20': raceReadyTime > 0,
+            })}>
+            <div className='scale-75'>
+              <RaceTrack raceId={raceId} />
+            </div>
+            <div className='grid grid-cols-4'>
               <div
                 className={cs(
-                  'absolute inset-0 m-auto w-40 h-40 bg-neutral-20 rounded-full z-40',
-                  'flex items-center justify-center',
+                  'scale-50',
+                  'm-auto',
+                  'fixed right-0 -top-12 2xl:static 2xl:scale-75',
                 )}>
-                <Text type={TextType.Heading} size={TextSize.ExtraLarge}>
-                  {raceReadyTimer.toString()}
-                </Text>
+                <Timer
+                  time={raceTime}
+                  onTimeEnd={(): void => console.log('time end')}
+                />
               </div>
-            ) : null}
-            <RaceTrack
-              className={cs({ 'opacity-20': raceReadyTimer > 0 })}
-              raceId={raceId}
-            />
-          </div>
-          <div className='grid grid-cols-4'>
-            <div className={cs('scale-75', 'm-auto', 'hidden 2xl:block')}>
-              <Timer
-                time={10}
-                onTimeEnd={(): void => console.log('time end')}
-              />
-            </div>
-            <div className='col-span-4 2xl:col-span-3 max-w-6xl'>
-              <RaceText
-                raceId={raceId}
-                onType={(charIndex: number): void => sendTypeLog(charIndex)}
-              />
+              <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
+                <RaceText
+                  raceId={raceId}
+                  onValidType={(charIndex: number): void =>
+                    sendTypeLog(charIndex + 1, raceId)
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>

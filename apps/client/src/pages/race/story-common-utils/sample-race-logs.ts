@@ -1,6 +1,5 @@
 import {
   addPlayer,
-  raceId,
   store,
   testTournamentId,
   updatePlayerLog,
@@ -30,6 +29,4 @@ export function addSampleRaceLogs(): void {
     }
     updatePlayerLog(playerId, positions[index - 1]);
   });
-
-  console.log('players', game.racesModel[raceId].players);
 }

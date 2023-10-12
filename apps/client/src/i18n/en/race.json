@@ -1,3 +1,9 @@
 {
-  "page": "Race"
+  "page": "Race",
+  "toasts": {
+    "race_start": {
+      "title": "Ready, set, go!",
+      "message": "{{player_name}} started the race. Good luck!"
+    }
+  }
 }
