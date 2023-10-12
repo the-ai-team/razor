@@ -108,12 +108,18 @@ export const updatePlayerLogReducer = (
   payload: UpdatePlayerLogReducerPayload,
 ): AppStateModel => {
   const { playerLogId, playerLog } = payload;
+
+  const existingPlayerLogs = state.playerLogsModel[playerLogId] || [];
+  const updatedPlayerLogs = Array.isArray(playerLog)
+    ? [...existingPlayerLogs, ...playerLog]
+    : [...existingPlayerLogs, playerLog];
+
   /** State model after updating specific player log-in player logs model. */
   const newState: AppStateModel = {
     ...state,
     playerLogsModel: {
       ...state.playerLogsModel,
-      [playerLogId]: [...(state.playerLogsModel[playerLogId] || []), playerLog],
+      [playerLogId]: updatedPlayerLogs,
     },
   };
   return newState;

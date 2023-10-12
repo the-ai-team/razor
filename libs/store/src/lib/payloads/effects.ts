@@ -48,7 +48,7 @@ export type SendTypeLogPayload = {
   raceId: AppRaceId;
   playerId: AppPlayerId;
   /** Timestamp, and text length from players machine */
-  playerLog: AppPlayerLog;
+  playerLog: AppPlayerLog | AppPlayerLog[];
 };
 
 export type ReplaceFullStatePayload = {
