@@ -457,6 +457,80 @@ describe('[Effects] Player Log', () => {
         game: expectedResult,
       });
     });
+    it('(race id & player id; type logs [Array]) => Send Type Log', () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        tournamentsModel: {
+          [M_TOURNAMENT_ID0]: {
+            ...M_TOURNAMENT0,
+            state: AppTournamentState.Race,
+          },
+        },
+        racesModel: {
+          [M_TR0_RACE_ID0]: mockRace([0, 3], true),
+        },
+        playersModel: mockPlayersModel(
+          [0, 3],
+          M_TOURNAMENT_ID0,
+          AppPlayerState.Racing,
+        ),
+      };
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
+
+      store.dispatch.game.sendTypeLog({
+        playerId: M_PLAYER_ID0,
+        raceId: M_TR0_RACE_ID0,
+        playerLog: [
+          {
+            textLength: 0,
+            timestamp: 123456000,
+          },
+          {
+            textLength: 1,
+            timestamp: 123456002,
+          },
+          {
+            textLength: 2,
+            timestamp: 123456020,
+          },
+          {
+            textLength: 3,
+            timestamp: 123456030,
+          },
+        ],
+      });
+      const storeState = store.getState();
+
+      const expectedResult: AppStateModel = {
+        ...initialValues,
+        playerLogsModel: {
+          [`${M_TR0_RACE_ID0}-${M_PLAYER_ID0}`]: [
+            {
+              textLength: 0,
+              timestamp: 123456000,
+            },
+            {
+              textLength: 1,
+              timestamp: 123456002,
+            },
+            {
+              textLength: 2,
+              timestamp: 123456020,
+            },
+            {
+              textLength: 3,
+              timestamp: 123456030,
+            },
+          ],
+        },
+      };
+
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
+    });
     it('(not existing player) => Raise error', () => {
       const initialValues: AppStateModel = {
         ...initialState,
