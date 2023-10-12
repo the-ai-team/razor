@@ -39,7 +39,7 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
       <div className={cs('relative w-full')}>
         <RaceBackground
           count={playerIds.length}
-          className={cs('my-10 mx-auto')}
+          className={cs('my-10 mx-auto', 'rounded-md overflow-hidden')}
         />
         <div
           className={cs('w-full absolute mx-auto')}

@@ -65,7 +65,6 @@ export function Room(): ReactElement {
         type: ToastType.Info,
         message: t('toasts.link_copy.message') as string,
         icon: <LinkIcon />,
-        isImmortal: true,
       });
     } catch (e) {
       addToast({
@@ -73,19 +72,13 @@ export function Room(): ReactElement {
         type: ToastType.Error,
         message: t('toasts.link_copy_failed.message') as string,
         icon: <LinkIcon />,
-        isImmortal: true,
       });
     }
   };
 
   return (
-    <div
-      className={cs(
-        'flex flex-col justify-center items-center',
-        'w-full h-full',
-      )}>
-      <Logo className='absolute top-0 left-10 w-[250px] h-[250px]' />
-
+    <div className='h-full w-full'>
+      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
       <Panel title={t('panel.title')}>
         <Description
           title={t('panel.descriptions.0.title')}
@@ -109,18 +102,30 @@ export function Room(): ReactElement {
         </Description>
       </Panel>
 
-      <div className='flex flex-col w-full h-full py-32 justify-around items-center'>
-        <div className='max-w-[1000px] w-10/12 h-1/2 flex flex-col justify-center items-center'>
-          <PlayerList tournamentId={tournamentId} />
+      <div
+        className={cs(
+          'flex flex-col justify-center py-20 items-center',
+          'w-full h-full',
+        )}>
+        <div className='flex grow flex-col w-full h-1/2 justify-around items-center'>
+          <div
+            className={cs(
+              'max-w-[1000px] w-10/12 h-full',
+              'my-32',
+              'overflow-hidden flex flex-col justify-center items-center',
+            )}>
+            <PlayerList tournamentId={tournamentId} />
+          </div>
         </div>
-        <div className={cs('relative top-20')}>
+        <div className='mx-auto my-12'>
           <Button
             onClick={async (): Promise<void> => await requestToStartRace()}>
             {t('actions.start') as string}
           </Button>
         </div>
       </div>
-      <div className='self-start'>
+
+      <div className='absolute left-10 bottom-10'>
         <IconButton
           label={t('actions.copy_url') as string}
           icon={<LinkIcon className='w-full h-full text-neutral-90' />}

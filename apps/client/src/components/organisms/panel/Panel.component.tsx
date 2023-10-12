@@ -33,11 +33,11 @@ export function Panel({ title, children }: PanelProps): ReactElement {
   return (
     <div
       className={cs(
-        { 'h-40 pt-6': isCollapse },
-        { 'h-2/3 pt-20 pb-24': !isCollapse },
+        { 'h-32 pt-4': isCollapse },
+        { 'h-2/3 pt-12 pb-20': !isCollapse },
         'flex flex-col',
         'absolute top-5 right-5 z-50',
-        'px-10',
+        'px-12',
         'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-neutral-20',
         'border border-neutral-40',
         'hover:ring-4 hover:ring-neutral-40',

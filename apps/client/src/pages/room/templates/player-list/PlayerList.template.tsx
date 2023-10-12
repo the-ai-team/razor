@@ -72,8 +72,8 @@ export function PlayerList({ tournamentId }: PlayerListProps): ReactElement {
   const max_count = MAX_ALLOWED_PLAYERS.toString();
 
   return (
-    <div className='w-full h-full'>
-      <div className='flex justify-end items-baseline mb-2'>
+    <div className='w-full h-full flex flex-col'>
+      <div className='flex justify-end items-baseline'>
         <Trans
           i18nKey='room:player_count'
           defaults='<Count><0>{{current_count}}</0><1>/{{max_count}} Players</1></Count>'
@@ -95,7 +95,7 @@ export function PlayerList({ tournamentId }: PlayerListProps): ReactElement {
           }}
         />
       </div>
-      <div className='w-full h-full relative'>
+      <div className='w-full h-full overflow-hidden relative'>
         <div
           className={cs(
             { 'opacity-0': !topCoverVisible },
