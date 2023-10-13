@@ -5,6 +5,7 @@ import {
   SendTypeLogData,
   StartRaceAcceptData,
   StartRaceRequestData,
+  UpdateTypeLogsData,
 } from './protocol-data';
 import { socketProtocols } from './protocols';
 
@@ -21,7 +22,7 @@ export interface OtherProtocolToTypeMap extends Record<string, object> {
   [socketProtocols.StartRaceRequest]: StartRaceRequestData;
   [socketProtocols.StartRaceAccept]: StartRaceAcceptData;
   [socketProtocols.SendTypeLog]: SendTypeLogData;
-  [socketProtocols.UpdateTypeLogs]: SendTypeLogData;
+  [socketProtocols.UpdateTypeLogs]: UpdateTypeLogsData;
 }
 
 export type AllProtocolToTypeMap = InitialProtocolToTypeMap &

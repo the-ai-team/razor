@@ -1,5 +1,5 @@
-import { PlayerState } from '../sockets';
-import { AppPlayerState } from '../state';
+import { PlayerLog, PlayerState } from '../sockets';
+import { AppPlayerLog, AppPlayerState } from '../state';
 
 export function appPlayerStateToPlayerState(
   state: AppPlayerState,
@@ -11,4 +11,8 @@ export function playerStateToAppPlayerState(
   state: PlayerState,
 ): AppPlayerState {
   return state as unknown as AppPlayerState;
+}
+
+export function playerLogsToAppPlayerLogs(logs: PlayerLog[]): AppPlayerLog[] {
+  return logs as unknown as AppPlayerLog[];
 }

@@ -6,6 +6,7 @@ import {
   AllServerPubSubEventsToTypeMap,
   PubSubEvents,
   RaceTimeoutModel,
+  TypeLogListeningModel,
 } from '../models';
 import { Logger, publishToAllClients, pubsub } from '../services';
 import { generateRaceText } from '../utils';
@@ -81,13 +82,18 @@ export const startRaceController = async ({
     data: startedRaceData,
   });
 
-  const raceEndTime = (race.timeoutDuration + RACE_END_WAIT_TIME) * 1000;
+  // Publish start type log listening event
+  const TypeLogListenData: TypeLogListeningModel = {
+    context,
+    data: { raceId },
+  };
+  pubsub.publish(PubSubEvents.StartTypeLogListening, TypeLogListenData);
 
+  const raceEndTime = (race.timeoutDuration + RACE_END_WAIT_TIME) * 1000;
   const raceTimeoutData: RaceTimeoutModel = {
     context,
     data: { raceId },
   };
-
   const raceTimeout = setTimeout(() => {
     pubsub.publish(PubSubEvents.RaceTimeout, raceTimeoutData);
     clearTimeout(raceTimeout);
