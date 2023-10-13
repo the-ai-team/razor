@@ -8,12 +8,10 @@ import { AVERAGE_WPM } from '@razor/constants';
 export const computeRaceDuration = (text: string): number => {
   /** Average word count
    *
-   * Assuming that the average word has 5 letters.
+   * Assuming that the average word has 5 letters (and with the space 6 characters).
    */
-  const wordCount = text.length / 5;
-
+  const wordCount = text.length / 6;
   const averageTime = Math.ceil((wordCount / AVERAGE_WPM) * 60);
-
   const maximumAllowedTime = Math.ceil(averageTime * 1.5);
 
   return maximumAllowedTime;
