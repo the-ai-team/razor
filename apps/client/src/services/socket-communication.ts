@@ -14,7 +14,7 @@ import { pubsub } from '../utils/pubsub';
 import { requestToJoinRoom } from './handlers/join-room';
 
 const SOCKET_ENDPOINT =
-  import.meta.env.NX_SOCKET_ENDPOINT || 'http://localhost:3000';
+  import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:3000';
 
 /** This class is used to save data for socket communication,
  * which is used to reconnect to the server when the connection is lost.
