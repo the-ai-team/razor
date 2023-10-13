@@ -1,4 +1,4 @@
-import { RECONNECT_WAITING_TIME, REQUEST_WAITING_TIME } from '@razor/constants';
+import { RECONNECT_WAITING_TIME } from '@razor/constants';
 import {
   AuthToken,
   protocolToSchemaMap,
@@ -8,6 +8,7 @@ import {
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
+import { Connection } from '../constants';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
 
@@ -86,7 +87,7 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
         } catch (error) {
           console.error(error);
         }
-      }, REQUEST_WAITING_TIME);
+      }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
 
       // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
       const waitingTimeout = setTimeout(() => {

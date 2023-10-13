@@ -1,6 +1,6 @@
-import { REQUEST_WAITING_TIME } from '@razor/constants';
 import { socketProtocols } from '@razor/models';
 
+import { Connection } from '../../constants';
 import { socket } from '../socket-communication';
 
 export function requestToStartRace(): Promise<void> {
@@ -18,7 +18,7 @@ export function requestToStartRace(): Promise<void> {
       socket.off(socketProtocols.StartRaceAccept, receiver);
       // TODO: Error classes and error handler for timeout, disconnect, etc.
       reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
+    }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
   });
 
   return promise;

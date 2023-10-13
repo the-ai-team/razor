@@ -1,10 +1,10 @@
-import { REQUEST_WAITING_TIME } from '@razor/constants';
 import {
   InitialClientData,
   InitialServerData,
   socketProtocols,
 } from '@razor/models';
 
+import { Connection } from '../../constants';
 import { pubsub } from '../../utils/pubsub';
 import { savePlayerId } from '../../utils/save-player-id';
 import { initializeSocket, savedData, socket } from '../socket-communication';
@@ -40,7 +40,7 @@ export const requestToCreateRoom = ({
     const waitingTimeout = setTimeout(() => {
       socket.off(socketProtocols.CreateLobbyAccept, receiver);
       reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
+    }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
   });
 
   return promise;
