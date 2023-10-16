@@ -7,7 +7,7 @@ import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';
 
 // Following schemas to be used when data sent through socket.
-// Each schema is related to a protocol defined in {@link socketProtocols}
+// Each schema is related to a protocol defined in {@link SocketProtocols}
 
 /**
  * Related protocol - {@link SocketProtocols.JoinLobbyRequest} and {@link SocketProtocols.CreateLobbyRequest}

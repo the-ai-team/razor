@@ -1,9 +1,8 @@
 import {
   AppPlayer,
-  InitialClientData,
+  appPlayerStateToPlayerState,
   InitialServerData,
-  PlayerJoin,
-  PlayerState,
+  PlayerJoinData,
   Snapshot,
   SocketProtocols,
   TournamentId,
@@ -11,22 +10,25 @@ import {
 import { store } from '@razor/store';
 import { pick } from 'lodash';
 
-import { PubSubEvents } from '../models';
-import { ContextOutput, Logger, pubsub } from '../services';
+import { AllServerPubSubEventsToTypeMap } from '../models';
+import {
+  Logger,
+  publishToAllClients,
+  publishToSingleClient,
+  pubsub,
+} from '../services';
 import { tokenPlayerMap } from '../stores';
 
-interface JoinLobbyRequestArgs {
-  data: InitialClientData;
-  context: ContextOutput;
-}
-
 const logger = new Logger('create-tournament.controller');
+
+type JoinTournamentArgs =
+  AllServerPubSubEventsToTypeMap[SocketProtocols.JoinLobbyRequest];
 
 const joinTournamentController = ({
   data,
   context,
-}: JoinLobbyRequestArgs): void => {
-  const { socketId } = context;
+  socketId,
+}: JoinTournamentArgs): void => {
   // Checking whether player already has playerId.
   let playerId = tokenPlayerMap.getPlayerIdBySocketId(socketId);
   let player: AppPlayer;
@@ -94,23 +96,23 @@ const joinTournamentController = ({
     snapshot,
   };
 
-  pubsub.publish(PubSubEvents.SendDataToClient, {
+  publishToSingleClient({
     playerId,
     protocol: SocketProtocols.JoinLobbyAccept,
     data: initialServerData,
   });
 
   // Sending player joined event to all players.
-  const joinedPlayerData: PlayerJoin = {
+  const joinedPlayerData: PlayerJoinData = {
     player: {
       id: playerId,
       name: player.name,
       avatarLink: player.avatarLink,
-      state: player.state as unknown as PlayerState,
+      state: appPlayerStateToPlayerState(player.state),
     },
   };
 
-  pubsub.publish(PubSubEvents.SendDataToAll, {
+  publishToAllClients({
     tournamentId,
     protocol: SocketProtocols.PlayerJoin,
     data: joinedPlayerData,

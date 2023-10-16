@@ -1,8 +1,8 @@
-import { AuthToken, PlayerId, socketId } from '@razor/models';
+import { AuthToken, PlayerId, SocketId } from '@razor/models';
 
-interface MapData {
+export interface MapData {
   playerId?: PlayerId;
-  socketId: socketId;
+  socketId: SocketId;
 }
 
 interface MapAsObject {
@@ -16,7 +16,7 @@ class TokenPlayerMap {
    * @param authToken - auth token of the player
    * @param socketId - socket id of the player
    */
-  addSocketId(authToken: AuthToken, socketId: socketId): void {
+  addSocketId(authToken: AuthToken, socketId: SocketId): void {
     this.map.set(authToken, { socketId });
   }
 
@@ -24,7 +24,7 @@ class TokenPlayerMap {
    * @param socketId - socket id of the player
    * @param playerId - player id of the player
    */
-  addPlayerId(socketId: socketId, playerId: PlayerId): void {
+  addPlayerId(socketId: SocketId, playerId: PlayerId): void {
     for (const [key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
         this.map.set(key, { ...value, playerId });
@@ -48,7 +48,7 @@ class TokenPlayerMap {
    * @param authToken - auth token of the player
    * @param socketId - socket id of the player
    */
-  updatePlayerSocketId(authToken: AuthToken, socketId: socketId): void {
+  updatePlayerSocketId(authToken: AuthToken, socketId: SocketId): void {
     const data = this.map.get(authToken);
     if (data) {
       this.map.set(authToken, { ...data, socketId });
@@ -61,7 +61,7 @@ class TokenPlayerMap {
    * @param socketId - socket id of the player
    * @returns player id if player exists, null otherwise
    */
-  getPlayerIdBySocketId(socketId: socketId): PlayerId | null {
+  getPlayerIdBySocketId(socketId: SocketId): PlayerId | null {
     for (const [_key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
         return value.playerId;
@@ -74,7 +74,7 @@ class TokenPlayerMap {
    * @param playerId - player id of the player
    * @returns socket id if player exists, null otherwise
    */
-  getSocketIdByPlayerId(playerId: PlayerId): socketId | null {
+  getSocketIdByPlayerId(playerId: PlayerId): SocketId | null {
     for (const [_key, value] of this.map.entries()) {
       if (value.playerId === playerId) {
         return value.socketId;
@@ -87,7 +87,7 @@ class TokenPlayerMap {
    * @param socketId - socket id of the player
    * @returns auth token if player exists, null otherwise
    */
-  getAuthTokenBySocketId(socketId: socketId): AuthToken | null {
+  getAuthTokenBySocketId(socketId: SocketId): AuthToken | null {
     for (const [key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
         return key;

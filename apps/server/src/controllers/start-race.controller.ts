@@ -1,29 +1,25 @@
 import { RACE_END_WAIT_TIME } from '@razor/constants';
-import {
-  AppPlayerId,
-  AppTournamentId,
-  SocketProtocols,
-  StartRaceAccept,
-} from '@razor/models';
+import { SocketProtocols, StartRaceAcceptData } from '@razor/models';
 import { store } from '@razor/store';
 
-import { PubSubEvents } from '../models';
-import { ContextOutput, Logger, pubsub } from '../services';
+import {
+  AllServerPubSubEventsToTypeMap,
+  PubSubEvents,
+  RaceTimeoutModel,
+} from '../models';
+import { Logger, publishToAllClients, pubsub } from '../services';
 import { generateRaceText } from '../utils';
 
-interface StartRaceRequestArgs {
-  context: ContextOutput;
-  playerId: AppPlayerId;
-  tournamentId: AppTournamentId;
-}
-
 const logger = new Logger('start-race.controller');
+
+type StartRaceArgs =
+  AllServerPubSubEventsToTypeMap[SocketProtocols.StartRaceRequest];
 
 export const startRaceController = async ({
   context,
   playerId,
   tournamentId,
-}: StartRaceRequestArgs): Promise<void> => {
+}: StartRaceArgs): Promise<void> => {
   // Check for two active players in the tournament.
   const tournament = store.getState().game.tournamentsModel[tournamentId];
   if (tournament.playerIds.length < 2) {
@@ -58,13 +54,13 @@ export const startRaceController = async ({
   const raceId = raceIds[raceIds.length - 1];
   const race = game.racesModel[raceId];
 
-  const startedRaceData: StartRaceAccept = {
+  const startedRaceData: StartRaceAcceptData = {
     raceId,
     raceStartedBy: playerId,
     raceText,
   };
 
-  pubsub.publish(PubSubEvents.SendDataToAll, {
+  publishToAllClients({
     tournamentId,
     protocol: SocketProtocols.StartRaceAccept,
     data: startedRaceData,
@@ -72,10 +68,13 @@ export const startRaceController = async ({
 
   const raceEndTime = (race.timeoutDuration + RACE_END_WAIT_TIME) * 1000;
 
+  const raceTimeoutData: RaceTimeoutModel = {
+    context,
+    data: { raceId },
+  };
+
   const raceTimeout = setTimeout(() => {
-    pubsub.publish(PubSubEvents.RaceTimout, {
-      raceId,
-    });
+    pubsub.publish(PubSubEvents.RaceTimeout, raceTimeoutData);
     clearTimeout(raceTimeout);
   }, raceEndTime);
 };

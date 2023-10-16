@@ -45,16 +45,12 @@ export const store = init({
  * @returns Generated redux rematch store
  */
 export const initializeStore = (initialState: AppStateModel): Store => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const game: any = createModel<RootModel>()({
+  const game = createModel<RootModel>()({
     state: initialState,
     reducers,
     effects,
   });
 
-  interface RootModel extends Models<RootModel> {
-    game: typeof game;
-  }
   const models: RootModel = { game };
   const store = init({
     models,

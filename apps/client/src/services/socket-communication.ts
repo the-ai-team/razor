@@ -11,7 +11,7 @@ import {
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
-import { PubSubEvents } from '../models';
+import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 const SOCKET_ENDPOINT =
@@ -189,13 +189,7 @@ socket.onAny((event, data) => {
 });
 
 // If `Send Data To Server` event is published, then this function will send data to the server.
-const sendData = ({
-  protocol,
-  data,
-}: {
-  protocol: string;
-  data: object;
-}): void => {
+const sendData = ({ protocol, data }: SendDataToServerModel): void => {
   socket.emit(protocol, data);
 };
-pubsub.subscribe(PubSubEvents.SendDataToServer, sendData);
+pubsub.subscribe(ClientUniqueEvents.SendDataToServer, sendData);

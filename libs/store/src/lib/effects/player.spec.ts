@@ -228,7 +228,6 @@ describe('[Effects] Player', () => {
       const initialStoreState = store.getState();
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: M_PLAYER0,
       });
@@ -258,7 +257,6 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: {
           ...M_PLAYER0,
@@ -272,7 +270,6 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: {
           ...M_PLAYER0,
@@ -286,7 +283,6 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: {
           ...M_PLAYER0,
@@ -300,7 +296,6 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: { ...M_PLAYER0, tournamentId: '' as AppTournamentId },
       });
@@ -311,7 +306,6 @@ describe('[Effects] Player', () => {
       const store = initializeStore(initialValues);
 
       store.dispatch.game.addPlayer({
-        tournamentState: AppTournamentState.Ready,
         playerId: M_PLAYER_ID0,
         player: { ...M_PLAYER0, tournamentId: 'T:notExist' },
       });

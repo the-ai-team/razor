@@ -5,7 +5,7 @@ import { pubsub } from '../utils/pubsub';
 
 pubsub.subscribe(
   SocketProtocols.CreateLobbyAccept,
-  (data: InitialServerData) => {
+  (data: InitialServerData): void => {
     store.dispatch.game.replaceFullState({ parentState: data.snapshot });
   },
 );

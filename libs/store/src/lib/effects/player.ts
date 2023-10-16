@@ -14,7 +14,7 @@ import {
   AddPlayerPayload,
   ClearPlayerPayload,
   JoinPlayerPayload,
-  SendTypeLogPlayload,
+  SendTypeLogPayload,
 } from '../payloads';
 import {
   invalidPlayerName,
@@ -157,7 +157,7 @@ export const addPlayer = (
   payload: AddPlayerPayload,
   state: RootState,
 ): void => {
-  const { tournamentState, playerId, player } = payload;
+  const { playerId, player } = payload;
   const {
     name: playerName,
     avatarLink,
@@ -188,10 +188,14 @@ export const addPlayer = (
     return;
   }
 
-  dispatch.game.setTournamentState({
-    tournamentId,
-    tournamentState,
-  });
+  // When adding a player lobby cannot be Empty
+  // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
+  if (state.game.tournamentsModel[tournamentId].playerIds.length >= 1) {
+    dispatch.game.setTournamentState({
+      tournamentId,
+      tournamentState: AppTournamentState.Ready,
+    });
+  }
 
   // Add the new player.
   dispatch.game.addPlayerReducer({
@@ -280,7 +284,7 @@ export const clearPlayer = (
  */
 export const sendTypeLog = (
   dispatch: Dispatch,
-  payload: SendTypeLogPlayload,
+  payload: SendTypeLogPayload,
   state: RootState,
 ): void => {
   const { raceId, playerId, playerLog } = payload;

@@ -8,7 +8,7 @@ import {
   EndRacePayload,
   JoinPlayerPayload,
   ReplaceFullStatePayload,
-  SendTypeLogPlayload,
+  SendTypeLogPayload,
   SetTournamentStatePayload,
   StartCountdownPayload,
 } from '../payloads';
@@ -39,7 +39,7 @@ export const effects = (dispatch: Dispatch) => ({
     endCountdown(dispatch, payload, state),
   endRace: (payload: EndRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
-  sendTypeLog: (payload: SendTypeLogPlayload, state: RootState) =>
+  sendTypeLog: (payload: SendTypeLogPayload, state: RootState) =>
     sendTypeLog(dispatch, payload, state),
   sendLogMessage: (payload: AppMessageLog) => sendLogMessage(dispatch, payload),
   replaceFullState: (payload: ReplaceFullStatePayload) =>

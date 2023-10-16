@@ -25,6 +25,9 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          skip: true
+          onlyChanged: true
+          autoAcceptChanges: main
       - if: steps.chromatic.outputs.buildUrl != 'undefined'
         name: Publish Summary
         run: |

@@ -1,27 +1,20 @@
-import {
-  InitialClientData,
-  InitialServerData,
-  Snapshot,
-  SocketProtocols,
-} from '@razor/models';
+import { InitialServerData, Snapshot, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
-import { PubSubEvents } from '../models';
-import { ContextOutput, Logger, pubsub } from '../services';
+import { AllServerPubSubEventsToTypeMap } from '../models';
+import { Logger, publishToSingleClient, pubsub } from '../services';
 import { tokenPlayerMap } from '../stores';
 
-interface JoinLobbyRequestArgs {
-  data: InitialClientData;
-  context: ContextOutput;
-}
-
 const logger = new Logger('create-tournament.controller');
+
+type CreateTournamentArgs =
+  AllServerPubSubEventsToTypeMap[SocketProtocols.CreateLobbyRequest];
 
 const createTournamentController = ({
   data,
   context,
-}: JoinLobbyRequestArgs): void => {
-  const { socketId } = context;
+  socketId,
+}: CreateTournamentArgs): void => {
   const { playerName } = data;
   const playerId = store.dispatch.game.joinPlayer({
     receivedTournamentId: '',
@@ -59,7 +52,7 @@ const createTournamentController = ({
     snapshot,
   };
 
-  pubsub.publish(PubSubEvents.SendDataToClient, {
+  publishToSingleClient({
     playerId,
     protocol: SocketProtocols.CreateLobbyAccept,
     data: initialServerData,

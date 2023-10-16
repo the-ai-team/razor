@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
+    "start:network": "nx serve --host=0.0.0.0",
     "start:server": "nx serve server",
+    "start:server-network": "nx serve server --host=0.0.0.0",
     "storybook": "nx run client:storybook",
     "build-storybook": "nx run client:build-storybook",
     "build": "nx build client && nx build server",
@@ -138,7 +140,7 @@
     "tailwindcss": "3.2.7",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
-    "typescript": "^4.8.4",
+    "typescript": "^5.1.6",
     "url-loader": "^4.1.1",
     "vite": "^4.3.4",
     "vite-plugin-eslint": "^1.8.1",
