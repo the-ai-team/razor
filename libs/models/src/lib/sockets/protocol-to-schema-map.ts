@@ -6,7 +6,7 @@ import {
 } from './protocol-schemas';
 import { SocketProtocols, SocketProtocolsTypes } from './protocols';
 
-// This map contains schemas for each protocols defined in {@link socketProtocols}
+// This map contains schemas for each protocols defined in {@link SocketProtocols}
 export const protocolToSchemaMap = new Map<
   SocketProtocolsTypes,
   ProtocolSchemaTypes
@@ -14,6 +14,6 @@ export const protocolToSchemaMap = new Map<
   [SocketProtocols.JoinLobbyRequest, initialClientDataSchema],
   [SocketProtocols.JoinLobbyAccept, initialServerDataSchema],
   [SocketProtocols.CreateLobbyRequest, initialClientDataSchema],
-  [SocketProtocols.CreateLobbyAccept, initialClientDataSchema],
+  [SocketProtocols.CreateLobbyAccept, initialServerDataSchema],
   [SocketProtocols.StartRaceRequest, startRaceRequestSchema],
 ]);

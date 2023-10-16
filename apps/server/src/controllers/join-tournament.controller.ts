@@ -22,7 +22,7 @@ import { tokenPlayerMap } from '../stores';
 const logger = new Logger('create-tournament.controller');
 
 type JoinTournamentArgs =
-  AllServerPubSubEventsToTypeMap[socketProtocols.JoinLobbyRequest];
+  AllServerPubSubEventsToTypeMap[SocketProtocols.JoinLobbyRequest];
 
 const joinTournamentController = ({
   data,
