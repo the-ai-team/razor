@@ -11,7 +11,7 @@ module.exports = composePlugins(
       if (/file-loader/.test(rule.loader)) {
         return {
           ...rule,
-          test: /\.(eot|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/, 
+          test: /\.(eot|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/,
           type: 'javascript/auto',
         };
       }

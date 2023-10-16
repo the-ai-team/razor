@@ -36,7 +36,7 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         { 'h-40 pt-6': isCollapse },
         { 'h-2/3 pt-20 pb-24': !isCollapse },
         'flex flex-col',
-        'absolute top-5 right-5',
+        'absolute top-5 right-5 z-50',
         'px-10',
         'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-neutral-20',
         'border border-neutral-40',
@@ -52,6 +52,7 @@ export function Panel({ title, children }: PanelProps): ReactElement {
           'transition-all duration-300',
           'gap-5',
         )}
+        // FIXME: Use React ref
         id='scrollPanel'>
         <Text
           type={TextType.Heading}

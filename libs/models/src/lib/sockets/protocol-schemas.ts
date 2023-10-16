@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { SocketProtocols } from './protocols';
 import { raceIdSchema } from './race';
 import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';

@@ -10,6 +10,7 @@ import { TextSize, TextType } from '../../models';
 import { RaceTrack } from './templates/RaceTrack.template';
 
 export function Race(): ReactElement {
+  // FIXME: convert id to roomId
   const { id } = useParams();
 
   const navigate = useNavigate();
