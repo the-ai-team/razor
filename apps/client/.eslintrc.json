@@ -13,7 +13,13 @@
           }
         ],
         "react/prop-types": "error",
-        "react/no-array-index-key": "error"
+        "react/no-array-index-key": "error",
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "allow": ["apps/client"]
+          }
+        ]
       }
     }
   ]

@@ -2,10 +2,10 @@ module.exports = {
   stories: [],
   addons: ['@storybook/addon-essentials'],
   framework: {
-    name: '@storybook/react-webpack5',
-    options: {}
+    name: '@storybook/react-vite',
+    options: {},
   },
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 };

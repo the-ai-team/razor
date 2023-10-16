@@ -12,6 +12,7 @@ module.exports = {
     colors: {
       neutral: {
         20: '#3B2D2C',
+        30: '#534342',
         40: '#6B5A59',
         90: '#F4DDDB',
       },
@@ -38,6 +39,17 @@ module.exports = {
       sora: ['"Sora"', 'sans-serif'],
       roboto: ['"Roboto Mono"', 'monospace'],
       major: ['"Major Mono Display"', 'monospace'],
+    },
+    extend: {
+      animation: {
+        'cursor-blink': 'expand 1s linear infinite',
+      },
+      keyframes: {
+        expand: {
+          '0%, 100%': { paddingBlock: '0.075em' },
+          '50%': { paddingBlock: '0.75em' },
+        },
+      },
     },
   },
   plugins: [],

@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
 import { ListItem, ListItemProps } from './ListItem.component';
 
@@ -13,14 +13,14 @@ export default {
   },
 } as Meta<ListItemProps>;
 
-const Template: Story<ListItemProps> = args => <ListItem {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  isTranslucent: false,
+export const Default = {
+  args: {
+    isTranslucent: false,
+  },
 };
 
-export const Translucent = Template.bind({});
-Translucent.args = {
-  isTranslucent: true,
+export const Translucent = {
+  args: {
+    isTranslucent: true,
+  },
 };
