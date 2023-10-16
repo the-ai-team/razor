@@ -9,6 +9,8 @@ export default {
   title: 'Molecules/Toast',
   component: Toast,
   args: {
+    // This is used only to remove toast from context; therefore not required in storybook
+    id: 'sample-id',
     isImmortal: true,
     toastHideDelay: 5000,
     children:

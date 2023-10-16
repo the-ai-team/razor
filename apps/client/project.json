@@ -5,22 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "babel",
-        "outputPath": "dist/apps/client",
-        "index": "apps/client/src/index.html",
-        "baseHref": "/",
-        "main": "apps/client/src/main.tsx",
-        "polyfills": "apps/client/src/polyfills.ts",
-        "tsConfig": "apps/client/tsconfig.app.json",
-        "assets": ["apps/client/src/favicon.ico"],
-        "styles": ["apps/client/src/styles.css"],
-        "scripts": [],
-        "webpackConfig": "apps/client/webpack.config.js",
-        "postcssConfig": "apps/client/postcss.config.js"
+        "outputPath": "dist/apps/client"
       },
       "configurations": {
         "development": {
@@ -46,7 +35,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/webpack:dev-server",
+      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "client:build",
@@ -78,9 +67,8 @@
       }
     },
     "storybook": {
-      "executor": "@nrwl/storybook:storybook",
+      "executor": "@nx/storybook:storybook",
       "options": {
-        "uiFramework": "@storybook/react",
         "port": 4400,
         "configDir": "apps/client/.storybook"
       },
@@ -91,16 +79,30 @@
       }
     },
     "build-storybook": {
-      "executor": "@nrwl/storybook:build",
+      "executor": "@nx/storybook:build",
       "outputs": ["{options.outputDir}"],
       "options": {
-        "uiFramework": "@storybook/react",
         "outputDir": "dist/storybook/client",
         "configDir": "apps/client/.storybook"
       },
       "configurations": {
         "ci": {
           "quiet": true
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "client:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "client:build:development"
+        },
+        "production": {
+          "buildTarget": "client:build:production"
         }
       }
     }

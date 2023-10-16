@@ -10,6 +10,9 @@ import './controllers';
 
 import { NotFound } from './pages/NotFound';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
+import { ToastContextProvider } from './providers';
+
+import './styles.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -18,20 +21,22 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path=':roomId'>
+      <ToastContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path='room' element={<Room />} />
-              <Route path='race' element={<Race />} />
-              <Route path='leaderboard' element={<Leaderboard />} />
+              <Route path=':roomId'>
+                <Route index element={<Home />} />
+                <Route path='room' element={<Room />} />
+                <Route path='race' element={<Race />} />
+                <Route path='leaderboard' element={<Leaderboard />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastContextProvider>
     </Provider>
   </StrictMode>,
 );
