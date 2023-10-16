@@ -2,11 +2,11 @@ import { ReactElement } from 'react';
 
 import { Button, Input, InputState } from '../../molecules';
 
-export interface ButtonWithInputProps {
-  onClick: (value: string, e: React.MouseEvent<HTMLButtonElement>) => void;
+export interface ButtonWithInputProps<T extends number | string> {
+  onClick: (value: T, e: React.MouseEvent<HTMLButtonElement>) => void;
   children: string;
   onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  inputValue?: string;
+  inputValue?: T;
   inputPlaceholder?: string;
   icon?: ReactElement;
   inputSize?: number;
@@ -28,7 +28,7 @@ export interface ButtonWithInputProps {
  * @param [isDisabled=false] - Disables the button (optional)
  * @param [inputState=neutral] - State of the input element (neutral, valid, invalid) (optional)
  */
-export function ButtonWithInput({
+export function ButtonWithInput<T extends number | string>({
   onClick,
   children,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -40,12 +40,12 @@ export function ButtonWithInput({
   maxInputLength = 12,
   isDisabled = false,
   inputState = InputState.Neutral,
-}: ButtonWithInputProps): ReactElement {
-  inputValue ||= '';
+}: ButtonWithInputProps<T>): ReactElement {
+  inputValue = (inputValue ?? '') as T;
   const buttonClickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
     // Prevents onClick from firing when input element is clicked
     if (!(e.target instanceof HTMLInputElement)) {
-      onClick(inputValue || '', e);
+      onClick((inputValue || '') as T, e);
     }
   };
 

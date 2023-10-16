@@ -7,11 +7,10 @@ import { RootState } from '@razor/store';
 import { Text } from '../../components';
 import { TextSize, TextType } from '../../models';
 
-import { RaceTrack } from './templates/RaceTrack.template';
+import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
-  // FIXME: convert id to roomId
-  const { id } = useParams();
+  const { roomId } = useParams();
 
   const navigate = useNavigate();
 
@@ -19,7 +18,7 @@ export function Race(): ReactElement {
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
 
   useEffect(() => {
-    const tournamentId: AppTournamentId = `T:${id}`;
+    const tournamentId: AppTournamentId = `T:${roomId}`;
     const raceIds = game.tournamentsModel[tournamentId]?.raceIds;
     const racesModel = game.racesModel;
     const raceId = raceIds ? raceIds[raceIds.length - 1] : null;
@@ -34,7 +33,7 @@ export function Race(): ReactElement {
     return () => {
       setRaceId(null);
     };
-  }, [game, id]);
+  }, [game, roomId]);
 
   return (
     <div>

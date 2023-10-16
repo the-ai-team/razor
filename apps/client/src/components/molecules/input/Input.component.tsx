@@ -7,9 +7,9 @@ export enum InputState {
   Neutral = 'neutral',
 }
 
-export interface InputProps {
+export interface InputProps<T extends string | number> {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  value: T;
   placeholder?: string;
   props?: React.InputHTMLAttributes<HTMLInputElement>;
   state?: InputState;
@@ -25,14 +25,14 @@ export interface InputProps {
  * @param [state] - Whether input text is valid/invalid/neutral (optional)
  * @param [isDisabled] - Whether input is disabled (optional)
  */
-export function Input({
+export function Input<T extends string | number>({
   onChange,
   value,
   placeholder = '',
   props,
   state = InputState.Neutral,
   isDisabled = false,
-}: InputProps): ReactElement {
+}: InputProps<T>): ReactElement {
   return (
     <span
       className={

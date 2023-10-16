@@ -1,12 +1,13 @@
 const rootMain = require('../../../.storybook/main');
 const path = require('path');
+const { mergeConfig } = require('vite');
+const viteTsConfigPaths = require('vite-tsconfig-paths').default;
 
 const config = {
   ...rootMain,
-  core: { ...rootMain.core, builder: 'webpack5' },
+  core: { ...rootMain.core, builder: '@storybook/builder-vite' },
   stories: [
     ...rootMain.stories,
-    '../src/components/**/*.stories.mdx',
     '../src/components/**/*.stories.@(js|jsx|ts|tsx)',
     '../src/pages/**/templates/**/*.stories.@(js|jsx|ts|tsx)',
   ],
@@ -15,36 +16,15 @@ const config = {
     '@nrwl/react/plugins/storybook',
     'storybook-addon-paddings',
   ],
-  webpackFinal: async (config, { configType }) => {
-    // apply any global webpack configs that might have been specified in .storybook/main.ts
-    if (rootMain.webpackFinal) {
-      config = await rootMain.webpackFinal(config, { configType });
-    }
 
-    config.module.rules = config.module.rules.map(rule => {
-      if (/file-loader/.test(rule.loader)) {
-        return {
-          ...rule,
-          test: /\.(eot|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)$/,
-          type: 'javascript/auto',
-        };
-      }
-
-      return rule;
+  async viteFinal(config, { configType }) {
+    return mergeConfig(config, {
+      plugins: [
+        viteTsConfigPaths({
+          root: '../../../',
+        }),
+      ],
     });
-
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack', 'url-loader'],
-    });
-
-    config.module.rules.push({
-      test: /\.css$/,
-      use: ['style-loader', 'css-loader'],
-      include: path.resolve(__dirname, './'),
-    });
-
-    return config;
   },
 };
 

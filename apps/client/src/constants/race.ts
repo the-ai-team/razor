@@ -1,0 +1,1 @@
+export const MAX_INVALID_CHARS_ALLOWED = 5;

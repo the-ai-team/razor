@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import { ReactComponent as CarIcon } from 'pixelarticons/svg/car.svg';
 
 import { IconButton, IconButtonProps } from './IconButton.component';
@@ -16,6 +16,4 @@ export default {
   },
 } as Meta<IconButtonProps>;
 
-const Template: Story<IconButtonProps> = args => <IconButton {...args} />;
-
-export const Default = Template.bind({});
+export const Default = {};

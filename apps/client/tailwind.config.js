@@ -12,7 +12,9 @@ module.exports = {
     colors: {
       neutral: {
         20: '#3B2D2C',
+        30: '#534342',
         40: '#6B5A59',
+        50: '#857372',
         90: '#F4DDDB',
       },
       primary: {
@@ -29,6 +31,7 @@ module.exports = {
         70: '#F09647',
       },
       error: {
+        50: '#DE3730',
         60: '#FF5449',
       },
       white: colors.white,
@@ -38,6 +41,22 @@ module.exports = {
       sora: ['"Sora"', 'sans-serif'],
       roboto: ['"Roboto Mono"', 'monospace'],
       major: ['"Major Mono Display"', 'monospace'],
+    },
+    extend: {
+      animation: {
+        'cursor-blink': 'expand 1s ease infinite',
+        'underline-cursor-blink': 'expandVertical 1.25s ease infinite',
+      },
+      keyframes: {
+        expand: {
+          '0%, 100%': { paddingBlock: '0.075em' },
+          '50%': { paddingBlock: '0.75em' },
+        },
+        expandVertical: {
+          '0%, 100%': { paddingInline: '0.005em' },
+          '50%': { paddingInline: '0.2em' },
+        },
+      },
     },
   },
   plugins: [],

@@ -1,10 +1,14 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Provider } from 'react-redux';
-import { Meta, Story } from '@storybook/react';
+import { Meta } from '@storybook/react';
 
-import { store, testTournamentId } from './data/test-race';
+import {
+  RaceLogUpdaters,
+  store,
+  testTournamentId,
+} from '../../story-common-utils';
+
 import { RaceTrack, RaceTrackProps } from './RaceTrack.template';
-import { RaceTrackUpdaters } from './RaceTrackUpdaters';
 
 export default {
   title: 'Templates/RaceTrack',
@@ -21,13 +25,11 @@ interface MockstoreProps {
 const Mockstore = ({ children }: MockstoreProps): ReactElement => (
   <Provider store={store}>
     {children}
-    <RaceTrackUpdaters />
+    <RaceLogUpdaters />
   </Provider>
 );
 
-const Template: Story<RaceTrackProps> = args => <RaceTrack {...args} />;
-
-export const Default = Template.bind({});
-Default.decorators = [
-  (story): ReactElement => <Mockstore>{story()}</Mockstore>,
-];
+export const Default = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  decorators: [(story: any): ReactElement => <Mockstore>{story()}</Mockstore>],
+};

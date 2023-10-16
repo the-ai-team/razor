@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef } from 'react';
 
-import spritesheet from '../../../../assets/spritesheets/city-tiles-map.png';
+import spritesheet from '../../../../../assets/spritesheets/city-tiles-map.png';
 import {
   getRaceTrackHeight,
   getRaceTrackNRows,
