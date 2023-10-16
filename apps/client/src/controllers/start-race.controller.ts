@@ -4,17 +4,20 @@ import { store } from '@razor/store';
 import { AllClientPubSubEventsToTypeMap } from '../models';
 import { pubsub } from '../utils/pubsub';
 
-pubsub.subscribe(
-  socketProtocols.StartRaceAccept,
-  ({
-    data,
+type StartRaceControllerArgs =
+  AllClientPubSubEventsToTypeMap[socketProtocols.StartRaceAccept];
+
+function StartRaceController({
+  data,
+  tournamentId,
+}: StartRaceControllerArgs): void {
+  const { raceStartedBy, raceText, ..._ } = data;
+
+  store.dispatch.game.startCountdown({
     tournamentId,
-  }: AllClientPubSubEventsToTypeMap[socketProtocols.StartRaceAccept]) => {
-    const { raceStartedBy, raceText, ..._ } = data;
-    store.dispatch.game.startCountdown({
-      tournamentId,
-      playerId: raceStartedBy,
-      raceText,
-    });
-  },
-);
+    playerId: raceStartedBy,
+    raceText,
+  });
+}
+
+pubsub.subscribe(socketProtocols.StartRaceAccept, StartRaceController);
