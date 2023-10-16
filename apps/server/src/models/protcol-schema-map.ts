@@ -2,18 +2,16 @@ import {
   initialClientDataSchema,
   initialServerDataSchema,
   ProtocolSchemaTypes,
-  socketProtocols,
+  SocketProtocols,
   SocketProtocolsTypes,
-  startRaceRequestSchema,
 } from '@razor/models';
 
 export const protocolSchemaMap = new Map<
   SocketProtocolsTypes,
   ProtocolSchemaTypes
 >([
-  [socketProtocols.JoinLobbyRequest, initialClientDataSchema],
-  [socketProtocols.JoinLobbyAccept, initialServerDataSchema],
-  [socketProtocols.CreateLobbyRequest, initialClientDataSchema],
-  [socketProtocols.CreateLobbyAccept, initialClientDataSchema],
-  [socketProtocols.StartRaceRequest, startRaceRequestSchema],
+  [SocketProtocols.JoinLobbyRequest, initialClientDataSchema],
+  [SocketProtocols.JoinLobbyAccept, initialServerDataSchema],
+  [SocketProtocols.CreateLobbyRequest, initialClientDataSchema],
+  [SocketProtocols.CreateLobbyAccept, initialClientDataSchema],
 ]);

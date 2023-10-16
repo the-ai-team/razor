@@ -5,7 +5,7 @@ import {
   PlayerJoin,
   PlayerState,
   Snapshot,
-  socketProtocols,
+  SocketProtocols,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -96,7 +96,7 @@ const joinTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToClient, {
     playerId,
-    protocol: socketProtocols.JoinLobbyAccept,
+    protocol: SocketProtocols.JoinLobbyAccept,
     data: initialServerData,
   });
 
@@ -112,9 +112,9 @@ const joinTournamentController = ({
 
   pubsub.publish(PubSubEvents.SendDataToAll, {
     tournamentId,
-    protocol: socketProtocols.PlayerJoin,
+    protocol: SocketProtocols.PlayerJoin,
     data: joinedPlayerData,
   });
 };
 
-pubsub.subscribe(socketProtocols.JoinLobbyRequest, joinTournamentController);
+pubsub.subscribe(SocketProtocols.JoinLobbyRequest, joinTournamentController);
