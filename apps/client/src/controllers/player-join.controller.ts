@@ -1,15 +1,15 @@
-import { playerStateToAppPlayerState, socketProtocols } from '@razor/models';
+import { playerStateToAppPlayerState, SocketProtocols } from '@razor/models';
 import { AddPlayerPayload, store } from '@razor/store';
 
 import { AllServerPubSubEventsToTypeMap } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 pubsub.subscribe(
-  socketProtocols.PlayerJoin,
+  SocketProtocols.PlayerJoin,
   ({
     data,
     tournamentId,
-  }: AllServerPubSubEventsToTypeMap[socketProtocols.PlayerJoin]) => {
+  }: AllServerPubSubEventsToTypeMap[SocketProtocols.PlayerJoin]) => {
     const { id: playerId, state, ...playerData } = data.player;
 
     // converted PlayerState to AppPlayerState,

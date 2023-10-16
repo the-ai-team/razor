@@ -4,7 +4,7 @@ import {
   InitialClientData,
   InitialServerData,
   playerIdSchema,
-  socketProtocols,
+  SocketProtocols,
   stateModelSchema,
   tournamentIdSchema,
 } from '@razor/models';
@@ -54,7 +54,7 @@ const initializeSocket = (): void => {
   socket.on('connect', () => {
     console.log('connected');
   });
-  socket.on(socketProtocols.AuthTokenTransfer, (token: string) => {
+  socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     authToken = token;
   });
 };
@@ -104,7 +104,7 @@ export const requestToJoinRoom = ({
   roomId,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
-  socket.emit(socketProtocols.JoinLobbyRequest, { playerName, roomId });
+  socket.emit(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // Data validation
@@ -125,17 +125,17 @@ export const requestToJoinRoom = ({
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
 
         savePlayerId(data.playerId);
-        pubsub.publish(socketProtocols.JoinLobbyAccept, data);
+        pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(socketProtocols.JoinLobbyAccept, receiver);
+    socket.once(SocketProtocols.JoinLobbyAccept, receiver);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(socketProtocols.JoinLobbyAccept, receiver);
+      socket.off(SocketProtocols.JoinLobbyAccept, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
   });
@@ -145,7 +145,7 @@ export const requestToCreateRoom = ({
   playerName,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
-  socket.emit(socketProtocols.CreateLobbyRequest, { playerName });
+  socket.emit(SocketProtocols.CreateLobbyRequest, { playerName });
   return new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
       // Data validation
@@ -166,17 +166,17 @@ export const requestToCreateRoom = ({
         savedPlayerName = data.snapshot.playersModel[data.playerId].name;
 
         savePlayerId(data.playerId);
-        pubsub.publish(socketProtocols.CreateLobbyAccept, data);
+        pubsub.publish(SocketProtocols.CreateLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(socketProtocols.CreateLobbyAccept, receiver);
+    socket.once(SocketProtocols.CreateLobbyAccept, receiver);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(socketProtocols.CreateLobbyAccept, receiver);
+      socket.off(SocketProtocols.CreateLobbyAccept, receiver);
       reject('Request timed out');
     }, REQUEST_WAITING_TIME);
   });
@@ -184,8 +184,8 @@ export const requestToCreateRoom = ({
 
 socket.onAny((event, data) => {
   if (
-    event !== socketProtocols.CreateLobbyAccept &&
-    event !== socketProtocols.JoinLobbyAccept
+    event !== SocketProtocols.CreateLobbyAccept &&
+    event !== SocketProtocols.JoinLobbyAccept
   ) {
     const tournamentId = roomIdToTournamentId(savedRoomId);
     pubsub.publish(event, { tournamentId, savedPlayerId, data });
