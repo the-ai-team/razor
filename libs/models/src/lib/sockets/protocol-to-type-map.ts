@@ -7,22 +7,22 @@ import {
   StartRaceRequestData,
   UpdateTypeLogsData,
 } from './protocol-data';
-import { socketProtocols } from './protocols';
+import { SocketProtocols } from './protocols';
 
 // Using this for validate types in pubsub of socket events
 export interface InitialProtocolToTypeMap extends Record<string, object> {
-  [socketProtocols.JoinLobbyRequest]: InitialClientData;
-  [socketProtocols.JoinLobbyAccept]: InitialServerData;
-  [socketProtocols.CreateLobbyRequest]: InitialClientData;
-  [socketProtocols.CreateLobbyAccept]: InitialServerData;
+  [SocketProtocols.JoinLobbyRequest]: InitialClientData;
+  [SocketProtocols.JoinLobbyAccept]: InitialServerData;
+  [SocketProtocols.CreateLobbyRequest]: InitialClientData;
+  [SocketProtocols.CreateLobbyAccept]: InitialServerData;
 }
 
 export interface OtherProtocolToTypeMap extends Record<string, object> {
-  [socketProtocols.PlayerJoin]: PlayerJoinData;
-  [socketProtocols.StartRaceRequest]: StartRaceRequestData;
-  [socketProtocols.StartRaceAccept]: StartRaceAcceptData;
-  [socketProtocols.SendTypeLog]: SendTypeLogData;
-  [socketProtocols.UpdateTypeLogs]: UpdateTypeLogsData;
+  [SocketProtocols.PlayerJoin]: PlayerJoinData;
+  [SocketProtocols.StartRaceRequest]: StartRaceRequestData;
+  [SocketProtocols.StartRaceAccept]: StartRaceAcceptData;
+  [SocketProtocols.SendTypeLog]: SendTypeLogData;
+  [SocketProtocols.UpdateTypeLogs]: UpdateTypeLogsData;
 }
 
 export type AllProtocolToTypeMap = InitialProtocolToTypeMap &

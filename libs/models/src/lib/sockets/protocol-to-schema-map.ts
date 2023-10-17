@@ -9,21 +9,21 @@ import {
   startRaceRequestSchema,
   updateTypeLogsSchema,
 } from './protocol-schemas';
-import { socketProtocols, SocketProtocolsTypes } from './protocols';
+import { SocketProtocols, SocketProtocolsTypes } from './protocols';
 
-// This map contains schemas for each protocols defined in {@link socketProtocols}
+// This map contains schemas for each protocols defined in {@link SocketProtocols}
 export const protocolToSchemaMap = new Map<
   SocketProtocolsTypes,
   ProtocolSchemaTypes
 >([
-  [socketProtocols.AuthTokenTransfer, authTokenTransferSchema],
-  [socketProtocols.JoinLobbyRequest, initialClientDataSchema],
-  [socketProtocols.JoinLobbyAccept, initialServerDataSchema],
-  [socketProtocols.CreateLobbyRequest, initialClientDataSchema],
-  [socketProtocols.CreateLobbyAccept, initialServerDataSchema],
-  [socketProtocols.PlayerJoin, playerJoinSchema],
-  [socketProtocols.StartRaceRequest, startRaceRequestSchema],
-  [socketProtocols.StartRaceAccept, startRaceAcceptSchema],
-  [socketProtocols.SendTypeLog, sendTypeLogSchema],
-  [socketProtocols.UpdateTypeLogs, updateTypeLogsSchema],
+  [SocketProtocols.AuthTokenTransfer, authTokenTransferSchema],
+  [SocketProtocols.JoinLobbyRequest, initialClientDataSchema],
+  [SocketProtocols.JoinLobbyAccept, initialServerDataSchema],
+  [SocketProtocols.CreateLobbyRequest, initialClientDataSchema],
+  [SocketProtocols.CreateLobbyAccept, initialServerDataSchema],
+  [SocketProtocols.PlayerJoin, playerJoinSchema],
+  [SocketProtocols.StartRaceRequest, startRaceRequestSchema],
+  [SocketProtocols.StartRaceAccept, startRaceAcceptSchema],
+  [SocketProtocols.SendTypeLog, sendTypeLogSchema],
+  [SocketProtocols.UpdateTypeLogs, updateTypeLogsSchema],
 ]);

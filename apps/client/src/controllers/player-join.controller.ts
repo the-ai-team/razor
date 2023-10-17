@@ -1,11 +1,11 @@
-import { playerStateToAppPlayerState, socketProtocols } from '@razor/models';
+import { playerStateToAppPlayerState, SocketProtocols } from '@razor/models';
 import { AddPlayerPayload, store } from '@razor/store';
 
 import { AllClientPubSubEventsToTypeMap } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 type PlayerJoinControllerArgs =
-  AllClientPubSubEventsToTypeMap[socketProtocols.PlayerJoin];
+  AllClientPubSubEventsToTypeMap[SocketProtocols.PlayerJoin];
 
 function playerJoinController({
   data,
@@ -30,4 +30,4 @@ function playerJoinController({
   store.dispatch.game.addPlayer({ ...dataToDispatch });
 }
 
-pubsub.subscribe(socketProtocols.PlayerJoin, playerJoinController);
+pubsub.subscribe(SocketProtocols.PlayerJoin, playerJoinController);

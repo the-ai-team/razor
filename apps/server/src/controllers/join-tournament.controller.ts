@@ -4,7 +4,7 @@ import {
   InitialServerData,
   PlayerJoinData,
   Snapshot,
-  socketProtocols,
+  SocketProtocols,
   TournamentId,
 } from '@razor/models';
 import { store } from '@razor/store';
@@ -22,7 +22,7 @@ import { tokenPlayerMap } from '../stores';
 const logger = new Logger('create-tournament.controller');
 
 type JoinTournamentArgs =
-  AllServerPubSubEventsToTypeMap[socketProtocols.JoinLobbyRequest];
+  AllServerPubSubEventsToTypeMap[SocketProtocols.JoinLobbyRequest];
 
 const joinTournamentController = ({
   data,
@@ -98,7 +98,7 @@ const joinTournamentController = ({
 
   publishToSingleClient({
     playerId,
-    protocol: socketProtocols.JoinLobbyAccept,
+    protocol: SocketProtocols.JoinLobbyAccept,
     data: initialServerData,
   });
 
@@ -114,9 +114,9 @@ const joinTournamentController = ({
 
   publishToAllClients({
     tournamentId,
-    protocol: socketProtocols.PlayerJoin,
+    protocol: SocketProtocols.PlayerJoin,
     data: joinedPlayerData,
   });
 };
 
-pubsub.subscribe(socketProtocols.JoinLobbyRequest, joinTournamentController);
+pubsub.subscribe(SocketProtocols.JoinLobbyRequest, joinTournamentController);

@@ -3,7 +3,7 @@ import {
   AllProtocolToTypeMap,
   PlayerLog,
   RaceId,
-  socketProtocols,
+  SocketProtocols,
 } from '@razor/models';
 import { store } from '@razor/store';
 
@@ -60,12 +60,12 @@ export const typeLogPusher = (raceId: RaceId): (() => void) => {
     const logs = typeLogsQueue.getQueue();
 
     if (logs.length > 0) {
-      const data: AllProtocolToTypeMap[socketProtocols.SendTypeLog] = {
+      const data: AllProtocolToTypeMap[SocketProtocols.SendTypeLog] = {
         raceId: raceId,
         playerLogs: logs,
       };
 
-      socket.emit(socketProtocols.SendTypeLog, data);
+      socket.emit(SocketProtocols.SendTypeLog, data);
       typeLogsQueue.clearQueue();
     }
   }, CLIENT_TYPE_LOG_INTERVAL);
@@ -81,12 +81,12 @@ export const sendInitialTypeLog = (raceId: RaceId): void => {
     textLength: 0,
   };
 
-  const data: AllProtocolToTypeMap[socketProtocols.SendTypeLog] = {
+  const data: AllProtocolToTypeMap[SocketProtocols.SendTypeLog] = {
     raceId: raceId,
     playerLogs: [playerLog],
   };
 
-  socket.emit(socketProtocols.SendTypeLog, data);
+  socket.emit(SocketProtocols.SendTypeLog, data);
 
   // Send type log to local store.
   const playerId = getSavedPlayerId();

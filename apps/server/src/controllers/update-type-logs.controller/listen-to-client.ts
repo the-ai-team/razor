@@ -1,4 +1,4 @@
-import { playerLogsToAppPlayerLogs, socketProtocols } from '@razor/models';
+import { playerLogsToAppPlayerLogs, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
 import { AllServerPubSubEventsToTypeMap } from '../../models';
@@ -7,7 +7,7 @@ import { Logger, pubsub } from '../../services';
 import { getTypeLogsQueue } from './type-log-queues';
 
 type SendTypeLogControllerArgs =
-  AllServerPubSubEventsToTypeMap[socketProtocols.SendTypeLog];
+  AllServerPubSubEventsToTypeMap[SocketProtocols.SendTypeLog];
 
 const logger = new Logger('update-type-log.controller/listen-to-client');
 
@@ -38,4 +38,4 @@ export const sendTypeLogController = ({
   logger.debug('Type logs are added to race type-logs-queue.', context);
 };
 
-pubsub.subscribe(socketProtocols.SendTypeLog, sendTypeLogController);
+pubsub.subscribe(SocketProtocols.SendTypeLog, sendTypeLogController);

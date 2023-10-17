@@ -1,5 +1,5 @@
 import { SERVER_TYPE_LOG_INTERVAL } from '@razor/constants';
-import { AllProtocolToTypeMap, RaceId, socketProtocols } from '@razor/models';
+import { AllProtocolToTypeMap, RaceId, SocketProtocols } from '@razor/models';
 import { extractId, ExtractIdType } from '@razor/util';
 
 import { AllServerPubSubEventsToTypeMap, PubSubEvents } from '../../models';
@@ -28,7 +28,7 @@ export const typeLogPusher = (
       logsCollection == null || Object.keys(logsCollection).length === 0;
 
     if (!isLogsCollectionEmpty) {
-      const data: AllProtocolToTypeMap[socketProtocols.UpdateTypeLogs] = {
+      const data: AllProtocolToTypeMap[SocketProtocols.UpdateTypeLogs] = {
         raceId: raceId,
         playerLogs: logsCollection,
       };
@@ -41,7 +41,7 @@ export const typeLogPusher = (
 
       publishToAllClients({
         tournamentId: tournamentId,
-        protocol: socketProtocols.UpdateTypeLogs,
+        protocol: SocketProtocols.UpdateTypeLogs,
         data,
       });
       logsQueue.clearQueue();

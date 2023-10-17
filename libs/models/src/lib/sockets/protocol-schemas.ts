@@ -3,21 +3,21 @@ import { z } from 'zod';
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 import { playerLogSchema, playerLogsCollectionSchema } from './playerLog';
 // eslint-disable-next-line unused-imports/no-unused-imports
-import { socketProtocols } from './protocols';
+import { SocketProtocols } from './protocols';
 import { raceIdSchema } from './race';
 import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';
 
 // Following schemas to be used when data sent through socket.
-// Each schema is related to a protocol defined in {@link socketProtocols}
+// Each schema is related to a protocol defined in {@link SocketProtocols}
 
 /**
- * Related protocol - {@link socketProtocols.AuthTokenTransfer}
+ * Related protocol - {@link SocketProtocols.AuthTokenTransfer}
  */
 export const authTokenTransferSchema = z.string();
 
 /**
- * Related protocol - {@link socketProtocols.JoinLobbyRequest} and {@link socketProtocols.CreateLobbyRequest}
+ * Related protocol - {@link SocketProtocols.JoinLobbyRequest} and {@link SocketProtocols.CreateLobbyRequest}
  */
 export const initialClientDataSchema = z.object({
   playerName: playerNameSchema,
@@ -25,7 +25,7 @@ export const initialClientDataSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.CreateLobbyAccept} and {@link socketProtocols.JoinLobbyAccept}
+ * Related protocol - {@link SocketProtocols.CreateLobbyAccept} and {@link SocketProtocols.JoinLobbyAccept}
  */
 export const initialServerDataSchema = z.object({
   playerId: playerIdSchema,
@@ -34,19 +34,19 @@ export const initialServerDataSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.PlayerJoin}
+ * Related protocol - {@link SocketProtocols.PlayerJoin}
  */
 export const playerJoinSchema = z.object({
   player: playerSchema,
 });
 
 /**
- * Related protocol - {@link socketProtocols.StartRaceRequest}
+ * Related protocol - {@link SocketProtocols.StartRaceRequest}
  */
 export const startRaceRequestSchema = z.object({});
 
 /**
- * Related protocol - {@link socketProtocols.StartRaceAccept}
+ * Related protocol - {@link SocketProtocols.StartRaceAccept}
  */
 export const startRaceAcceptSchema = z.object({
   raceId: raceIdSchema,
@@ -55,7 +55,7 @@ export const startRaceAcceptSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.SendTypeLog}
+ * Related protocol - {@link SocketProtocols.SendTypeLog}
  */
 export const sendTypeLogSchema = z.object({
   raceId: raceIdSchema,
@@ -63,7 +63,7 @@ export const sendTypeLogSchema = z.object({
 });
 
 /**
- * Related protocol - {@link socketProtocols.UpdateTypeLogs}
+ * Related protocol - {@link SocketProtocols.UpdateTypeLogs}
  */
 export const updateTypeLogsSchema = z.object({
   raceId: raceIdSchema,

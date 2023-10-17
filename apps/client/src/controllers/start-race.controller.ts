@@ -1,11 +1,11 @@
-import { socketProtocols } from '@razor/models';
+import { SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
 import { AllClientPubSubEventsToTypeMap } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 type StartRaceControllerArgs =
-  AllClientPubSubEventsToTypeMap[socketProtocols.StartRaceAccept];
+  AllClientPubSubEventsToTypeMap[SocketProtocols.StartRaceAccept];
 
 function StartRaceController({
   data,
@@ -20,4 +20,4 @@ function StartRaceController({
   });
 }
 
-pubsub.subscribe(socketProtocols.StartRaceAccept, StartRaceController);
+pubsub.subscribe(SocketProtocols.StartRaceAccept, StartRaceController);

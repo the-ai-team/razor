@@ -2,7 +2,7 @@ import { RECONNECT_WAITING_TIME } from '@razor/constants';
 import {
   AuthToken,
   protocolToSchemaMap,
-  socketProtocols,
+  SocketProtocols,
   SocketProtocolsTypes,
 } from '@razor/models';
 import { roomIdToTournamentId } from '@razor/util';
@@ -65,7 +65,7 @@ export const initializeSocket = (): void => {
   socket.on('connect', () => {
     console.log('connected');
   });
-  socket.on(socketProtocols.AuthTokenTransfer, (token: string) => {
+  socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     savedData.authToken = token;
   });
 };
@@ -142,8 +142,8 @@ socket.onAny((event, data) => {
   }
 
   if (
-    event !== socketProtocols.CreateLobbyAccept &&
-    event !== socketProtocols.JoinLobbyAccept
+    event !== SocketProtocols.CreateLobbyAccept &&
+    event !== SocketProtocols.JoinLobbyAccept
   ) {
     const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
     pubsub.publish(event, {

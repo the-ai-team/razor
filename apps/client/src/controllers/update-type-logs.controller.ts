@@ -1,11 +1,11 @@
-import { PlayerId, socketProtocols } from '@razor/models';
+import { PlayerId, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
 import { AllClientPubSubEventsToTypeMap } from '../models';
 import { pubsub } from '../utils/pubsub';
 
 type UpdateTypeLogsControllerArgs =
-  AllClientPubSubEventsToTypeMap[socketProtocols.UpdateTypeLogs];
+  AllClientPubSubEventsToTypeMap[SocketProtocols.UpdateTypeLogs];
 
 function updateTypeLogsController({
   data,
@@ -29,4 +29,4 @@ function updateTypeLogsController({
   }
 }
 
-pubsub.subscribe(socketProtocols.UpdateTypeLogs, updateTypeLogsController);
+pubsub.subscribe(SocketProtocols.UpdateTypeLogs, updateTypeLogsController);

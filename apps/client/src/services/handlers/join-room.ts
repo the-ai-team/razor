@@ -1,7 +1,7 @@
 import {
   InitialClientData,
   InitialServerData,
-  socketProtocols,
+  SocketProtocols,
 } from '@razor/models';
 
 import { Connection } from '../../constants';
@@ -14,7 +14,7 @@ export const requestToJoinRoom = ({
   roomId,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
-  socket.emit(socketProtocols.JoinLobbyRequest, { playerName, roomId });
+  socket.emit(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
 
   const promise: Promise<string> = new Promise((resolve, reject) => {
     const receiver = (data: InitialServerData): void => {
@@ -29,17 +29,17 @@ export const requestToJoinRoom = ({
 
         // For local store dispatch uses.
         savePlayerId(data.playerId);
-        pubsub.publish(socketProtocols.JoinLobbyAccept, data);
+        pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(socketProtocols.JoinLobbyAccept, receiver);
+    socket.once(SocketProtocols.JoinLobbyAccept, receiver);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(socketProtocols.JoinLobbyAccept, receiver);
+      socket.off(SocketProtocols.JoinLobbyAccept, receiver);
       reject('Request timed out');
     }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
   });
