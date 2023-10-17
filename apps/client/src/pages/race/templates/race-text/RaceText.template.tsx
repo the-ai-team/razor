@@ -24,6 +24,8 @@ import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
+import stopSound from '../../../../assets/sounds/stop/stop-13692.mp3';
+
 import {
   computeCursorsPerLines,
   getCursorPositionsWithPlayerAvatars,
@@ -204,6 +206,7 @@ export function RaceText({
       onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
       updateNoOfInvalidChars(prev => {
+        playStopSound();
         if (prev === MAX_INVALID_CHARS_ALLOWED) {
           return MAX_INVALID_CHARS_ALLOWED;
         }
@@ -219,6 +222,11 @@ export function RaceText({
     }
   };
   useKeyPress(handleKeyPressFunction);
+
+  const playStopSound = (): void => {
+    const audio = new Audio(stopSound);
+    audio.play();
+  };
 
   if (!raceData || !selfPlayerId.current || !players) {
     return <div>Race data not found</div>;
