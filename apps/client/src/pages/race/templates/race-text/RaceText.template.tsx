@@ -24,6 +24,7 @@ import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
+import typeSound from '../../../../assets/sounds/key_press/keyboard5-88069.mp3';
 import stopSound from '../../../../assets/sounds/stop/stop-13692.mp3';
 
 import {
@@ -198,15 +199,17 @@ export function RaceText({
     }
 
     if (inputStatus === InputStatus.CORRECT) {
+      playSoundOnInput(InputStatus.CORRECT, 0.2);
+
       if (noOfInvalidChars > 0) {
         return;
       }
-
       updatePlayerCursorAt(playerCursorAt + 1);
       onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
+      playSoundOnInput(InputStatus.INCORRECT);
+
       updateNoOfInvalidChars(prev => {
-        playStopSound();
         if (prev === MAX_INVALID_CHARS_ALLOWED) {
           return MAX_INVALID_CHARS_ALLOWED;
         }
@@ -223,9 +226,22 @@ export function RaceText({
   };
   useKeyPress(handleKeyPressFunction);
 
-  const playStopSound = (): void => {
-    const audio = new Audio(stopSound);
-    audio.play();
+  const playSoundOnInput = (inputStatus: InputStatus, volume = 1): void => {
+    const typeAudio = new Audio(typeSound);
+    const invalidTypeAudio = new Audio(stopSound);
+
+    switch (inputStatus) {
+      case InputStatus.CORRECT:
+        typeAudio.volume = volume;
+        typeAudio.play();
+        break;
+      case InputStatus.INCORRECT:
+        invalidTypeAudio.volume = volume;
+        invalidTypeAudio.play();
+        break;
+      default:
+        break;
+    }
   };
 
   if (!raceData || !selfPlayerId.current || !players) {
