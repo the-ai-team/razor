@@ -16,15 +16,15 @@ function updateTypeLogsController({
   const racePlayerIds = Object.keys(race.players) as PlayerId[];
 
   for (const playerId of racePlayerIds) {
-    const playerLogs = playersLogs[playerId];
-    if (!playerLogs || playerId === savedPlayerId) {
+    const logs = playersLogs[playerId];
+    if (!logs || playerId === savedPlayerId) {
       continue;
     }
 
     store.dispatch.game.sendTypeLog({
-      raceId: raceId,
+      playerLog: logs,
       playerId,
-      playerLog: playerLogs,
+      raceId,
     });
   }
 }

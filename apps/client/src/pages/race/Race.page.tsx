@@ -1,9 +1,9 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
-import { Dispatch, RootState } from '@razor/store';
+import { RootState } from '@razor/store';
 import cs from 'classnames';
 import { ReactComponent as CarIcon } from 'pixelarticons/svg/car.svg';
 
@@ -25,9 +25,7 @@ import { RaceTrack } from './templates/race-view/RaceTrack.template';
 export function Race(): ReactElement {
   const { roomId } = useParams();
   const { t } = useTranslation(['race']);
-  const navigate = useNavigate();
   const addToast = useToastContext();
-  const dispatch = useDispatch<Dispatch>();
   const game = useSelector((store: RootState) => store.game);
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
   const [raceReadyTime, setRaceReadyTime] = useState<number>(5);

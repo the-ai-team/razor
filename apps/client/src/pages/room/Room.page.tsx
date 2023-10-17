@@ -33,10 +33,19 @@ export function Room(): ReactElement {
   const [hostname, setHostname] = useState<string>('');
   const addToast = useToastContext();
 
+  // Setting hostname from window object
+  useEffect(() => {
+    setHostname(window.location.origin);
+
+    return () => {
+      setHostname('');
+    };
+  }, []);
+
   // If a race ongoing on store navigate to the race page.
   useEffect((): void => {
-    const raceIds = game.tournamentsModel[tournamentId]?.raceIds;
-    const lastRaceId = raceIds[raceIds.length - 1] || null;
+    const raceIds = game.tournamentsModel[tournamentId]?.raceIds || [];
+    const lastRaceId = raceIds[raceIds?.length - 1] || null;
     const race = lastRaceId ? game.racesModel[lastRaceId] : null;
 
     if (race?.isOnGoing) {
@@ -48,15 +57,6 @@ export function Room(): ReactElement {
   useEffect(() => {
     setPlayerIds(game.tournamentsModel[tournamentId]?.playerIds);
   }, [game.playersModel, game.tournamentsModel, tournamentId]);
-
-  // Setting hostname from window object
-  useEffect(() => {
-    setHostname(window.location.origin);
-
-    return () => {
-      setHostname('');
-    };
-  }, []);
 
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -127,7 +127,7 @@ export function Room(): ReactElement {
         </div>
         <div className='mx-auto my-12'>
           <Button
-            isDisabled={playerIds.length < MIN_ALLOWED_PLAYERS}
+            isDisabled={!playerIds || playerIds.length < MIN_ALLOWED_PLAYERS}
             onClick={async (): Promise<void> => await requestToStartRace()}>
             {t('actions.start') as string}
           </Button>
