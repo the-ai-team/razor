@@ -47,7 +47,11 @@ export function ListItem({
           </Text>
         ) : null}
         {imgURL ? (
-          <img src={imgURL} alt='' className='w-14 h-14 overflow-hidden' />
+          <img
+            src={imgURL}
+            alt=''
+            className='w-14 h-14 overflow-hidden bg-neutral-40 rounded-full'
+          />
         ) : null}
         <Text type={TextType.Title} size={TextSize.Medium}>
           {title}

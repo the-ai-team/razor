@@ -1,5 +1,5 @@
 import { RACE_END_WAIT_TIME } from '@razor/constants';
-import { socketProtocols, StartRaceAcceptData } from '@razor/models';
+import { SocketProtocols, StartRaceAcceptData } from '@razor/models';
 import { store } from '@razor/store';
 
 import {
@@ -13,7 +13,7 @@ import { generateRaceText } from '../utils';
 const logger = new Logger('start-race.controller');
 
 type StartRaceArgs =
-  AllServerPubSubEventsToTypeMap[socketProtocols.StartRaceRequest];
+  AllServerPubSubEventsToTypeMap[SocketProtocols.StartRaceRequest];
 
 export const startRaceController = async ({
   context,
@@ -62,7 +62,7 @@ export const startRaceController = async ({
 
   publishToAllClients({
     tournamentId,
-    protocol: socketProtocols.StartRaceAccept,
+    protocol: SocketProtocols.StartRaceAccept,
     data: startedRaceData,
   });
 
@@ -79,4 +79,4 @@ export const startRaceController = async ({
   }, raceEndTime);
 };
 
-pubsub.subscribe(socketProtocols.StartRaceRequest, startRaceController);
+pubsub.subscribe(SocketProtocols.StartRaceRequest, startRaceController);

@@ -1,4 +1,4 @@
-import { InitialServerData, socketProtocols } from '@razor/models';
+import { InitialServerData, SocketProtocols } from '@razor/models';
 import { Server } from 'socket.io';
 
 import { PubSubEvents } from '../../models';
@@ -16,8 +16,8 @@ export function emitSocketMessages(io: Server): void {
     // Add player to specific socket room when player joining or creating room.
     // Socket room has the tournament id. So we can send data to specific lobby(All players in a specific tournament).
     if (
-      protocol === socketProtocols.CreateLobbyAccept ||
-      protocol === socketProtocols.JoinLobbyAccept
+      protocol === SocketProtocols.CreateLobbyAccept ||
+      protocol === SocketProtocols.JoinLobbyAccept
     ) {
       const { tournamentId }: InitialServerData = data;
       io.sockets.sockets.get(socketId).join(tournamentId);

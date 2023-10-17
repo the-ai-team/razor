@@ -13,7 +13,9 @@ export interface PlayerListProps {
   tournamentId: AppTournamentId;
 }
 
-export function PlayerList({ tournamentId }: PlayerListProps): ReactElement {
+export function PlayerList({
+  tournamentId,
+}: PlayerListProps): ReactElement | null {
   const game = useSelector((store: RootState) => store.game);
   const [playerIds, setPlayerIds] = useState(
     game.tournamentsModel[tournamentId]?.playerIds,
@@ -61,11 +63,15 @@ export function PlayerList({ tournamentId }: PlayerListProps): ReactElement {
       setHasOverflow(true);
     }
 
-    containerRef.current?.addEventListener('scroll', containerScroll);
+    element.addEventListener('scroll', containerScroll);
+
+    return () => {
+      element.removeEventListener('scroll', containerScroll);
+    };
   }, [containerRef, playerIds]);
 
   if (!playerIds?.length || playerIds.length === 0) {
-    return <div></div>;
+    return null;
   }
 
   const current_count = playerIds.length.toString();
