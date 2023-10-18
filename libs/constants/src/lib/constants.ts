@@ -3,7 +3,7 @@
  * Use by,
  * - compute timeout util function
  */
-export const AVERAGE_WPM = 50;
+export const AVERAGE_WPM = 40;
 
 /** Number of chars to create the unique part of the general ID.
  *
