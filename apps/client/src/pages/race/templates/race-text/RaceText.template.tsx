@@ -20,12 +20,12 @@ import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
 import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/AvatarArray.component';
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
+import { AudioManager } from 'apps/client/src/services';
 import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
-import typeSound from '../../../../assets/sounds/key_press/keyboard5-88069.mp3';
-import stopSound from '../../../../assets/sounds/stop/stop-13692.mp3';
+import stopSound from '../../../../assets/sounds/stop/stop-sound.mp3';
 
 import {
   computeCursorsPerLines,
@@ -192,6 +192,8 @@ export function RaceText({
     t,
   ]);
 
+  const stopAudioManager = useMemo(() => new AudioManager(stopSound), []);
+
   const handleKeyPressFunction = (char: string): void => {
     const inputStatus = inputHandler(char, raceText[playerCursorAt]);
     if (!selfPlayerId.current) {
@@ -199,15 +201,13 @@ export function RaceText({
     }
 
     if (inputStatus === InputStatus.CORRECT) {
-      playSoundOnInput(InputStatus.CORRECT, 0.2);
-
       if (noOfInvalidChars > 0) {
         return;
       }
       updatePlayerCursorAt(playerCursorAt + 1);
       onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
-      playSoundOnInput(InputStatus.INCORRECT);
+      stopAudioManager.playAudio();
 
       updateNoOfInvalidChars(prev => {
         if (prev === MAX_INVALID_CHARS_ALLOWED) {
@@ -218,6 +218,7 @@ export function RaceText({
     } else if (inputStatus === InputStatus.BACKSPACE) {
       updateNoOfInvalidChars(prev => {
         if (prev === 0) {
+          stopAudioManager.playAudio();
           return 0;
         }
         return prev - 1;
@@ -225,24 +226,6 @@ export function RaceText({
     }
   };
   useKeyPress(handleKeyPressFunction);
-
-  const playSoundOnInput = (inputStatus: InputStatus, volume = 1): void => {
-    const typeAudio = new Audio(typeSound);
-    const invalidTypeAudio = new Audio(stopSound);
-
-    switch (inputStatus) {
-      case InputStatus.CORRECT:
-        typeAudio.volume = volume;
-        typeAudio.play();
-        break;
-      case InputStatus.INCORRECT:
-        invalidTypeAudio.volume = volume;
-        invalidTypeAudio.play();
-        break;
-      default:
-        break;
-    }
-  };
 
   if (!raceData || !selfPlayerId.current || !players) {
     return <div>Race data not found</div>;
