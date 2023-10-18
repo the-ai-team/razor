@@ -4,6 +4,7 @@ import { AppStateModel } from '../state';
 
 import { PlayerId } from './player';
 import {
+  informTimeoutSchema,
   initialClientDataSchema,
   playerJoinSchema,
   sendTypeLogSchema,
@@ -49,3 +50,5 @@ export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;
 
 export type SendTypeLogData = z.infer<typeof sendTypeLogSchema>;
 export type UpdateTypeLogsData = z.infer<typeof updateTypeLogsSchema>;
+
+export type InformTimeoutData = z.infer<typeof informTimeoutSchema>;

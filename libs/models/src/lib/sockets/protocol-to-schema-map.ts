@@ -1,5 +1,6 @@
 import {
   authTokenTransferSchema,
+  informTimeoutSchema,
   initialClientDataSchema,
   initialServerDataSchema,
   playerJoinSchema,
@@ -26,4 +27,5 @@ export const protocolToSchemaMap = new Map<
   [SocketProtocols.StartRaceAccept, startRaceAcceptSchema],
   [SocketProtocols.SendTypeLog, sendTypeLogSchema],
   [SocketProtocols.UpdateTypeLogs, updateTypeLogsSchema],
+  [SocketProtocols.InformTimeout, informTimeoutSchema],
 ]);

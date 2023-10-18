@@ -70,6 +70,13 @@ export const updateTypeLogsSchema = z.object({
   playerLogs: playerLogsCollectionSchema,
 });
 
+/**
+ * Related protocol - {@link SocketProtocols.InformTimeout}
+ */
+export const informTimeoutSchema = z.object({
+  timestamp: z.number(),
+});
+
 export type ProtocolSchemaTypes =
   | typeof authTokenTransferSchema
   | typeof initialClientDataSchema
@@ -78,4 +85,5 @@ export type ProtocolSchemaTypes =
   | typeof startRaceRequestSchema
   | typeof startRaceAcceptSchema
   | typeof sendTypeLogSchema
-  | typeof updateTypeLogsSchema;
+  | typeof updateTypeLogsSchema
+  | typeof informTimeoutSchema;

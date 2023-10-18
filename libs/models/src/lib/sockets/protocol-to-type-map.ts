@@ -1,4 +1,5 @@
 import {
+  InformTimeoutData,
   InitialClientData,
   InitialServerData,
   PlayerJoinData,
@@ -23,6 +24,7 @@ export interface OtherProtocolToTypeMap extends Record<string, object> {
   [SocketProtocols.StartRaceAccept]: StartRaceAcceptData;
   [SocketProtocols.SendTypeLog]: SendTypeLogData;
   [SocketProtocols.UpdateTypeLogs]: UpdateTypeLogsData;
+  [SocketProtocols.InformTimeout]: InformTimeoutData;
 }
 
 export type AllProtocolToTypeMap = InitialProtocolToTypeMap &
