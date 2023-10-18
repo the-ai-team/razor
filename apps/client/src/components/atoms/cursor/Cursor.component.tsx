@@ -4,11 +4,13 @@ import cs from 'classnames';
 export interface CursorProps {
   isDebug?: boolean;
   isAtSpace?: boolean;
+  isInvalidCursor?: boolean;
 }
 
 export function Cursor({
   isDebug = false,
   isAtSpace = false,
+  isInvalidCursor = false,
 }: CursorProps): ReactElement {
   return (
     <span
@@ -21,7 +23,12 @@ export function Cursor({
         },
         'animate-cursor-blink',
       )}>
-      <div className={cs('bg-neutral-90', 'h-full w-[2.5px] rounded-full')} />
+      <div
+        className={cs('h-full w-[2.5px] rounded-full', {
+          'bg-error-50': isInvalidCursor,
+          'bg-neutral-90': !isInvalidCursor,
+        })}
+      />
     </span>
   );
 }

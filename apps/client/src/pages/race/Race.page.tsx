@@ -129,7 +129,7 @@ export function Race(): ReactElement {
             className={cs('relative', {
               'opacity-20': raceReadyTime > 0,
             })}>
-            <div className='scale-75'>
+            <div className='scale-50 xl:scale-75 2xl:scale-125'>
               <RaceTrack raceId={raceId} />
             </div>
             <div className='grid grid-cols-4'>

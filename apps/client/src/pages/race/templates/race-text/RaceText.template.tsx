@@ -287,6 +287,10 @@ export function RaceText({
                     charIndex,
                     { cursorAt: playerCursorAt },
                   );
+                  const isCursorAtInvalidCursor = indexConverter.isCursorAtChar(
+                    charIndex,
+                    { cursorAt: invalidCursorAt },
+                  );
                   const isLetterBehindCursor =
                     indexConverter.isCharBehindCursor(
                       charIndex,
@@ -308,10 +312,21 @@ export function RaceText({
                       key={charIndex}
                       className={cs('relative pl-[0.5px]', {
                         'text-neutral-30': isLetterBehindCursor,
-                        'text-error-50 bg-error-50 bg-opacity-20':
+                        'text-error-60 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isCursorAtLetter ? <Cursor isAtSpace={isSpace} /> : null}
+                      {/* Show normal cursor if no invalid chars */}
+                      {noOfInvalidChars === 0 && isCursorAtLetter ? (
+                        <Cursor isAtSpace={isSpace} />
+                      ) : null}
+                      {/* Show invalid cursor if invalid chars */}
+                      {noOfInvalidChars > 0 && isCursorAtInvalidCursor ? (
+                        <Cursor
+                          isAtSpace={isSpace}
+                          isInvalidCursor={isCursorAtInvalidCursor}
+                        />
+                      ) : null}
+                      {/* Show underline cursor if other players are on the letter */}
                       {isOtherPlayerCursorsOnLetter ? (
                         <UnderlineCursor />
                       ) : null}
