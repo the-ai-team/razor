@@ -38,6 +38,7 @@ import {
 
 export interface RaceTextProps {
   raceId: AppRaceId;
+  isLocked?: boolean;
   onValidType: (charIndex: number) => void;
   debug?: {
     enableLetterCount?: boolean;
@@ -49,6 +50,7 @@ export interface RaceTextProps {
 
 export function RaceText({
   raceId,
+  isLocked = false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onValidType = (): void => {},
   debug = {},
@@ -131,6 +133,12 @@ export function RaceText({
     useState<AppRacePlayerCursor[][]>([]);
 
   useEffect((): void => {
+    if (isLocked) {
+      updateNoOfInvalidChars(0);
+    }
+  }, [isLocked]);
+
+  useEffect((): void => {
     if (!raceData || !selfPlayerId.current || !playerIds) {
       return addToast({
         title: t('toasts.game_error.title', { ns: 'common' }),
@@ -195,6 +203,11 @@ export function RaceText({
   const stopAudioManager = useMemo(() => new AudioManager(stopSound), []);
 
   const handleKeyPressFunction = (char: string): void => {
+    // When is locked or player finished the race stop accepting input.
+    if (isLocked || raceText.length === playerCursorAt) {
+      return;
+    }
+
     const inputStatus = inputHandler(char, raceText[playerCursorAt]);
     if (!selfPlayerId.current) {
       return;
@@ -306,6 +319,14 @@ export function RaceText({
                     indexConverter.isCursorAtChar(charIndex, {
                       cursorsAt: otherPlayerCursors,
                     });
+                  /* Show normal cursor if no invalid chars */
+                  const isVisibleRegularCursor =
+                    (noOfInvalidChars === 0 || isLocked) && isCursorAtLetter;
+                  /* Show invalid cursor if invalid chars */
+                  const isVisibleInvalidCursor =
+                    noOfInvalidChars > 0 &&
+                    !isLocked &&
+                    isCursorAtInvalidCursor;
 
                   return (
                     <span
@@ -315,18 +336,15 @@ export function RaceText({
                         'text-error-60 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {/* Show normal cursor if no invalid chars */}
-                      {noOfInvalidChars === 0 && isCursorAtLetter ? (
-                        <Cursor isAtSpace={isSpace} />
+                      {isVisibleRegularCursor ? (
+                        <Cursor isAtSpace={isSpace} isLocked={isLocked} />
                       ) : null}
-                      {/* Show invalid cursor if invalid chars */}
-                      {noOfInvalidChars > 0 && isCursorAtInvalidCursor ? (
+                      {isVisibleInvalidCursor ? (
                         <Cursor
                           isAtSpace={isSpace}
                           isInvalidCursor={isCursorAtInvalidCursor}
                         />
                       ) : null}
-                      {/* Show underline cursor if other players are on the letter */}
                       {isOtherPlayerCursorsOnLetter ? (
                         <UnderlineCursor />
                       ) : null}

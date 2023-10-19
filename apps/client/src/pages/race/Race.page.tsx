@@ -31,6 +31,7 @@ export function Race(): ReactElement {
   const [raceReadyTime, setRaceReadyTime] = useState<number>(5);
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
+  const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
 
   useEffect(() => {
     const tournamentId: AppTournamentId = `T:${roomId}`;
@@ -102,6 +103,7 @@ export function Race(): ReactElement {
       const raceTime = game.racesModel[raceId]?.timeoutDuration;
       setRaceTime(raceTime);
       sendInitialTypeLog(raceId);
+      setIsTypeLocked(false);
     }
   }, [raceReadyTime, raceId]);
 
@@ -141,12 +143,13 @@ export function Race(): ReactElement {
                 )}>
                 <Timer
                   time={raceTime}
-                  onTimeEnd={(): void => console.log('time end')}
+                  onTimeEnd={(): void => setIsTypeLocked(true)}
                 />
               </div>
               <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
                 <RaceText
                   raceId={raceId}
+                  isLocked={false}
                   onValidType={(charIndex: number): void =>
                     sendTypeLog(charIndex + 1, raceId)
                   }
