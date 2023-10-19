@@ -1,14 +1,15 @@
-import { ReactElement } from 'react';
+import { ReactElement, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
+import { useComputeMaxRaceTracks } from 'apps/client/src/utils/custom-hooks/compute-max-race-tracks';
+import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 
 import {
   carColors,
   getRaceTrackPavementRows,
   getRaceTrackRowColumnSizes,
-  maxRaceTracks,
 } from './data/race-data';
 import { RaceBackground } from './race-background';
 import { RaceLine } from './race-line';
@@ -16,34 +17,28 @@ import { RaceLine } from './race-line';
 export interface RaceTrackProps {
   raceId: AppRaceId;
   className?: string;
-  maxTracks?: number;
 }
 
-export function RaceTrack({
-  raceId,
-  className,
-  maxTracks = maxRaceTracks,
-}: RaceTrackProps): ReactElement {
+export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
+  const selfPlayerId = useRef<AppPlayerId>(getSavedPlayerId());
 
   const racePlayers = game.racesModel[raceId]?.players;
   const playerIds = (Object.keys(racePlayers) || []) as AppPlayerId[];
 
-  if (maxTracks <= 0) {
-    maxTracks = playerIds.length;
-  } else {
-    maxTracks = Math.min(maxTracks, playerIds.length);
-  }
-
   const textLength = game.racesModel[raceId].text.length;
   const lineHeight = getRaceTrackRowColumnSizes();
-  const pavementHeight = getRaceTrackPavementRows(maxTracks) * lineHeight;
+
+  const maxRaceTracksCount = useComputeMaxRaceTracks();
+
+  const pavementHeight =
+    getRaceTrackPavementRows(maxRaceTracksCount) * lineHeight;
 
   return (
     <div className={className}>
       <div className={cs('relative w-full')}>
         <RaceBackground
-          count={maxTracks}
+          count={Math.min(maxRaceTracksCount, playerIds.length)}
           className={cs('my-10 mx-auto', 'rounded-md overflow-hidden')}
         />
         <div
@@ -54,7 +49,13 @@ export function RaceTrack({
               const color =
                 carColors[playerIds.indexOf(playerId) % carColors.length];
 
-              if (playerIds.indexOf(playerId) >= maxTracks) {
+              // Skip self player
+              if (playerId === selfPlayerId.current) {
+                return null;
+              }
+
+              // Skip overflowing player lines
+              if (playerIds.indexOf(playerId) >= maxRaceTracksCount - 1) {
                 return null;
               }
 
@@ -73,6 +74,19 @@ export function RaceTrack({
                 </div>
               );
             })}
+            {/* Self player line at top */}
+            {selfPlayerId.current ? (
+              <RaceLine
+                raceId={raceId}
+                playerId={selfPlayerId.current}
+                raceTextLength={textLength}
+                carColor={
+                  carColors[
+                    playerIds.indexOf(selfPlayerId.current) % carColors.length
+                  ]
+                }
+              />
+            ) : null}
           </div>
         </div>
       </div>

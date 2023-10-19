@@ -128,10 +128,14 @@ export function Race(): ReactElement {
             </div>
           ) : null}
           <div
-            className={cs('relative', {
-              'opacity-20': raceReadyTime > 0,
-            })}>
-            <div className='scale-50 xl:scale-75 2xl:scale-125'>
+            className={cs(
+              'flex flex-col items-center justify-center',
+              'scale-50 lg:scale-75 2xl:scale-100',
+              {
+                'opacity-20': raceReadyTime > 0,
+              },
+            )}>
+            <div className=' flex items-center justify-center'>
               <RaceTrack raceId={raceId} />
             </div>
             <div className='grid grid-cols-4'>
@@ -149,7 +153,7 @@ export function Race(): ReactElement {
               <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
                 <RaceText
                   raceId={raceId}
-                  isLocked={false}
+                  isLocked={isTypeLocked}
                   onValidType={(charIndex: number): void =>
                     sendTypeLog(charIndex + 1, raceId)
                   }

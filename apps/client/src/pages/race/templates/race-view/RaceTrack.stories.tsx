@@ -15,7 +15,6 @@ export default {
   component: RaceTrack,
   args: {
     raceId: `${testTournamentId}-R:000`,
-    maxTracks: 6,
   },
 } as Meta<RaceTrackProps>;
 

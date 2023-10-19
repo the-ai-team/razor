@@ -1,6 +1,5 @@
 export const raceTrackCols = 40;
 export const raceTrackFreeCols = 3;
-export const maxRaceTracks = 12;
 // Add free parking columns to both sides
 export const raceTrackTotalCols = raceTrackCols + 2 * raceTrackFreeCols;
 export const treePadding = 4;
