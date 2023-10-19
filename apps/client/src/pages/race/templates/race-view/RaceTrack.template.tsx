@@ -28,22 +28,35 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
 
   const textLength = game.racesModel[raceId].text.length;
   const lineHeight = getRaceTrackRowColumnSizes();
-
   const maxRaceTracksCount = useComputeMaxRaceTracks();
-
-  const pavementHeight =
-    getRaceTrackPavementRows(maxRaceTracksCount) * lineHeight;
+  const tracksCount = Math.min(maxRaceTracksCount, playerIds.length);
+  const pavementHeight = getRaceTrackPavementRows(tracksCount) * lineHeight;
 
   return (
     <div className={className}>
       <div className={cs('relative w-full')}>
         <RaceBackground
-          count={Math.min(maxRaceTracksCount, playerIds.length)}
-          className={cs('my-10 mx-auto', 'rounded-md overflow-hidden')}
+          count={tracksCount}
+          className={cs('m-auto', 'rounded-md overflow-hidden')}
         />
         <div
           className={cs('w-full absolute mx-auto')}
           style={{ top: `${pavementHeight}px` }}>
+          {/* Self player line at top */}
+          {selfPlayerId.current ? (
+            <div style={{ marginBottom: `${lineHeight}px` }}>
+              <RaceLine
+                raceId={raceId}
+                playerId={selfPlayerId.current}
+                raceTextLength={textLength}
+                carColor={
+                  carColors[
+                    playerIds.indexOf(selfPlayerId.current) % carColors.length
+                  ]
+                }
+              />
+            </div>
+          ) : null}
           <div className='mx-auto'>
             {playerIds.map((playerId: AppPlayerId) => {
               const color =
@@ -55,7 +68,7 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
               }
 
               // Skip overflowing player lines
-              if (playerIds.indexOf(playerId) >= maxRaceTracksCount - 1) {
+              if (playerIds.indexOf(playerId) >= tracksCount) {
                 return null;
               }
 
@@ -74,19 +87,6 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
                 </div>
               );
             })}
-            {/* Self player line at top */}
-            {selfPlayerId.current ? (
-              <RaceLine
-                raceId={raceId}
-                playerId={selfPlayerId.current}
-                raceTextLength={textLength}
-                carColor={
-                  carColors[
-                    playerIds.indexOf(selfPlayerId.current) % carColors.length
-                  ]
-                }
-              />
-            ) : null}
           </div>
         </div>
       </div>
