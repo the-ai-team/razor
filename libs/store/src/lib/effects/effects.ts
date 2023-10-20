@@ -4,19 +4,18 @@ import { AppMessageLog } from '@razor/models';
 import {
   AddPlayerPayload,
   ClearPlayerPayload,
-  EndCountdownPayload,
   EndRacePayload,
   JoinPlayerPayload,
   ReplaceFullStatePayload,
   SendTypeLogPayload,
   SetTournamentStatePayload,
-  StartCountdownPayload,
+  StartRacePayload,
 } from '../payloads';
 import { Dispatch, RootState } from '../store';
 
 import { sendLogMessage } from './logger';
 import { addPlayer, clearPlayer, joinPlayer, sendTypeLog } from './player';
-import { endCountdown, endRace, startCountdown } from './race';
+import { endRace, startRace } from './race';
 import { replaceFullState } from './replacers';
 import { setTournamentState } from './tournament';
 
@@ -33,10 +32,8 @@ export const effects = (dispatch: Dispatch) => ({
     clearPlayer(dispatch, payload, state),
   setTournamentState: (payload: SetTournamentStatePayload, state: RootState) =>
     setTournamentState(dispatch, payload, state),
-  startCountdown: (payload: StartCountdownPayload, state: RootState) =>
-    startCountdown(dispatch, payload, state),
-  endCountdown: (payload: EndCountdownPayload, state: RootState) =>
-    endCountdown(dispatch, payload, state),
+  startRace: (payload: StartRacePayload, state: RootState) =>
+    startRace(dispatch, payload, state),
   endRace: (payload: EndRacePayload, state: RootState) =>
     endRace(dispatch, payload, state),
   sendTypeLog: (payload: SendTypeLogPayload, state: RootState) =>

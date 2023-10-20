@@ -55,7 +55,7 @@ export const startRaceController = async ({
     return;
   }
 
-  store.dispatch.game.startCountdown({
+  store.dispatch.game.startRace({
     tournamentId,
     playerId,
     raceText,

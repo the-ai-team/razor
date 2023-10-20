@@ -67,7 +67,7 @@ afterEach(() => {
 });
 
 describe('[Effects] Race', () => {
-  describe('Start Race Countdown', () => {
+  describe('Start Race', () => {
     // test data for first race in tournament
     const initialRacesModel0 = {};
     const initialTournamentsModel0 = {
@@ -119,7 +119,7 @@ describe('[Effects] Race', () => {
               .useFakeTimers({ doNotFake: ['nextTick', 'setImmediate'] })
               .setSystemTime(new Date('2022-01-01'));
             const timeNow = new Date().getTime();
-            store.dispatch.game.startCountdown({
+            store.dispatch.game.startRace({
               tournamentId: M_TOURNAMENT_ID0,
               playerId: M_PLAYER_ID0,
               raceText: M_RACE_TEXT0,
@@ -131,7 +131,7 @@ describe('[Effects] Race', () => {
               tournamentsModel: {
                 [M_TOURNAMENT_ID0]: {
                   ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
-                  state: AppTournamentState.Countdown,
+                  state: AppTournamentState.Race,
                   raceIds: [
                     ...initialValues.tournamentsModel[M_TOURNAMENT_ID0].raceIds,
                     nextRaceId,
@@ -191,7 +191,7 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      store.dispatch.game.startCountdown({
+      store.dispatch.game.startRace({
         tournamentId: 'T:notExist',
         playerId: M_PLAYER_ID0,
         raceText: M_RACE_TEXT0,
@@ -213,7 +213,7 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      store.dispatch.game.startCountdown({
+      store.dispatch.game.startRace({
         tournamentId: M_TOURNAMENT_ID0,
         playerId: 'P:notExist',
         raceText: M_RACE_TEXT0,
@@ -241,69 +241,13 @@ describe('[Effects] Race', () => {
       };
       const store = initializeStore(initialValues);
 
-      store.dispatch.game.startCountdown({
+      store.dispatch.game.startRace({
         tournamentId: M_TOURNAMENT_ID0,
         playerId: M_PLAYER_ID0,
         raceText: M_RACE_TEXT0,
       });
 
       expect(playerNotFound).toHaveBeenCalled();
-    });
-  });
-
-  describe('End Race Countdown', () => {
-    it('(race id) => End countdown', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-        tournamentsModel: {
-          [M_TOURNAMENT_ID0]: {
-            ...M_TOURNAMENT0,
-            state: AppTournamentState.Countdown,
-          },
-        },
-        racesModel: {
-          [M_TR0_RACE_ID0]: { ...M_RACE0, isOnGoing: true },
-        },
-        playersModel: {
-          ...mockPlayersModel([0, 3], M_TOURNAMENT_ID0, AppPlayerState.Racing),
-        },
-      };
-
-      const store = initializeStore(initialValues);
-      const initialStoreState = store.getState();
-
-      store.dispatch.game.endCountdown({
-        tournamentId: M_TOURNAMENT_ID0,
-      });
-      const storeState = store.getState();
-
-      const expectedResult: AppStateModel = {
-        ...initialValues,
-        tournamentsModel: {
-          [M_TOURNAMENT_ID0]: {
-            ...initialValues.tournamentsModel[M_TOURNAMENT_ID0],
-            state: AppTournamentState.Race,
-          },
-        },
-      };
-
-      expect(storeState).toEqual({
-        ...initialStoreState,
-        game: expectedResult,
-      });
-    });
-    it('(not existing tournament) => Raise error', () => {
-      const initialValues: AppStateModel = {
-        ...initialState,
-      };
-
-      const store = initializeStore(initialValues);
-
-      store.dispatch.game.endCountdown({
-        tournamentId: 'T:notExist',
-      });
-
-      expect(tournamentNotFound).toHaveBeenCalled();
     });
   });
 });

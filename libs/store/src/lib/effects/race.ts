@@ -7,7 +7,6 @@ import {
   AppPlayerState,
   AppRace,
   AppRaceId,
-  AppTournament,
   AppTournamentId,
   AppTournamentState,
 } from '@razor/models';
@@ -19,11 +18,7 @@ import {
   giveZeroPadding,
 } from '@razor/util';
 
-import {
-  EndCountdownPayload,
-  EndRacePayload,
-  StartCountdownPayload,
-} from '../payloads';
+import { EndRacePayload, StartRacePayload } from '../payloads';
 import { playerNotFound, raceNotFound, tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
@@ -45,9 +40,9 @@ import { Dispatch, RootState } from '../store';
  * - tournamentNotFound
  * - playerNotFound
  */
-export const startCountdown = (
+export const startRace = (
   dispatch: Dispatch,
-  payload: StartCountdownPayload,
+  payload: StartRacePayload,
   state: RootState,
 ): void => {
   const { tournamentId, playerId, raceText } = payload;
@@ -123,56 +118,16 @@ export const startCountdown = (
     raceStartedBy: playerId,
   };
 
-  // Updating tournament state in tournamentsModel. ("Ready" -> "Countdown")
+  // Updating tournament state in tournamentsModel. ("Ready" -> "Race")
   dispatch.game.setTournamentState({
     tournamentId,
-    tournamentState: AppTournamentState.Countdown,
+    tournamentState: AppTournamentState.Race,
   });
 
   // Add race to races model.
   dispatch.game.addRaceReducer({
     raceId,
     race,
-  });
-};
-
-/** Effect function for ending countdown of the race.
- * Run the validation for the received payload.
- * If the tournament is found, then the countdown will be ended.
- * Tournament state will be updated to "Race".
- *
- * @param dispatch - The dispatch function of the store.
- * @param payload - The payload of the action.
- * @param state - The state of the store.
- *
- * ### Related reducers and effects
- * - updateTournamentReducer
- *
- * ### Related raisers
- * - tournamentNotFound
- */
-export const endCountdown = (
-  dispatch: Dispatch,
-  payload: EndCountdownPayload,
-  state: RootState,
-): void => {
-  const { tournamentId } = payload;
-
-  // If the tournament is not found, call the raiser.
-  if (!state.game.tournamentsModel[tournamentId]) {
-    tournamentNotFound(dispatch, tournamentId, `While countdown ending`);
-    return;
-  }
-
-  // Use setTournamentState instead
-  // Updating tournament state to Race
-  const tournament: AppTournament = {
-    ...state.game.tournamentsModel[tournamentId],
-    state: AppTournamentState.Race,
-  };
-  dispatch.game.updateTournamentReducer({
-    tournamentId,
-    tournament,
   });
 };
 
