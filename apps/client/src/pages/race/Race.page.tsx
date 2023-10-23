@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { RACE_READY_COUNTDOWN } from '@razor/constants';
 import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
 import { RootState } from '@razor/store';
 import cs from 'classnames';
@@ -28,7 +29,8 @@ export function Race(): ReactElement {
   const addToast = useToastContext();
   const game = useSelector((store: RootState) => store.game);
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
-  const [raceReadyTime, setRaceReadyTime] = useState<number>(5);
+  const [raceReadyTime, setRaceReadyTime] =
+    useState<number>(RACE_READY_COUNTDOWN);
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
