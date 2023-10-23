@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { AppStateModel } from '../state';
+import { AppLeaderboard, AppStateModel } from '../state';
 
 import { PlayerId } from './player';
 import {
@@ -12,6 +12,7 @@ import {
   startRaceRequestSchema,
   updateTypeLogsSchema,
 } from './protocol-schemas';
+import { RaceId } from './race';
 import { TournamentId } from './tournament';
 
 // This model is use when client subscribe and listen to socket events
@@ -52,3 +53,7 @@ export type SendTypeLogData = z.infer<typeof sendTypeLogSchema>;
 export type UpdateTypeLogsData = z.infer<typeof updateTypeLogsSchema>;
 
 export type InformTimeoutData = z.infer<typeof informTimeoutSchema>;
+export type SendLeaderboardData = {
+  raceId: RaceId;
+  leaderboard: AppLeaderboard;
+};

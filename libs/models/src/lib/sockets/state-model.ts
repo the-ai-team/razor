@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { leaderboardSchema } from './leaderboard';
 import { playerIdSchema, PlayerState } from './player';
 import { playerLogIdSchema } from './playerLog';
 import { raceIdSchema } from './race';
@@ -28,7 +29,7 @@ export const stateModelSchema = z.object({
     raceIdSchema,
     z.object({
       text: z.string(),
-      timoutDuration: z.number(),
+      timeoutDuration: z.number(),
       startedTimestamp: z.number(),
       players: z.record(
         playerIdSchema,
@@ -41,25 +42,7 @@ export const stateModelSchema = z.object({
       raceStartedBy: playerIdSchema,
     }),
   ),
-  leaderboardsModel: z.record(
-    raceIdSchema,
-    z.array(
-      z.object({
-        playerId: playerIdSchema,
-        status: z.nativeEnum(PlayerState),
-        values: z
-          .object({
-            wpm: z.number(),
-            elapsedTime: z.number(),
-          })
-          .or(
-            z.object({
-              distnace: z.number(),
-            }),
-          ),
-      }),
-    ),
-  ),
+  leaderboardsModel: z.record(raceIdSchema, leaderboardSchema),
   playerLogsModel: z.record(
     playerLogIdSchema,
     z.array(
