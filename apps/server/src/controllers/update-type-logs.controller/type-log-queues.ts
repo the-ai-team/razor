@@ -73,6 +73,6 @@ export const getTypeLogsQueue = (
  * @param raceId id of the race which queue should be cleared
  */
 export const clearTypeLogsQueue = (raceId: RaceId): void => {
-  typeLogsQueuesForRaces.get(raceId).clearQueue();
+  typeLogsQueuesForRaces.get(raceId)?.clearQueue();
   delete typeLogsQueuesForRaces[raceId];
 };
