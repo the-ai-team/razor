@@ -2,7 +2,11 @@ import { SendLeaderboardData, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
 
-import { AllServerPubSubEventsToTypeMap, PubSubEvents } from '../models';
+import {
+  AllServerPubSubEventsToTypeMap,
+  PubSubEvents,
+  TypeLogListeningModel,
+} from '../models';
 import { Logger, publishToAllClients, pubsub } from '../services';
 
 const logger = new Logger('race-end.controller');
@@ -42,6 +46,13 @@ export const raceEndController = ({ context, data }: RaceEndArgs): void => {
     protocol: SocketProtocols.SendLeaderboard,
     data: sendLeaderboardData,
   });
+
+  // Publish end type log listening event
+  const TypeLogListenData: TypeLogListeningModel = {
+    context,
+    data: { raceId },
+  };
+  pubsub.publish(PubSubEvents.EndTypeLogListening, TypeLogListenData);
 };
 
 pubsub.subscribe(PubSubEvents.RaceEnd, raceEndController);

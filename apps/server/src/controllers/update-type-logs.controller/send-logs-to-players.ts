@@ -63,7 +63,7 @@ const flushAllAfterRaceEnd = (
   context: ContextOutput,
 ): void => {
   pubsub.unsubscribe(PubSubEvents.StartTypeLogListening, destroyTypeLogPusher);
-  pubsub.unsubscribe(PubSubEvents.RaceTimeout, (_): void =>
+  pubsub.unsubscribe(PubSubEvents.EndTypeLogListening, (_): void =>
     flushAllAfterRaceEnd(destroyTypeLogPusher, context),
   );
   destroyTypeLogPusher();
@@ -71,14 +71,25 @@ const flushAllAfterRaceEnd = (
 
 type StartTypeLogListeningArgs =
   AllServerPubSubEventsToTypeMap[PubSubEvents.StartTypeLogListening];
+type EndTypeLogListeningArgs =
+  AllServerPubSubEventsToTypeMap[PubSubEvents.EndTypeLogListening];
+
 const typeLogPushController = ({
   data,
   context,
 }: StartTypeLogListeningArgs): void => {
-  const { raceId } = data;
-  const destroyTypeLogPusher = typeLogPusher(raceId, context);
-  pubsub.subscribe(PubSubEvents.RaceTimeout, (_): void =>
-    flushAllAfterRaceEnd(destroyTypeLogPusher, context),
+  logger.info('Started type log listening', context);
+  const { raceId: startTypeLogEventRaceId } = data;
+  const destroyTypeLogPusher = typeLogPusher(startTypeLogEventRaceId, context);
+  pubsub.subscribe(
+    PubSubEvents.EndTypeLogListening,
+    ({ data }: EndTypeLogListeningArgs): void => {
+      const { raceId: endTypeLogEventRaceId } = data;
+      // If race ids are equal flush all and destroy the type log pusher.
+      if (startTypeLogEventRaceId == endTypeLogEventRaceId) {
+        flushAllAfterRaceEnd(destroyTypeLogPusher, context);
+      }
+    },
   );
 };
 
