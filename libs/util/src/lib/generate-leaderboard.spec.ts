@@ -16,7 +16,7 @@ import { generateLeaderboard } from './generate-leaderboard';
 
 describe('(Utils) generateLeaderboard', () => {
   it('(valid input) => Generate leaderboard', () => {
-    const raceTextLength = 500;
+    const raceTextLength = 86;
     const playerLog1 = M_COMPLETE_PLAYER_LOGS0;
     const playerLog2 = M_COMPLETE_PLAYER_LOGS1;
     const playerLog3 = M_TIMEOUT_PLAYER_LOGS1;
@@ -38,28 +38,28 @@ describe('(Utils) generateLeaderboard', () => {
       raceTextLength,
     );
 
-    console.log(leaderboard);
-
     const expectedResult = [
       {
         playerId: 'P:testPL01',
         status: 'complete',
-        values: { wpm: 52.53, elapsedTime: 116 },
+        values: { wpm: 44.09, elapsedTime: 42.874 },
       },
       {
         playerId: 'P:testPL00',
         status: 'complete',
-        values: { wpm: 48.91, elapsedTime: 123 },
+        //  NOTE: The average WPM is calculated by dividing the race into even parts.
+        //  In this case, this player has performed poorly in one of those parts.
+        values: { wpm: 28.61, elapsedTime: 45.799 },
       },
       {
         playerId: 'P:testPL02',
         status: 'timeout',
-        values: { distance: 451 },
+        values: { distance: 65 },
       },
       {
         playerId: 'P:testPL03',
         status: 'timeout',
-        values: { distance: 261 },
+        values: { distance: 10 },
       },
     ];
 
