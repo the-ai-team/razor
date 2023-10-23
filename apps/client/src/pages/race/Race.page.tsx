@@ -13,6 +13,7 @@ import { Text, ToastType } from '../../components';
 import { Timer } from '../../components/molecules/timer';
 import { useToastContext } from '../../hooks/useToastContext';
 import { TextSize, TextType } from '../../models';
+import { raceTimeout } from '../../services/handlers/race-timeout';
 import {
   sendInitialTypeLog,
   sendTypeLog,
@@ -109,6 +110,13 @@ export function Race(): ReactElement {
     }
   }, [raceReadyTime, raceId]);
 
+  const raceTimeEndHandler = (): void => {
+    setIsTypeLocked(true);
+    if (raceId) {
+      raceTimeout(raceId);
+    }
+  };
+
   return (
     <div
       className={cs(
@@ -147,10 +155,7 @@ export function Race(): ReactElement {
                   'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
                   'fixed -top-40 right-8 z-10',
                 )}>
-                <Timer
-                  time={raceTime}
-                  onTimeEnd={(): void => setIsTypeLocked(true)}
-                />
+                <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />
               </div>
               <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
                 <RaceText

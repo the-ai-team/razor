@@ -263,6 +263,8 @@ export function RaceText({
           const avatarLinks = cursors.map(cursor => cursor.avatarLink);
           return (
             <AvatarArray
+              // eslint-disable-next-line react/no-array-index-key
+              key={lineIndex}
               avatars={avatarLinks}
               style={{
                 top: `${lineIndex * lineHeight}px`,

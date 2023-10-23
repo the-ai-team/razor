@@ -87,7 +87,9 @@ export function Timer({
         timerEnded.current = true;
         setSeconds(0);
         setMilliseconds(0);
-        onTimeEnd();
+        if (time > 0) {
+          onTimeEnd();
+        }
       }
 
       requestAnimationFrame(updateTimer);

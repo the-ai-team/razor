@@ -75,7 +75,7 @@ export const updateTypeLogsSchema = z.object({
  * Related protocol - {@link SocketProtocols.InformTimeout}
  */
 export const informTimeoutSchema = z.object({
-  timestamp: z.number(),
+  raceId: raceIdSchema,
 });
 
 /**
