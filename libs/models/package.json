@@ -1,0 +1,14 @@
+{
+  "name": "@razor/models",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "dependencies": {
+    "zod": "^3.20.2"
+  },
+  "peerDependencies": {
+    "@razor/constants": "0.0.1",
+    "tslib": "2.4.1"
+  },
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts"
+}
