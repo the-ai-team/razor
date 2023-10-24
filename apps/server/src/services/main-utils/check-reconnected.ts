@@ -2,8 +2,10 @@ import { RECONNECT_WAITING_TIME } from '@razor/constants';
 import { AuthToken } from '@razor/models';
 import { Server } from 'socket.io';
 
+import { PubSubEvents } from '../../models';
 import { tokenPlayerMap } from '../../stores';
 import { Logger } from '../logger';
+import { pubsub } from '../pubsub';
 
 export function checkReconnected(authToken: AuthToken, io: Server): void {
   const logger = new Logger('reconnector');
@@ -25,6 +27,13 @@ export function checkReconnected(authToken: AuthToken, io: Server): void {
         `User deleted from the map after waiting for ${RECONNECT_WAITING_TIME}ms.`,
         context,
       );
+
+      pubsub.publish(PubSubEvents.PlayerDisconnect, {
+        data: {
+          playerId,
+        },
+        context,
+      });
     } else {
       logger.debug('User already connected from a new socket.', context);
     }
