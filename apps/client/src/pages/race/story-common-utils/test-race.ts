@@ -33,7 +33,7 @@ store.dispatch.game.joinPlayer({
   playerName: 'Player2',
 });
 
-store.dispatch.game.startCountdown({
+store.dispatch.game.startRace({
   tournamentId: testTournamentId,
   playerId: player1Id,
   raceText: M_RACE_TEXT0,
