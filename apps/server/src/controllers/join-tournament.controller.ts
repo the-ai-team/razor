@@ -72,11 +72,13 @@ const joinTournamentController = ({
   const raceIds = tournament.raceIds;
   const lastRaceId = raceIds[raceIds.length - 1];
   const filteredPlayers = pick(state.playersModel, playerIds);
-  const filteredRaces = pick(state.playersModel, raceIds);
+  const filteredRaces = pick(state.racesModel, raceIds);
   const filteredLeaderboards = pick(state.leaderboardsModel, raceIds);
   let filteredPlayersLogs = {};
   if (filteredRaces[lastRaceId]?.isOnGoing === true) {
-    const playersLogsIds = playerIds.map(playerId => lastRaceId + playerId);
+    const playersLogsIds = playerIds.map(
+      playerId => `${lastRaceId}-${playerId}`,
+    );
     filteredPlayersLogs = pick(state.playerLogsModel, playersLogsIds);
   }
 

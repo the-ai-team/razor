@@ -17,9 +17,14 @@ import { RaceLine } from './race-line';
 export interface RaceTrackProps {
   raceId: AppRaceId;
   className?: string;
+  isSpectator?: boolean;
 }
 
-export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
+export function RaceTrack({
+  raceId,
+  className,
+  isSpectator = false,
+}: RaceTrackProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
   const selfPlayerId = useRef<AppPlayerId>(getSavedPlayerId());
 
@@ -29,7 +34,9 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
   const textLength = game.racesModel[raceId].text.length;
   const lineHeight = getRaceTrackRowColumnSizes();
   const maxRaceTracksCount = useComputeMaxRaceTracks();
-  const tracksCount = Math.min(maxRaceTracksCount, playerIds.length);
+  const tracksCount = isSpectator
+    ? playerIds.length
+    : Math.min(maxRaceTracksCount, playerIds.length);
   const pavementHeight = getRaceTrackPavementRows(tracksCount) * lineHeight;
 
   return (
@@ -43,7 +50,7 @@ export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
           className={cs('w-full absolute mx-auto')}
           style={{ top: `${pavementHeight}px` }}>
           {/* Self player line at top */}
-          {selfPlayerId.current ? (
+          {selfPlayerId.current && !isSpectator ? (
             <div style={{ marginBottom: `${lineHeight}px` }}>
               <RaceLine
                 raceId={raceId}

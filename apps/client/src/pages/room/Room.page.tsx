@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MAX_ALLOWED_PLAYERS, MIN_ALLOWED_PLAYERS } from '@razor/constants';
-import { AppTournamentId } from '@razor/models';
+import { AppTournamentId, AppTournamentState } from '@razor/models';
 import { RootState } from '@razor/store';
 import cs from 'classnames';
 import { ReactComponent as LinkIcon } from 'pixelarticons/svg/link.svg';
@@ -42,14 +42,12 @@ export function Room(): ReactElement {
     };
   }, []);
 
-  // TODO: Use tournament state capture race start.
-  // If a race ongoing on store navigate to the race page.
+  // If the tournament state is Race navigate to the race page.
   useEffect((): void => {
-    const raceIds = game.tournamentsModel[tournamentId]?.raceIds || [];
-    const lastRaceId = raceIds[raceIds?.length - 1] || null;
-    const race = lastRaceId ? game.racesModel[lastRaceId] : null;
+    const tournamentId: AppTournamentId = `T:${roomId}`;
+    const tournament = game.tournamentsModel[tournamentId];
 
-    if (race?.isOnGoing) {
+    if (tournament.state === AppTournamentState.Race) {
       navigate(`/${roomId}/race`);
     }
   }, [game, roomId]);

@@ -113,7 +113,9 @@ export function LeaderboardList({
               />
             );
           })}
-          <div className='w-full h-4 flex-shrink-0 bg-neutral-40 bg-opacity-60 rounded-full my-6' />
+          {completedEntries?.length > 0 && timeoutEntries?.length > 0 ? (
+            <div className='w-full h-2 flex-shrink-0 bg-neutral-40 bg-opacity-60 rounded-full my-6' />
+          ) : null}
           {timeoutEntries.map(entry => {
             const player = playersModel[entry.playerId];
             const values = entry.values as AppTimeoutPlayerValues;
