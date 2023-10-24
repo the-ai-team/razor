@@ -1,7 +1,9 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppRaceId } from '@razor/models';
+import { AppRaceId, AppTournamentId, AppTournamentState } from '@razor/models';
+import { RootState } from '@razor/store';
 import cs from 'classnames';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
@@ -9,16 +11,16 @@ import { Description, Panel } from '../../components';
 import { Timer } from '../../components/molecules/timer';
 
 import { LeaderboardList } from './templates/leaderboard_list/LeaderboardList.template';
-
 export function Leaderboard(): ReactElement {
   const { t } = useTranslation(['leaderboard']);
   const navigate = useNavigate();
+  const game = useSelector((store: RootState) => store.game);
   const { roomId, raceIndex } = useParams();
   const [raceId, setRaceId] = useState<AppRaceId>(
     `T:${roomId}-R:${raceIndex}` as AppRaceId,
   );
 
-  const [timeout, setTimeout] = useState(10);
+  const timeout = useRef(10);
 
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -29,6 +31,16 @@ export function Leaderboard(): ReactElement {
   const handleTimeEnd = (): void => {
     navigate(`/${roomId}/room`);
   };
+
+  // If the tournament state is changed to Race while user in the leaderboard navigate to the race page directly.
+  useEffect((): void => {
+    const tournamentId: AppTournamentId = `T:${roomId}`;
+    const tournament = game.tournamentsModel[tournamentId];
+
+    if (tournament.state === AppTournamentState.Race) {
+      navigate(`/${roomId}/race`);
+    }
+  }, [game, roomId]);
 
   return (
     <div className='h-full w-full relative'>
@@ -69,7 +81,7 @@ export function Leaderboard(): ReactElement {
       </div>
 
       <div className='absolute right-0 bottom-0 scale-50 origin-bottom-right'>
-        <Timer time={timeout} onTimeEnd={handleTimeEnd} />
+        <Timer time={timeout.current} onTimeEnd={handleTimeEnd} />
       </div>
     </div>
   );
