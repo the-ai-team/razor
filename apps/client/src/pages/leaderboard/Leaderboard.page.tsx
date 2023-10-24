@@ -1,17 +1,24 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppRaceId } from '@razor/models';
 import cs from 'classnames';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { Description, Panel } from '../../components';
+import { Timer } from '../../components/molecules/timer';
 
 import { LeaderboardList } from './templates/leaderboard_list/LeaderboardList.template';
 
 export function Leaderboard(): ReactElement {
   const { t } = useTranslation(['leaderboard']);
-  const { raceId } = useParams();
+  const navigate = useNavigate();
+  const { roomId, raceIndex } = useParams();
+  const [raceId, setRaceId] = useState<AppRaceId>(
+    `T:${roomId}-R:${raceIndex}` as AppRaceId,
+  );
+
+  const [timeout, setTimeout] = useState(10);
 
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',
@@ -19,8 +26,12 @@ export function Leaderboard(): ReactElement {
     'https://via.placeholder.com/300x150',
   ];
 
+  const handleTimeEnd = (): void => {
+    navigate(`/${roomId}/room`);
+  };
+
   return (
-    <div className='h-full w-full'>
+    <div className='h-full w-full relative'>
       <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
       <Panel title={t('panel.title')}>
         <Description
@@ -55,6 +66,10 @@ export function Leaderboard(): ReactElement {
             {raceId ? <LeaderboardList raceId={raceId as AppRaceId} /> : null}
           </div>
         </div>
+      </div>
+
+      <div className='absolute right-0 bottom-0 scale-50 origin-bottom-right'>
+        <Timer time={timeout} onTimeEnd={handleTimeEnd} />
       </div>
     </div>
   );

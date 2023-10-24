@@ -50,8 +50,10 @@ export function Race(): ReactElement {
     const tournamentId: AppTournamentId = `T:${roomId}`;
     const tournament = game.tournamentsModel[tournamentId];
 
+    // raceId = `T:${roomId}-R:${raceIndex}`
+    const raceIndex = raceId ? raceId.split('-')[1].slice(2) : null;
     if (tournament.state === AppTournamentState.Leaderboard) {
-      navigate(`/leaderboards/${raceId}`);
+      navigate(`/${roomId}/leaderboards/${raceIndex}`);
     }
   }, [game, raceId]);
 
