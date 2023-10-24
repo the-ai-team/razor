@@ -1,0 +1,20 @@
+{
+  "page": "Leaderboard",
+  "panel": {
+    "title": "Ranks",
+    "descriptions": [
+      {
+        "title": "Words Per Minute (WPM)",
+        "content": "Only players who successfully complete a race will receive their average Words Per Minute (WPM) score. Your average WPM is a testament to your typing speed and accuracy. Strive to improve and climb the ranks on the Razor leaderboard."
+      },
+      {
+        "title": "Total Distance Traveled",
+        "content": "Players who reach the race timeout without completing the text will still receive recognition. We calculate your Distance Traveled Percentage, giving credit to your efforts in the race. Every keystroke counts, and this metric reflects your commitment to the typing journey."
+      },
+      {
+        "title": "Take a screenshot!",
+        "content": "Want to show off your leaderboard achievements to your friends and followers on social media? Simply take a screenshot of the leaderboard, featuring your name and stats, and share it with the world. Let everyone see your typing prowess and inspire them to join the action on Razor!"
+      }
+    ]
+  }
+}

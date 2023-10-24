@@ -1,28 +1,61 @@
-import { ReactElement, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { AppRaceId } from '@razor/models';
+import cs from 'classnames';
 
-import { Text } from '../../components/atoms/text/Text.component';
-import { TextSize, TextType } from '../../models';
+import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import { Description, Panel } from '../../components';
+
+import { LeaderboardList } from './templates/leaderboard_list/LeaderboardList.template';
 
 export function Leaderboard(): ReactElement {
-  const navigate = useNavigate();
+  const { t } = useTranslation(['leaderboard']);
+  const { raceId } = useParams();
 
-  useEffect(() => {
-    // after 2 seconds redirect to room
-    const timeoutId = setTimeout(() => {
-      navigate('../room');
-    }, 2000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [navigate]);
+  const panelImages: Array<string> = [
+    'https://via.placeholder.com/300x150',
+    'https://via.placeholder.com/300x150',
+    'https://via.placeholder.com/300x150',
+  ];
 
   return (
-    <div>
-      <Text type={TextType.Heading} size={TextSize.Large}>
-        Leaderboard
-      </Text>
+    <div className='h-full w-full'>
+      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
+      <Panel title={t('panel.title')}>
+        <Description
+          title={t('panel.descriptions.0.title')}
+          image={panelImages[0]}>
+          {t('panel.descriptions.0.content') as string}
+        </Description>
+        <Description
+          title={t('panel.descriptions.1.title')}
+          image={panelImages[1]}>
+          {t('panel.descriptions.1.content') as string}
+        </Description>
+        <Description
+          title={t('panel.descriptions.2.title')}
+          image={panelImages[2]}>
+          {t('panel.descriptions.2.content') as string}
+        </Description>
+      </Panel>
+
+      <div
+        className={cs(
+          'flex flex-col justify-center py-20 items-center',
+          'w-full h-full',
+        )}>
+        <div className='flex grow flex-col w-full h-1/2 justify-around items-center'>
+          <div
+            className={cs(
+              'max-w-[1000px] w-10/12 h-full',
+              'my-32',
+              'overflow-hidden flex flex-col justify-center items-center',
+            )}>
+            {raceId ? <LeaderboardList raceId={raceId as AppRaceId} /> : null}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

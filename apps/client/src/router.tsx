@@ -21,13 +21,13 @@ export function Router(): ReactElement {
               path='race'
               element={<GuardedRoute path='race' component={Race} />}
             />
-            <Route
-              path='leaderboard'
-              element={
-                <GuardedRoute path='leaderboard' component={Leaderboard} />
-              }
-            />
           </Route>
+          <Route
+            path='leaderboards/:raceId'
+            element={
+              <GuardedRoute path='leaderboard' component={Leaderboard} />
+            }
+          />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>

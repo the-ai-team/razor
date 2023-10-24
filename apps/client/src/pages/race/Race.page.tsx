@@ -1,9 +1,14 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RACE_READY_COUNTDOWN } from '@razor/constants';
-import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
+import {
+  AppRaceId,
+  AppTournamentId,
+  AppTournamentState,
+  PlayerId,
+} from '@razor/models';
 import { RootState } from '@razor/store';
 import cs from 'classnames';
 import { ReactComponent as CarIcon } from 'pixelarticons/svg/car.svg';
@@ -26,6 +31,7 @@ import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
   const { roomId } = useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation(['race']);
   const addToast = useToastContext();
   const game = useSelector((store: RootState) => store.game);
@@ -35,6 +41,16 @@ export function Race(): ReactElement {
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
+
+  // If the tournament state changed to leaderboard navigate to the leaderboard page.
+  useEffect((): void => {
+    const tournamentId: AppTournamentId = `T:${roomId}`;
+    const tournament = game.tournamentsModel[tournamentId];
+
+    if (tournament.state === AppTournamentState.Leaderboard) {
+      navigate(`/leaderboards/${raceId}`);
+    }
+  }, [game, raceId]);
 
   useEffect(() => {
     const tournamentId: AppTournamentId = `T:${roomId}`;

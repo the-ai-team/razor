@@ -42,6 +42,7 @@ export function Room(): ReactElement {
     };
   }, []);
 
+  // TODO: Use tournament state capture race start.
   // If a race ongoing on store navigate to the race page.
   useEffect((): void => {
     const raceIds = game.tournamentsModel[tournamentId]?.raceIds || [];
