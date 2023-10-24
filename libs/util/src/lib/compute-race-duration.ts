@@ -12,7 +12,7 @@ export const computeRaceDuration = (text: string): number => {
    */
   const wordCount = text.length / 6;
   const averageTime = Math.ceil((wordCount / AVERAGE_WPM) * 60);
-  const maximumAllowedTime = Math.ceil(averageTime * 1.5);
+  const maximumAllowedTime = Math.ceil(averageTime * 1.35);
 
   return maximumAllowedTime;
 };
