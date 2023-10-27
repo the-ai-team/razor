@@ -7,6 +7,7 @@ import './services/socket-communication';
 import './i18n';
 import './controllers';
 
+import { Debugger } from './utils/Debugger';
 import { ToastContextProvider } from './providers';
 import { Router } from './router';
 
@@ -22,6 +23,7 @@ root.render(
       <ToastContextProvider>
         <Router />
       </ToastContextProvider>
+      <Debugger />
     </Provider>
   </StrictMode>,
 );
