@@ -28,6 +28,10 @@ export function checkReconnected(authToken: AuthToken, io: Server): void {
         context,
       );
 
+      if (!playerId) {
+        logger.info('Disconnected player does not have a playerId.', context);
+        return;
+      }
       pubsub.publish(PubSubEvents.PlayerDisconnect, {
         data: {
           playerId,

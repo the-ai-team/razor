@@ -33,7 +33,7 @@ export const sendLogMessage = (
   switch (type) {
     // If the type is an error, send the error to the state and log in to the console as an error.
     case AppMessageLogType.Error:
-      console.error(`[Error ${code}]: ${message} (${related})`);
+      console.error(`[Store-Error ${code}]: ${message} (${related})`);
 
       dispatch.game.logErrorReducer({
         errorLog: {

@@ -15,6 +15,11 @@ const playerDisconnectController = ({
 }: PlayerDisconnectArgs): void => {
   const { playerId } = data;
   const game = store.getState().game;
+  if (!game.playersModel[playerId]?.tournamentId) {
+    logger.error('Player data missing in store', context);
+    return;
+  }
+
   const player = game.playersModel[playerId];
   const tournamentId = player.tournamentId;
 
