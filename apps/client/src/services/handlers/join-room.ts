@@ -6,8 +6,8 @@ import {
 
 import { Connection } from '../../constants';
 import { pubsub } from '../../utils/pubsub';
-import { savePlayerId } from '../../utils/save-player-id';
-import { initializeSocket, savedData, socket } from '../socket-communication';
+import { savedData } from '../../utils/save-player-data';
+import { initializeSocket, socket } from '../socket-communication';
 
 export const requestToJoinRoom = ({
   playerName,
@@ -20,6 +20,7 @@ export const requestToJoinRoom = ({
     const receiver = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
       const roomIdFromServer = data.tournamentId.slice(2);
+
       if (roomIdFromServer) {
         // For socket communication uses.
         savedData.savedRoomId = roomIdFromServer;
@@ -27,8 +28,6 @@ export const requestToJoinRoom = ({
         savedData.savedPlayerName =
           data.snapshot.playersModel[data.playerId].name;
 
-        // For local store dispatch uses.
-        savePlayerId(data.playerId);
         pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);

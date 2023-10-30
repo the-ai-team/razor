@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 
-import { getSavedPlayerId } from './save-player-id';
+import { savedData } from './save-player-data';
 
 interface GuardedRouteProps {
   component: React.ElementType;
@@ -11,7 +11,7 @@ interface GuardedRouteProps {
 export function GuardedRoute({
   component: Component,
 }: GuardedRouteProps): ReactElement | null {
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   const { roomId } = useParams();
 
   if (!playerId) {

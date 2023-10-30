@@ -7,7 +7,7 @@ import {
 } from '@razor/models';
 import { store } from '@razor/store';
 
-import { getSavedPlayerId } from '../../utils/save-player-id';
+import { savedData } from '../../utils/save-player-data';
 import { socket } from '../socket-communication';
 
 class TypeLogsQueue {
@@ -44,7 +44,7 @@ export const sendTypeLog = (
   typeLogsQueue.addLog(playerLog);
 
   // Send type log to local store.
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   if (playerId) {
     store.dispatch.game.sendTypeLog({
       playerLog,
@@ -89,7 +89,7 @@ export const sendInitialTypeLog = (raceId: RaceId): void => {
   socket.emit(SocketProtocols.SendTypeLog, data);
 
   // Send type log to local store.
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   if (playerId) {
     store.dispatch.game.sendTypeLog({
       playerLog,

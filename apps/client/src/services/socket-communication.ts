@@ -11,49 +11,12 @@ import { io, Socket } from 'socket.io-client';
 import { Connection } from '../constants';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
+import { savedData } from '../utils/save-player-data';
 
 import { requestToJoinRoom } from './handlers/join-room';
 
 const SOCKET_ENDPOINT =
   import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:3000';
-
-/** This class is used to save data for socket communication,
- * which is used to reconnect to the server when the connection is lost.
- */
-class SavedData {
-  private _authToken = '';
-  public savedPlayerName = '';
-  public savedPlayerId = '';
-  public savedRoomId = '';
-  private listeners: (() => void)[] = [];
-
-  public get authToken(): AuthToken {
-    return this._authToken;
-  }
-  public set authToken(value: AuthToken) {
-    this._authToken = value;
-    this.runListeners();
-  }
-
-  // run all listeners when value is changed.
-  private runListeners(): void {
-    this.listeners.forEach(func => func());
-  }
-
-  // Call when value is changed.
-  public addEventListener(func: () => void): void {
-    this.listeners.push(func);
-  }
-
-  public removeEventListener(func: () => void): void {
-    const index = this.listeners.indexOf(func);
-    if (index !== -1) {
-      this.listeners.splice(index, 1);
-    }
-  }
-}
-
-export const savedData = new SavedData();
 
 interface SocketFormat extends Socket {
   auth: {
@@ -71,14 +34,14 @@ export const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
-  savedData.authToken = '';
-  savedData.savedPlayerName = '';
-  savedData.savedPlayerId = '';
-  savedData.savedRoomId = '';
+  savedData.authToken = null;
+  savedData.savedPlayerName = null;
+  savedData.savedPlayerId = null;
+  savedData.savedRoomId = null;
 };
 
 export const initializeSocket = (): void => {
-  socket.auth.token = savedData.authToken;
+  socket.auth.token = savedData.authToken ?? '';
   socket.connect();
   socket.on('connect_error', () => {
     alert('Connection error');
@@ -97,36 +60,40 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
-    if (savedData.savedRoomId && savedData.savedPlayerName) {
-      const reconnector = setInterval(async () => {
-        try {
-          console.log('Reconnecting...');
+    if (!savedData.savedRoomId || !savedData.savedPlayerName) {
+      return;
+    }
+
+    const reconnector = setInterval(async () => {
+      try {
+        console.log('Trying to reconnect...');
+        if (savedData.savedRoomId && savedData.savedPlayerName) {
           await requestToJoinRoom({
             playerName: savedData.savedPlayerName,
             roomId: savedData.savedRoomId,
           });
-          clearInterval(reconnector);
-        } catch (error) {
-          console.error(error);
         }
-      }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
-
-      // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
-      const waitingTimeout = setTimeout(() => {
         clearInterval(reconnector);
-        savedData.authToken = '';
-        savedData.savedPlayerName = '';
-        savedData.savedPlayerId = '';
-        savedData.savedRoomId = '';
-        // TODO: navigate to home page
-      }, RECONNECT_WAITING_TIME);
+      } catch (error) {
+        console.error(error);
+      }
+    }, Connection.RECONNECT_TRY_INTERVAL);
 
-      socket.once('connect', () => {
-        console.log('Reconnected');
-        clearInterval(reconnector);
-        clearTimeout(waitingTimeout);
-      });
-    }
+    // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
+    const waitingTimeout = setTimeout(() => {
+      clearInterval(reconnector);
+      savedData.authToken = null;
+      savedData.savedPlayerName = null;
+      savedData.savedPlayerId = null;
+      savedData.savedRoomId = null;
+      // TODO: navigate to home page
+    }, RECONNECT_WAITING_TIME);
+
+    socket.once('connect', () => {
+      console.log('Reconnected');
+      clearInterval(reconnector);
+      clearTimeout(waitingTimeout);
+    });
   }
 };
 

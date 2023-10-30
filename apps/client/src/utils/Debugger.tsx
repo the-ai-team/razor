@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import cs from 'classnames';
 
-import { savedData } from '../services';
+import { savedData } from './save-player-data';
 
 enum DebuggerCommands {
   ENABLE = 'debugger',

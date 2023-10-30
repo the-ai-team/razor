@@ -26,7 +26,7 @@ import {
   sendTypeLog,
   typeLogPusher,
 } from '../../services/handlers/send-type-log';
-import { getSavedPlayerId } from '../../utils/save-player-id';
+import { savedData } from '../../utils/save-player-data';
 
 import { RaceText } from './templates/race-text/RaceText.template';
 import { RaceTrack } from './templates/race-view/RaceTrack.template';
@@ -41,7 +41,7 @@ export function Race(): ReactElement {
   const [raceReadyTime, setRaceReadyTime] =
     useState<number>(RACE_READY_COUNTDOWN);
   const [raceTime, setRaceTime] = useState<number>(0);
-  const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
+  const selfPlayerId = useRef<PlayerId>(savedData.savedPlayerId);
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
   const [isSpectator, setIsSpectator] = useState<boolean>(false);
 

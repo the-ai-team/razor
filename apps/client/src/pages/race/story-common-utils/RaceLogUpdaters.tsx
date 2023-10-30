@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
 import { extractId, ExtractIdType } from '@razor/util';
-import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
 
 import { Button, ButtonWithInput, Text } from '../../../components';
@@ -22,7 +22,7 @@ export function RaceLogUpdaters({
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
   const [count, setCount] = useState(0);
   const [playerIds, setPlayerIds] = useState<AppPlayerId[]>([]);
-  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const selfPlayerId = useRef<AppPlayerId | null>(savedData.savedPlayerId);
 
   useEffect(() => {
     const racesModel = game.racesModel;

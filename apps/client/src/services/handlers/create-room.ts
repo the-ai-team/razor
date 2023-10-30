@@ -6,8 +6,8 @@ import {
 
 import { Connection } from '../../constants';
 import { pubsub } from '../../utils/pubsub';
-import { savePlayerId } from '../../utils/save-player-id';
-import { initializeSocket, savedData, socket } from '../socket-communication';
+import { savedData } from '../../utils/save-player-data';
+import { initializeSocket, socket } from '../socket-communication';
 
 export const requestToCreateRoom = ({
   playerName,
@@ -26,8 +26,6 @@ export const requestToCreateRoom = ({
         savedData.savedPlayerName =
           data.snapshot.playersModel[data.playerId].name;
 
-        // For local store dispatch uses.
-        savePlayerId(data.playerId);
         pubsub.publish(SocketProtocols.CreateLobbyAccept, data);
         clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
