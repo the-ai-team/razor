@@ -69,7 +69,9 @@ export function Race(): ReactElement {
     if (selfPlayer) {
       const isIdle = selfPlayer.state === AppPlayerState.Idle;
       setIsSpectator(isIdle);
-      setRaceReadyTime(0);
+      if (isIdle) {
+        setRaceReadyTime(0);
+      }
     }
 
     // Looking for race in races model
