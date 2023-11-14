@@ -47,7 +47,7 @@ const joinTournamentController = ({
   if (!player) {
     const { playerName, roomId } = data;
     const receivedTournamentId: TournamentId = `T:${roomId}`;
-    playerId ||= store.dispatch.game.joinPlayer({
+    playerId = store.dispatch.game.joinPlayer({
       receivedTournamentId,
       playerName,
     });

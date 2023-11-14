@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const generateRaceText = async (): Promise<string> => {
-  const url = 'http://www.metaphorpsum.com/paragraphs/1/8';
+  const url = 'http://www.metaphorpsum.com/paragraphs/1/4';
   let raceText = '';
 
   try {

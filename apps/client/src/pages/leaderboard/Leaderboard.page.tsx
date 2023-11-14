@@ -20,7 +20,7 @@ export function Leaderboard(): ReactElement {
     `T:${roomId}-R:${raceIndex}` as AppRaceId,
   );
 
-  const timeout = useRef(10);
+  const timeout = useRef(20);
 
   const panelImages: Array<string> = [
     'https://via.placeholder.com/300x150',

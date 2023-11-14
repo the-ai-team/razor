@@ -185,11 +185,11 @@ export function Race(): ReactElement {
               />
             </div>
             {!isSpectator ? (
-              <div className='grid grid-cols-4'>
+              <div className='flex gap-12'>
                 <div
                   className={cs(
                     'm-auto 2xl:static',
-                    'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
+                    'scale-50 2xl:scale-100 origin-top-right 2xl:origin-center',
                     'fixed -top-40 right-8 z-10',
                   )}>
                   <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />

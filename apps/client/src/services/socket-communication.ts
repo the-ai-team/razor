@@ -56,10 +56,20 @@ export const initializeSocket = (): void => {
 };
 
 const tryReconnect = (reason: Socket.DisconnectReason): void => {
+  if (reason === 'io server disconnect') {
+    console.log('Server is down');
+  }
+
+  if (reason === 'io client disconnect') {
+    console.log('Disconnected by client');
+  }
+
   // Reconnect only if not user disconnected intentionally (from a client trigger or server side trigger).
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
+    console.log(`Disconnected by ${reason}`);
+
     if (!savedData.savedRoomId || !savedData.savedPlayerName) {
       return;
     }
@@ -81,12 +91,12 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
     // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
     const waitingTimeout = setTimeout(() => {
+      console.log('Reconnect timed out');
       clearInterval(reconnector);
       savedData.authToken = null;
       savedData.savedPlayerName = null;
       savedData.savedPlayerId = null;
       savedData.savedRoomId = null;
-      // TODO: navigate to home page
     }, RECONNECT_WAITING_TIME);
 
     socket.once('connect', () => {
@@ -127,6 +137,11 @@ function validateSchema<T>({ event, data }: validateSchemaArgs<T>): boolean {
 socket.onAny((event, data) => {
   const isValid = validateSchema({ event, data });
   if (!isValid) {
+    return;
+  }
+
+  if (!savedData.savedRoomId || !savedData.savedPlayerId) {
+    // TODO: navigate to home page
     return;
   }
 
