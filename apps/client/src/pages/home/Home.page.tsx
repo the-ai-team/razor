@@ -44,19 +44,31 @@ export function Home(): ReactElement {
   const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
     useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
+  const [isRouteToRoomBtnDisabled, toggleIsRouteToRoomBtnDisabled] =
+    useState<boolean>(false);
 
   const routeToRoom = async (): Promise<void> => {
-    if (roomId) {
-      // TODO: Add try catch and make a error info ui popups.
-      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
+    toggleIsRouteToRoomBtnDisabled(true);
+    try {
+      if (roomId) {
+        const roomIdFromServer = await requestToJoinRoom({
+          playerName,
+          roomId,
+        });
+        if (roomIdFromServer) {
+          navigate(`/${roomIdFromServer}/room`);
+        }
+        toggleIsRouteToRoomBtnDisabled(false);
+      } else {
+        const roomIdFromServer = await requestToCreateRoom({ playerName });
+        if (roomIdFromServer) {
+          navigate(`/${roomIdFromServer}/room`);
+        }
+        toggleIsRouteToRoomBtnDisabled(false);
       }
-    } else {
-      const roomIdFromServer = await requestToCreateRoom({ playerName });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
-      }
+    } catch (_) {
+      navigate('../');
+      toggleIsRouteToRoomBtnDisabled(false);
     }
   };
 
@@ -170,7 +182,7 @@ export function Home(): ReactElement {
         <Button
           onClick={routeToRoom}
           isFullWidth={true}
-          isDisabled={!isPlayerNameValid}
+          isDisabled={!isPlayerNameValid || isRouteToRoomBtnDisabled}
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
@@ -217,6 +229,7 @@ export function Home(): ReactElement {
           </Button>
         ) : (
           <ButtonWithInput
+            inputPlaceholder='i234S67B'
             onClick={(id: string): void => joinRoomButtonHandler(id)}
             onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
             inputState={getInputState(
