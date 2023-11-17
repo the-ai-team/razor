@@ -8,8 +8,8 @@ import './i18n';
 import './controllers';
 
 import { Debugger } from './utils/Debugger';
+import { App } from './app';
 import { ToastContextProvider } from './providers';
-import { Router } from './router';
 
 import './styles.css';
 
@@ -21,7 +21,7 @@ root.render(
   <StrictMode>
     <Provider store={store}>
       <ToastContextProvider>
-        <Router />
+        <App />
       </ToastContextProvider>
       <Debugger />
     </Provider>

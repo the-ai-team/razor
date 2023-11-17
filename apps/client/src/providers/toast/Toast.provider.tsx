@@ -5,7 +5,7 @@ import { ToastProps } from '../../components';
 import { ToastPortal } from '../../components/organisms/toast-portal/ToastPortal.component';
 
 // Omitting id and onClose from Toast props they are handled by the ToastContextProvider
-interface ToastContentArgs
+export interface ToastContentArgs
   extends Omit<ToastProps, 'id' | 'onClose' | 'children'> {
   message?: string;
 }
