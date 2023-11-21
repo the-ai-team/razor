@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { JoinLobbyFailures } from '../failures';
+
 import { leaderboardSchema } from './leaderboard';
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 import { playerLogSchema, playerLogsCollectionSchema } from './playerLog';
@@ -32,6 +34,13 @@ export const initialServerDataSchema = z.object({
   playerId: playerIdSchema,
   tournamentId: tournamentIdSchema,
   snapshot: stateModelSchema,
+});
+
+/**
+ * Related protocol - {@link SocketProtocols.JoinLobbyReject}
+ */
+export const joinLobbyRejectSchema = z.object({
+  message: z.nativeEnum(JoinLobbyFailures),
 });
 
 /**

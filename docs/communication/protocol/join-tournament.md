@@ -102,6 +102,15 @@ Socket message
 }
 ```
 
+### On error
+
+```json
+"type": "FS/ERR/JOIN_LOBBY",
+"data": {
+    "message": "Error message"
+}
+```
+
 ## Sock04 (Send data to other players) | From Server (To all) | Message
 
 ```json

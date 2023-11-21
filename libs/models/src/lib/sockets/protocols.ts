@@ -14,6 +14,7 @@ enum CommunicationType {
   Initial = 'INT',
   Command = 'CMD',
   Information = 'INF',
+  Error = 'ERR',
 }
 
 enum ProtocolName {
@@ -25,7 +26,6 @@ enum ProtocolName {
   SendTypeLog = 'SEND_TYPE_LOG',
   UpdateTypeLogs = 'UPDATE_TYPE_LOGS',
   Timeout = 'TIMEOUT',
-  // ForceEnd = 'FORCE_END',
   SendLeaderboard = 'SEND_LEADERBOARD',
   ClearPlayer = 'CLEAR_PLAYER',
   ResetLobby = 'RESET_LOBBY',
@@ -38,6 +38,7 @@ export enum SocketProtocols {
   // Joining a lobby
   JoinLobbyRequest = `${TransferDirection.ToServer}/${CommunicationType.Initial}/${ProtocolName.JoinLobby}`,
   JoinLobbyAccept = `${TransferDirection.FromServer}/${CommunicationType.Initial}/${ProtocolName.JoinLobby}`,
+  JoinLobbyReject = `${TransferDirection.FromServer}/${CommunicationType.Error}/${ProtocolName.JoinLobby}`,
   PlayerJoin = `${TransferDirection.FromServerToAll}/${CommunicationType.Information}/${ProtocolName.PlayerJoin}`,
 
   // Creating a lobby

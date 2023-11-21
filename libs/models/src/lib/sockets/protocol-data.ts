@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { JoinLobbyFailures } from '../failures';
 import { AppLeaderboard, AppStateModel } from '../state';
 
 import { PlayerId } from './player';
@@ -30,6 +31,10 @@ export interface ClientStoredPlayerData<T> {
   data: T;
 }
 
+export interface ErrorData<T> {
+  message: T;
+}
+
 // Data sent from the client to the server with socket establishment
 export type InitialClientData = z.infer<typeof initialClientDataSchema>;
 
@@ -44,6 +49,8 @@ export interface InitialServerData {
   /** Game snapshot */
   snapshot: Snapshot;
 }
+
+export type PlayerJoinRejectData = ErrorData<JoinLobbyFailures>;
 
 export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
 export type ClearPlayerData = z.infer<typeof clearPlayerSchema>;

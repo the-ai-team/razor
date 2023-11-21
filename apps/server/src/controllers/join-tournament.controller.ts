@@ -2,6 +2,7 @@ import {
   AppPlayer,
   appPlayerStateToPlayerState,
   InitialServerData,
+  JoinLobbyFailures,
   PlayerJoinData,
   Snapshot,
   SocketProtocols,
@@ -41,6 +42,17 @@ const joinTournamentController = ({
       store.getState().game.playersModel[
         tokenPlayerMap.getPlayerIdBySocketId(socketId)
       ];
+
+    if (!player) {
+      publishToSingleClient({
+        socketId,
+        protocol: SocketProtocols.JoinLobbyReject,
+        data: {
+          message: JoinLobbyFailures.PlayerIdInvalid,
+        },
+      });
+      return;
+    }
   }
 
   // If player data is not available on the store let new player join to the store.
@@ -53,7 +65,14 @@ const joinTournamentController = ({
     });
     if (!playerId) {
       logger.error("Store didn't send a playerId", context);
-      // TODO: send error response
+
+      publishToSingleClient({
+        socketId,
+        protocol: SocketProtocols.JoinLobbyReject,
+        data: {
+          message: JoinLobbyFailures.TournamentNotFound,
+        },
+      });
       return;
     }
     logger.debug('Player added to the store', context);
