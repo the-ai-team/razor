@@ -21,6 +21,7 @@ import {
 } from '../../components';
 import { useToastContext } from '../../hooks/useToastContext';
 import { requestToStartRace } from '../../services/handlers';
+import { savedData } from '../../utils/save-player-data';
 
 import { PlayerList } from './templates/player-list/PlayerList.template';
 
@@ -84,7 +85,12 @@ export function Room(): ReactElement {
 
   return (
     <div className='h-full w-full'>
-      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
+      <Logo
+        className='absolute top-0 left-10 w-[150px] h-[150px] cursor-pointer'
+        onClick={(): void => {
+          savedData.reset();
+        }}
+      />
       <Panel title={t('panel.title')}>
         <Description
           title={t('panel.descriptions.0.title')}

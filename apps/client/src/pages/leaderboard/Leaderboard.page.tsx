@@ -12,6 +12,7 @@ import banner2 from '../../assets/images/panel-images/leaderboard2.png';
 import banner3 from '../../assets/images/panel-images/leaderboard3.png';
 import { Description, Panel } from '../../components';
 import { Timer } from '../../components/molecules/timer';
+import { savedData } from '../../utils/save-player-data';
 
 import { LeaderboardList } from './templates/leaderboard_list/LeaderboardList.template';
 export function Leaderboard(): ReactElement {
@@ -43,7 +44,12 @@ export function Leaderboard(): ReactElement {
 
   return (
     <div className='h-full w-full relative'>
-      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
+      <Logo
+        className='absolute top-0 left-10 w-[150px] h-[150px] cursor-pointer'
+        onClick={(): void => {
+          savedData.reset();
+        }}
+      />
       <Panel title={t('panel.title')}>
         <Description
           title={t('panel.descriptions.0.title')}
