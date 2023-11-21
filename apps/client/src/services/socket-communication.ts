@@ -141,13 +141,16 @@ socket.onAny((event, data) => {
     return;
   }
 
+  if (!savedData.savedRoomId || !savedData.savedPlayerId) {
+    return;
+  }
+
   if (
     event !== SocketProtocols.CreateLobbyAccept &&
-    event !== SocketProtocols.JoinLobbyAccept
+    event !== SocketProtocols.JoinLobbyAccept &&
+    event !== SocketProtocols.JoinLobbyReject
   ) {
-    const tournamentId = savedData.savedRoomId
-      ? roomIdToTournamentId(savedData.savedRoomId)
-      : null;
+    const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
     pubsub.publish(event, {
       tournamentId,
       savedPlayerId: savedData.savedPlayerId,

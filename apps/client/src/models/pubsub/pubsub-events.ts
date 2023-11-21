@@ -37,7 +37,7 @@ type ModifiedEvent<T extends object, AdditionalProps extends object> = {
 type ModifiedOtherProtocolToTypeMap = {
   [K in keyof OtherProtocolToTypeMap]: ModifiedEvent<
     OtherProtocolToTypeMap[K],
-    { tournamentId: TournamentId | null; savedPlayerId: string | null }
+    { tournamentId: TournamentId; savedPlayerId: string }
   >;
 };
 
