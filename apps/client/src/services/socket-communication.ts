@@ -8,8 +8,9 @@ import {
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
-import { Connection } from '../constants';
+import { ToastType } from '../components';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
+import { addToast } from '../utils/globalToastManager';
 import { pubsub } from '../utils/pubsub';
 import { savedData } from '../utils/save-player-data';
 
@@ -44,7 +45,13 @@ export const initializeSocket = (): void => {
   socket.auth.token = savedData.authToken ?? '';
   socket.connect();
   socket.on('connect_error', () => {
-    alert('Connection error');
+    addToast({
+      title: 'Server Error',
+      message: 'Server disconnected, trying to reconnect...',
+      type: ToastType.Error,
+      icon: 'close',
+    });
+    savedData.reset();
     endSocket();
   });
   socket.on('connect', () => {
