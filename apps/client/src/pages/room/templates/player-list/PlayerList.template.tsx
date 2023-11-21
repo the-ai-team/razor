@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { MAX_ALLOWED_PLAYERS } from '@razor/constants';
 import { AppTournamentId } from '@razor/models';
 import { RootState } from '@razor/store';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import cs from 'classnames';
 
 import { ListItem, Text } from '../../../../components';
@@ -125,7 +126,7 @@ export function PlayerList({
             <ListItem
               title={playersModel.current[playerId].name}
               imgURL={playersModel.current[playerId].avatarLink}
-              number={index + 1}
+              isHighlighted={playerId === savedData.savedPlayerId}
               key={playerId}
             />
           ))}

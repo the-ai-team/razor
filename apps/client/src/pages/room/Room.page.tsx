@@ -118,7 +118,7 @@ export function Room(): ReactElement {
           <div
             className={cs(
               'max-w-[1000px] w-10/12 h-full',
-              'my-32',
+              'my-24',
               'overflow-hidden flex flex-col justify-center items-center',
             )}>
             <PlayerList tournamentId={tournamentId} />

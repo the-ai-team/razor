@@ -14,8 +14,6 @@ function playerJoinController({
 }: PlayerJoinControllerArgs): void {
   const { id: playerId, state, ...playerData } = data.player;
 
-  console.log('playerJoinController', data);
-
   // Skip if player is self
   if (playerId === savedData.savedPlayerId) {
     return;
