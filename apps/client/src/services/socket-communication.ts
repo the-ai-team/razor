@@ -46,12 +46,11 @@ export const initializeSocket = (): void => {
   socket.connect();
   socket.on('connect_error', () => {
     addToast({
-      title: 'Server Error',
-      message: 'Server disconnected, trying to reconnect...',
+      title: 'Error',
+      message: 'Disconnected from server.',
       type: ToastType.Error,
       icon: 'close',
     });
-    savedData.reset();
     endSocket();
   });
   socket.on('connect', () => {
