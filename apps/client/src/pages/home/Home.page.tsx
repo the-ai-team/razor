@@ -10,6 +10,9 @@ import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
+import banner1 from '../../assets/images/panel-images/home1.png';
+import banner2 from '../../assets/images/panel-images/home2.png';
+import banner3 from '../../assets/images/panel-images/home3.png';
 import {
   Button,
   ButtonWithInput,
@@ -144,11 +147,7 @@ export function Home(): ReactElement {
     }
   };
 
-  const panelImages: Array<string> = [
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-  ];
+  const panelImages: Array<string> = [banner1, banner2, banner3];
 
   return (
     <div className={cs('flex justify-center items-center', 'w-full h-full')}>

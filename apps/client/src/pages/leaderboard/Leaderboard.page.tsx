@@ -7,6 +7,9 @@ import { RootState } from '@razor/store';
 import cs from 'classnames';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import banner1 from '../../assets/images/panel-images/leaderboard1.png';
+import banner2 from '../../assets/images/panel-images/leaderboard2.png';
+import banner3 from '../../assets/images/panel-images/leaderboard3.png';
 import { Description, Panel } from '../../components';
 import { Timer } from '../../components/molecules/timer';
 
@@ -22,11 +25,7 @@ export function Leaderboard(): ReactElement {
 
   const timeout = useRef(20);
 
-  const panelImages: Array<string> = [
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-  ];
+  const panelImages: Array<string> = [banner1, banner2, banner3];
 
   const handleTimeEnd = (): void => {
     navigate(`/${roomId}/room`);

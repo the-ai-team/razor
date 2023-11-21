@@ -9,6 +9,9 @@ import cs from 'classnames';
 import { ReactComponent as LinkIcon } from 'pixelarticons/svg/link.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import banner1 from '../../assets/images/panel-images/room1.png';
+import banner2 from '../../assets/images/panel-images/room2.png';
+import banner3 from '../../assets/images/panel-images/room3.png';
 import {
   Button,
   Description,
@@ -57,11 +60,7 @@ export function Room(): ReactElement {
     setPlayerIds(game.tournamentsModel[tournamentId]?.playerIds);
   }, [game.playersModel, game.tournamentsModel, tournamentId]);
 
-  const panelImages: Array<string> = [
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-  ];
+  const panelImages: Array<string> = [banner1, banner2, banner3];
 
   const copyUrlToClipboard = async (): Promise<void> => {
     const url = `${hostname}/${roomId}`;
