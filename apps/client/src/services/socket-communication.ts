@@ -55,7 +55,7 @@ export const initializeSocket = (): void => {
   });
 };
 
-const tryReconnect = (reason: Socket.DisconnectReason): void => {
+const tryReconnect = async (reason: Socket.DisconnectReason): Promise<void> => {
   if (reason === 'io server disconnect') {
     console.log('Server is down');
   }
@@ -74,25 +74,21 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
       return;
     }
 
-    const reconnector = setInterval(async () => {
-      try {
-        console.log('Trying to reconnect...');
-        if (savedData.savedRoomId && savedData.savedPlayerName) {
-          await requestToJoinRoom({
-            playerName: savedData.savedPlayerName,
-            roomId: savedData.savedRoomId,
-          });
-        }
-        clearInterval(reconnector);
-      } catch (error) {
-        console.error(error);
+    try {
+      console.log('Trying to reconnect...');
+      if (savedData.savedRoomId && savedData.savedPlayerName) {
+        await requestToJoinRoom({
+          playerName: savedData.savedPlayerName,
+          roomId: savedData.savedRoomId,
+        });
       }
-    }, Connection.RECONNECT_TRY_INTERVAL);
+    } catch (error) {
+      console.error(error);
+    }
 
     // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
     const waitingTimeout = setTimeout(() => {
       console.log('Reconnect timed out');
-      clearInterval(reconnector);
       savedData.authToken = null;
       savedData.savedPlayerName = null;
       savedData.savedPlayerId = null;
@@ -101,7 +97,6 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
     socket.once('connect', () => {
       console.log('Reconnected');
-      clearInterval(reconnector);
       clearTimeout(waitingTimeout);
     });
   }
@@ -140,16 +135,13 @@ socket.onAny((event, data) => {
     return;
   }
 
-  if (!savedData.savedRoomId || !savedData.savedPlayerId) {
-    // TODO: navigate to home page
-    return;
-  }
-
   if (
     event !== SocketProtocols.CreateLobbyAccept &&
     event !== SocketProtocols.JoinLobbyAccept
   ) {
-    const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
+    const tournamentId = savedData.savedRoomId
+      ? roomIdToTournamentId(savedData.savedRoomId)
+      : null;
     pubsub.publish(event, {
       tournamentId,
       savedPlayerId: savedData.savedPlayerId,
