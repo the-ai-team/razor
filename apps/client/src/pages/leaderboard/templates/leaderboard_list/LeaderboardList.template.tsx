@@ -26,7 +26,7 @@ export function LeaderboardList({
   const timeoutEntries = entries.filter(
     entry => entry.status === AppPlayerStatus.Timeout,
   );
-  const playersModel = game.playersModel;
+  const racePlayers = game.racesModel[raceId]?.players || [];
 
   const raceTextLength = game.racesModel[raceId]?.text.length || 0;
 
@@ -101,8 +101,13 @@ export function LeaderboardList({
           )}
           ref={containerRef}>
           {completedEntries.map((entry, index) => {
-            const player = playersModel[entry.playerId];
+            const player = racePlayers[entry.playerId];
+            if (!player) {
+              return <></>;
+            }
+
             const values = entry.values as AppFinishedPlayerValues;
+
             return (
               <ListItem
                 title={player.name}
@@ -117,7 +122,11 @@ export function LeaderboardList({
             <div className='w-full h-2 flex-shrink-0 bg-neutral-40 bg-opacity-60 rounded-full my-6' />
           ) : null}
           {timeoutEntries.map(entry => {
-            const player = playersModel[entry.playerId];
+            const player = racePlayers[entry.playerId];
+            if (!player) {
+              return <></>;
+            }
+
             const values = entry.values as AppTimeoutPlayerValues;
             const completePercentage =
               raceTextLength > 0
