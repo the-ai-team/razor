@@ -11,8 +11,8 @@ import { pubsub } from '..';
  */
 export function emitSocketMessages(io: Server): void {
   // If `Send Data To Client` event is published, then this function will send data to the client.
-  const sendData = ({ playerId, protocol, data }): void => {
-    const socketId = tokenPlayerMap.getSocketIdByPlayerId(playerId);
+  const sendData = ({ playerId, socketId, protocol, data }): void => {
+    socketId ??= tokenPlayerMap.getSocketIdByPlayerId(playerId);
     // Add player to specific socket room when player joining or creating room.
     // Socket room has the tournament id. So we can send data to specific lobby(All players in a specific tournament).
     if (
