@@ -13,8 +13,17 @@ class SavedData {
   public get authToken(): AuthToken | null {
     return this._authToken;
   }
+
   public set authToken(value: AuthToken | null) {
     this._authToken = value;
+    this.runListeners();
+  }
+
+  public reset(): void {
+    this._authToken = null;
+    this.savedPlayerName = null;
+    this.savedPlayerId = null;
+    this.savedRoomId = null;
     this.runListeners();
   }
 
