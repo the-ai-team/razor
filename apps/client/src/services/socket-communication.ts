@@ -53,9 +53,6 @@ export const initializeSocket = (): void => {
     });
     endSocket();
   });
-  socket.on('connect', () => {
-    console.log('connected');
-  });
   socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     savedData.authToken = token;
   });
@@ -76,9 +73,16 @@ const tryReconnect = async (reason: Socket.DisconnectReason): Promise<void> => {
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
     console.log(`Disconnected by ${reason}`);
 
-    if (!savedData.savedRoomId || !savedData.savedPlayerName) {
-      return;
-    }
+    // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
+    const waitingTimeout = setTimeout(() => {
+      console.log('Reconnect timed out');
+      savedData.reset();
+    }, RECONNECT_WAITING_TIME);
+
+    socket.once('connect', () => {
+      console.log('Reconnected');
+      clearTimeout(waitingTimeout);
+    });
 
     try {
       console.log('Trying to reconnect...');
@@ -91,20 +95,6 @@ const tryReconnect = async (reason: Socket.DisconnectReason): Promise<void> => {
     } catch (error) {
       console.error(error);
     }
-
-    // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
-    const waitingTimeout = setTimeout(() => {
-      console.log('Reconnect timed out');
-      savedData.authToken = null;
-      savedData.savedPlayerName = null;
-      savedData.savedPlayerId = null;
-      savedData.savedRoomId = null;
-    }, RECONNECT_WAITING_TIME);
-
-    socket.once('connect', () => {
-      console.log('Reconnected');
-      clearTimeout(waitingTimeout);
-    });
   }
 };
 
