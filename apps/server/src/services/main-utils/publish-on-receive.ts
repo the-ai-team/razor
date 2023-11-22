@@ -66,14 +66,12 @@ export function publishOnReceive<T>({
     pubsub.publish(event, { data, context, socketId });
   } else {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
+    context = logger.createContext({ identifier: playerId });
 
     if (!playerId) {
       logger.warn('Player not found.', context);
       return;
     }
-
-    // Creating logger context
-    context = logger.createContext({ identifier: playerId });
 
     const isValid = validateSchema({ event, data, context });
     if (!isValid) {
