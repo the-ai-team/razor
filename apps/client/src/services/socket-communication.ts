@@ -9,6 +9,7 @@ import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
 import { ToastType } from '../components';
+import { RECONNECT_TRY_INTERVAL } from '../constants/connection';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { addToast } from '../utils/globalToastManager';
 import { pubsub } from '../utils/pubsub';
@@ -58,7 +59,7 @@ export const initializeSocket = (): void => {
   });
 };
 
-const tryReconnect = async (reason: Socket.DisconnectReason): Promise<void> => {
+const tryReconnect = (reason: Socket.DisconnectReason): void => {
   if (reason === 'io server disconnect') {
     console.log('Server is down');
   }
@@ -77,24 +78,29 @@ const tryReconnect = async (reason: Socket.DisconnectReason): Promise<void> => {
     const waitingTimeout = setTimeout(() => {
       console.log('Reconnect timed out');
       savedData.reset();
+      clearInterval(reconnector);
     }, RECONNECT_WAITING_TIME);
 
     socket.once('connect', () => {
       console.log('Reconnected');
       clearTimeout(waitingTimeout);
+      clearInterval(reconnector);
     });
 
-    try {
-      console.log('Trying to reconnect...');
-      if (savedData.savedRoomId && savedData.savedPlayerName) {
-        await requestToJoinRoom({
-          playerName: savedData.savedPlayerName,
-          roomId: savedData.savedRoomId,
-        });
+    const reconnector = setInterval(async () => {
+      try {
+        console.log('Trying to reconnect...');
+        if (savedData.savedRoomId && savedData.savedPlayerName) {
+          await requestToJoinRoom({
+            playerName: savedData.savedPlayerName,
+            roomId: savedData.savedRoomId,
+          });
+        }
+        clearInterval(reconnector);
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    }, RECONNECT_TRY_INTERVAL);
   }
 };
 
