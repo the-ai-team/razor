@@ -22,6 +22,7 @@ export function manageSocketConnections(
 
   // Take the token from the handshake.
   const token = socket.handshake.auth.token;
+  logger.info(`Token received from client: ${token}`, context);
 
   let playerData: MapData = null;
   if (token) {
