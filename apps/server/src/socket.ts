@@ -20,9 +20,32 @@ export function manageSocketConnections(
 
   logger.info('User connected', context);
 
+  // On any socket event publish the event with playerId and data.
+  socket.onAny((event, data) => publishOnReceive({ event, data, socket }));
+
+  // If a user disconnected call the reconnect function.
+  socket.on('disconnect', () => {
+    const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
+    const authToken = tokenPlayerMap.getAuthTokenBySocketId(socket.id);
+    const context = logger.createContext({ identifier: playerId });
+    logger.info('User disconnected.', context);
+    if (authToken) {
+      checkReconnected(authToken, socketServer);
+    }
+  });
+}
+
+/**
+ * Update socket id in the map.
+ * If player is new, token will be generated and sent to the client. Then player will be added to the map.
+ * If player is already in the map then update the socket id with the new one.
+ * @param socket Socket instance
+ */
+export function updateSocketId(socket: Socket): void {
   // Take the token from the handshake.
   const token = socket.handshake.auth.token;
-  logger.info(`Token received from client: ${token}`, context);
+
+  const context = logger.createContext({ identifier: socket.id });
 
   let playerData: MapData = null;
   if (token) {
@@ -56,18 +79,4 @@ export function manageSocketConnections(
     const context = logger.createContext({ identifier: playerId });
     logger.debug('User updated with a new socket in map.', context);
   }
-
-  // On any socket event publish the event with playerId and data.
-  socket.onAny((event, data) => publishOnReceive({ event, data, socket }));
-
-  // If a user disconnected call the reconnect function.
-  socket.on('disconnect', () => {
-    const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
-    const authToken = tokenPlayerMap.getAuthTokenBySocketId(socket.id);
-    const context = logger.createContext({ identifier: playerId });
-    logger.info('User disconnected.', context);
-    if (authToken) {
-      checkReconnected(authToken, socketServer);
-    }
-  });
 }
