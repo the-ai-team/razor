@@ -68,14 +68,15 @@ export function publishOnReceive<T>({
     }
     pubsub.publish(event, { data, context, socketId });
   } else {
-    const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
+    const playerId =
+      tokenPlayerMap.getPlayerIdBySocketId(socket.id) || 'P:NOTFOUND';
+    context = logger.createContext({ identifier: playerId });
 
     if (!playerId) {
       logger.warn('Player not found.', context);
       // TODO: Send reset to client.
       return;
     }
-    context = logger.createContext({ identifier: playerId });
 
     const isValid = validateSchema({ event, data, context });
     if (!isValid) {
