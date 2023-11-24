@@ -44,22 +44,22 @@ export const endSocket = (): void => {
 
 export const initializeSocket = (): void => {
   socket.auth.token = savedData.authToken ?? '';
+  console.log('initializing sockets', socket.auth.token);
   socket.connect();
   socket.on('connect_error', () => {
     addToast({
       title: 'Error',
-      message: 'Disconnected from server.',
-      type: ToastType.Error,
-      icon: 'close',
+      message: 'Disconnected. Trying to reconnect..',
+      type: ToastType.Warning,
+      icon: 'disconnect',
     });
-    endSocket();
   });
   socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     savedData.authToken = token;
   });
 };
 
-const tryReconnect = (reason: Socket.DisconnectReason): void => {
+export const tryReconnect = (reason: Socket.DisconnectReason): void => {
   if (reason === 'io server disconnect') {
     console.log('Server is down');
   }
@@ -72,7 +72,7 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
-    console.log(`Disconnected by ${reason}`);
+    console.log(`Disconnected by ${reason}`, savedData);
 
     // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
     const waitingTimeout = setTimeout(() => {
@@ -89,7 +89,7 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
     const reconnector = setInterval(async () => {
       try {
-        console.log('Trying to reconnect...');
+        console.log('Trying to reconnect...', savedData.authToken);
         if (savedData.savedRoomId && savedData.savedPlayerName) {
           await requestToJoinRoom({
             playerName: savedData.savedPlayerName,
