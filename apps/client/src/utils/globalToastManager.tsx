@@ -1,3 +1,4 @@
+import { ReactComponent as Disconnect } from 'pixelarticons/svg/cellular-signal-off.svg';
 import { ReactComponent as CloseIcon } from 'pixelarticons/svg/close.svg';
 
 import { ToastType } from '../components';
@@ -5,6 +6,7 @@ import { ToastContentArgs } from '../providers';
 
 export const globalToastIcons = {
   close: CloseIcon,
+  disconnect: Disconnect,
 };
 
 export type GlobalToastIcons = keyof typeof globalToastIcons;
