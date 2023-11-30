@@ -23,6 +23,8 @@ export function manageSocketConnections(
   // On any socket event publish the event with playerId and data.
   socket.onAny((event, data) => publishOnReceive({ event, data, socket }));
 
+  mapSocketId(socket);
+
   // If a user disconnected call the reconnect function.
   socket.on('disconnect', () => {
     const playerId = tokenPlayerMap.getPlayerIdBySocketId(socket.id);
@@ -41,7 +43,7 @@ export function manageSocketConnections(
  * If player is already in the map then update the socket id with the new one.
  * @param socket Socket instance
  */
-export function updateSocketId(socket: Socket): void {
+export function mapSocketId(socket: Socket): void {
   // Take the token from the handshake.
   const token = socket.handshake.auth.token;
 

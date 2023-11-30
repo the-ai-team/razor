@@ -7,7 +7,6 @@ import {
 import { store } from '@razor/store';
 import { Socket } from 'socket.io';
 
-import { updateSocketId } from '../../socket';
 import { tokenPlayerMap } from '../../stores';
 import { ContextOutput, Logger } from '../logger';
 import { pubsub } from '../pubsub';
@@ -55,8 +54,6 @@ export function publishOnReceive<T>({
     event === SocketProtocols.JoinLobbyRequest ||
     event === SocketProtocols.CreateLobbyRequest
   ) {
-    updateSocketId(socket);
-
     // If player is new, player may not have playerId yet. So we use socket id to create context and publish event.
     // Player id will be created in the controller.
     const socketId = socket.id;
