@@ -15,7 +15,7 @@ import { addToast } from '../utils/globalToastManager';
 import { pubsub } from '../utils/pubsub';
 import { savedData } from '../utils/save-player-data';
 
-import { requestToJoinRoom } from './handlers/join-room';
+import { requestToJoinRoom } from './handlers';
 
 const SOCKET_ENDPOINT =
   import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:3000';
@@ -28,7 +28,7 @@ interface SocketFormat extends Socket {
 
 export const socket = io(SOCKET_ENDPOINT, {
   auth: {
-    token: savedData.authToken,
+    token: '',
   },
   autoConnect: false,
   withCredentials: true,
@@ -36,15 +36,10 @@ export const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
-  savedData.authToken = null;
-  savedData.savedPlayerName = null;
-  savedData.savedPlayerId = null;
-  savedData.savedRoomId = null;
+  savedData.reset();
 };
 
 export const initializeSocket = (): void => {
-  socket.auth.token = savedData.authToken ?? '';
-  console.log('initializing sockets', socket.auth.token);
   socket.connect();
   socket.on('connect_error', () => {
     addToast({
@@ -56,6 +51,7 @@ export const initializeSocket = (): void => {
   });
   socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     savedData.authToken = token;
+    socket.auth.token = token;
   });
 };
 
