@@ -12,6 +12,7 @@ class CheckRaceEnd {
   private allPlayerIds: AppPlayerId[];
   private raceEndPlayerIds: AppPlayerId[];
   private raceTextLength: number;
+  private _isRaceEnded = false;
 
   constructor(allPlayerIds: AppPlayerId[], raceTextLength: number) {
     this.allPlayerIds = allPlayerIds;
@@ -36,7 +37,19 @@ class CheckRaceEnd {
 
   /** Check all players finished the race */
   public isRaceEnded(): boolean {
-    return this.raceEndPlayerIds.length === this.allPlayerIds.length;
+    // If already ended.
+    if (this._isRaceEnded) {
+      return true;
+    } else {
+      // Check allPlayerIds are in raceEndPlayerIds
+      const isAllPlayersEnded = this.allPlayerIds.every(playerId =>
+        this.raceEndPlayerIds.includes(playerId),
+      );
+      if (isAllPlayersEnded) {
+        this._isRaceEnded = true;
+        return true;
+      }
+    }
   }
 
   /** Check whether player has completed the race text.

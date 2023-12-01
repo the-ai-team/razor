@@ -24,7 +24,7 @@ app.get('/token-player-map', (req, res) => {
   res.send(data);
 });
 
-app.get('/ongoing-race-data', (req, res) => {
+app.get('/race-data', (req, res) => {
   const data = viewAllCheckRaceEndInstances();
   res.send(data);
 });
