@@ -93,7 +93,8 @@ const joinTournamentController = ({
   const filteredLeaderboards = pick(state.leaderboardsModel, raceIds);
   let filteredPlayersLogs = {};
   if (filteredRaces[lastRaceId]?.isOnGoing === true) {
-    const playersLogsIds = playerIds.map(
+    const racePlayerIds = Object.keys(filteredRaces[lastRaceId].players);
+    const playersLogsIds = racePlayerIds.map(
       playerId => `${lastRaceId}-${playerId}`,
     );
     filteredPlayersLogs = pick(state.playerLogsModel, playersLogsIds);
