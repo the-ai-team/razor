@@ -1,8 +1,9 @@
-import { AuthToken, PlayerId, SocketId } from '@razor/models';
+import { AuthToken, PlayerId, SocketId, TournamentId } from '@razor/models';
 
 export interface MapData {
   playerId?: PlayerId;
   socketId: SocketId;
+  tournamentId?: TournamentId;
 }
 
 interface MapAsObject {
@@ -44,6 +45,18 @@ class TokenPlayerMap {
     return null;
   }
 
+  /** Add tournament id to the existing map entry.
+   * @param playerId - socket id of the player
+   * @param tournamentId - tournament id of the player
+   */
+  addTournamentId(playerId: PlayerId, tournamentId: TournamentId): void {
+    for (const [key, value] of this.map.entries()) {
+      if (value.playerId === playerId) {
+        this.map.set(key, { ...value, tournamentId });
+      }
+    }
+  }
+
   /** Update existing player socket id. If player does not exist, throw error.
    * @param authToken - auth token of the player
    * @param socketId - socket id of the player
@@ -65,6 +78,19 @@ class TokenPlayerMap {
     for (const [_key, value] of this.map.entries()) {
       if (value.socketId === socketId) {
         return value.playerId;
+      }
+    }
+    return null;
+  }
+
+  /** Get tournament id using player id.
+   * @param playerId - player id of the player
+   * @returns tournament id if player exists, null otherwise
+   */
+  getTournamentIdByPlayerId(playerId: PlayerId): TournamentId | null {
+    for (const [_key, value] of this.map.entries()) {
+      if (value.playerId === playerId) {
+        return value.tournamentId;
       }
     }
     return null;

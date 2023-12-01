@@ -13,6 +13,7 @@ import { pick } from 'lodash';
 
 import { AllServerPubSubEventsToTypeMap } from '../models';
 import {
+  assignPlayerToSocketGroup,
   Logger,
   publishToAllClients,
   publishToSingleClient,
@@ -38,10 +39,7 @@ const joinTournamentController = ({
       'Player already has playerId, checking whether player is available on the store.',
       context,
     );
-    player =
-      store.getState().game.playersModel[
-        tokenPlayerMap.getPlayerIdBySocketId(socketId)
-      ];
+    player = store.getState().game.playersModel[playerId];
 
     if (!player) {
       publishToSingleClient({
@@ -116,6 +114,9 @@ const joinTournamentController = ({
     tournamentId,
     snapshot,
   };
+
+  tokenPlayerMap.addTournamentId(playerId, tournamentId);
+  assignPlayerToSocketGroup(playerId);
 
   publishToSingleClient({
     playerId,

@@ -33,7 +33,7 @@ const allowedOrigin = process.env.NX_ALLOWED_ORIGINS?.includes(',')
   ? process.env.NX_ALLOWED_ORIGINS?.split(', ')
   : process.env.NX_ALLOWED_ORIGINS || 'http://localhost:4200';
 
-const socketServer = new Server(server, {
+export const socketServer = new Server(server, {
   cors: {
     origin: allowedOrigin,
     methods: ['GET', 'POST'],

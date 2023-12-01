@@ -1,7 +1,12 @@
 import { SocketProtocols } from '@razor/models';
 import { Server, Socket } from 'socket.io';
 
-import { checkReconnected, Logger, publishOnReceive } from './services';
+import {
+  assignPlayerToSocketGroup,
+  checkReconnected,
+  Logger,
+  publishOnReceive,
+} from './services';
 import { MapData, tokenPlayerMap } from './stores';
 import { generateAuthToken, validateAuthToken } from './utils';
 
@@ -79,6 +84,7 @@ export function mapSocketId(socket: Socket): void {
     tokenPlayerMap.updatePlayerSocketId(token, socket.id);
     const { playerId } = playerData;
     const context = logger.createContext({ identifier: playerId });
+    assignPlayerToSocketGroup(playerId);
     logger.debug('User updated with a new socket in map.', context);
   }
 }

@@ -2,7 +2,12 @@ import { InitialServerData, Snapshot, SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
 import { AllServerPubSubEventsToTypeMap } from '../models';
-import { Logger, publishToSingleClient, pubsub } from '../services';
+import {
+  assignPlayerToSocketGroup,
+  Logger,
+  publishToSingleClient,
+  pubsub,
+} from '../services';
 import { tokenPlayerMap } from '../stores';
 
 const logger = new Logger('create-tournament.controller');
@@ -51,6 +56,9 @@ const createTournamentController = ({
     tournamentId,
     snapshot,
   };
+
+  tokenPlayerMap.addTournamentId(playerId, tournamentId);
+  assignPlayerToSocketGroup(playerId);
 
   publishToSingleClient({
     playerId,
