@@ -5,9 +5,11 @@ import { AuthToken, PlayerId } from '@razor/models';
  */
 class SavedData {
   private _authToken: AuthToken | null = null;
+  // TODO: rename to playername
   public savedPlayerName: string | null = null;
   public savedPlayerId: PlayerId | null = null;
   public savedRoomId: string | null = null;
+  public savedSocketId: string | null = null;
   private listeners: (() => void)[] = [];
 
   public get authToken(): AuthToken | null {
@@ -24,6 +26,7 @@ class SavedData {
     this.savedPlayerName = null;
     this.savedPlayerId = null;
     this.savedRoomId = null;
+    this.savedSocketId = null;
     this.runListeners();
   }
 

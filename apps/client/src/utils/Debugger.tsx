@@ -1,6 +1,8 @@
 import { ReactElement, useEffect, useState } from 'react';
 import cs from 'classnames';
 
+import { socket, tryReconnect } from '../services';
+
 import { savedData } from './save-player-data';
 
 enum DebuggerCommands {
@@ -12,6 +14,7 @@ export function Debugger(): ReactElement {
   const [typedText, setTypedText] = useState('');
   const [isExpanded, toggleExpand] = useState(false);
   const [lastUpdatedTime, setLastUpdatedTime] = useState(0);
+  const [connectionLogs, setConnectionLogs] = useState<string[]>([]);
 
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   const validCommands: string[] = [DebuggerCommands.ENABLE];
@@ -50,15 +53,38 @@ export function Debugger(): ReactElement {
 
     const updateData = (): void => {
       setLastUpdatedTime(Date.now());
-      console.log('Updated data');
+      console.log('Updated saved data');
+    };
+
+    const getFormattedTime = (): string => {
+      const time = new Date(Date.now());
+      return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+    };
+
+    const addConnectedLog = (): void => {
+      setConnectionLogs(prev => [
+        ...prev,
+        `Connected @${getFormattedTime()}`,
+        savedData.authToken ? `AuthToken: ${savedData.authToken}` : '',
+      ]);
+    };
+    const addDisconnectedLog = (reason: string): void => {
+      setConnectionLogs(prev => [
+        ...prev,
+        `[${reason}] Disconnected @${getFormattedTime()}`,
+      ]);
     };
 
     savedData.addEventListener(updateData);
     document.addEventListener('keydown', handleKeyDown);
+    socket.on('connect', addConnectedLog);
+    socket.on('disconnect', addDisconnectedLog);
 
     return () => {
       savedData.removeEventListener(updateData);
       document.removeEventListener('keydown', handleKeyDown);
+      socket.off('connect', addConnectedLog);
+      socket.off('disconnect', addDisconnectedLog);
     };
   }, []);
 
@@ -74,11 +100,14 @@ export function Debugger(): ReactElement {
         'font-roboto text-sm text-right',
         'overflow-hidden',
         'transition-all duration-300',
-        isExpanded ? 'h-full' : 'h-10',
+        isExpanded ? 'h-full' : 'h-12',
       )}>
-      <div className='flex justify-between mb-2'>
+      <div className='flex justify-between items-center mb-2'>
         <h2>Debugger</h2>
-        <button type='button' onClick={(): void => toggleExpand(!isExpanded)}>
+        <button
+          className='bg-neutral-40 hover:bg-neutral-50 px-2 py-1 rounded'
+          type='button'
+          onClick={(): void => toggleExpand(!isExpanded)}>
           {isExpanded ? 'Collapse' : 'Expand'}
         </button>
       </div>
@@ -90,6 +119,43 @@ export function Debugger(): ReactElement {
         <span>PlayerId: {savedData.savedPlayerId || 'N/A'}</span>
         <span>UserName: {savedData.savedPlayerName || 'N/A'}</span>
         <span>RoomId: {savedData.savedRoomId || 'N/A'}</span>
+        <span>SocketId: {savedData.savedSocketId || 'N/A'}</span>
+        <span className='flex justify-end items-center gap-4 my-2'>
+          {socket.connected ? (
+            <>
+              <div className='rounded-full bg-white h-2 w-2 inline-block' />
+              Connected
+            </>
+          ) : (
+            <>
+              <div className='rounded-full bg-primary-40 h-2 w-2 inline-block' />
+              Disconnected
+            </>
+          )}
+        </span>
+        <button
+          type='button'
+          className='bg-neutral-40 hover:bg-neutral-50 px-2 py-1 rounded mt-2'
+          onClick={(): void => {
+            socket.disconnect();
+          }}>
+          Disconnect Sockets
+        </button>
+        <button
+          type='button'
+          className='bg-neutral-40 hover:bg-neutral-50 px-2 py-1 rounded mt-2'
+          onClick={(): void => {
+            tryReconnect('transport close');
+          }}>
+          Try reconnect
+        </button>
+        <span className='mt-2'>Connection Logs</span>
+        <div className='flex flex-col gap-1 max-h-[300px] overflow-y-scroll scroll-m-10 p-2 my-2 bg-neutral-40 rounded'>
+          {connectionLogs.map((log, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <span key={index}>{log}</span>
+          ))}
+        </div>
       </div>
     </div>
   );
