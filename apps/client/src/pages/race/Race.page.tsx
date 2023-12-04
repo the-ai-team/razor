@@ -44,6 +44,32 @@ export function Race(): ReactElement {
   const selfPlayerId = useRef<PlayerId>(savedData.savedPlayerId);
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
   const [isSpectator, setIsSpectator] = useState<boolean>(false);
+  const prevAuthToken = useRef<string | null>(savedData.authToken);
+
+  useEffect(() => {
+    const handleAuthTokenChange = (): void =>
+      savedData.addEventListener(() => {
+        const authToken = savedData.authToken;
+        if (prevAuthToken.current === null || authToken === null) {
+          return;
+        }
+
+        if (prevAuthToken.current !== authToken) {
+          prevAuthToken.current = authToken;
+          setIsSpectator(true);
+        }
+        addToast({
+          title: t('toasts.reconnected_as_new.title'),
+          type: ToastType.Info,
+          message: t('toasts.reconnected_as_new.message') as string,
+        });
+      });
+    handleAuthTokenChange();
+
+    return () => {
+      savedData.removeEventListener(handleAuthTokenChange);
+    };
+  }, []);
 
   // If the tournament state changed to leaderboard navigate to the leaderboard page.
   useEffect((): void => {
