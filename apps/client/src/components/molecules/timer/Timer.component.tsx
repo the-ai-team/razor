@@ -67,6 +67,10 @@ export function Timer({
       const now = Date.now();
 
       // Optimizing for high refresh rate screens
+      // This animation will run on every frame.
+      // But in high refresh rate screens, time difference between frames is very low.
+      // Therefore, we are skipping the animation for a specific frame
+      //   where time difference between last and current frames is less than 10ms
       if (now - previousTimestamp.current < 10) {
         return;
       }
