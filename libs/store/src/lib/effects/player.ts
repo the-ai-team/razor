@@ -81,31 +81,11 @@ export const joinPlayer = (
     // If the tournament is found, set the tournament id.
     tournamentId = receivedTournamentId;
 
-    // Converting tournament state to "Lobby" from "Empty" if it had no players.
-    if (
-      state.game.tournamentsModel[receivedTournamentId].playerIds.length == 0
-    ) {
-      dispatch.game.setTournamentState({
-        tournamentId,
-        tournamentState: AppTournamentState.Lobby,
-      });
-    }
-
-    // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
-    if (
-      state.game.tournamentsModel[receivedTournamentId].playerIds.length >= 1
-    ) {
-      const tournamentState =
-        state.game.tournamentsModel[receivedTournamentId].state;
-      // Change to Ready only if the tournament is in Lobby state
-      // (Don't change state if current state is Race or Leaderboard)
-      if (tournamentState === AppTournamentState.Lobby) {
-        dispatch.game.setTournamentState({
-          tournamentId,
-          tournamentState: AppTournamentState.Ready,
-        });
-      }
-    }
+    // Tournament state validation will handle inside the setTournamentState effect.
+    dispatch.game.setTournamentState({
+      tournamentId,
+      tournamentState: AppTournamentState.Lobby,
+    });
   } else {
     // If the tournament id is not provided, generate a new tournament id.
     tournamentId = generateUid(AppIdNumberType.Tournament);
@@ -194,18 +174,11 @@ export const addPlayer = (
     return;
   }
 
-  // When adding a player lobby cannot be Empty
-  // Converting tournament state to "Ready" only if state was "Lobby".
-  const tournamentState = state.game.tournamentsModel[tournamentId].state;
-  if (
-    state.game.tournamentsModel[tournamentId].playerIds.length >= 1 &&
-    tournamentState === AppTournamentState.Lobby
-  ) {
-    dispatch.game.setTournamentState({
-      tournamentId,
-      tournamentState: AppTournamentState.Ready,
-    });
-  }
+  // Tournament state validation will handle inside the setTournamentState effect.
+  dispatch.game.setTournamentState({
+    tournamentId,
+    tournamentState: AppTournamentState.Lobby,
+  });
 
   // Add the new player.
   dispatch.game.addPlayerReducer({
@@ -263,17 +236,11 @@ export const clearPlayer = (
     playerId,
   });
 
-  // If player was the last member of the tournament, change the tournament state to empty
-  const playerIdsInTournament =
-    state.game.tournamentsModel[tournamentId].playerIds;
-  if (playerIdsInTournament.length === 1) {
-    if (playerIdsInTournament[0] === playerId) {
-      dispatch.game.setTournamentState({
-        tournamentId,
-        tournamentState: AppTournamentState.Empty,
-      });
-    }
-  }
+  // Tournament state validation will handle inside the setTournamentState effect.
+  dispatch.game.setTournamentState({
+    tournamentId,
+    tournamentState: AppTournamentState.Lobby,
+  });
 };
 
 /** Effect function for sending player logs while racing.
