@@ -7,6 +7,7 @@ import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
 import { debounce } from 'lodash';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
+import { ReactComponent as TagIcon } from 'pixelarticons/svg/label.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
@@ -22,7 +23,9 @@ import {
   Link,
   Panel,
   Text,
+  ToastType,
 } from '../../components';
+import { useToastContext } from '../../hooks';
 import { TextSize, TextType } from '../../models';
 import { endSocket } from '../../services';
 import {
@@ -33,6 +36,7 @@ import {
 export function Home(): ReactElement {
   const { t } = useTranslation('home');
   const { roomId } = useParams();
+  const addToast = useToastContext();
 
   // disconnect any socket connection if user navigates back to home page.
   useEffect(() => {
@@ -142,8 +146,12 @@ export function Home(): ReactElement {
     if (isIdValid) {
       navigate(`/${value}`);
     } else {
-      // TODO: Implement proper component
-      alert('Invalid tournament id');
+      addToast({
+        title: t('toasts.invalid_room_id.title'),
+        type: ToastType.Error,
+        message: t('toasts.invalid_room_id.message') as string,
+        icon: <TagIcon />,
+      });
     }
   };
 
