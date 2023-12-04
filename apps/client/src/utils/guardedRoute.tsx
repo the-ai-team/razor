@@ -17,12 +17,14 @@ export function GuardedRoute({
   );
 
   useEffect(() => {
-    const updatePlayerId = savedData.addEventListener(() => {
-      setPlayerId(savedData.savedPlayerId);
-    });
+    const updatePlayerId = (): void =>
+      savedData.addEventListener(() => {
+        setPlayerId(savedData.savedPlayerId);
+      });
+    updatePlayerId();
 
     return () => {
-      savedData.removeEventListener(() => updatePlayerId);
+      savedData.removeEventListener(updatePlayerId);
     };
   }, []);
 

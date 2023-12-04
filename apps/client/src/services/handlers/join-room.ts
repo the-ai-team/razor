@@ -2,6 +2,7 @@ import {
   InitialClientData,
   InitialServerData,
   JoinLobbyFailures,
+  PlayerJoinRejectData,
   SocketProtocols,
 } from '@razor/models';
 
@@ -17,12 +18,16 @@ export const requestToJoinRoom = ({
   roomId,
 }: InitialClientData): Promise<string> => {
   initializeSocket();
+  // TODO: emit sockets from a function like in server
   socket.emit(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
+  console.log(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
 
   const promise: Promise<string> = new Promise((resolve, reject) => {
-    const receiver = (data: InitialServerData): void => {
+    const acceptListener = (data: InitialServerData): void => {
       // remove `T:` part from the tournament id.
       const roomIdFromServer = data.tournamentId.slice(2);
+      clearTimeout(waitingTimeout);
+      socket.off(SocketProtocols.JoinLobbyReject, acceptListener);
 
       if (roomIdFromServer) {
         // For socket communication uses.
@@ -32,18 +37,17 @@ export const requestToJoinRoom = ({
           data.snapshot.playersModel[data.playerId].name;
 
         pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
-        clearTimeout(waitingTimeout);
         resolve(roomIdFromServer);
       } else {
         reject('Request failed');
       }
     };
-    socket.once(SocketProtocols.JoinLobbyAccept, receiver);
+    socket.once(SocketProtocols.JoinLobbyAccept, acceptListener);
 
-    // TODO: Use pubsub instead
-    socket.once(SocketProtocols.JoinLobbyReject, data => {
+    const rejectListener = (data: PlayerJoinRejectData): void => {
       const { message } = data;
       clearTimeout(waitingTimeout);
+      socket.off(SocketProtocols.JoinLobbyAccept, acceptListener);
 
       let toastMessage = '',
         toastTitle = '';
@@ -72,10 +76,15 @@ export const requestToJoinRoom = ({
       });
 
       reject(data.message);
-    });
+    };
+
+    // TODO: Use pubsub instead
+    socket.once(SocketProtocols.JoinLobbyReject, rejectListener);
 
     const waitingTimeout = setTimeout(() => {
-      socket.off(SocketProtocols.JoinLobbyAccept, receiver);
+      socket.off(SocketProtocols.JoinLobbyAccept, acceptListener);
+      socket.off(SocketProtocols.JoinLobbyReject, rejectListener);
+
       addToast({
         title: 'Timeout',
         message: 'Request timed out. Server is unreachable.',
