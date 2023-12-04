@@ -53,3 +53,30 @@ canvas {
 svg#car {
   shape-rendering: crispEdges;
 }
+
+.overflow-mask {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    theme('colors.surface') var(--top-mask-size, 0px),
+    theme('colors.surface') calc(100% - var(--bottom-mask-size, 0px)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    theme('colors.surface') var(--top-mask-size, 0px),
+    theme('colors.surface') calc(100% - var(--bottom-mask-size, 0px)),
+    transparent 100%
+  );
+  --top-mask-size: 0px;
+  --bottom-mask-size: 0px;
+}
+
+.top-overflowing {
+  --top-mask-size: 48px;
+}
+
+.bottom-overflowing {
+  --bottom-mask-size: 48px;
+}

@@ -23,8 +23,8 @@ export function PlayerList({
   );
   const playersModel = useRef(game.playersModel);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [topCoverVisible, setTopCoverVisible] = useState(false);
-  const [bottomCoverVisible, setBottomCoverVisible] = useState(true);
+  const [isTopOverflowing, setTopOverflowing] = useState(false);
+  const [isBottomOverflowing, setBottomOverflowing] = useState(true);
   const [hasOverflow, setHasOverflow] = useState(false);
 
   useEffect(() => {
@@ -40,12 +40,12 @@ export function PlayerList({
     const scrollPosition = element.scrollHeight - element.offsetHeight;
 
     if (element.scrollTop === 0) {
-      setTopCoverVisible(false);
+      setTopOverflowing(false);
     } else if (element.scrollTop === scrollPosition) {
-      setBottomCoverVisible(false);
+      setBottomOverflowing(false);
     } else {
-      setTopCoverVisible(true);
-      setBottomCoverVisible(true);
+      setTopOverflowing(true);
+      setBottomOverflowing(true);
     }
   };
 
@@ -57,10 +57,10 @@ export function PlayerList({
     const scrollPosition = element.scrollHeight - element.offsetHeight;
 
     if (scrollPosition <= 0) {
-      setBottomCoverVisible(false);
+      setBottomOverflowing(false);
       setHasOverflow(false);
     } else {
-      setBottomCoverVisible(true);
+      setBottomOverflowing(true);
       setHasOverflow(true);
     }
 
@@ -105,19 +105,12 @@ export function PlayerList({
       <div className='w-full h-full overflow-hidden relative'>
         <div
           className={cs(
-            { 'opacity-0': !topCoverVisible },
-            'block absolute  w-full',
-            'top-0 h-12',
-            'bg-gradient-to-b from-surface to-transparent',
-            'z-10',
-            'transition-all duration-300',
-          )}
-        />
-        <div
-          className={cs(
-            'w-full h-full overflow-y-auto scrollbar scrollbar-full',
+            'w-full h-full min-h-[200px] overflow-y-auto scrollbar scrollbar-full',
             // Adding right padding to avoid scrollbar overlapping with the content
             { 'pr-5': hasOverflow },
+            'overflow-mask',
+            { 'top-overflowing': isTopOverflowing },
+            { 'bottom-overflowing': isBottomOverflowing },
             'flex flex-col gap-4',
             'relative',
           )}
@@ -136,16 +129,6 @@ export function PlayerList({
             </div>
           ) : null}
         </div>
-        <div
-          className={cs(
-            { 'opacity-0': !bottomCoverVisible },
-            'block absolute w-full',
-            'bottom-0 h-12',
-            'bg-gradient-to-t from-surface to-transparent',
-            'z-10',
-            'transition-all duration-300',
-          )}
-        />
       </div>
     </div>
   );
