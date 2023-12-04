@@ -24,7 +24,7 @@ export type ClearPlayerPayload = {
   playerId: AppPlayerId;
 };
 
-export type SetTournamentStatePayload = {
+export type UpdateTournamentStatePayload = {
   tournamentId: AppTournamentId;
   tournamentState: Exclude<
     AppTournamentState,

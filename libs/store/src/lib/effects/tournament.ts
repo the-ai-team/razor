@@ -1,7 +1,7 @@
 import { MIN_ALLOWED_PLAYERS } from '@razor/constants';
 import { AppTournament, AppTournamentState } from '@razor/models';
 
-import { SetTournamentStatePayload } from '../payloads';
+import { UpdateTournamentStatePayload } from '../payloads';
 import { tournamentNotFound } from '../raisers';
 import { Dispatch, RootState } from '../store';
 
@@ -23,9 +23,9 @@ import { Dispatch, RootState } from '../store';
  * ### Related raisers
  * - tournamentNotFound
  */
-export const setTournamentState = (
+export const updateTournamentState = (
   dispatch: Dispatch,
-  payload: SetTournamentStatePayload,
+  payload: UpdateTournamentStatePayload,
   state: RootState,
 ): void => {
   const { tournamentId, tournamentState } = payload;

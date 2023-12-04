@@ -36,7 +36,7 @@ import { Dispatch, RootState } from '../store';
  * @param state - Current state model.
  *
  * ### Related reducers and effects
- * - setTournamentState (effect)
+ * - updateTournamentState (effect)
  * - addTournamentReducer
  * - addPlayerReducer
  *
@@ -81,8 +81,8 @@ export const joinPlayer = (
     // If the tournament is found, set the tournament id.
     tournamentId = receivedTournamentId;
 
-    // Tournament state validation will handle inside the setTournamentState effect.
-    dispatch.game.setTournamentState({
+    // Tournament state validation will handle inside the updateTournamentState effect.
+    dispatch.game.updateTournamentState({
       tournamentId,
       tournamentState: AppTournamentState.Lobby,
     });
@@ -129,7 +129,7 @@ export const joinPlayer = (
  * @param state - Current state model.
  *
  * ### Related reducers and effects
- * - setTournamentState (effect)
+ * - updateTournamentState (effect)
  * - addPlayerReducer
  *
  * ### Related raisers
@@ -174,8 +174,8 @@ export const addPlayer = (
     return;
   }
 
-  // Tournament state validation will handle inside the setTournamentState effect.
-  dispatch.game.setTournamentState({
+  // Tournament state validation will handle inside the updateTournamentState effect.
+  dispatch.game.updateTournamentState({
     tournamentId,
     tournamentState: AppTournamentState.Lobby,
   });
@@ -202,7 +202,7 @@ export const addPlayer = (
  * @param state - Current state model.
  *
  * ### Related reducers and effects
- * - setTournamentState (effect)
+ * - updateTournamentState (effect)
  * - removePlayerReducer
  *
  * ### Related raisers
@@ -236,8 +236,8 @@ export const clearPlayer = (
     playerId,
   });
 
-  // Tournament state validation will handle inside the setTournamentState effect.
-  dispatch.game.setTournamentState({
+  // Tournament state validation will handle inside the updateTournamentState effect.
+  dispatch.game.updateTournamentState({
     tournamentId,
     tournamentState: AppTournamentState.Lobby,
   });
