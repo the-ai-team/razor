@@ -61,11 +61,12 @@ export function Leaderboard(): ReactElement {
           image={panelImages[1]}>
           {t('panel.descriptions.1.content') as string}
         </Description>
-        <Description
+        {/* TODO: Implement screenshot feature  */}
+        {/* <Description
           title={t('panel.descriptions.2.title')}
           image={panelImages[2]}>
           {t('panel.descriptions.2.content') as string}
-        </Description>
+        </Description> */}
       </Panel>
 
       <div

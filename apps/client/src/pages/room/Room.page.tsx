@@ -116,20 +116,19 @@ export function Room(): ReactElement {
 
       <div
         className={cs(
-          'flex flex-col justify-center py-20 items-center',
+          'flex flex-col justify-center items-center xl:py-8 py-40 gap-8',
           'w-full h-full',
         )}>
-        <div className='flex grow flex-col w-full h-1/2 justify-around items-center'>
+        <div className='flex grow flex-col w-full justify-around items-center'>
           <div
             className={cs(
-              'max-w-[1000px] w-10/12 h-full',
-              'my-24',
-              'overflow-hidden flex flex-col justify-center items-center',
+              'max-w-[1000px] max-h-[500px] w-10/12',
+              'flex flex-col justify-center items-center',
             )}>
             <PlayerList tournamentId={tournamentId} />
           </div>
         </div>
-        <div className='mx-auto my-12'>
+        <div className='mx-auto'>
           <Button
             isDisabled={!playerIds || playerIds.length < MIN_ALLOWED_PLAYERS}
             onClick={async (): Promise<void> => await requestToStartRace()}>
@@ -138,7 +137,11 @@ export function Room(): ReactElement {
         </div>
       </div>
 
-      <div className='absolute left-10 bottom-10'>
+      <div
+        className={cs(
+          'absolute lg:left-10 lg:bottom-10 left-5 bottom-5',
+          'lg:scale-100 scale-75 origin-bottom-left',
+        )}>
         <IconButton
           label={t('actions.copy_url') as string}
           icon={<LinkIcon className='w-full h-full text-neutral-90' />}
