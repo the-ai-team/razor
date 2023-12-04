@@ -336,7 +336,12 @@ describe('[Effects] Player', () => {
       const expectedResult: AppStateModel = {
         ...initialValues,
         tournamentsModel: {
-          [M_TOURNAMENT_ID0]: mockTournament(M_TOURNAMENT_ID0, [0, 1], [1, 3]),
+          [M_TOURNAMENT_ID0]: mockTournament(
+            M_TOURNAMENT_ID0,
+            [0, 1],
+            [1, 3],
+            AppTournamentState.Ready,
+          ),
         },
         playersModel: mockPlayersModel([1, 3], M_TOURNAMENT_ID0),
       };

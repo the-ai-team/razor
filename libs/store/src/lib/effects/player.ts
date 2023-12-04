@@ -80,12 +80,6 @@ export const joinPlayer = (
     }
     // If the tournament is found, set the tournament id.
     tournamentId = receivedTournamentId;
-
-    // Tournament state validation will handle inside the updateTournamentState effect.
-    dispatch.game.updateTournamentState({
-      tournamentId,
-      tournamentState: AppTournamentState.Lobby,
-    });
   } else {
     // If the tournament id is not provided, generate a new tournament id.
     tournamentId = generateUid(AppIdNumberType.Tournament);
@@ -114,6 +108,12 @@ export const joinPlayer = (
       state: AppPlayerState.Idle,
       tournamentId,
     },
+  });
+
+  // Tournament state validation will handle inside the updateTournamentState effect.
+  dispatch.game.updateTournamentState({
+    tournamentId,
+    tournamentState: AppTournamentState.Lobby,
   });
 
   return playerId;
@@ -174,12 +174,6 @@ export const addPlayer = (
     return;
   }
 
-  // Tournament state validation will handle inside the updateTournamentState effect.
-  dispatch.game.updateTournamentState({
-    tournamentId,
-    tournamentState: AppTournamentState.Lobby,
-  });
-
   // Add the new player.
   dispatch.game.addPlayerReducer({
     tournamentId,
@@ -190,6 +184,12 @@ export const addPlayer = (
       state: playerState,
       tournamentId,
     },
+  });
+
+  // Tournament state validation will handle inside the updateTournamentState effect.
+  dispatch.game.updateTournamentState({
+    tournamentId,
+    tournamentState: AppTournamentState.Lobby,
   });
 };
 
