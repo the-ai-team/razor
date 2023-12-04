@@ -35,6 +35,9 @@ export function Timer({
   const circleIndicator = useRef<SVGCircleElement>(null);
   const timerEnded = useRef(false);
 
+  // Consider time is low if time is less than 20% of the total time
+  const isTimeLow = time > 0 && seconds <= time * 0.15;
+
   useEffect(() => {
     startTimestamp.current = Date.now();
     previousTimestamp.current = 0;
@@ -188,7 +191,10 @@ export function Timer({
           strokeWidth='15'
           strokeLinecap='round'
           transform='rotate(-90,150,150)'
-          className='stroke-neutral-90'
+          className={cs(
+            isTimeLow ? 'stroke-error-60' : 'stroke-neutral-90',
+            'transition-all duration-300',
+          )}
         />
 
         <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
