@@ -168,7 +168,7 @@ export function Race(): ReactElement {
     }
   }, [raceReadyTime, raceId]);
 
-  const raceTimeEndHandler = (): void => {
+  const raceEndHandler = (): void => {
     setIsTypeLocked(true);
     if (raceId) {
       raceTimeout(raceId);
@@ -221,7 +221,7 @@ export function Race(): ReactElement {
                   <RaceTimer
                     raceId={raceId}
                     isRaceStarted={raceReadyTime <= 0}
-                    onTimeEnd={raceTimeEndHandler}
+                    onTimeEnd={raceEndHandler}
                   />
                 </div>
 
