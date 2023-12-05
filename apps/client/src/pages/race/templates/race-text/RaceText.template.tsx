@@ -302,7 +302,7 @@ export function RaceText({
                     charIndex,
                     { cursorAt: playerCursorAt },
                   );
-                  const isCursorAtInvalidCursor = indexConverter.isCursorAtChar(
+                  const isInvalidCursorAtLetter = indexConverter.isCursorAtChar(
                     charIndex,
                     { cursorAt: invalidCursorAt },
                   );
@@ -322,13 +322,13 @@ export function RaceText({
                       cursorsAt: otherPlayerCursors,
                     });
                   /* Show normal cursor if no invalid chars */
-                  const isVisibleRegularCursor =
+                  const isRegularCursorVisible =
                     (noOfInvalidChars === 0 || isLocked) && isCursorAtLetter;
                   /* Show invalid cursor if invalid chars */
-                  const isVisibleInvalidCursor =
+                  const isInvalidCursorVisible =
                     noOfInvalidChars > 0 &&
                     !isLocked &&
-                    isCursorAtInvalidCursor;
+                    isInvalidCursorAtLetter;
 
                   return (
                     <span
@@ -338,13 +338,13 @@ export function RaceText({
                         'text-error-60 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isVisibleRegularCursor ? (
+                      {isRegularCursorVisible ? (
                         <Cursor isAtSpace={isSpace} isLocked={isLocked} />
                       ) : null}
-                      {isVisibleInvalidCursor ? (
+                      {isInvalidCursorVisible ? (
                         <Cursor
                           isAtSpace={isSpace}
-                          isInvalidCursor={isCursorAtInvalidCursor}
+                          isInvalidCursor={isInvalidCursorAtLetter}
                         />
                       ) : null}
                       {isOtherPlayerCursorsOnLetter ? (
