@@ -196,8 +196,8 @@ const calculateQuarterWPM = (
   const timeElapsed = endTimestamp - startTimestamp;
   const textLength = endTextLength - startTextLength;
 
-  // Avg. number of words in race text = textLength / 5
+  // Avg. number of words in race text = textLength / 5 + 1 <= (Assuming that the average word has 5 letters (and with the space 6 characters))
   // WPM = Avg. words / Mintues
-  const wpm = textLength / 5 / (timeElapsed / 1000 / 60);
+  const wpm = textLength / 6 / (timeElapsed / 1000 / 60);
   return wpm;
 };

@@ -95,10 +95,16 @@ export const joinPlayer = (
     if (
       state.game.tournamentsModel[receivedTournamentId].playerIds.length >= 1
     ) {
-      dispatch.game.setTournamentState({
-        tournamentId,
-        tournamentState: AppTournamentState.Ready,
-      });
+      const tournamentState =
+        state.game.tournamentsModel[receivedTournamentId].state;
+      // Change to Ready only if the tournament is in Lobby state
+      // (Don't change state if current state is Race or Leaderboard)
+      if (tournamentState === AppTournamentState.Lobby) {
+        dispatch.game.setTournamentState({
+          tournamentId,
+          tournamentState: AppTournamentState.Ready,
+        });
+      }
     }
   } else {
     // If the tournament id is not provided, generate a new tournament id.
@@ -189,8 +195,12 @@ export const addPlayer = (
   }
 
   // When adding a player lobby cannot be Empty
-  // Converting tournament state to "Ready" from "Lobby" if it has 2 or more players.
-  if (state.game.tournamentsModel[tournamentId].playerIds.length >= 1) {
+  // Converting tournament state to "Ready" only if state was "Lobby".
+  const tournamentState = state.game.tournamentsModel[tournamentId].state;
+  if (
+    state.game.tournamentsModel[tournamentId].playerIds.length >= 1 &&
+    tournamentState === AppTournamentState.Lobby
+  ) {
     dispatch.game.setTournamentState({
       tournamentId,
       tournamentState: AppTournamentState.Ready,

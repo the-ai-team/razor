@@ -22,7 +22,7 @@ export function Router(): ReactElement {
               element={<GuardedRoute path='race' component={Race} />}
             />
             <Route
-              path='leaderboard'
+              path='leaderboards/:raceIndex'
               element={
                 <GuardedRoute path='leaderboard' component={Leaderboard} />
               }

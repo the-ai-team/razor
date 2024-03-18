@@ -4,6 +4,7 @@ import { AppLeaderboard, AppStateModel } from '../state';
 
 import { PlayerId } from './player';
 import {
+  clearPlayerSchema,
   informTimeoutSchema,
   initialClientDataSchema,
   playerJoinSchema,
@@ -45,6 +46,7 @@ export interface InitialServerData {
 }
 
 export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
+export type ClearPlayerData = z.infer<typeof clearPlayerSchema>;
 
 export type StartRaceRequestData = z.infer<typeof startRaceRequestSchema>;
 export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;

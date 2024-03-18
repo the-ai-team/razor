@@ -1,12 +1,19 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RACE_READY_COUNTDOWN } from '@razor/constants';
-import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
+import {
+  AppPlayerState,
+  AppRaceId,
+  AppTournamentId,
+  AppTournamentState,
+  PlayerId,
+} from '@razor/models';
 import { RootState } from '@razor/store';
 import cs from 'classnames';
 import { ReactComponent as CarIcon } from 'pixelarticons/svg/car.svg';
+import { ReactComponent as EyeIcon } from 'pixelarticons/svg/eye.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { Text, ToastType } from '../../components';
@@ -26,6 +33,7 @@ import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
   const { roomId } = useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation(['race']);
   const addToast = useToastContext();
   const game = useSelector((store: RootState) => store.game);
@@ -35,12 +43,34 @@ export function Race(): ReactElement {
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
+  const [isSpectator, setIsSpectator] = useState<boolean>(false);
+
+  // If the tournament state changed to leaderboard navigate to the leaderboard page.
+  useEffect((): void => {
+    const tournamentId: AppTournamentId = `T:${roomId}`;
+    const tournament = game.tournamentsModel[tournamentId];
+
+    // raceId = `T:${roomId}-R:${raceIndex}`
+    const raceIndex = raceId ? raceId.split('-')[1].slice(2) : null;
+    if (tournament.state === AppTournamentState.Leaderboard) {
+      navigate(`/${roomId}/leaderboards/${raceIndex}`);
+    }
+  }, [game, raceId]);
 
   useEffect(() => {
     const tournamentId: AppTournamentId = `T:${roomId}`;
     const raceIds = game.tournamentsModel[tournamentId]?.raceIds;
     const racesModel = game.racesModel;
     const raceId = raceIds ? raceIds[raceIds.length - 1] : null;
+
+    const selfPlayer = selfPlayerId.current
+      ? game.playersModel[selfPlayerId.current]
+      : null;
+    if (selfPlayer) {
+      const isIdle = selfPlayer.state === AppPlayerState.Idle;
+      setIsSpectator(isIdle);
+      setRaceReadyTime(0);
+    }
 
     // Looking for race in races model
     if (raceId && racesModel[raceId]) {
@@ -67,7 +97,9 @@ export function Race(): ReactElement {
     let clearPusher = (): void => {};
 
     if (raceId) {
-      clearPusher = typeLogPusher(raceId);
+      if (!isSpectator) {
+        clearPusher = typeLogPusher(raceId);
+      }
       gameStartedPlayerId = game.racesModel[raceId]?.raceStartedBy;
     }
 
@@ -78,7 +110,7 @@ export function Race(): ReactElement {
           ? game.playersModel[gameStartedPlayerId]?.name
           : 'You';
 
-      if (gameStartedPlayerName) {
+      if (gameStartedPlayerName && !isSpectator) {
         addToast({
           title: t('toasts.race_start.title'),
           type: ToastType.Info,
@@ -102,7 +134,7 @@ export function Race(): ReactElement {
   }, []);
 
   useEffect((): void => {
-    if (raceId && raceReadyTime <= 0) {
+    if (raceId && raceReadyTime <= 0 && !isSpectator) {
       const raceTime = game.racesModel[raceId]?.timeoutDuration;
       setRaceTime(raceTime);
       sendInitialTypeLog(raceId);
@@ -146,27 +178,43 @@ export function Race(): ReactElement {
               },
             )}>
             <div className={cs('flex items-center justify-center')}>
-              <RaceTrack raceId={raceId} className='scale-95' />
+              <RaceTrack
+                raceId={raceId}
+                className='scale-95'
+                isSpectator={isSpectator}
+              />
             </div>
-            <div className='grid grid-cols-4'>
-              <div
-                className={cs(
-                  'm-auto 2xl:static',
-                  'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
-                  'fixed -top-40 right-8 z-10',
-                )}>
-                <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />
+            {!isSpectator ? (
+              <div className='grid grid-cols-4'>
+                <div
+                  className={cs(
+                    'm-auto 2xl:static',
+                    'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
+                    'fixed -top-40 right-8 z-10',
+                  )}>
+                  <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />
+                </div>
+
+                <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
+                  <RaceText
+                    raceId={raceId}
+                    isLocked={isTypeLocked}
+                    onValidType={(charIndex: number): void =>
+                      sendTypeLog(charIndex + 1, raceId)
+                    }
+                  />
+                </div>
               </div>
-              <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
-                <RaceText
-                  raceId={raceId}
-                  isLocked={isTypeLocked}
-                  onValidType={(charIndex: number): void =>
-                    sendTypeLog(charIndex + 1, raceId)
-                  }
-                />
+            ) : null}
+
+            {isSpectator ? (
+              <div className='flex m-4 items-center gap-6 justify-center'>
+                <EyeIcon className='w-12 h-12 text-neutral-90' />
+                <Text type={TextType.Label} size={TextSize.Medium}>
+                  You are spectating!
+                </Text>
               </div>
-            </div>
+            ) : null}
           </div>
         </>
       ) : (

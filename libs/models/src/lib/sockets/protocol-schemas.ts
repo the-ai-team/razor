@@ -42,6 +42,13 @@ export const playerJoinSchema = z.object({
 });
 
 /**
+ * Related protocol - {@link SocketProtocols.ClearPlayer}
+ */
+export const clearPlayerSchema = z.object({
+  playerId: playerIdSchema,
+});
+
+/**
  * Related protocol - {@link SocketProtocols.StartRaceRequest}
  */
 export const startRaceRequestSchema = z.object({});
