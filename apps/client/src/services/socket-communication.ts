@@ -21,13 +21,35 @@ const SOCKET_ENDPOINT =
  * which is used to reconnect to the server when the connection is lost.
  */
 class SavedData {
-  public authToken = '';
+  private _authToken = '';
   public savedPlayerName = '';
   public savedPlayerId = '';
   public savedRoomId = '';
+  private listeners: (() => void)[] = [];
 
-  public setAuthToken(token: AuthToken): void {
-    this.authToken = token;
+  public get authToken(): AuthToken {
+    return this._authToken;
+  }
+  public set authToken(value: AuthToken) {
+    this._authToken = value;
+    this.runListeners();
+  }
+
+  // run all listeners when value is changed.
+  private runListeners(): void {
+    this.listeners.forEach(func => func());
+  }
+
+  // Call when value is changed.
+  public addEventListener(func: () => void): void {
+    this.listeners.push(func);
+  }
+
+  public removeEventListener(func: () => void): void {
+    const index = this.listeners.indexOf(func);
+    if (index !== -1) {
+      this.listeners.splice(index, 1);
+    }
   }
 }
 

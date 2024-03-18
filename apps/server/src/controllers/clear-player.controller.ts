@@ -1,17 +1,37 @@
+import { SocketProtocols } from '@razor/models';
 import { store } from '@razor/store';
 
-import { PubSubEvents } from '../models';
-import { ContextOutput, pubsub } from '../services';
+import { AllServerPubSubEventsToTypeMap, PubSubEvents } from '../models';
+import { Logger, publishToAllClients, pubsub } from '../services';
 
-interface ClearPlayerArgs {
-  context: ContextOutput;
-}
+const logger = new Logger('clear-player.controller');
 
-pubsub.subscribe(
-  PubSubEvents.PlayerDisconnect,
-  ({ context }: ClearPlayerArgs) => {
-    store.dispatch.game.clearPlayer({
-      playerId: context.playerId,
-    });
-  },
-);
+type PlayerDisconnectArgs =
+  AllServerPubSubEventsToTypeMap[PubSubEvents.PlayerDisconnect];
+
+const playerDisconnectController = ({
+  context,
+  data,
+}: PlayerDisconnectArgs): void => {
+  const { playerId } = data;
+  const game = store.getState().game;
+  if (!game.playersModel[playerId]?.tournamentId) {
+    logger.error('Player data missing in store', context);
+    return;
+  }
+
+  const player = game.playersModel[playerId];
+  const tournamentId = player.tournamentId;
+
+  // Clear player from the store.
+  store.dispatch.game.clearPlayer({ playerId });
+  logger.info('Player cleared from store', context);
+
+  publishToAllClients({
+    tournamentId,
+    protocol: SocketProtocols.ClearPlayer,
+    data: { playerId },
+  });
+};
+
+pubsub.subscribe(PubSubEvents.PlayerDisconnect, playerDisconnectController);

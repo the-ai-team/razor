@@ -1,5 +1,6 @@
 import {
   authTokenTransferSchema,
+  clearPlayerSchema,
   informTimeoutSchema,
   initialClientDataSchema,
   initialServerDataSchema,
@@ -24,6 +25,7 @@ export const protocolToSchemaMap = new Map<
   [SocketProtocols.CreateLobbyRequest, initialClientDataSchema],
   [SocketProtocols.CreateLobbyAccept, initialServerDataSchema],
   [SocketProtocols.PlayerJoin, playerJoinSchema],
+  [SocketProtocols.ClearPlayer, clearPlayerSchema],
   [SocketProtocols.StartRaceRequest, startRaceRequestSchema],
   [SocketProtocols.StartRaceAccept, startRaceAcceptSchema],
   [SocketProtocols.SendTypeLog, sendTypeLogSchema],

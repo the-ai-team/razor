@@ -47,6 +47,8 @@ export const startRace = (
 ): void => {
   const { tournamentId, playerId, raceText } = payload;
 
+  // TODO: check race is ready to start
+
   // If the tournament is not found, call the raiser.
   if (!(tournamentId in state.game.tournamentsModel)) {
     tournamentNotFound(dispatch, tournamentId, `Started by: ${playerId}`);

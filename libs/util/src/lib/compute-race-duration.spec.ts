@@ -5,8 +5,8 @@ import { computeRaceDuration } from './compute-race-duration';
 
 describe('[Utils] computeRaceDuration', () => {
   it.each([
-    [M_RACE_TEXT0, 198],
-    [M_RACE_TEXT1, 168],
+    [M_RACE_TEXT0, 179],
+    [M_RACE_TEXT1, 152],
   ])('Calculate timeout timer', (text, time) => {
     const timeoutDuration = computeRaceDuration(text);
     expect(timeoutDuration).toEqual(time);

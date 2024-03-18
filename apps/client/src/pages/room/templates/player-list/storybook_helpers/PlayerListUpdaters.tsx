@@ -34,6 +34,7 @@ export function PlayerListUpdaters(): ReactElement {
         <input
           type='text'
           name='player-name'
+          placeholder='Player name'
           value={newPlayerName}
           onChange={(e): void => updateNewPlayerName(e.target.value)}
         />
