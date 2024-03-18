@@ -7,7 +7,7 @@ import {
 } from '@razor/models';
 import { store } from '@razor/store';
 
-import { getSavedPlayerId } from '../../utils/save-player-id';
+import { savedData } from '../../utils/save-player-data';
 import { socket } from '../socket-communication';
 
 class TypeLogsQueue {
@@ -31,12 +31,16 @@ const typeLogsQueue = new TypeLogsQueue();
 /** To send a type log to server.
  *
  * @param lastTypedCharIndex - Last typed character index.
+ * @param raceId - ID of the race related to the type log.
  * (Use 0 for the initial type log, which is used to notify the server that the player has started typing.)
  */
 export const sendTypeLog = (
   lastTypedCharIndex: number,
   raceId: RaceId,
 ): void => {
+  // TODO: Create a separate function to handle logs.
+  console.log('sendTypeLog', lastTypedCharIndex);
+
   const playerLog: PlayerLog = {
     timestamp: Date.now(),
     textLength: lastTypedCharIndex,
@@ -44,7 +48,7 @@ export const sendTypeLog = (
   typeLogsQueue.addLog(playerLog);
 
   // Send type log to local store.
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   if (playerId) {
     store.dispatch.game.sendTypeLog({
       playerLog,
@@ -58,6 +62,7 @@ export const sendTypeLog = (
 export const typeLogPusher = (raceId: RaceId): (() => void) => {
   const timer = setInterval(() => {
     const logs = typeLogsQueue.getQueue();
+    console.log('typeLogPusher', logs);
 
     if (logs.length > 0) {
       const data: AllProtocolToTypeMap[SocketProtocols.SendTypeLog] = {
@@ -89,7 +94,7 @@ export const sendInitialTypeLog = (raceId: RaceId): void => {
   socket.emit(SocketProtocols.SendTypeLog, data);
 
   // Send type log to local store.
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   if (playerId) {
     store.dispatch.game.sendTypeLog({
       playerLog,

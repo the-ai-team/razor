@@ -19,15 +19,25 @@ export const pubsub = new PubSub<AllServerPubSubEventsToTypeMap>();
 
 export function publishToSingleClient<T extends SocketProtocolsTypes>({
   playerId,
+  socketId,
   protocol,
   data,
 }: {
-  playerId: PlayerId;
+  playerId?: PlayerId;
+  socketId?: string;
   protocol: T;
   data: AllProtocolToTypeMap[T];
 }): void {
+  // Either playerId or socketId should be provided.
+  if (!playerId && !socketId) {
+    throw new Error(
+      'Either playerId or socketId should be provided to publishToSingleClient function',
+    );
+  }
+
   pubsub.publish(PubSubEvents.SendDataToClient, {
     playerId,
+    socketId,
     protocol,
     data,
   });

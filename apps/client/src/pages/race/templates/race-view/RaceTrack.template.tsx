@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { AppPlayerId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
 import { useComputeMaxRaceTracks } from 'apps/client/src/utils/custom-hooks/compute-max-race-tracks';
-import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import cs from 'classnames';
 
 import {
@@ -26,7 +26,7 @@ export function RaceTrack({
   isSpectator = false,
 }: RaceTrackProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const selfPlayerId = useRef<AppPlayerId>(getSavedPlayerId());
+  const selfPlayerId = useRef<AppPlayerId>(savedData.savedPlayerId);
 
   const racePlayers = game.racesModel[raceId]?.players;
   const playerIds = (Object.keys(racePlayers) || []) as AppPlayerId[];

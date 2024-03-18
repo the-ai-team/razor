@@ -5,7 +5,7 @@ import { NotFound } from './pages/NotFound';
 import { GuardedRoute } from './utils/guardedRoute';
 import { Home, Layout, Leaderboard, Race, Room } from './pages';
 
-export function Router(): ReactElement {
+export function AppRouter(): ReactElement {
   return (
     <BrowserRouter>
       <Routes>

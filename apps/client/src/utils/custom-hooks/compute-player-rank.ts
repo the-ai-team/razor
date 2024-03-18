@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import { AppPlayerId, AppPlayerLogId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
 
-type PlayerCursorPos = Record<AppPlayerId, number>;
+// PlayerId: [last recorded char index, timestamp]
+type PlayerCursorPos = Record<AppPlayerId, [number, number]>;
 type PlayerRank = Record<AppPlayerId, number>;
 
 export function useComputePlayerRanks(raceId: AppRaceId): PlayerRank[] {
@@ -17,20 +18,31 @@ export function useComputePlayerRanks(raceId: AppRaceId): PlayerRank[] {
   useEffect(() => {
     const playersIds = Object.keys(race.players) as AppPlayerId[];
     const playerCursorPos: PlayerCursorPos = {};
-    // Extract last recorded char index for each player
+    // Extract last recorded char index with timestamp for each player
     playersIds.forEach(playerId => {
       const playerLogsId: AppPlayerLogId = `${initialRaceId}-${playerId}`;
       const playerLogs = playerLogsModel[playerLogsId];
       const lastRecordedCharIndex = playerLogs?.length
         ? playerLogs[playerLogs.length - 1].textLength
         : 0;
-      playerCursorPos[playerId] = lastRecordedCharIndex;
+      const lastRecordedTimestamp = playerLogs?.length
+        ? playerLogs[playerLogs.length - 1].timestamp
+        : 0;
+      playerCursorPos[playerId] = [
+        lastRecordedCharIndex,
+        lastRecordedTimestamp,
+      ];
     });
 
-    // Sort players by their last recorded char index
-    const sortedPlayersIds = playersIds.sort(
-      (a, b) => playerCursorPos[b] - playerCursorPos[a],
-    );
+    // Sort players by their last recorded char index and lowest timestamp
+    const sortedPlayersIds = playersIds.sort((playerIdA, playerIdB) => {
+      const [charIndexA, timestampA] = playerCursorPos[playerIdA];
+      const [charIndexB, timestampB] = playerCursorPos[playerIdB];
+      if (charIndexA !== charIndexB) {
+        return charIndexB - charIndexA;
+      }
+      return timestampA - timestampB;
+    });
 
     // Assign ranks to players, same rank for players in the same position
     const playerRanks: PlayerRank = {};
@@ -38,7 +50,10 @@ export function useComputePlayerRanks(raceId: AppRaceId): PlayerRank[] {
     let prevPlayerCursorPos = playerCursorPos[sortedPlayersIds[0]];
     sortedPlayersIds.forEach(playerId => {
       const cursorPos = playerCursorPos[playerId];
-      if (cursorPos < prevPlayerCursorPos) {
+      if (
+        cursorPos[0] !== prevPlayerCursorPos[0] ||
+        cursorPos[1] !== prevPlayerCursorPos[1]
+      ) {
         rank++;
       }
       playerRanks[playerId] = rank;

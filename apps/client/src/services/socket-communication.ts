@@ -8,52 +8,17 @@ import {
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
-import { Connection } from '../constants';
+import { ToastType } from '../components';
+import { RECONNECT_TRY_INTERVAL } from '../constants/connection';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
+import { addToast } from '../utils/globalToastManager';
 import { pubsub } from '../utils/pubsub';
+import { savedData } from '../utils/save-player-data';
 
-import { requestToJoinRoom } from './handlers/join-room';
+import { requestToJoinRoom } from './handlers';
 
 const SOCKET_ENDPOINT =
   import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:3000';
-
-/** This class is used to save data for socket communication,
- * which is used to reconnect to the server when the connection is lost.
- */
-class SavedData {
-  private _authToken = '';
-  public savedPlayerName = '';
-  public savedPlayerId = '';
-  public savedRoomId = '';
-  private listeners: (() => void)[] = [];
-
-  public get authToken(): AuthToken {
-    return this._authToken;
-  }
-  public set authToken(value: AuthToken) {
-    this._authToken = value;
-    this.runListeners();
-  }
-
-  // run all listeners when value is changed.
-  private runListeners(): void {
-    this.listeners.forEach(func => func());
-  }
-
-  // Call when value is changed.
-  public addEventListener(func: () => void): void {
-    this.listeners.push(func);
-  }
-
-  public removeEventListener(func: () => void): void {
-    const index = this.listeners.indexOf(func);
-    if (index !== -1) {
-      this.listeners.splice(index, 1);
-    }
-  }
-}
-
-export const savedData = new SavedData();
 
 interface SocketFormat extends Socket {
   auth: {
@@ -63,7 +28,7 @@ interface SocketFormat extends Socket {
 
 export const socket = io(SOCKET_ENDPOINT, {
   auth: {
-    token: savedData.authToken,
+    token: '',
   },
   autoConnect: false,
   withCredentials: true,
@@ -71,62 +36,67 @@ export const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
-  savedData.authToken = '';
-  savedData.savedPlayerName = '';
-  savedData.savedPlayerId = '';
-  savedData.savedRoomId = '';
+  savedData.reset();
 };
 
 export const initializeSocket = (): void => {
-  socket.auth.token = savedData.authToken;
   socket.connect();
   socket.on('connect_error', () => {
-    alert('Connection error');
-    endSocket();
-  });
-  socket.on('connect', () => {
-    console.log('connected');
+    addToast({
+      title: 'Error',
+      message: 'Disconnected. Trying to reconnect..',
+      type: ToastType.Warning,
+      icon: 'disconnect',
+    });
   });
   socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
     savedData.authToken = token;
+    socket.auth.token = token;
   });
 };
 
-const tryReconnect = (reason: Socket.DisconnectReason): void => {
+export const tryReconnect = (reason: Socket.DisconnectReason): void => {
+  if (reason === 'io server disconnect') {
+    console.log('Server is down');
+  }
+
+  if (reason === 'io client disconnect') {
+    console.log('Disconnected by client');
+  }
+
   // Reconnect only if not user disconnected intentionally (from a client trigger or server side trigger).
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
-    if (savedData.savedRoomId && savedData.savedPlayerName) {
-      const reconnector = setInterval(async () => {
-        try {
-          console.log('Reconnecting...');
+    console.log(`Disconnected by ${reason}`, savedData);
+
+    // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
+    const waitingTimeout = setTimeout(() => {
+      console.log('Reconnect timed out');
+      savedData.reset();
+      clearInterval(reconnector);
+    }, RECONNECT_WAITING_TIME);
+
+    socket.once('connect', () => {
+      console.log('Reconnected');
+      clearTimeout(waitingTimeout);
+      clearInterval(reconnector);
+    });
+
+    const reconnector = setInterval(async () => {
+      try {
+        console.log('Trying to reconnect...', savedData.authToken);
+        if (savedData.savedRoomId && savedData.savedPlayerName) {
           await requestToJoinRoom({
             playerName: savedData.savedPlayerName,
             roomId: savedData.savedRoomId,
           });
-          clearInterval(reconnector);
-        } catch (error) {
-          console.error(error);
         }
-      }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
-
-      // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
-      const waitingTimeout = setTimeout(() => {
         clearInterval(reconnector);
-        savedData.authToken = '';
-        savedData.savedPlayerName = '';
-        savedData.savedPlayerId = '';
-        savedData.savedRoomId = '';
-        // TODO: navigate to home page
-      }, RECONNECT_WAITING_TIME);
-
-      socket.once('connect', () => {
-        console.log('Reconnected');
-        clearInterval(reconnector);
-        clearTimeout(waitingTimeout);
-      });
-    }
+      } catch (error) {
+        console.error(error);
+      }
+    }, RECONNECT_TRY_INTERVAL);
   }
 };
 
@@ -163,9 +133,14 @@ socket.onAny((event, data) => {
     return;
   }
 
+  if (!savedData.savedRoomId || !savedData.savedPlayerId) {
+    return;
+  }
+
   if (
     event !== SocketProtocols.CreateLobbyAccept &&
-    event !== SocketProtocols.JoinLobbyAccept
+    event !== SocketProtocols.JoinLobbyAccept &&
+    event !== SocketProtocols.JoinLobbyReject
   ) {
     const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
     pubsub.publish(event, {

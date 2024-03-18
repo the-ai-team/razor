@@ -7,9 +7,13 @@ import { generateAvatarLink } from '@razor/util';
 import cs from 'classnames';
 import { debounce } from 'lodash';
 import { ReactComponent as ChevronRight } from 'pixelarticons/svg/chevron-right.svg';
+import { ReactComponent as TagIcon } from 'pixelarticons/svg/label.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { ReactComponent as LogoFill } from '../../assets/images/logo-fill.svg';
+import banner1 from '../../assets/images/panel-images/home1.png';
+import banner2 from '../../assets/images/panel-images/home2.png';
+import banner3 from '../../assets/images/panel-images/home3.png';
 import {
   Button,
   ButtonWithInput,
@@ -19,7 +23,9 @@ import {
   Link,
   Panel,
   Text,
+  ToastType,
 } from '../../components';
+import { useToastContext } from '../../hooks';
 import { TextSize, TextType } from '../../models';
 import { endSocket } from '../../services';
 import {
@@ -30,6 +36,7 @@ import {
 export function Home(): ReactElement {
   const { t } = useTranslation('home');
   const { roomId } = useParams();
+  const addToast = useToastContext();
 
   // disconnect any socket connection if user navigates back to home page.
   useEffect(() => {
@@ -44,19 +51,31 @@ export function Home(): ReactElement {
   const [isJoinRoomButtonValueValid, toggleIsRoomButtonValueValid] =
     useState<boolean>(false);
   const [avtarURL, setAvtarURL] = useState<string>('');
+  const [isRouteToRoomBtnDisabled, toggleIsRouteToRoomBtnDisabled] =
+    useState<boolean>(false);
 
   const routeToRoom = async (): Promise<void> => {
-    if (roomId) {
-      // TODO: Add try catch and make a error info ui popups.
-      const roomIdFromServer = await requestToJoinRoom({ playerName, roomId });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
+    toggleIsRouteToRoomBtnDisabled(true);
+    try {
+      if (roomId) {
+        const roomIdFromServer = await requestToJoinRoom({
+          playerName,
+          roomId,
+        });
+        if (roomIdFromServer) {
+          navigate(`/${roomIdFromServer}/room`);
+        }
+        toggleIsRouteToRoomBtnDisabled(false);
+      } else {
+        const roomIdFromServer = await requestToCreateRoom({ playerName });
+        if (roomIdFromServer) {
+          navigate(`/${roomIdFromServer}/room`);
+        }
+        toggleIsRouteToRoomBtnDisabled(false);
       }
-    } else {
-      const roomIdFromServer = await requestToCreateRoom({ playerName });
-      if (roomIdFromServer) {
-        navigate(`/${roomIdFromServer}/room`);
-      }
+    } catch (_) {
+      navigate('../');
+      toggleIsRouteToRoomBtnDisabled(false);
     }
   };
 
@@ -127,16 +146,16 @@ export function Home(): ReactElement {
     if (isIdValid) {
       navigate(`/${value}`);
     } else {
-      // TODO: Implement proper component
-      alert('Invalid tournament id');
+      addToast({
+        title: t('toasts.invalid_room_id.title'),
+        type: ToastType.Error,
+        message: t('toasts.invalid_room_id.message') as string,
+        icon: <TagIcon />,
+      });
     }
   };
 
-  const panelImages: Array<string> = [
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-  ];
+  const panelImages: Array<string> = [banner1, banner2, banner3];
 
   return (
     <div className={cs('flex justify-center items-center', 'w-full h-full')}>
@@ -170,7 +189,7 @@ export function Home(): ReactElement {
         <Button
           onClick={routeToRoom}
           isFullWidth={true}
-          isDisabled={!isPlayerNameValid}
+          isDisabled={!isPlayerNameValid || isRouteToRoomBtnDisabled}
           isCarVisible={true}>
           {roomId ? t('actions.join') : t('actions.create')}
         </Button>
@@ -217,6 +236,7 @@ export function Home(): ReactElement {
           </Button>
         ) : (
           <ButtonWithInput
+            inputPlaceholder='i234S67B'
             onClick={(id: string): void => joinRoomButtonHandler(id)}
             onInputChange={(e): void => roomIdChangeHandler(e.target.value)}
             inputState={getInputState(

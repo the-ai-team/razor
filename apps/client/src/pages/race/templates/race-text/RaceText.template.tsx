@@ -21,7 +21,7 @@ import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/A
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
 import { AudioManager } from 'apps/client/src/services';
-import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
@@ -59,7 +59,7 @@ export function RaceText({
   const { t } = useTranslation(['race', 'common']);
   const addToast = useToastContext();
 
-  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const selfPlayerId = useRef<AppPlayerId | null>(savedData.savedPlayerId);
   const raceData = game.racesModel[raceId];
   const players = raceData.players;
   const [playerIds, setPlayerIds] = useState<AppPlayerId[]>([]);
@@ -302,7 +302,7 @@ export function RaceText({
                     charIndex,
                     { cursorAt: playerCursorAt },
                   );
-                  const isCursorAtInvalidCursor = indexConverter.isCursorAtChar(
+                  const isInvalidCursorAtLetter = indexConverter.isCursorAtChar(
                     charIndex,
                     { cursorAt: invalidCursorAt },
                   );
@@ -322,13 +322,13 @@ export function RaceText({
                       cursorsAt: otherPlayerCursors,
                     });
                   /* Show normal cursor if no invalid chars */
-                  const isVisibleRegularCursor =
+                  const isRegularCursorVisible =
                     (noOfInvalidChars === 0 || isLocked) && isCursorAtLetter;
                   /* Show invalid cursor if invalid chars */
-                  const isVisibleInvalidCursor =
+                  const isInvalidCursorVisible =
                     noOfInvalidChars > 0 &&
                     !isLocked &&
-                    isCursorAtInvalidCursor;
+                    isInvalidCursorAtLetter;
 
                   return (
                     <span
@@ -338,13 +338,13 @@ export function RaceText({
                         'text-error-60 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isVisibleRegularCursor ? (
+                      {isRegularCursorVisible ? (
                         <Cursor isAtSpace={isSpace} isLocked={isLocked} />
                       ) : null}
-                      {isVisibleInvalidCursor ? (
+                      {isInvalidCursorVisible ? (
                         <Cursor
                           isAtSpace={isSpace}
-                          isInvalidCursor={isCursorAtInvalidCursor}
+                          isInvalidCursor={isInvalidCursorAtLetter}
                         />
                       ) : null}
                       {isOtherPlayerCursorsOnLetter ? (

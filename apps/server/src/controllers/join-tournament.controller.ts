@@ -2,6 +2,7 @@ import {
   AppPlayer,
   appPlayerStateToPlayerState,
   InitialServerData,
+  JoinLobbyFailures,
   PlayerJoinData,
   Snapshot,
   SocketProtocols,
@@ -12,6 +13,7 @@ import { pick } from 'lodash';
 
 import { AllServerPubSubEventsToTypeMap } from '../models';
 import {
+  assignPlayerToSocketGroup,
   Logger,
   publishToAllClients,
   publishToSingleClient,
@@ -37,23 +39,38 @@ const joinTournamentController = ({
       'Player already has playerId, checking whether player is available on the store.',
       context,
     );
-    player =
-      store.getState().game.playersModel[
-        tokenPlayerMap.getPlayerIdBySocketId(socketId)
-      ];
+    player = store.getState().game.playersModel[playerId];
+
+    if (!player) {
+      publishToSingleClient({
+        socketId,
+        protocol: SocketProtocols.JoinLobbyReject,
+        data: {
+          message: JoinLobbyFailures.PlayerIdInvalid,
+        },
+      });
+      return;
+    }
   }
 
   // If player data is not available on the store let new player join to the store.
   if (!player) {
     const { playerName, roomId } = data;
     const receivedTournamentId: TournamentId = `T:${roomId}`;
-    playerId ||= store.dispatch.game.joinPlayer({
+    playerId = store.dispatch.game.joinPlayer({
       receivedTournamentId,
       playerName,
     });
     if (!playerId) {
       logger.error("Store didn't send a playerId", context);
-      // TODO: send error response
+
+      publishToSingleClient({
+        socketId,
+        protocol: SocketProtocols.JoinLobbyReject,
+        data: {
+          message: JoinLobbyFailures.TournamentNotFound,
+        },
+      });
       return;
     }
     logger.debug('Player added to the store', context);
@@ -76,7 +93,8 @@ const joinTournamentController = ({
   const filteredLeaderboards = pick(state.leaderboardsModel, raceIds);
   let filteredPlayersLogs = {};
   if (filteredRaces[lastRaceId]?.isOnGoing === true) {
-    const playersLogsIds = playerIds.map(
+    const racePlayerIds = Object.keys(filteredRaces[lastRaceId].players);
+    const playersLogsIds = racePlayerIds.map(
       playerId => `${lastRaceId}-${playerId}`,
     );
     filteredPlayersLogs = pick(state.playerLogsModel, playersLogsIds);
@@ -97,6 +115,9 @@ const joinTournamentController = ({
     tournamentId,
     snapshot,
   };
+
+  tokenPlayerMap.addTournamentId(playerId, tournamentId);
+  assignPlayerToSocketGroup(playerId);
 
   publishToSingleClient({
     playerId,

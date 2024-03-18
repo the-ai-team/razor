@@ -9,6 +9,7 @@ export interface ListItemProps {
   imgURL?: string;
   rightText?: string;
   number?: number;
+  isHighlighted?: boolean;
   isTranslucent?: boolean;
 }
 
@@ -18,6 +19,7 @@ export interface ListItemProps {
  * @param imgURL - URL of the Image/Icon to be displayed on the left side of the list item (optional)
  * @param rightText - Text to be displayed on the right side of the list item (optional)
  * @param [isTranslucent=false] - Changes the item to translucent (optional)
+ * @param [isHighlighted=false] - Changes the item to highlighted (optional)
  * @param [number=-1] - Number to be displayed on the left side of the list item (optional)
  */
 export function ListItem({
@@ -25,6 +27,7 @@ export function ListItem({
   imgURL,
   rightText,
   isTranslucent = false,
+  isHighlighted = false,
   number = -1,
 }: ListItemProps): ReactElement {
   return (
@@ -34,7 +37,9 @@ export function ListItem({
         'px-10 py-3',
         'bg-neutral-20',
         'rounded-md',
-        'border-[3px] border-neutral-40',
+        isHighlighted
+          ? 'border-neutral-40 border-4'
+          : 'border-neutral-30 border-2',
         { 'opacity-60': isTranslucent },
       )}>
       <div className='flex items-center justify-center gap-4'>

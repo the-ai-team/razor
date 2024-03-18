@@ -12,6 +12,7 @@ class CheckRaceEnd {
   private allPlayerIds: AppPlayerId[];
   private raceEndPlayerIds: AppPlayerId[];
   private raceTextLength: number;
+  private _isRaceEnded = false;
 
   constructor(allPlayerIds: AppPlayerId[], raceTextLength: number) {
     this.allPlayerIds = allPlayerIds;
@@ -22,12 +23,15 @@ class CheckRaceEnd {
   /** Mark a player as ended the race. */
   private addPlayer(playerId: AppPlayerId, context: ContextOutput): void {
     if (!this.allPlayerIds.includes(playerId)) {
-      logger.error('Added a player not included in all player Ids', context);
+      logger.warn(
+        'Trying to end a player not included in all player Ids',
+        context,
+      );
       return;
     }
 
     if (this.raceEndPlayerIds.includes(playerId)) {
-      logger.error('Player already marked as ended.', context);
+      logger.warn('Player already marked as race ended.', context);
       return;
     }
 
@@ -36,7 +40,19 @@ class CheckRaceEnd {
 
   /** Check all players finished the race */
   public isRaceEnded(): boolean {
-    return this.raceEndPlayerIds.length === this.allPlayerIds.length;
+    // If already ended.
+    if (this._isRaceEnded) {
+      return true;
+    } else {
+      // Check allPlayerIds are in raceEndPlayerIds
+      const isAllPlayersEnded = this.allPlayerIds.every(playerId =>
+        this.raceEndPlayerIds.includes(playerId),
+      );
+      if (isAllPlayersEnded) {
+        this._isRaceEnded = true;
+        return true;
+      }
+    }
   }
 
   /** Check whether player has completed the race text.
@@ -59,6 +75,13 @@ class CheckRaceEnd {
     }
 
     if (lastTextLength === this.raceTextLength) {
+      logger.info(
+        'Player marked as race ended by completing the race.',
+        context,
+        {
+          playerId,
+        },
+      );
       this.addPlayer(playerId, context);
     }
     return false;
@@ -66,6 +89,9 @@ class CheckRaceEnd {
 
   /** Add a player ended race by client timeout. */
   public addPlayerTimeout(playerId: AppPlayerId, context: ContextOutput): void {
+    logger.info('Player marked as race ended by client timeout.', context, {
+      playerId,
+    });
     this.addPlayer(playerId, context);
   }
 }

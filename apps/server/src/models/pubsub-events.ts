@@ -47,7 +47,8 @@ export enum PubSubEvents {
 
 // Models
 export interface SendDataToClientModel {
-  playerId: PlayerId;
+  playerId?: PlayerId;
+  socketId?: SocketId;
   protocol: SocketProtocolsTypes;
   data: object;
 }

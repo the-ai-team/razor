@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { Meta } from '@storybook/react';
 import { ToastContextProvider } from 'apps/client/src/providers';
-import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 
 import {
   addSampleRaceLogs,
@@ -19,7 +19,7 @@ function sendTypeLog(playerCursorAt: number): void {
     textLength: playerCursorAt + 1,
   };
 
-  const playerId = getSavedPlayerId();
+  const playerId = savedData.savedPlayerId;
   if (playerId) {
     store.dispatch.game.sendTypeLog({
       playerLog,

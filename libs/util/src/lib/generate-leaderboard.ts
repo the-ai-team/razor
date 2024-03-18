@@ -51,7 +51,7 @@ export const generateLeaderboard = (
 
       // Check whether the player has finished the race by comparing the last logged text length of the player and the race text length.
       if (playerLastTextLength === raceTextLength) {
-        const wpm = calculateWPM(raceTextLength, playerLogs[playerLogId]);
+        const wpm = calculateFullWPM(raceTextLength, playerLogs[playerLogId]);
         // Elapsed time = (Last timestamp - First timestamp) / 1000 <= In seconds
         const elapsedTime =
           (playerLogs[playerLogId][playerLogsLength - 1].timestamp -
@@ -108,7 +108,7 @@ export const generateLeaderboard = (
  * @param logs - Logs of a player.
  * @returns Average wpm.
  */
-const calculateWPM = (length: number, logs: AppPlayerLog[]): number => {
+const calculateFullWPM = (length: number, logs: AppPlayerLog[]): number => {
   /** Placing markers(checkpoints) for race text length. This will partition race text length. */
   const mark1 = Math.floor(length * 0.25);
   const mark2 = Math.floor(length * 0.5);
@@ -171,7 +171,7 @@ const calculateWPM = (length: number, logs: AppPlayerLog[]): number => {
     // Calculate the quarter WPM using the difference between the two timestamp checkpoints and the two text length checkpoints.
     // * From example 1:
     // calculateQuarterWPM(1234567021, 1234567050, 119, 241) = 2.4
-    quarterWPMs[index] = calculateQuarterWPM(
+    quarterWPMs[index] = calculateWPM(
       timestampCheckpoints[index],
       timestampCheckpoints[index + 1],
       textLengthCheckpoints[index],
@@ -187,7 +187,7 @@ const calculateWPM = (length: number, logs: AppPlayerLog[]): number => {
  *
  * @returns WPM for specific quarter.
  */
-const calculateQuarterWPM = (
+export const calculateWPM = (
   startTimestamp: number,
   endTimestamp: number,
   startTextLength: number,

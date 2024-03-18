@@ -26,6 +26,14 @@ type ModifiedEvent<T extends object, AdditionalProps extends object> = {
   data: T;
 } & AdditionalProps;
 
+// TODO: Add this in future
+// type ModifiedInitialProtocolToTypeMap = {
+//   [K in keyof InitialProtocolToTypeMap]: ModifiedEvent<
+//     InitialProtocolToTypeMap[K],
+//     { socketId: SocketId }
+//   >;
+// };
+
 type ModifiedOtherProtocolToTypeMap = {
   [K in keyof OtherProtocolToTypeMap]: ModifiedEvent<
     OtherProtocolToTypeMap[K],

@@ -32,8 +32,10 @@ export function RaceLine({
 }: RaceLineProps): ReactElement | null {
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
   const game = useSelector((store: RootState) => store.game);
-  const playersModel = game.playersModel;
-  const playerName = playersModel[playerId]?.name || 'Unknown';
+  const racePlayers = game.racesModel[raceId]?.players || [];
+  const playerName = racePlayers[playerId]?.name || 'Unknown';
+  // TODO: Show if player is disconnected
+  // const isDisconnected = playersModel[playerId] === undefined;
   const [playerRanks] = useComputePlayerRanks(raceId);
 
   const playerLogs = game.playerLogsModel[playerLogId];
