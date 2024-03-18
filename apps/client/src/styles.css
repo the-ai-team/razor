@@ -4,12 +4,14 @@
 
 body {
   font-family: 'Sora', sans-serif;
+  font-size: 16px;
 }
 
 .scrollbar::-webkit-scrollbar {
   display: block;
   width: 10px;
 }
+
 .scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
