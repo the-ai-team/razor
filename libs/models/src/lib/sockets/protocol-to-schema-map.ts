@@ -5,6 +5,7 @@ import {
   initialServerDataSchema,
   playerJoinSchema,
   ProtocolSchemaTypes,
+  sendLeaderboardSchema,
   sendTypeLogSchema,
   startRaceAcceptSchema,
   startRaceRequestSchema,
@@ -28,4 +29,5 @@ export const protocolToSchemaMap = new Map<
   [SocketProtocols.SendTypeLog, sendTypeLogSchema],
   [SocketProtocols.UpdateTypeLogs, updateTypeLogsSchema],
   [SocketProtocols.InformTimeout, informTimeoutSchema],
+  [SocketProtocols.SendLeaderboard, sendLeaderboardSchema],
 ]);

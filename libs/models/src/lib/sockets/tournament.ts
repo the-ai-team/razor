@@ -1,34 +1,6 @@
 import { TOURNAMENT_ID_LENGTH } from '@razor/constants';
 import { z } from 'zod';
 
-import { Leaderboard } from './leaderboard';
-import { Player } from './player';
-import { Race } from './race';
-
-// ==== Interfaces ==== //
-// Note: `Tournament` does not need to be a schema; because it's only bound to the server-to-client communication.
-export interface Tournament {
-  /** Unique tournament id (/lobby ID) */
-  id: TournamentId;
-  /** Tournament state */
-  state: TournamentState;
-  /** Races history and current race
-   *
-   * It can be empty if no races are started yet.
-   */
-  races: Race[];
-  /** Players in the tournament
-   *
-   * It can be empty if the lobby is empty.
-   */
-  players: Player[];
-  /** Leaderboards of the tournament
-   *
-   * It can be empty if the first race is not finished yet.
-   */
-  raceLeaderboards: Leaderboard[];
-}
-
 // ==== Types ==== //
 /** Tournament id template literal */
 export type TournamentId = z.input<typeof tournamentIdSchema>;

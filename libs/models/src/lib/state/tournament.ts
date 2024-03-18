@@ -5,7 +5,6 @@ import { AppRaceId } from './race';
 export enum AppTournamentState {
   Lobby = 'lobby',
   Ready = 'ready',
-  Countdown = 'countdown',
   Race = 'race',
   Leaderboard = 'leaderboard',
   Empty = 'empty',

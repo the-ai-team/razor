@@ -1,20 +1,27 @@
 import { RACE_END_WAIT_TIME } from '@razor/constants';
-import { SocketProtocols, StartRaceAcceptData } from '@razor/models';
+import {
+  AppPlayerId,
+  SocketProtocols,
+  StartRaceAcceptData,
+} from '@razor/models';
 import { store } from '@razor/store';
 
 import {
   AllServerPubSubEventsToTypeMap,
   PubSubEvents,
-  RaceTimeoutModel,
+  RaceEndModel,
   TypeLogListeningModel,
 } from '../models';
 import { Logger, publishToAllClients, pubsub } from '../services';
 import { generateRaceText } from '../utils';
+import { createCheckRaceEndInstance } from '../utils/check-race-complete';
 
 const logger = new Logger('start-race.controller');
 
 type StartRaceArgs =
   AllServerPubSubEventsToTypeMap[SocketProtocols.StartRaceRequest];
+
+export let serverRaceTimeout: NodeJS.Timeout;
 
 export const startRaceController = async ({
   context,
@@ -55,7 +62,7 @@ export const startRaceController = async ({
     return;
   }
 
-  store.dispatch.game.startCountdown({
+  store.dispatch.game.startRace({
     tournamentId,
     playerId,
     raceText,
@@ -89,14 +96,20 @@ export const startRaceController = async ({
   };
   pubsub.publish(PubSubEvents.StartTypeLogListening, TypeLogListenData);
 
+  // Create an instance for check race end by player complete/timeout
+  const racePlayerIds = Object.keys(race.players) as AppPlayerId[];
+  const raceTextLength = raceText.length;
+  createCheckRaceEndInstance(raceId, racePlayerIds, raceTextLength);
+
   const raceEndTime = (race.timeoutDuration + RACE_END_WAIT_TIME) * 1000;
-  const raceTimeoutData: RaceTimeoutModel = {
+  const raceEndModel: RaceEndModel = {
     context,
     data: { raceId },
   };
-  const raceTimeout = setTimeout(() => {
-    pubsub.publish(PubSubEvents.RaceTimeout, raceTimeoutData);
-    clearTimeout(raceTimeout);
+  serverRaceTimeout = setTimeout(() => {
+    logger.info('Race ended triggered by server timeout.', context);
+    pubsub.publish(PubSubEvents.RaceEnd, raceEndModel);
+    clearTimeout(serverRaceTimeout);
   }, raceEndTime);
 };
 

@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+  "configurations": [
+    {
+      "name": "Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:server"],
+      "outputCapture": "std",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "internalConsole",
+      "env": {
+        "TS_NODE_IGNORE": "false",
+        "TS_NODE_PROJECT": "${workspaceFolder}/apps/server/tsconfig.json"
+      },
+      "cwd": "${workspaceFolder}/apps/server/"
+    }
+  ]
+}

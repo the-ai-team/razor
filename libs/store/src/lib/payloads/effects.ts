@@ -29,15 +29,11 @@ export type SetTournamentStatePayload = {
   tournamentState: AppTournamentState;
 };
 
-export type StartCountdownPayload = {
+export type StartRacePayload = {
   tournamentId: AppTournamentId;
   /** Id of player who started the race */
   playerId: AppPlayerId;
   raceText: string;
-};
-
-export type EndCountdownPayload = {
-  tournamentId: AppTournamentId;
 };
 
 export type EndRacePayload = {

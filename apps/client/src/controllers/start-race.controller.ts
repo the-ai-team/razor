@@ -13,7 +13,7 @@ function StartRaceController({
 }: StartRaceControllerArgs): void {
   const { raceStartedBy, raceText, ..._ } = data;
 
-  store.dispatch.game.startCountdown({
+  store.dispatch.game.startRace({
     tournamentId,
     playerId: raceStartedBy,
     raceText,

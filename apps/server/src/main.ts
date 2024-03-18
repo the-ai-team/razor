@@ -5,6 +5,7 @@ import { Server } from 'socket.io';
 
 import './controllers';
 
+import { viewAllCheckRaceEndInstances } from './utils/check-race-complete';
 import { emitSocketMessages } from './services';
 import { manageSocketConnections } from './socket';
 import { tokenPlayerMap } from './stores';
@@ -20,6 +21,11 @@ app.get('/', (req, res) => {
 
 app.get('/token-player-map', (req, res) => {
   const data = tokenPlayerMap.viewMap();
+  res.send(data);
+});
+
+app.get('/ongoing-race-data', (req, res) => {
+  const data = viewAllCheckRaceEndInstances();
   res.send(data);
 });
 

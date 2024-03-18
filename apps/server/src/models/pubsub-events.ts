@@ -24,11 +24,18 @@ export enum PubSubEvents {
 
   /** Notify the player-disconnect event to controllers. */
   PlayerDisconnect = 'player-disconnect',
-  /** Notify when the race timer runs out.
-   * This will publish from start-race controller after time race timeout
-   * and it should subscribe by race-end controller.
+  /** Notify when the race ends.
+   * The race can end in two ways: when the server timer runs out or when all players complete the race.
+   * (Players will finish their race either due to a client timeout or by sending the last type log.)
+   *
+   * This event will be published in one of the following ways:
+   * - From the start-race controller after the server race timeout.
+   * - By updating the type-logs controller after all players have sent their last type log.
+   * - By informing the timeout controller after all players have timed out on the client side.
+   *
+   * Subscribing to this event should be handled by the race-end controller.
    */
-  RaceTimeout = 'race-timeout',
+  RaceEnd = 'race-end',
 
   /** Start and end events for type log listening.
    * Which push collected type logs to players at a specific interval
@@ -56,7 +63,7 @@ export interface PlayerDisconnectModel {
   context: ContextOutput;
 }
 
-export interface RaceTimeoutModel {
+export interface RaceEndModel {
   data: { raceId: RaceId };
   context: ContextOutput;
 }
@@ -70,7 +77,7 @@ export interface ServerUniqueEventsToTypeMap extends Record<string, object> {
   [PubSubEvents.SendDataToClient]: SendDataToClientModel;
   [PubSubEvents.SendDataToAll]: SendDataToAllModel;
   [PubSubEvents.PlayerDisconnect]: PlayerDisconnectModel;
-  [PubSubEvents.RaceTimeout]: RaceTimeoutModel;
+  [PubSubEvents.RaceEnd]: RaceEndModel;
   [PubSubEvents.StartTypeLogListening]: TypeLogListeningModel;
   [PubSubEvents.EndTypeLogListening]: TypeLogListeningModel;
 }

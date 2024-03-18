@@ -25,7 +25,7 @@ enum ProtocolName {
   SendTypeLog = 'SEND_TYPE_LOG',
   UpdateTypeLogs = 'UPDATE_TYPE_LOGS',
   Timeout = 'TIMEOUT',
-  ForceEnd = 'FORCE_END',
+  // ForceEnd = 'FORCE_END',
   SendLeaderboard = 'SEND_LEADERBOARD',
   ClearPlayer = 'CLEAR_PLAYER',
   ResetLobby = 'RESET_LOBBY',
@@ -54,7 +54,6 @@ export enum SocketProtocols {
 
   // End race
   InformTimeout = `${TransferDirection.ToServer}/${CommunicationType.Information}/${ProtocolName.Timeout}`,
-  ForceEnd = `${TransferDirection.FromServer}/${CommunicationType.Command}/${ProtocolName.ForceEnd}`,
   SendLeaderboard = `${TransferDirection.FromServerToAll}/${CommunicationType.Information}/${ProtocolName.SendLeaderboard}`,
 
   // Clear a player

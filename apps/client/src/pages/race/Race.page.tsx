@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { RACE_READY_COUNTDOWN } from '@razor/constants';
 import { AppRaceId, AppTournamentId, PlayerId } from '@razor/models';
 import { RootState } from '@razor/store';
 import cs from 'classnames';
@@ -12,6 +13,7 @@ import { Text, ToastType } from '../../components';
 import { Timer } from '../../components/molecules/timer';
 import { useToastContext } from '../../hooks/useToastContext';
 import { TextSize, TextType } from '../../models';
+import { raceTimeout } from '../../services/handlers/race-timeout';
 import {
   sendInitialTypeLog,
   sendTypeLog,
@@ -28,7 +30,8 @@ export function Race(): ReactElement {
   const addToast = useToastContext();
   const game = useSelector((store: RootState) => store.game);
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
-  const [raceReadyTime, setRaceReadyTime] = useState<number>(5);
+  const [raceReadyTime, setRaceReadyTime] =
+    useState<number>(RACE_READY_COUNTDOWN);
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
@@ -107,6 +110,13 @@ export function Race(): ReactElement {
     }
   }, [raceReadyTime, raceId]);
 
+  const raceTimeEndHandler = (): void => {
+    setIsTypeLocked(true);
+    if (raceId) {
+      raceTimeout(raceId);
+    }
+  };
+
   return (
     <div
       className={cs(
@@ -145,10 +155,7 @@ export function Race(): ReactElement {
                   'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
                   'fixed -top-40 right-8 z-10',
                 )}>
-                <Timer
-                  time={raceTime}
-                  onTimeEnd={(): void => setIsTypeLocked(true)}
-                />
+                <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />
               </div>
               <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
                 <RaceText

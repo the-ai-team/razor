@@ -52,10 +52,11 @@ export const generateLeaderboard = (
       // Check whether the player has finished the race by comparing the last logged text length of the player and the race text length.
       if (playerLastTextLength === raceTextLength) {
         const wpm = calculateWPM(raceTextLength, playerLogs[playerLogId]);
-        // Elapsed time = Last timestamp - First timestamp
+        // Elapsed time = (Last timestamp - First timestamp) / 1000 <= In seconds
         const elapsedTime =
-          playerLogs[playerLogId][playerLogsLength - 1].timestamp -
-          playerLogs[playerLogId][0].timestamp;
+          (playerLogs[playerLogId][playerLogsLength - 1].timestamp -
+            playerLogs[playerLogId][0].timestamp) /
+          1000;
         const finishedPlayerValues: AppFinishedPlayerValues = {
           wpm,
           elapsedTime,
@@ -197,6 +198,6 @@ const calculateQuarterWPM = (
 
   // Avg. number of words in race text = textLength / 5
   // WPM = Avg. words / Mintues
-  const wpm = textLength / 5 / (timeElapsed / 60);
+  const wpm = textLength / 5 / (timeElapsed / 1000 / 60);
   return wpm;
 };

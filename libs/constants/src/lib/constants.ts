@@ -1,3 +1,6 @@
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { RACE_READY_COUNTDOWN } from './client';
+
 /** Average WPM of a person who types on a physical keyboard.
  *
  * Use by,
@@ -76,5 +79,8 @@ export const TOURNAMENT_ID_LENGTH = 8;
 /** After server race timer ends, the server waits for a short time to receive race ending (either complete or timeout) logs from all players.
  * This waiting period accounts for players who may have started the race with a delay.
  * If logs are not received from all players by the end of the waiting period, the server will forcibly end the race.
+ *
+ * (Client starting timer {@link RACE_READY_COUNTDOWN} + Additional wait time)
+ *
  */
-export const RACE_END_WAIT_TIME = 6; // seconds
+export const RACE_END_WAIT_TIME = 10; // seconds

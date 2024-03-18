@@ -7,6 +7,7 @@ import { timestampSchema } from './tournament';
 // ==== Types ==== //
 /** Type for time-logs when players are typing */
 export type PlayerLog = z.infer<typeof playerLogSchema>;
+export type PlayerLogId = z.input<typeof playerLogIdSchema>;
 
 /** Log collection or partial collection for a specific player. */
 export type PlayerLogsCollection = z.infer<typeof playerLogsCollectionSchema>;

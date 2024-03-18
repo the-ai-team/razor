@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { leaderboardSchema } from './leaderboard';
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
 import { playerLogSchema, playerLogsCollectionSchema } from './playerLog';
 // eslint-disable-next-line unused-imports/no-unused-imports
@@ -74,7 +75,15 @@ export const updateTypeLogsSchema = z.object({
  * Related protocol - {@link SocketProtocols.InformTimeout}
  */
 export const informTimeoutSchema = z.object({
-  timestamp: z.number(),
+  raceId: raceIdSchema,
+});
+
+/**
+ * Related protocol - {@link SocketProtocols.SendLeaderboard}
+ */
+export const sendLeaderboardSchema = z.object({
+  raceId: raceIdSchema,
+  leaderboard: leaderboardSchema,
 });
 
 export type ProtocolSchemaTypes =
@@ -86,4 +95,5 @@ export type ProtocolSchemaTypes =
   | typeof startRaceAcceptSchema
   | typeof sendTypeLogSchema
   | typeof updateTypeLogsSchema
-  | typeof informTimeoutSchema;
+  | typeof informTimeoutSchema
+  | typeof sendLeaderboardSchema;
