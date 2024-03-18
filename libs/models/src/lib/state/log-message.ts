@@ -1,6 +1,6 @@
 /** Error codes */
 export enum AppErrorCode {
-  TournamentNotExists = 'TOURNAMNET_NOT_FOUND',
+  TournamentNotExists = 'TOURNAMENT_NOT_FOUND',
   PlayerNotExists = 'PLAYER_NOT_FOUND',
   InvalidPlayerName = 'INVALID_PLAYER_NAME',
   RaceNotExists = 'RACE_NOT_FOUND',

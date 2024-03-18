@@ -4,8 +4,8 @@ import {
   clearGlobalToastManager,
   setGlobalToastManager,
 } from './utils/globalToastManager';
+import { AppRouter } from './appRouter';
 import { useToastContext } from './hooks';
-import { Router } from './router';
 
 export function App(): ReactElement {
   const addToast = useToastContext();
@@ -18,5 +18,5 @@ export function App(): ReactElement {
     };
   }, [addToast]);
 
-  return <Router />;
+  return <AppRouter />;
 }

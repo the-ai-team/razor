@@ -7,6 +7,9 @@ export default {
   component: Timer,
   args: {
     time: 10,
+    showSpeed: false,
+    speedValue: '50 WPM',
+    speedometerPercentage: 0.25,
     onTimeEnd: () => {
       console.log('Time ended');
     },

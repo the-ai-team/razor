@@ -1,4 +1,5 @@
 import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import {
   AppFinishedPlayerValues,
@@ -8,7 +9,9 @@ import {
   AppTimeoutPlayerValues,
 } from '@razor/models';
 import { RootState } from '@razor/store';
-import { ListItem } from 'apps/client/src/components';
+import { ListItem, Text } from 'apps/client/src/components';
+import { TextSize, TextType } from 'apps/client/src/models';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import cs from 'classnames';
 
 export interface LeaderboardProps {
@@ -18,6 +21,8 @@ export interface LeaderboardProps {
 export function LeaderboardList({
   raceId,
 }: LeaderboardProps): ReactElement | null {
+  const { t } = useTranslation(['leaderboard']);
+
   const game = useSelector((store: RootState) => store.game);
   const entries: AppLeaderboard = game.leaderboardsModel[raceId] || [];
   const completedEntries = entries.filter(
@@ -114,12 +119,20 @@ export function LeaderboardList({
                 imgURL={player.avatarLink}
                 number={index + 1}
                 rightText={`${values.wpm.toFixed(2)} wpm`}
+                isHighlighted={entry.playerId === savedData.savedPlayerId}
                 key={entry.playerId}
               />
             );
           })}
           {completedEntries?.length > 0 && timeoutEntries?.length > 0 ? (
-            <div className='w-full h-2 flex-shrink-0 bg-neutral-40 bg-opacity-60 rounded-full my-6' />
+            <div className='w-full h-2 flex-shrink-0 bg-neutral-40 bg-opacity-60 rounded-full my-6 relative'>
+              <Text
+                type={TextType.Label}
+                size={TextSize.Small}
+                className='absolute w-full -top-3.5 flex justify-center'>
+                {t('timeout_players') as string}
+              </Text>
+            </div>
           ) : null}
           {timeoutEntries.map(entry => {
             const player = racePlayers[entry.playerId];
@@ -138,6 +151,7 @@ export function LeaderboardList({
                 title={player.name}
                 imgURL={player.avatarLink}
                 rightText={`${completePercentage}%`}
+                isHighlighted={entry.playerId === savedData.savedPlayerId}
                 isTranslucent
                 key={entry.playerId}
               />

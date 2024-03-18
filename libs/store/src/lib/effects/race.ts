@@ -32,7 +32,7 @@ import { Dispatch, RootState } from '../store';
  * @param state - Current state model.
  *
  * ### Related reducers and effects
- * - setTournamentState (effect)
+ * - updateTournamentState (effect)
  * - updatePlayerReducer
  * - updateRaceReducer
  *
@@ -121,7 +121,7 @@ export const startRace = (
   };
 
   // Updating tournament state in tournamentsModel. ("Ready" -> "Race")
-  dispatch.game.setTournamentState({
+  dispatch.game.updateTournamentState({
     tournamentId,
     tournamentState: AppTournamentState.Race,
   });
@@ -173,7 +173,7 @@ export const endRace = (
   ) as AppTournamentId;
 
   // Set tournament state to Leaderboard.
-  dispatch.game.setTournamentState({
+  dispatch.game.updateTournamentState({
     tournamentId,
     tournamentState: AppTournamentState.Leaderboard,
   });

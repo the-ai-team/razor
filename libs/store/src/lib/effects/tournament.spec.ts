@@ -37,9 +37,9 @@ describe('[Effects] Tournament', () => {
       const store = initializeStore(initialValues);
       const initialStoreState = store.getState();
 
-      store.dispatch.game.setTournamentState({
+      store.dispatch.game.updateTournamentState({
         tournamentId: M_TOURNAMENT_ID0,
-        tournamentState: AppTournamentState.Ready,
+        tournamentState: AppTournamentState.Lobby,
       });
       const storeState = store.getState();
 
@@ -68,9 +68,9 @@ describe('[Effects] Tournament', () => {
       };
       const store = initializeStore(initialValues);
 
-      store.dispatch.game.setTournamentState({
+      store.dispatch.game.updateTournamentState({
         tournamentId: 'T:notExist',
-        tournamentState: AppTournamentState.Ready,
+        tournamentState: AppTournamentState.Lobby,
       });
 
       expect(tournamentNotFound).toHaveBeenCalled();

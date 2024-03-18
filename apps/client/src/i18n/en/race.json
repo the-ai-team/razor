@@ -4,6 +4,10 @@
     "race_start": {
       "title": "Ready, set, go!",
       "message": "{{player_name}} started the race. Good luck!"
+    },
+    "reconnected_as_new": {
+      "title": "Reconnected as a New Player",
+      "message": "Unfortunately, you were removed from the race after an extended period of inactivity. Despite your reconnection, the server had to remove you. You'll now be treated as a new player in the tournament."
     }
   }
 }

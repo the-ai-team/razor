@@ -17,6 +17,12 @@
       }
     ]
   },
+  "toasts": {
+    "invalid_room_id": {
+      "title": "Invalid room id",
+      "message": "The room id you entered is invalid. Please try again."
+    }
+  },
   "room_id": "(Room id: {{id}})",
   "actions": {
     "join": "Join",

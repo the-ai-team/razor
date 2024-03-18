@@ -17,8 +17,7 @@ import { ReactComponent as EyeIcon } from 'pixelarticons/svg/eye.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
 import { Text, ToastType } from '../../components';
-import { Timer } from '../../components/molecules/timer';
-import { useToastContext } from '../../hooks/useToastContext';
+import { useToastContext } from '../../hooks';
 import { TextSize, TextType } from '../../models';
 import { raceTimeout } from '../../services/handlers/race-timeout';
 import {
@@ -29,6 +28,7 @@ import {
 import { savedData } from '../../utils/save-player-data';
 
 import { RaceText } from './templates/race-text/RaceText.template';
+import { RaceTimer } from './templates/race-timer/RaceTimer.template';
 import { RaceTrack } from './templates/race-view/RaceTrack.template';
 
 export function Race(): ReactElement {
@@ -40,10 +40,35 @@ export function Race(): ReactElement {
   const [raceId, setRaceId] = useState<AppRaceId | null>(null);
   const [raceReadyTime, setRaceReadyTime] =
     useState<number>(RACE_READY_COUNTDOWN);
-  const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(savedData.savedPlayerId);
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
   const [isSpectator, setIsSpectator] = useState<boolean>(false);
+  const prevAuthToken = useRef<string | null>(savedData.authToken);
+
+  useEffect(() => {
+    const handleAuthTokenChange = (): void =>
+      savedData.addEventListener(() => {
+        const authToken = savedData.authToken;
+        if (prevAuthToken.current === null || authToken === null) {
+          return;
+        }
+
+        if (prevAuthToken.current !== authToken) {
+          prevAuthToken.current = authToken;
+          setIsSpectator(true);
+        }
+        addToast({
+          title: t('toasts.reconnected_as_new.title'),
+          type: ToastType.Info,
+          message: t('toasts.reconnected_as_new.message') as string,
+        });
+      });
+    handleAuthTokenChange();
+
+    return () => {
+      savedData.removeEventListener(handleAuthTokenChange);
+    };
+  }, []);
 
   // If the tournament state changed to leaderboard navigate to the leaderboard page.
   useEffect((): void => {
@@ -125,6 +150,7 @@ export function Race(): ReactElement {
             </Trans>
           ) as unknown as string,
           icon: <CarIcon />,
+          toastHideDelay: 3000,
         });
       }
     }
@@ -137,14 +163,12 @@ export function Race(): ReactElement {
 
   useEffect((): void => {
     if (raceId && raceReadyTime <= 0 && !isSpectator) {
-      const raceTime = game.racesModel[raceId]?.timeoutDuration;
-      setRaceTime(raceTime);
       sendInitialTypeLog(raceId);
       setIsTypeLocked(false);
     }
   }, [raceReadyTime, raceId]);
 
-  const raceTimeEndHandler = (): void => {
+  const raceEndHandler = (): void => {
     setIsTypeLocked(true);
     if (raceId) {
       raceTimeout(raceId);
@@ -191,10 +215,14 @@ export function Race(): ReactElement {
                 <div
                   className={cs(
                     'm-auto 2xl:static',
-                    'scale-50 2xl:scale-100 origin-top-right 2xl:origin-center',
+                    'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
                     'fixed -top-40 right-8 z-10',
                   )}>
-                  <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />
+                  <RaceTimer
+                    raceId={raceId}
+                    isRaceStarted={raceReadyTime <= 0}
+                    onTimeEnd={raceEndHandler}
+                  />
                 </div>
 
                 <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>

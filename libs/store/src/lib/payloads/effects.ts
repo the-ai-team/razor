@@ -24,9 +24,12 @@ export type ClearPlayerPayload = {
   playerId: AppPlayerId;
 };
 
-export type SetTournamentStatePayload = {
+export type UpdateTournamentStatePayload = {
   tournamentId: AppTournamentId;
-  tournamentState: AppTournamentState;
+  tournamentState: Exclude<
+    AppTournamentState,
+    AppTournamentState.Empty | AppTournamentState.Ready
+  >;
 };
 
 export type StartRacePayload = {

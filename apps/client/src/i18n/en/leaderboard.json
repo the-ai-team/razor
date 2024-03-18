@@ -16,5 +16,6 @@
         "content": "Want to show off your leaderboard achievements to your friends and followers on social media? Simply take a screenshot of the leaderboard, featuring your name and stats, and share it with the world. Let everyone see your typing prowess and inspire them to join the action on Razor!"
       }
     ]
-  }
+  },
+  "timeout_players": "Timeout Players"
 }

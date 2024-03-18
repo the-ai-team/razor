@@ -33,12 +33,11 @@ export function Panel({ title, children }: PanelProps): ReactElement {
   return (
     <div
       className={cs(
-        { 'h-32 pt-4': isCollapse },
-        { 'h-2/3 pt-12 pb-20': !isCollapse },
+        { 'lg:h-32 h-20 w-96 lg:pt-4 pt-3 px-6': isCollapse },
+        { 'h-2/3 lg:pt-8 pt-2 pb-16 lg:px-10 px-8': !isCollapse },
         'flex flex-col',
         'absolute top-5 right-5 z-50',
-        'px-12',
-        'w-1/3 max-w-xl max-h-[1200px] min-w-[400px] rounded-md bg-neutral-20',
+        'w-1/3 max-w-lg max-h-[1200px] min-w-[350px] rounded-md bg-neutral-20',
         'border border-neutral-40',
         'hover:ring-4 hover:ring-neutral-40',
         'transition-all duration-300',
@@ -47,7 +46,10 @@ export function Panel({ title, children }: PanelProps): ReactElement {
       <div
         className={cs(
           { 'gap-20 overflow-y-hidden': isCollapse },
-          { 'overflow-y-auto scrollbar': !isCollapse },
+          {
+            'overflow-y-auto scrollbar py-4 overflow-mask top-overflowing bottom-overflowing':
+              !isCollapse,
+          },
           'flex flex-col pr-5',
           'transition-all duration-300',
           'gap-5',
@@ -71,21 +73,20 @@ export function Panel({ title, children }: PanelProps): ReactElement {
         </div>
       </div>
       <div>
-        <div className='flex flex-row justify-center items-center absolute bottom-0 left-0 p-5 w-full text-neutral-90'>
+        <div
+          className={cs(
+            'flex flex-row items-center absolute bottom-0 left-0 p-5 w-full text-neutral-90',
+            { 'lg:justify-center justify-end': isCollapse },
+            { 'justify-center': !isCollapse },
+          )}>
           <ArrowHeadTopIcon
             className={cs('w-10 h-10 transition-all duration-300', {
               'rotate-180': isCollapse,
             })}
           />
-          {isCollapse ? (
-            <Text type={TextType.Title} size={TextSize.Small}>
-              Show Panel
-            </Text>
-          ) : (
-            <Text type={TextType.Title} size={TextSize.Small}>
-              Hide Panel
-            </Text>
-          )}
+          <Text type={TextType.Title} size={TextSize.Small}>
+            {isCollapse ? 'Show Panel' : 'Hide Panel'}
+          </Text>
         </div>
       </div>
     </div>
