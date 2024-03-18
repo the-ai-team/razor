@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.19.0]
+        node-version: [ 16.19.0 ]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -26,6 +26,7 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           onlyChanged: true
+          storybookBaseDir: dist/storybook/client
           autoAcceptChanges: main
       - if: steps.chromatic.outputs.buildUrl != 'undefined'
         name: Publish Summary
