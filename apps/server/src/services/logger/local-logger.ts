@@ -5,10 +5,9 @@ import { logLevels } from './levels';
 const { printf, timestamp, combine, colorize, errors } = format;
 
 const logFormat = printf(
-  ({ service, level, message, timestamp, context, ...args }) => {
-    const { subject, ...contextData } = context;
+  ({ service, level, message, timestamp, subject, context, ...args }) => {
     const additionalData = {
-      contextData,
+      context,
       args: Object.keys(args).length ? args : undefined,
     };
     return `[${service}] (${subject}) ${level}: ${timestamp} - ${message} - ${JSON.stringify(

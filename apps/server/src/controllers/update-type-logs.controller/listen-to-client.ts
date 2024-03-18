@@ -57,6 +57,16 @@ export const sendTypeLogController = ({
     return;
   }
 
+  store.dispatch.game.sendTypeLog({
+    raceId,
+    playerId,
+    playerLog: playerLogsToAppPlayerLogs(playerLogs),
+  });
+
+  const typeLogsQueue = getTypeLogsQueue(raceId, context);
+  typeLogsQueue.addLog(playerLogs, playerId);
+  logger.debug('Type logs are added to race type-logs-queue.', context);
+
   // If all players have completed the race, raise RaceEnd event.
   const isAllPlayersEnded = checkRaceCompleteInstance.isRaceEnded();
   const raceEndData: RaceEndModel = {
@@ -73,16 +83,6 @@ export const sendTypeLogController = ({
     // Clearing the server timeout when all race players have completed their races from the client side.
     clearTimeout(serverRaceTimeout);
   }
-
-  store.dispatch.game.sendTypeLog({
-    raceId,
-    playerId,
-    playerLog: playerLogsToAppPlayerLogs(playerLogs),
-  });
-
-  const typeLogsQueue = getTypeLogsQueue(raceId, context);
-  typeLogsQueue.addLog(playerLogs, playerId);
-  logger.debug('Type logs are added to race type-logs-queue.', context);
 };
 
 pubsub.subscribe(SocketProtocols.SendTypeLog, sendTypeLogController);

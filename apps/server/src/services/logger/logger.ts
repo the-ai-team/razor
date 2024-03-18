@@ -25,7 +25,6 @@ interface ContextInput {
 }
 
 export interface ContextOutput {
-  subject: string;
   // both playerId and socketId won't be available at the same time.
   playerId?: PlayerId;
   // socket Id will be available only for initial events.
@@ -65,7 +64,6 @@ export class Logger {
     }
 
     return {
-      subject: this.subject,
       playerId,
       socketId,
       domainId,
@@ -78,7 +76,11 @@ export class Logger {
     context: ContextOutput,
     additionalData?: T,
   ): void {
-    wlogger.error(message, { context, ...additionalData });
+    wlogger.error(message, {
+      subject: this.subject,
+      context,
+      ...additionalData,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,7 +89,11 @@ export class Logger {
     context: ContextOutput,
     additionalData?: T,
   ): void {
-    wlogger.warn(message, { context, ...additionalData });
+    wlogger.warn(message, {
+      subject: this.subject,
+      context,
+      ...additionalData,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -96,7 +102,11 @@ export class Logger {
     context: ContextOutput,
     additionalData?: T,
   ): void {
-    wlogger.info(message, { context, ...additionalData });
+    wlogger.info(message, {
+      subject: this.subject,
+      context,
+      ...additionalData,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -105,6 +115,10 @@ export class Logger {
     context: ContextOutput,
     additionalData?: T,
   ): void {
-    wlogger.debug(message, { context, ...additionalData });
+    wlogger.debug(message, {
+      subject: this.subject,
+      context,
+      ...additionalData,
+    });
   }
 }
