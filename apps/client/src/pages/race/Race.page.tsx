@@ -31,6 +31,7 @@ export function Race(): ReactElement {
   const [raceReadyTime, setRaceReadyTime] = useState<number>(5);
   const [raceTime, setRaceTime] = useState<number>(0);
   const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
+  const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
 
   useEffect(() => {
     const tournamentId: AppTournamentId = `T:${roomId}`;
@@ -102,6 +103,7 @@ export function Race(): ReactElement {
       const raceTime = game.racesModel[raceId]?.timeoutDuration;
       setRaceTime(raceTime);
       sendInitialTypeLog(raceId);
+      setIsTypeLocked(false);
     }
   }, [raceReadyTime, raceId]);
 
@@ -113,7 +115,7 @@ export function Race(): ReactElement {
       )}>
       <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
       {raceId ? (
-        <div className='flex flex-col items-center justify-center relative'>
+        <>
           {raceReadyTime > 0 ? (
             <div
               className={cs(
@@ -126,27 +128,32 @@ export function Race(): ReactElement {
             </div>
           ) : null}
           <div
-            className={cs('relative', {
-              'opacity-20': raceReadyTime > 0,
-            })}>
-            <div className='scale-75'>
-              <RaceTrack raceId={raceId} />
+            className={cs(
+              'flex flex-col items-center justify-center gap-4',
+              'scale-50 lg:scale-75 xl:scale-90 2xl:scale-95 ',
+              {
+                'opacity-20': raceReadyTime > 0,
+              },
+            )}>
+            <div className={cs('flex items-center justify-center')}>
+              <RaceTrack raceId={raceId} className='scale-95' />
             </div>
             <div className='grid grid-cols-4'>
               <div
                 className={cs(
-                  'scale-50',
-                  'm-auto',
-                  'fixed right-0 -top-12 2xl:static 2xl:scale-75',
+                  'm-auto 2xl:static',
+                  'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
+                  'fixed -top-40 right-8 z-10',
                 )}>
                 <Timer
                   time={raceTime}
-                  onTimeEnd={(): void => console.log('time end')}
+                  onTimeEnd={(): void => setIsTypeLocked(true)}
                 />
               </div>
               <div className='col-span-4 2xl:col-span-3 max-w-6xl m-auto'>
                 <RaceText
                   raceId={raceId}
+                  isLocked={isTypeLocked}
                   onValidType={(charIndex: number): void =>
                     sendTypeLog(charIndex + 1, raceId)
                   }
@@ -154,7 +161,7 @@ export function Race(): ReactElement {
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
         <h4 className='text-2xl text-neutral-90'>Race not found</h4>
       )}

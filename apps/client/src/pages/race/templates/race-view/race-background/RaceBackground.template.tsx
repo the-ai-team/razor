@@ -73,5 +73,9 @@ export function RaceBackground({
     };
   }, [count, cols, height, pavementRows, rows, totalRows, width, isDebug]);
 
-  return <canvas ref={canvasRef} className={className} />;
+  return (
+    <div style={{ height }}>
+      <canvas ref={canvasRef} className={className} />
+    </div>
+  );
 }

@@ -2,6 +2,10 @@ import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { AppPlayerId, AppPlayerLogId, AppRaceId } from '@razor/models';
 import { RootState } from '@razor/store';
+import { Text } from 'apps/client/src/components';
+import { TextSize, TextType } from 'apps/client/src/models';
+import { useComputePlayerRanks } from 'apps/client/src/utils/custom-hooks/compute-player-rank';
+import cs from 'classnames';
 
 import {
   getCarComponentSize,
@@ -28,6 +32,9 @@ export function RaceLine({
 }: RaceLineProps): ReactElement | null {
   const playerLogId: AppPlayerLogId = `${raceId}-${playerId}`;
   const game = useSelector((store: RootState) => store.game);
+  const playersModel = game.playersModel;
+  const playerName = playersModel[playerId]?.name || 'Unknown';
+  const [playerRanks] = useComputePlayerRanks(raceId);
 
   const playerLogs = game.playerLogsModel[playerLogId];
   if (!playerLogs) {
@@ -57,13 +64,30 @@ export function RaceLine({
       className='relative mx-auto'
       style={{ width: `${raceTrackWidth}px`, height: `${lineHeight}px` }}>
       <div
-        className='absolute transition-all duration-300'
+        className={cs('absolute transition-all duration-300')}
         style={{
           left: `${playerPos}px`,
           top: `${lineHeight / 4}px`,
           transform: `scale(${carSizeFactor})`,
         }}>
-        <CarComponent overlay={carColor} />
+        <Text
+          type={TextType.Title}
+          size={TextSize.Small}
+          className={cs(
+            'px-2 bg-neutral-40 text-neutral-90 rounded-full',
+            'absolute -left-6 -top-1',
+          )}>
+          {`${playerRanks[playerId]}`}
+        </Text>
+        <div className='flex items-center justify-center'>
+          <CarComponent overlay={carColor} />
+          <Text
+            type={TextType.Title}
+            size={TextSize.Small}
+            className={cs('px-2 opacity-50 text-neutral-90 rounded-full')}>
+            {playerName}
+          </Text>
+        </div>
       </div>
     </div>
   );

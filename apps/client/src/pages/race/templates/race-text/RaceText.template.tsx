@@ -20,9 +20,12 @@ import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
 import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/AvatarArray.component';
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
+import { AudioManager } from 'apps/client/src/services';
 import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
+
+import stopSound from '../../../../assets/sounds/stop/stop-sound.mp3';
 
 import {
   computeCursorsPerLines,
@@ -35,6 +38,7 @@ import {
 
 export interface RaceTextProps {
   raceId: AppRaceId;
+  isLocked?: boolean;
   onValidType: (charIndex: number) => void;
   debug?: {
     enableLetterCount?: boolean;
@@ -46,6 +50,7 @@ export interface RaceTextProps {
 
 export function RaceText({
   raceId,
+  isLocked = false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onValidType = (): void => {},
   debug = {},
@@ -128,6 +133,12 @@ export function RaceText({
     useState<AppRacePlayerCursor[][]>([]);
 
   useEffect((): void => {
+    if (isLocked) {
+      updateNoOfInvalidChars(0);
+    }
+  }, [isLocked]);
+
+  useEffect((): void => {
     if (!raceData || !selfPlayerId.current || !playerIds) {
       return addToast({
         title: t('toasts.game_error.title', { ns: 'common' }),
@@ -189,7 +200,14 @@ export function RaceText({
     t,
   ]);
 
+  const stopAudioManager = useMemo(() => new AudioManager(stopSound), []);
+
   const handleKeyPressFunction = (char: string): void => {
+    // When is locked or player finished the race stop accepting input.
+    if (isLocked || raceText.length === playerCursorAt) {
+      return;
+    }
+
     const inputStatus = inputHandler(char, raceText[playerCursorAt]);
     if (!selfPlayerId.current) {
       return;
@@ -199,10 +217,11 @@ export function RaceText({
       if (noOfInvalidChars > 0) {
         return;
       }
-
       updatePlayerCursorAt(playerCursorAt + 1);
       onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
+      stopAudioManager.playAudio();
+
       updateNoOfInvalidChars(prev => {
         if (prev === MAX_INVALID_CHARS_ALLOWED) {
           return MAX_INVALID_CHARS_ALLOWED;
@@ -212,6 +231,7 @@ export function RaceText({
     } else if (inputStatus === InputStatus.BACKSPACE) {
       updateNoOfInvalidChars(prev => {
         if (prev === 0) {
+          stopAudioManager.playAudio();
           return 0;
         }
         return prev - 1;
@@ -280,6 +300,10 @@ export function RaceText({
                     charIndex,
                     { cursorAt: playerCursorAt },
                   );
+                  const isCursorAtInvalidCursor = indexConverter.isCursorAtChar(
+                    charIndex,
+                    { cursorAt: invalidCursorAt },
+                  );
                   const isLetterBehindCursor =
                     indexConverter.isCharBehindCursor(
                       charIndex,
@@ -295,16 +319,32 @@ export function RaceText({
                     indexConverter.isCursorAtChar(charIndex, {
                       cursorsAt: otherPlayerCursors,
                     });
+                  /* Show normal cursor if no invalid chars */
+                  const isVisibleRegularCursor =
+                    (noOfInvalidChars === 0 || isLocked) && isCursorAtLetter;
+                  /* Show invalid cursor if invalid chars */
+                  const isVisibleInvalidCursor =
+                    noOfInvalidChars > 0 &&
+                    !isLocked &&
+                    isCursorAtInvalidCursor;
 
                   return (
                     <span
                       key={charIndex}
                       className={cs('relative pl-[0.5px]', {
                         'text-neutral-30': isLetterBehindCursor,
-                        'text-error-50 bg-error-50 bg-opacity-20':
+                        'text-error-60 bg-error-50 bg-opacity-20':
                           isLetterBetweenCursors,
                       })}>
-                      {isCursorAtLetter ? <Cursor isAtSpace={isSpace} /> : null}
+                      {isVisibleRegularCursor ? (
+                        <Cursor isAtSpace={isSpace} isLocked={isLocked} />
+                      ) : null}
+                      {isVisibleInvalidCursor ? (
+                        <Cursor
+                          isAtSpace={isSpace}
+                          isInvalidCursor={isCursorAtInvalidCursor}
+                        />
+                      ) : null}
                       {isOtherPlayerCursorsOnLetter ? (
                         <UnderlineCursor />
                       ) : null}

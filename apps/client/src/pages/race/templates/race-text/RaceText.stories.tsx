@@ -34,6 +34,7 @@ export default {
   component: RaceText,
   args: {
     raceId: testRaceId,
+    isLocked: false,
     debug: {
       enableLetterCount: false,
       enableSpaceCount: false,
