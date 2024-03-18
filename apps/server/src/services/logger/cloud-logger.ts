@@ -13,6 +13,8 @@ const severityMap: Map<string, string> = new Map([
 ]);
 
 const logFormat = printf(({ service, context, level, message, ...args }) => {
+  console.log(`cloudlogger ${service}`, context, message);
+
   const { subject, ...contextData } = context;
   const log = {
     service,

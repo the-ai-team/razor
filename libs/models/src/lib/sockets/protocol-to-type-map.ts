@@ -4,6 +4,7 @@ import {
   InitialClientData,
   InitialServerData,
   PlayerJoinData,
+  PlayerJoinRejectData,
   SendLeaderboardData,
   SendTypeLogData,
   StartRaceAcceptData,
@@ -16,6 +17,7 @@ import { SocketProtocols } from './protocols';
 export interface InitialProtocolToTypeMap extends Record<string, object> {
   [SocketProtocols.JoinLobbyRequest]: InitialClientData;
   [SocketProtocols.JoinLobbyAccept]: InitialServerData;
+  [SocketProtocols.JoinLobbyReject]: PlayerJoinRejectData;
   [SocketProtocols.CreateLobbyRequest]: InitialClientData;
   [SocketProtocols.CreateLobbyAccept]: InitialServerData;
 }

@@ -1,7 +1,8 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
+import { PlayerId } from '@razor/models';
 
-import { getSavedPlayerId } from './save-player-id';
+import { savedData } from './save-player-data';
 
 interface GuardedRouteProps {
   component: React.ElementType;
@@ -11,7 +12,20 @@ interface GuardedRouteProps {
 export function GuardedRoute({
   component: Component,
 }: GuardedRouteProps): ReactElement | null {
-  const playerId = getSavedPlayerId();
+  const [playerId, setPlayerId] = useState<PlayerId | null>(
+    savedData.savedPlayerId,
+  );
+
+  useEffect(() => {
+    const updatePlayerId = savedData.addEventListener(() => {
+      setPlayerId(savedData.savedPlayerId);
+    });
+
+    return () => {
+      savedData.removeEventListener(() => updatePlayerId);
+    };
+  }, []);
+
   const { roomId } = useParams();
 
   if (!playerId) {

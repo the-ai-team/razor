@@ -106,6 +106,11 @@ export const startRaceController = async ({
     context,
     data: { raceId },
   };
+
+  logger.info('Race server timer started.', context, {
+    raceTimeout: race.timeoutDuration,
+    endWaitTime: RACE_END_WAIT_TIME,
+  });
   serverRaceTimeout = setTimeout(() => {
     logger.info('Race ended triggered by server timeout.', context);
     pubsub.publish(PubSubEvents.RaceEnd, raceEndModel);

@@ -26,7 +26,7 @@ import {
   sendTypeLog,
   typeLogPusher,
 } from '../../services/handlers/send-type-log';
-import { getSavedPlayerId } from '../../utils/save-player-id';
+import { savedData } from '../../utils/save-player-data';
 
 import { RaceText } from './templates/race-text/RaceText.template';
 import { RaceTrack } from './templates/race-view/RaceTrack.template';
@@ -41,7 +41,7 @@ export function Race(): ReactElement {
   const [raceReadyTime, setRaceReadyTime] =
     useState<number>(RACE_READY_COUNTDOWN);
   const [raceTime, setRaceTime] = useState<number>(0);
-  const selfPlayerId = useRef<PlayerId>(getSavedPlayerId());
+  const selfPlayerId = useRef<PlayerId>(savedData.savedPlayerId);
   const [isTypeLocked, setIsTypeLocked] = useState<boolean>(true);
   const [isSpectator, setIsSpectator] = useState<boolean>(false);
 
@@ -69,7 +69,9 @@ export function Race(): ReactElement {
     if (selfPlayer) {
       const isIdle = selfPlayer.state === AppPlayerState.Idle;
       setIsSpectator(isIdle);
-      setRaceReadyTime(0);
+      if (isIdle) {
+        setRaceReadyTime(0);
+      }
     }
 
     // Looking for race in races model
@@ -185,11 +187,11 @@ export function Race(): ReactElement {
               />
             </div>
             {!isSpectator ? (
-              <div className='grid grid-cols-4'>
+              <div className='flex gap-12'>
                 <div
                   className={cs(
                     'm-auto 2xl:static',
-                    'scale-50 2xl:scale-90 origin-top-right 2xl:origin-center',
+                    'scale-50 2xl:scale-100 origin-top-right 2xl:origin-center',
                     'fixed -top-40 right-8 z-10',
                   )}>
                   <Timer time={raceTime} onTimeEnd={raceTimeEndHandler} />

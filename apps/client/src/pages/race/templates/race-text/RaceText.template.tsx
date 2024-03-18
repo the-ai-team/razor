@@ -21,7 +21,7 @@ import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/A
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
 import { useToastContext } from 'apps/client/src/hooks/useToastContext';
 import { AudioManager } from 'apps/client/src/services';
-import { getSavedPlayerId } from 'apps/client/src/utils/save-player-id';
+import { savedData } from 'apps/client/src/utils/save-player-data';
 import cs from 'classnames';
 import { ReactComponent as GamePad } from 'pixelarticons/svg/gamepad.svg';
 
@@ -59,7 +59,7 @@ export function RaceText({
   const { t } = useTranslation(['race', 'common']);
   const addToast = useToastContext();
 
-  const selfPlayerId = useRef<AppPlayerId | null>(getSavedPlayerId());
+  const selfPlayerId = useRef<AppPlayerId | null>(savedData.savedPlayerId);
   const raceData = game.racesModel[raceId];
   const players = raceData.players;
   const [playerIds, setPlayerIds] = useState<AppPlayerId[]>([]);

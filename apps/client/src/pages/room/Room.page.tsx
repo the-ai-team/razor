@@ -9,6 +9,9 @@ import cs from 'classnames';
 import { ReactComponent as LinkIcon } from 'pixelarticons/svg/link.svg';
 
 import { ReactComponent as Logo } from '../../assets/images/logo.svg';
+import banner1 from '../../assets/images/panel-images/room1.png';
+import banner2 from '../../assets/images/panel-images/room2.png';
+import banner3 from '../../assets/images/panel-images/room3.png';
 import {
   Button,
   Description,
@@ -18,6 +21,7 @@ import {
 } from '../../components';
 import { useToastContext } from '../../hooks/useToastContext';
 import { requestToStartRace } from '../../services/handlers';
+import { savedData } from '../../utils/save-player-data';
 
 import { PlayerList } from './templates/player-list/PlayerList.template';
 
@@ -57,11 +61,7 @@ export function Room(): ReactElement {
     setPlayerIds(game.tournamentsModel[tournamentId]?.playerIds);
   }, [game.playersModel, game.tournamentsModel, tournamentId]);
 
-  const panelImages: Array<string> = [
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150',
-  ];
+  const panelImages: Array<string> = [banner1, banner2, banner3];
 
   const copyUrlToClipboard = async (): Promise<void> => {
     const url = `${hostname}/${roomId}`;
@@ -85,7 +85,12 @@ export function Room(): ReactElement {
 
   return (
     <div className='h-full w-full'>
-      <Logo className='absolute top-0 left-10 w-[150px] h-[150px]' />
+      <Logo
+        className='absolute top-0 left-10 w-[150px] h-[150px] cursor-pointer'
+        onClick={(): void => {
+          savedData.reset();
+        }}
+      />
       <Panel title={t('panel.title')}>
         <Description
           title={t('panel.descriptions.0.title')}
@@ -118,7 +123,7 @@ export function Room(): ReactElement {
           <div
             className={cs(
               'max-w-[1000px] w-10/12 h-full',
-              'my-32',
+              'my-24',
               'overflow-hidden flex flex-col justify-center items-center',
             )}>
             <PlayerList tournamentId={tournamentId} />
