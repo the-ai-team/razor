@@ -53,7 +53,7 @@ export type UpdateRaceReducerPayload = {
 
 export type UpdatePlayerLogReducerPayload = {
   playerLogId: AppPlayerLogId;
-  playerLog: AppPlayerLog;
+  playerLog: AppPlayerLog | AppPlayerLog[];
 };
 
 export type RemovePlayerReducerPayload = {

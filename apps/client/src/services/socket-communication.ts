@@ -1,26 +1,37 @@
-import { RECONNECT_WAITING_TIME, REQUEST_WAITING_TIME } from '@razor/constants';
+import { RECONNECT_WAITING_TIME } from '@razor/constants';
 import {
   AuthToken,
-  InitialClientData,
-  InitialServerData,
-  playerIdSchema,
+  protocolToSchemaMap,
   SocketProtocols,
-  stateModelSchema,
-  tournamentIdSchema,
+  SocketProtocolsTypes,
 } from '@razor/models';
 import { roomIdToTournamentId } from '@razor/util';
 import { io, Socket } from 'socket.io-client';
 
+import { Connection } from '../constants';
 import { ClientUniqueEvents, SendDataToServerModel } from '../models';
 import { pubsub } from '../utils/pubsub';
-import { savePlayerId } from '../utils/save-player-id';
+
+import { requestToJoinRoom } from './handlers/join-room';
 
 const SOCKET_ENDPOINT =
-  import.meta.env.NX_SOCKET_ENDPOINT || 'http://localhost:3000';
-let authToken = '';
-let savedPlayerName = '';
-let savedPlayerId = '';
-let savedRoomId = '';
+  import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:3000';
+
+/** This class is used to save data for socket communication,
+ * which is used to reconnect to the server when the connection is lost.
+ */
+class SavedData {
+  public authToken = '';
+  public savedPlayerName = '';
+  public savedPlayerId = '';
+  public savedRoomId = '';
+
+  public setAuthToken(token: AuthToken): void {
+    this.authToken = token;
+  }
+}
+
+export const savedData = new SavedData();
 
 interface SocketFormat extends Socket {
   auth: {
@@ -30,7 +41,7 @@ interface SocketFormat extends Socket {
 
 export const socket = io(SOCKET_ENDPOINT, {
   auth: {
-    token: authToken,
+    token: savedData.authToken,
   },
   autoConnect: false,
   withCredentials: true,
@@ -38,14 +49,14 @@ export const socket = io(SOCKET_ENDPOINT, {
 
 export const endSocket = (): void => {
   socket.disconnect();
-  authToken = '';
-  savedPlayerName = '';
-  savedPlayerId = '';
-  savedRoomId = '';
+  savedData.authToken = '';
+  savedData.savedPlayerName = '';
+  savedData.savedPlayerId = '';
+  savedData.savedRoomId = '';
 };
 
-const initializeSocket = (): void => {
-  socket.auth.token = authToken;
+export const initializeSocket = (): void => {
+  socket.auth.token = savedData.authToken;
   socket.connect();
   socket.on('connect_error', () => {
     alert('Connection error');
@@ -55,7 +66,7 @@ const initializeSocket = (): void => {
     console.log('connected');
   });
   socket.on(SocketProtocols.AuthTokenTransfer, (token: string) => {
-    authToken = token;
+    savedData.authToken = token;
   });
 };
 
@@ -64,27 +75,27 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
   // Connection issue is considered as a unintentional disconnect.
   // https://socket.io/docs/v3/client-socket-instance/#disconnect
   if (reason !== 'io server disconnect' && reason !== 'io client disconnect') {
-    if (savedRoomId && savedPlayerName) {
+    if (savedData.savedRoomId && savedData.savedPlayerName) {
       const reconnector = setInterval(async () => {
         try {
           console.log('Reconnecting...');
           await requestToJoinRoom({
-            playerName: savedPlayerName,
-            roomId: savedRoomId,
+            playerName: savedData.savedPlayerName,
+            roomId: savedData.savedRoomId,
           });
           clearInterval(reconnector);
         } catch (error) {
           console.error(error);
         }
-      }, REQUEST_WAITING_TIME);
+      }, Connection.REQUEST_WAITING_TIME_FOR_CLIENT);
 
       // If the user doesn't reconnect in RECONNECT_WAITING_TIME, stop trying.
       const waitingTimeout = setTimeout(() => {
         clearInterval(reconnector);
-        authToken = '';
-        savedPlayerName = '';
-        savedPlayerId = '';
-        savedRoomId = '';
+        savedData.authToken = '';
+        savedData.savedPlayerName = '';
+        savedData.savedPlayerId = '';
+        savedData.savedRoomId = '';
         // TODO: navigate to home page
       }, RECONNECT_WAITING_TIME);
 
@@ -99,96 +110,47 @@ const tryReconnect = (reason: Socket.DisconnectReason): void => {
 
 socket.on('disconnect', reason => tryReconnect(reason));
 
-export const requestToJoinRoom = ({
-  playerName,
-  roomId,
-}: InitialClientData): Promise<string> => {
-  initializeSocket();
-  socket.emit(SocketProtocols.JoinLobbyRequest, { playerName, roomId });
-  return new Promise((resolve, reject) => {
-    const receiver = (data: InitialServerData): void => {
-      // Data validation
-      const validation =
-        !stateModelSchema.safeParse(data.snapshot).success ||
-        !tournamentIdSchema.safeParse(data.tournamentId).success ||
-        !playerIdSchema.safeParse(data.playerId).success;
-      if (validation) {
-        reject('Invalid data');
-        return;
-      }
+interface validateSchemaArgs<T> {
+  event: SocketProtocolsTypes;
+  data: T;
+}
 
-      // remove `T:` part from the tournament id.
-      const roomIdFromServer = data.tournamentId.slice(2);
-      if (roomIdFromServer) {
-        savedRoomId = roomIdFromServer;
-        savedPlayerId = data.playerId;
-        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
+function validateSchema<T>({ event, data }: validateSchemaArgs<T>): boolean {
+  try {
+    const schema = protocolToSchemaMap.get(event);
+    if (!schema) {
+      console.log(`Unrecognized event: ${event}`);
+      return false;
+    }
 
-        savePlayerId(data.playerId);
-        pubsub.publish(SocketProtocols.JoinLobbyAccept, data);
-        clearTimeout(waitingTimeout);
-        resolve(roomIdFromServer);
-      } else {
-        reject('Request failed');
-      }
-    };
-    socket.once(SocketProtocols.JoinLobbyAccept, receiver);
-
-    const waitingTimeout = setTimeout(() => {
-      socket.off(SocketProtocols.JoinLobbyAccept, receiver);
-      reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
-  });
-};
-
-export const requestToCreateRoom = ({
-  playerName,
-}: InitialClientData): Promise<string> => {
-  initializeSocket();
-  socket.emit(SocketProtocols.CreateLobbyRequest, { playerName });
-  return new Promise((resolve, reject) => {
-    const receiver = (data: InitialServerData): void => {
-      // Data validation
-      const validation =
-        !stateModelSchema.safeParse(data.snapshot).success ||
-        !tournamentIdSchema.safeParse(data.tournamentId).success ||
-        !playerIdSchema.safeParse(data.playerId).success;
-      if (validation) {
-        reject('Invalid data');
-        return;
-      }
-
-      // remove `T:` part from the tournament id.
-      const roomIdFromServer = data.tournamentId.slice(2);
-      if (roomIdFromServer) {
-        savedRoomId = roomIdFromServer;
-        savedPlayerId = data.playerId;
-        savedPlayerName = data.snapshot.playersModel[data.playerId].name;
-
-        savePlayerId(data.playerId);
-        pubsub.publish(SocketProtocols.CreateLobbyAccept, data);
-        clearTimeout(waitingTimeout);
-        resolve(roomIdFromServer);
-      } else {
-        reject('Request failed');
-      }
-    };
-    socket.once(SocketProtocols.CreateLobbyAccept, receiver);
-
-    const waitingTimeout = setTimeout(() => {
-      socket.off(SocketProtocols.CreateLobbyAccept, receiver);
-      reject('Request timed out');
-    }, REQUEST_WAITING_TIME);
-  });
-};
+    schema.parse(data);
+    return true;
+  } catch (error) {
+    // TODO: implement logger service for client
+    console.log(`Received data invalid. (zod-error) ${error}`, {
+      protocolName: event,
+      protocolData: data,
+    });
+    return false;
+  }
+}
 
 socket.onAny((event, data) => {
+  const isValid = validateSchema({ event, data });
+  if (!isValid) {
+    return;
+  }
+
   if (
     event !== SocketProtocols.CreateLobbyAccept &&
     event !== SocketProtocols.JoinLobbyAccept
   ) {
-    const tournamentId = roomIdToTournamentId(savedRoomId);
-    pubsub.publish(event, { tournamentId, savedPlayerId, data });
+    const tournamentId = roomIdToTournamentId(savedData.savedRoomId);
+    pubsub.publish(event, {
+      tournamentId,
+      savedPlayerId: savedData.savedPlayerId,
+      data,
+    });
     console.log(event, data);
   }
 });

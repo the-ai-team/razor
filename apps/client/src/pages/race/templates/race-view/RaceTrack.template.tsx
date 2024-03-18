@@ -15,9 +15,10 @@ import { RaceLine } from './race-line';
 
 export interface RaceTrackProps {
   raceId: AppRaceId;
+  className?: string;
 }
 
-export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
+export function RaceTrack({ raceId, className }: RaceTrackProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
   const tournamentId = extractId(
     raceId,
@@ -34,11 +35,11 @@ export function RaceTrack({ raceId }: RaceTrackProps): ReactElement {
     getRaceTrackPavementRows(playerIds.length) * lineHeight;
 
   return (
-    <div className=''>
+    <div className={className}>
       <div className={cs('relative w-full')}>
         <RaceBackground
           count={playerIds.length}
-          className={cs('my-10 mx-auto')}
+          className={cs('my-10 mx-auto', 'rounded-md overflow-hidden')}
         />
         <div
           className={cs('w-full absolute mx-auto')}

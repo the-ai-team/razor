@@ -21,11 +21,11 @@ import {
   Text,
 } from '../../components';
 import { TextSize, TextType } from '../../models';
+import { endSocket } from '../../services';
 import {
-  endSocket,
   requestToCreateRoom,
   requestToJoinRoom,
-} from '../../services';
+} from '../../services/handlers';
 
 export function Home(): ReactElement {
   const { t } = useTranslation('home');

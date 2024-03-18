@@ -1,32 +1,15 @@
 import { MAX_ALLOWED_TEXT_LENGTH } from '@razor/constants';
 import { z } from 'zod';
 
-import { Player } from './player';
+import { playerIdSchema } from './player';
 import { timestampSchema } from './tournament';
 
 // ==== Types ==== //
 /** Type for time-logs when players are typing */
-export type PlayerLog = z.input<typeof playerLogSchema>;
+export type PlayerLog = z.infer<typeof playerLogSchema>;
 
-// ==== Interfaces ==== //
-// Note: `PlayerLogsCollection` and `PlayerLogsPacket` does not need to be a schema; because it's only bound to the server-to-client communication.
-/** Log collection for a specific player in a specific race.
- *
- * Keeping player id, name, and avatar link inside race to show data even if a player leaves.
- */
-export interface PlayerLogsCollection extends Omit<Player, 'state'> {
-  /** Array of time logs of player */
-  logs: PlayerLog[];
-}
-
-/** Server sends player logs packet by packet, as the race continues. */
-export interface PlayerLogsPacket extends PlayerLogsCollection {
-  /** Last timestamp of player log that was sent to the viewer.
-   *
-   * Keeping last timestamp will make easy to merge updates from server to client.
-   */
-  lastTimestamp: number;
-}
+/** Log collection or partial collection for a specific player. */
+export type PlayerLogsCollection = z.infer<typeof playerLogsCollectionSchema>;
 
 // ==== Primary Schemas ==== //
 export const playerLogIdSchema =
@@ -41,3 +24,8 @@ export const playerLogSchema = z.object({
   /** Timestamp when player typed the last character */
   timestamp: timestampSchema,
 });
+
+export const playerLogsCollectionSchema = z.record(
+  playerIdSchema,
+  z.array(playerLogSchema),
+);

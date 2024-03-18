@@ -33,6 +33,6 @@ type ModifiedOtherProtocolToTypeMap = {
   >;
 };
 
-export type AllServerPubSubEventsToTypeMap = ClientUniqueEventsToTypeMap &
+export type AllClientPubSubEventsToTypeMap = ClientUniqueEventsToTypeMap &
   InitialProtocolToTypeMap &
   ModifiedOtherProtocolToTypeMap;

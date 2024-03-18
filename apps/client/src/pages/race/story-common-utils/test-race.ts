@@ -26,7 +26,7 @@ const playersModel = game.playersModel;
 const players = Object.keys(playersModel);
 const player1Id = players[0] as AppPlayerId;
 export const testTournamentId = playersModel[player1Id].tournamentId;
-export const raceId: AppRaceId = `${testTournamentId}-R:000`;
+export const testRaceId: AppRaceId = `${testTournamentId}-R:000`;
 
 store.dispatch.game.joinPlayer({
   receivedTournamentId: testTournamentId,
@@ -44,7 +44,7 @@ const playerIds = game.tournamentsModel[testTournamentId].playerIds;
 
 playerIds.forEach(playerId => {
   store.dispatch.game.sendTypeLog({
-    raceId: raceId,
+    raceId: testRaceId,
     playerId: playerId,
     playerLog: {
       timestamp: Date.now(),
@@ -65,7 +65,7 @@ export const addPlayer = (count: number): void => {
   const playerId = playerIds[playerIds.length - 1];
 
   store.dispatch.game.sendTypeLog({
-    raceId: raceId,
+    raceId: testRaceId,
     playerId: playerId,
     playerLog: {
       timestamp: Date.now(),
@@ -76,7 +76,7 @@ export const addPlayer = (count: number): void => {
   // Adding player to the race manually.
   // Store is not designed to add players after race started.
   // But for testing purpose, we are directly updating the race.
-  const race = game.racesModel[raceId];
+  const race = game.racesModel[testRaceId];
   const playersModel = game.playersModel;
   const { [playerId]: newPlayer, ..._others } = playersModel;
   const updatedRace: AppRace = {
@@ -90,7 +90,7 @@ export const addPlayer = (count: number): void => {
     },
   };
   store.dispatch.game.updateRaceReducer({
-    raceId: raceId,
+    raceId: testRaceId,
     race: updatedRace,
   });
 };
@@ -109,7 +109,7 @@ export const clearLastPlayer = (): void => {
     playerId: playerIds[playerIds.length - 1],
   });
   // Removing last player from the race manually.
-  const race = game.racesModel[raceId];
+  const race = game.racesModel[testRaceId];
   const racePlayers = race.players;
   // Remove player with last index
   const lastPlayerId: AppPlayerId = Object.keys(racePlayers)[
@@ -121,7 +121,7 @@ export const clearLastPlayer = (): void => {
     players: playersBeforeLast,
   };
   store.dispatch.game.updateRaceReducer({
-    raceId: raceId,
+    raceId: testRaceId,
     race: updatedRace,
   });
 };
@@ -131,10 +131,10 @@ export const updatePlayerLog = (playerId: AppPlayerId, value: number): void => {
     return;
   }
   game = store.getState().game;
-  const playerLog = game.playerLogsModel[`${raceId}-${playerId}`];
+  const playerLog = game.playerLogsModel[`${testRaceId}-${playerId}`];
   const lastPlayerLog = playerLog[playerLog.length - 1];
   store.dispatch.game.sendTypeLog({
-    raceId,
+    raceId: testRaceId,
     playerId,
     playerLog: {
       timestamp: Date.now(),

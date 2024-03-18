@@ -26,12 +26,8 @@ _This socket protocol will use to send the race start type log (`textLength` wil
 ```json
 "type": "TS/INF/SEND_TYPE_LOG"
 "data": {
-    "race-id": RACE_ID,
-    "player-log": {
-        // Server will get player id using session and socket id.
-        "textLength": 0,
-        "timestamp": 0
-    }
+    "raceId": RACE_ID,
+    "playerLogs": <PlayerLog>[]
 }
 ```
 
@@ -41,29 +37,19 @@ _This socket protocol will use to send the race start type log (`textLength` wil
 "type": "FS_ALL/INF/UPDATE_TYPE_LOGS"
 "data": {
     "raceId": RACE_ID,
-    "playersWithLogs": <PlayerWithLogsPacket>[]
+    "playersWithLogs": <PlayerLogCollection>
 }
 ```
 
 ### **PlayerLogsCollection**
 
 ```ts
-// Server sends player logs packet by packet, as the race continues.
-interface PlayerLogsCollection {
-    id: string;
-    name: string;
-    avatarLink: string;
-    logs: [
-        {
-            textLength: number,
-            timestamp: number
-        }
-        ...
-    ];
-    // Keeping last timestamp will make easy to merge updates from server to client.
-    lastTimestamp: number;
+interface PlayerLog {
+    textLength: number,
+    timestamp: number
 }
 
+interface PlayerLogsCollection = Record<PlayerId, PlayerLog[]>;
 ```
 
 references: [Data Models](../../../../libs/models/src/lib/sockets)

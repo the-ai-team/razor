@@ -6,8 +6,10 @@ import { PlayerId } from './player';
 import {
   initialClientDataSchema,
   playerJoinSchema,
+  sendTypeLogSchema,
   startRaceAcceptSchema,
   startRaceRequestSchema,
+  updateTypeLogsSchema,
 } from './protocol-schemas';
 import { TournamentId } from './tournament';
 
@@ -44,3 +46,6 @@ export type PlayerJoinData = z.infer<typeof playerJoinSchema>;
 
 export type StartRaceRequestData = z.infer<typeof startRaceRequestSchema>;
 export type StartRaceAcceptData = z.infer<typeof startRaceAcceptSchema>;
+
+export type SendTypeLogData = z.infer<typeof sendTypeLogSchema>;
+export type UpdateTypeLogsData = z.infer<typeof updateTypeLogsSchema>;

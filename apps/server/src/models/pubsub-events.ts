@@ -29,6 +29,13 @@ export enum PubSubEvents {
    * and it should subscribe by race-end controller.
    */
   RaceTimeout = 'race-timeout',
+
+  /** Start and end events for type log listening.
+   * Which push collected type logs to players at a specific interval
+   * and clear type logs queue.
+   */
+  StartTypeLogListening = 'type-log-listen-start',
+  EndTypeLogListening = 'type-log-listen-end',
 }
 
 // Models
@@ -54,11 +61,18 @@ export interface RaceTimeoutModel {
   context: ContextOutput;
 }
 
+export interface TypeLogListeningModel {
+  data: { raceId: RaceId };
+  context: ContextOutput;
+}
+
 export interface ServerUniqueEventsToTypeMap extends Record<string, object> {
   [PubSubEvents.SendDataToClient]: SendDataToClientModel;
   [PubSubEvents.SendDataToAll]: SendDataToAllModel;
   [PubSubEvents.PlayerDisconnect]: PlayerDisconnectModel;
   [PubSubEvents.RaceTimeout]: RaceTimeoutModel;
+  [PubSubEvents.StartTypeLogListening]: TypeLogListeningModel;
+  [PubSubEvents.EndTypeLogListening]: TypeLogListeningModel;
 }
 
 type ModifiedEvent<T extends object, AdditionalProps extends object> = {

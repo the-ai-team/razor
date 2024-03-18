@@ -306,7 +306,7 @@ describe('[Reducers] Update operations', () => {
   });
 
   describe('Update player logs', () => {
-    it('(id, not exisiting player log) => Add first player log to player logs array in player logs model', () => {
+    it('(id, not existing player log) => Add first player log to player logs array in player logs model', () => {
       const initialValues: AppStateModel = initialState;
 
       const store = initializeStore(initialValues);
@@ -385,6 +385,82 @@ describe('[Reducers] Update operations', () => {
             {
               timestamp: 1234567010,
               textLength: 26,
+            },
+          ],
+        },
+      };
+
+      const storeState = store.getState();
+      expect(storeState).toEqual({
+        ...initialStoreState,
+        game: expectedResult,
+      });
+    });
+
+    it('(id) => Push new player logs (The logs received as an array) to existing player logs array in player logs model', () => {
+      const initialValues: AppStateModel = {
+        ...initialState,
+        playerLogsModel: {
+          ...initialState.playerLogsModel,
+          'T:testTOUR-R:001-P:testPLAY': [
+            {
+              timestamp: 1234567000,
+              textLength: 0,
+            },
+            {
+              timestamp: 1234567002,
+              textLength: 8,
+            },
+            {
+              timestamp: 1234567005,
+              textLength: 14,
+            },
+            {
+              timestamp: 1234567008,
+              textLength: 20,
+            },
+          ],
+        },
+      };
+
+      const store = initializeStore(initialValues);
+      const initialStoreState = store.getState();
+
+      store.dispatch.game.updatePlayerLogReducer({
+        playerLogId: 'T:testTOUR-R:001-P:testPLAY',
+        playerLog: [
+          {
+            timestamp: 1234567010,
+            textLength: 26,
+          },
+          {
+            timestamp: 1234567012,
+            textLength: 28,
+          },
+          {
+            timestamp: 1234567014,
+            textLength: 30,
+          },
+        ],
+      });
+
+      const expectedResult = {
+        ...initialValues,
+        playerLogsModel: {
+          ...initialValues.playerLogsModel,
+          'T:testTOUR-R:001-P:testPLAY': [
+            ...initialValues.playerLogsModel['T:testTOUR-R:001-P:testPLAY'],
+            {
+              timestamp: 1234567010,
+              textLength: 26,
+            },
+            {
+              timestamp: 1234567012,
+              textLength: 28,
+            },
+            {
+              timestamp: 1234567014,
+              textLength: 30,
             },
           ],
         },

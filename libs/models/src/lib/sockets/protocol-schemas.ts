@@ -1,13 +1,20 @@
 import { z } from 'zod';
 
 import { playerIdSchema, playerNameSchema, playerSchema } from './player';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { playerLogSchema, playerLogsCollectionSchema } from './playerLog';
+// eslint-disable-next-line unused-imports/no-unused-imports
+import { SocketProtocols } from './protocols';
 import { raceIdSchema } from './race';
 import { stateModelSchema } from './state-model';
 import { roomIdSchema, tournamentIdSchema } from './tournament';
 
 // Following schemas to be used when data sent through socket.
 // Each schema is related to a protocol defined in {@link SocketProtocols}
+
+/**
+ * Related protocol - {@link SocketProtocols.AuthTokenTransfer}
+ */
+export const authTokenTransferSchema = z.string();
 
 /**
  * Related protocol - {@link SocketProtocols.JoinLobbyRequest} and {@link SocketProtocols.CreateLobbyRequest}
@@ -41,16 +48,34 @@ export const startRaceRequestSchema = z.object({});
 /**
  * Related protocol - {@link SocketProtocols.StartRaceAccept}
  */
-
 export const startRaceAcceptSchema = z.object({
   raceId: raceIdSchema,
   raceStartedBy: playerIdSchema,
   raceText: z.string(),
 });
 
+/**
+ * Related protocol - {@link SocketProtocols.SendTypeLog}
+ */
+export const sendTypeLogSchema = z.object({
+  raceId: raceIdSchema,
+  playerLogs: z.array(playerLogSchema),
+});
+
+/**
+ * Related protocol - {@link SocketProtocols.UpdateTypeLogs}
+ */
+export const updateTypeLogsSchema = z.object({
+  raceId: raceIdSchema,
+  playerLogs: playerLogsCollectionSchema,
+});
+
 export type ProtocolSchemaTypes =
+  | typeof authTokenTransferSchema
   | typeof initialClientDataSchema
   | typeof initialServerDataSchema
   | typeof playerJoinSchema
   | typeof startRaceRequestSchema
-  | typeof startRaceAcceptSchema;
+  | typeof startRaceAcceptSchema
+  | typeof sendTypeLogSchema
+  | typeof updateTypeLogsSchema;

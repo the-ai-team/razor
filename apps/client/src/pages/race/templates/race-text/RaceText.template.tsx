@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   AppPlayerId,
   AppPlayerLogId,
@@ -15,7 +15,7 @@ import {
   AppRaceId,
   AppRacePlayerCursor,
 } from '@razor/models';
-import { Dispatch, RootState } from '@razor/store';
+import { RootState } from '@razor/store';
 import { Cursor, ToastType, UnderlineCursor } from 'apps/client/src/components';
 import { AvatarArray } from 'apps/client/src/components/molecules/avatar-array/AvatarArray.component';
 import { MAX_INVALID_CHARS_ALLOWED } from 'apps/client/src/constants/race';
@@ -35,6 +35,7 @@ import {
 
 export interface RaceTextProps {
   raceId: AppRaceId;
+  onValidType: (charIndex: number) => void;
   debug?: {
     enableLetterCount?: boolean;
     enableSpaceCount?: boolean;
@@ -43,9 +44,13 @@ export interface RaceTextProps {
   };
 }
 
-export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
+export function RaceText({
+  raceId,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onValidType = (): void => {},
+  debug = {},
+}: RaceTextProps): ReactElement {
   const game = useSelector((store: RootState) => store.game);
-  const dispatch = useDispatch<Dispatch>();
   const { t } = useTranslation(['race', 'common']);
   const addToast = useToastContext();
 
@@ -194,16 +199,9 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
       if (noOfInvalidChars > 0) {
         return;
       }
-      const playerLog = {
-        timestamp: Date.now(),
-        textLength: playerCursorAt + 1,
-      };
+
       updatePlayerCursorAt(playerCursorAt + 1);
-      dispatch.game.sendTypeLog({
-        playerLog,
-        raceId,
-        playerId: selfPlayerId.current,
-      });
+      onValidType(playerCursorAt);
     } else if (inputStatus === InputStatus.INCORRECT) {
       updateNoOfInvalidChars(prev => {
         if (prev === MAX_INVALID_CHARS_ALLOWED) {
@@ -229,7 +227,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
   return (
     <div
       className={cs(
-        'relative w-full py-[1.5rem] pl-32 pr-10',
+        'relative w-full py-4 pl-28 pr-6',
         'bg-neutral-20 border-[3px] border-neutral-40',
         'select-none',
         'rounded-md',
@@ -237,7 +235,7 @@ export function RaceText({ raceId, debug = {} }: RaceTextProps): ReactElement {
       <div
         ref={paragraphRef}
         className={cs(
-          'font-roboto text-[1.6rem] font-medium text-neutral-90',
+          'font-roboto text-[1.4rem] font-medium text-neutral-90',
           'flex flex-wrap justify-space-between',
           'relative',
         )}>
