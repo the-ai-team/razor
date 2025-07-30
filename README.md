@@ -193,4 +193,4 @@ npm run storybook
 
 ## Further Help
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+This monorepo is built with Nx, visit the [Nx Documentation](https://nx.dev) to learn more.
