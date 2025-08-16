@@ -1,74 +1,196 @@
+# Razor
+
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-### Code Coverage (Only redux store)
+### Test Coverage (Only Redux Store)
 
 | Statements                                                                                         | Branches                                                                                       | Functions                                                                                        | Lines                                                                                    |
 | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
 | ![Statements](https://img.shields.io/badge/statements-100%25-brightgreen.svg?style=flat&logo=jest) | ![Branches](https://img.shields.io/badge/branches-100%25-brightgreen.svg?style=flat&logo=jest) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat&logo=jest) | ![Lines](https://img.shields.io/badge/lines-100%25-brightgreen.svg?style=flat&logo=jest) |
 
-# Razor
+![alt text](razor.png)
 
-Razor is a type-racing app. The player can create a private lobby and invite others to play online.
+## Introduction
 
-This project was generated using [Nx](https://nx.dev).
+Razor is a free and open-source type-racing platform that brings a new twist to improving typing skills while competing with friends. Players can create and share game links instantly without needing an account, making it easy to invite friends to play.
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+As a newly launched open-source project, Razor invites players and developers to contribute, ensuring it continuously evolves to meet user needs.
 
-## How to commit
+**Live Demo:** https://razor-web.netlify.app/
 
-After staging files, run `git commit` to add commit message.
-**Don't use `-m` flag as we using [Commitzen](https://github.com/commitizen/cz-cli) to make meaningful commits easily**
+## Applications
 
-> You will recive step by step fields to add your commit message details.
+This monorepo contains two main applications:
 
-Please follow this [guide](https://www.conventionalcommits.org/en/v1.0.0/) to learn more about conventional commits.
+- **Client** - React frontend application with real-time typing game interface
+- **Server** - Express backend API with Socket.io for real-time multiplayer functionality
 
-## Generate an application
+## Quick Start
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+### Prerequisites
 
-> You can use any of the plugins above to generate applications as well.
+Install NX globally:
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+```bash
+npm add --global nx@latest
+```
 
-## Generate a library
+> [!NOTE]  
+> For more installation details, see [NX Documentation](https://nx.dev/getting-started/installation)
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+### Running the Applications
 
-> You can also use any of the plugins above to generate libraries as well.
+Start both applications for development:
 
-Libraries are shareable across libraries and applications. They can be imported from `@razor/mylib`.
+```bash
+# Start the backend server (runs on default port)
+nx serve server
 
-## Development server
+# Start the frontend client (runs on http://localhost:4200)
+nx serve client
+```
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you
-change any of the source files.
+Or use npm scripts:
 
-## Code scaffolding
+```bash
+# Start server
+npm run start:server
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+# Start client
+npm start
+```
 
-## Build
+## Project Structure
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use
-the `--prod` flag for a production build.
+```
+razor/
+├── apps/
+│   ├── client/          # Frontend application
+│   └── server/          # Backend API
+├── libs/
+│   ├── store/           # Redux store and state management
+│   ├── models/          # Shared data models and types
+│   ├── constants/       # Application constants
+│   ├── util/            # Shared utility functions
+│   └── mocks/           # Mocks functions for testing
+├── tools/               # Build tools and scripts
+└── docs/                # Project documentation
+```
 
-## Running unit tests
+## Technologies Used
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+### Monorepo & Development Tools
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+- **NX** - Monorepo management system
+- **Git** - Version management
+- **GitHub, GitHub Actions** - Repository hosting and CI/CD
+- **Husky** - Git hooks management
+- **Commitizen** - Conventional commits
+- **lint-staged** - Linting staged files only
 
-## Running end-to-end tests
+### Frontend Technologies
 
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+- **React.js** - UI library
+- **Vite** - Build tool and bundler (migrated from Webpack)
+- **Tailwind CSS** - Utility-first CSS framework
+- **Storybook** - Component development and documentation
+- **react-i18next** - Internationalization
+- **React Router** - Navigation management
+- **classnames** - CSS class management library
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+### Backend Technologies
 
-## Understand your workspace
+- **Express** - Node.js framework
+- **Node.js** - Runtime environment
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+### State Management & Communication
 
-## Further help
+- **Rematch.js** - Redux wrapper
+- **Redux (with Redux Toolkit)** - State management
+- **Socket.IO** - WebSocket library for real-time communication
 
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+### Programming Languages & Type Safety
+
+- **TypeScript** - Static typing for JavaScript
+- **JavaScript** - Programming language
+- **Zod** - Schema validation
+
+### Testing & Quality Assurance
+
+- **Jest** - Testing framework
+- **Istanbul** - Test coverage reporting
+- **istanbul-merge** - Coverage report merging
+- **istanbul-badges-readme** - Coverage badges generation
+- **Prettier** - Code formatting
+- **ESLint** - Code quality and linting
+
+### Utility Libraries
+
+- **Lodash** - JavaScript utility library
+
+### Cloud Services & Deployment
+
+- **Google Cloud Platform** - Server deployment
+- **Cloud Run** - Serverless container platform
+- **Google Cloud Logging** - Logging service
+- **Netlify** - Frontend deployment and hosting
+- **Chromatic** - Visual testing and Storybook hosting
+- **CodeCov** - Code coverage reporting service
+
+### Design & Assets
+
+- **Figma** - UI/UX design tool
+- **Material Theme Builder** - Color palette generation (Figma plugin)
+- **Canvas API** - Graphics rendering
+- **CSS** - Styling and animations
+
+### Asset Sources
+
+- **Kenney's Roguelike Modern City** - City block sprites for race track
+- **Kenney's Pixel Vehicle Pack** - Racing car sprites
+- **Pixelarticons** - Icon library
+- **DiceBear's Open Peeps** - Avatar styles
+
+### Documentation & Diagramming
+
+- **Markdown** - Documentation format
+- **Mermaid** - Diagramming and charting tool
+
+### Development Methodologies
+
+- **Atomic Design** - UI component organization methodology
+- **PubSub Architecture** - Publish-Subscribe communication pattern
+
+## Contributing
+
+### Commits
+
+After staging files, run `git commit` to add commit messages.  
+**Don't use the `-m` flag** as we use [Commitizen](https://github.com/commitizen/cz-cli) for meaningful commits.
+
+> You will receive step-by-step prompts to add your commit message details.
+
+Follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) guide for commit standards.
+
+## Additional Commands
+
+```bash
+# Run tests
+npm test
+
+# Build both applications
+npm run build
+
+# Lint all projects
+npm run lint
+
+# Format code
+npm run pretty
+
+# Run Storybook
+npm run storybook
+```
+
+## Further Help
+
+This monorepo is built with Nx, visit the [Nx Documentation](https://nx.dev) to learn more.
